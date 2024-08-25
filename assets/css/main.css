@@ -21,3 +21,37 @@
   height: 16px;
   margin-block: auto;
 }
+.gridList{
+  grid-template-columns: 4fr 2fr;
+  justify-items: end;
+}
+
+ .button{
+  display: block;
+  position: relative;
+  width: 50px;
+  height: 15px;
+  border-radius: 25px;
+  background-color: rgb(255, 196, 196);
+  cursor: pointer;
+  transition: 0.2s;
+ }
+ .button::before{
+  content: "";
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  border-radius: 15px;
+  background-color: rgb(215, 50, 50);
+  top: 50%;
+  right: 100%;
+  transform: translate(100%,-50%);
+ }
+ #server-status:checked + .button {
+  background-color: rgb(219, 255, 219);
+ }
+ #server-status:checked + .button::before {
+  background-color: rgb(12, 207, 12);
+  right: 0;
+  transform: translate(10%,-50%);
+ }

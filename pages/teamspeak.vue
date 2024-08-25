@@ -1,16 +1,12 @@
-<script setup lang="ts">
-const route = useRoute()
-</script>
-
 <template>
   <div class="bg-mainbg_400 w-full rounded-xl p-5 text-center">
     <header class="w-full relative mb-5">
       <h1 class=" bg-main_orange rounded-lg p-1">daniel.v4.mts.ir</h1>
       <img class="absolute -bottom-5" src="/images/seprator-line.png" alt="" />
     </header>
-    <main class="list-none teamspeak">
+    <main class="list-none teamspeak text-xs">
       <div>
-        <div class="rounded-lg hover:bg-main_orange/20">
+        <div class="rounded-lg hover:bg-main_orange/20 text-sm">
           <p>Music Channels</p>
         </div>
 
@@ -66,5 +62,10 @@ const route = useRoute()
       </div>
     </main>
   </div>
-  <div class="bg-mainbg_400 w-full rounded-xl">s</div>
+  <div class="bg-mainbg_400 w-full rounded-xl">
+    <server />
+  </div>
 </template>
+<script setup lang="ts">
+const route = useRoute()
+</script>
