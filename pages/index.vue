@@ -49,7 +49,9 @@ const route = useRoute()
   </div>
   <!-- //////////////////////////// -->
   <div class="bg-mainbg_400 w-full rounded-xl p-5">
-    <header class="flex flex-row-reverse justify-between items-center mb-4">
+    <header
+      class="flex flex-row-reverse justify-between items-center mb-4 text-center"
+    >
       <h1 class="font-medium">سرورها</h1>
       <div class="flex gap-4">
         <button class="btn py-1 px-3 rounded-xl">

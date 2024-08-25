@@ -54,7 +54,7 @@
           src="./images/bell-alarm.png"
           alt="bell-alarm"
         />
-        <p class="font-medium">
+        <p class="font-medium text-sm">
           پنل جدید در دست ساخت است و این یک نسخه بتا از آن میباشد
         </p>
         <button class="absolute left-4">x</button>
