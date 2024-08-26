@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-mainbg_400 w-full rounded-xl p-5 text-center">
-    <header class="w-full relative mb-5">
+  <div class="bg-mainbg_400 w-full rounded-xl text-center">
+    <header class="w-full relative my-4 px-4">
       <h1 class=" bg-main_orange rounded-lg p-1">daniel.v4.mts.ir</h1>
-      <img class="absolute -bottom-5" src="/images/seprator-line.png" alt="" />
+      <img class="mt-3" src="/images/seprator-line.png" alt="" />
     </header>
-    <main class="list-none teamspeak text-xs">
+    <main class="list-none teamspeak text-xs px-4">
       <div>
         <div class="rounded-lg hover:bg-main_orange/20">
           <p>Music Channels</p>
@@ -65,9 +65,10 @@
   <div class="bg-mainbg_400 w-full rounded-xl">
     <server v-if="activeTab=='server' " />
     <user v-if="activeTab=='user' " />
+    <channel v-if="activeTab=='channel' " />
   </div>
 </template>
 <script setup lang="ts">
 const route = useRoute()
-const activeTab = ref("user")
+const activeTab = ref("channel")
 </script>
