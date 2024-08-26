@@ -1,7 +1,3 @@
-<script setup lang="ts">
-const route = useRoute()
-</script>
-
 <template>
   <div class="bg-mainbg_400 w-full rounded-xl p-5">
     <header class="flex flex-row-reverse justify-between items-center mb-4">
@@ -54,7 +50,10 @@ const route = useRoute()
     >
       <h1 class="font-medium">سرورها</h1>
       <div class="flex gap-4">
-        <button class="btn py-1 px-3 rounded-xl">
+        <button
+          @click.prevent="makeServerTab=true"
+          class="btn py-1 px-3 rounded-xl"
+        >
           <P class="text-2xl text-center">+</P>
         </button>
         <button class="btn flex items-center px-2 py-2 rounded-xl gap-2">
@@ -73,4 +72,10 @@ const route = useRoute()
       <li class="p-2 border-2 bg-white/10 rounded-2xl">test.v4.myts3.ir</li>
     </div>
   </div>
+  <makeServer v-if="makeServerTab" @close="makeServerTab=false" />
 </template>
+<script setup>
+import makeServer from "/components/modules/makeServer.vue"
+const route = useRoute()
+const makeServerTab = ref(false)
+</script>

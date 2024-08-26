@@ -1,11 +1,10 @@
 <template>
-  <makeServer />
   <section
-    id="main"
     class=" bg-mainbg_600 text-white
-    h-dvh flex flex-row-reverse w-full 
+    h-dvh flex flex-row-reverse w-full  relative
   "
   >
+    <div id="modules" class="absolute top-0 left-0"></div>
     <div
       class="bg-mainbg_400
        max-w-64 p-8 justify-center rounded-tl-2xl rounded-bl-2xl h-full"
@@ -69,6 +68,4 @@
     </div>
   </section>
 </template>
-<script setup lang="ts">
-import makeServer from './components/modules/makeServer.vue'
-</script>
+<script setup lang="ts"></script>
