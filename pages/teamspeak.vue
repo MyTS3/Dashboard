@@ -6,7 +6,7 @@
     </header>
     <main class="list-none teamspeak text-xs">
       <div>
-        <div class="rounded-lg hover:bg-main_orange/20 text-sm">
+        <div class="rounded-lg hover:bg-main_orange/20">
           <p>Music Channels</p>
         </div>
 
@@ -63,9 +63,11 @@
     </main>
   </div>
   <div class="bg-mainbg_400 w-full rounded-xl">
-    <server />
+    <server v-if="activeTab=='server' " />
+    <user v-if="activeTab=='user' " />
   </div>
 </template>
 <script setup lang="ts">
 const route = useRoute()
+const activeTab = ref("user")
 </script>
