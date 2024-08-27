@@ -50,4 +50,14 @@
       </button>
     </footer>
   </section>
+  <banFromServer class="hidden" />
+  <kickFromChannel class="hidden" />
+  <kickFromServer class="hidden" />
+  <changeServerGroups class="hidden" />
 </template>
+<script setup>
+import banFromServer from './modules/user/banFromServer.vue'
+import kickFromChannel from './modules/user/kickFromChannel.vue'
+import kickFromServer from './modules/user/kickFromServer.vue'
+import changeServerGroups from './modules/user/changeServerGroups.vue'
+</script>

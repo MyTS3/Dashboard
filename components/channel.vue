@@ -7,21 +7,15 @@
       <p><span>1 </span>:تعدادکاربران</p>
     </main>
     <footer
-      class="w-full absolute bottom-10 px-4 grid grid-cols-2 gap-4
+      class="w-full absolute bottom-10 px-4 grid  gap-4
     
     "
     >
       <button
         class="flex items-center justify-center user-sec-btn rounded-l-lg"
       >
-        <p>بن از سرور</p>
-        <img src="/images/ban_client.png" alt="" />
-      </button>
-      <button
-        class="flex items-center justify-center user-sec-btn rounded-r-lg"
-      >
-        <p>کیک از سرور</p>
-        <img src="/images/kick_server.png" alt="" />
+        <p>ساخت موزیک بات جدید</p>
+        <img src="/images/addon.png" alt="" />
       </button>
     </footer>
   </section>

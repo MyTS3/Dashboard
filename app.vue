@@ -16,10 +16,12 @@
           <img src="./images/dash.png" alt="dashboard" />
         </li>
         <li class="flex gap-3 w-full justify-end p-3 ml-auto">
+          <img class="mr-auto" src="./images/Arrow - Left.png" alt="" />
           <p>ای پی ای</p>
           <img src="./images/ip.png" alt="" />
         </li>
         <li class="flex gap-3 w-full justify-end p-3 ml-auto">
+          <img class="mr-auto" src="./images/Arrow - Left.png" alt="" />
           <p>پشتیبانی</p>
           <img src="./images/poshtibani.png" alt="" />
         </li>
@@ -47,7 +49,7 @@
       </header>
       <div
         class="flex my-6 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl
-        items-center min-[1280px]:w-3/4 mx-auto
+        items-center min-[1280px]:w-3/4 mx-auto 
         "
       >
         <img
@@ -60,8 +62,9 @@
         </p>
         <button class="absolute left-4">x</button>
       </div>
+
       <main
-        class="w-full min-[1280px]:w-3/4 grid grid-cols-2 h-3/4 gap-8 mx-auto"
+        class="w-full mt-6 min-[1280px]:w-3/4 grid grid-cols-2 h-3/4 gap-8 mx-auto "
       >
         <NuxtPage />
       </main>

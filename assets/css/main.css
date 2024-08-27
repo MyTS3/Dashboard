@@ -88,3 +88,18 @@ img{
   padding: 1rem;
   border-radius: 15px;
  }
+ .module-btn{
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.15);
+ }
+ .checkbox{
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background-color: white;
+ }
+ .checkbox-active{
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background-color: rgba(40, 123, 255, 1);
+ }

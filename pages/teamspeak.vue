@@ -1,7 +1,11 @@
 <template>
   <div class="bg-mainbg_400 w-full rounded-xl text-center">
     <header class="w-full relative my-4 px-4">
-      <h1 class=" p-1 border-2 bg-white/10 rounded-2xl hover:bg-main_orange/20">
+      <h1
+        class=" p-1 border-2 bg-white/10 rounded-2xl hover:bg-main_orange/20
+      hover:border-main_orange/20
+      "
+      >
         daniel.v4.mts.ir
       </h1>
       <img class="mt-3" src="/images/seprator-line.png" alt="" />
@@ -15,7 +19,7 @@
         <li></li>
       </div>
       <div>
-        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20">
+        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
           <img src="/images/channel-icon.png" alt="" />
           <p>Music Channels 1</p>
         </div>
@@ -38,7 +42,7 @@
         </li>
       </div>
       <div>
-        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20">
+        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
           <img src="/images/channel-icon.png" alt="" />
           <p>Music Channels 2</p>
         </div>
@@ -53,7 +57,7 @@
         </li>
       </div>
       <div>
-        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20">
+        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
           <img src="/images/channel-icon.png" alt="" />
           <p>Music Channels 3</p>
         </div>
@@ -68,7 +72,7 @@
         </li>
       </div>
       <div>
-        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20">
+        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
           <img src="/images/channel-icon.png" alt="" />
           <p>Music Channels 4</p>
         </div>
@@ -92,5 +96,5 @@
 </template>
 <script setup lang="ts">
 const route = useRoute()
-const activeTab = ref("channel")
+const activeTab = ref("user")
 </script>

@@ -17,6 +17,7 @@ export default {
         main_red: "rgba(255, 69, 58, 1)",
         main_orange: "rgba(255, 158, 11, 1)",
         main_green: "rgba(50, 215, 75, 1)",
+        main_blue: "rgba(1, 107, 255, 1)",
       },
     },
   },
