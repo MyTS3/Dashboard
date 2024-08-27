@@ -47,14 +47,14 @@
       </div>
       <!-- /////////////////price started//////// -->
       <div id="price" class="w-full">
-        <div class="flex justify-between flex-row-reverse mt-3">
+        <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
           <h1>:قیمت ساعتی</h1>
           <div class="flex flex-row-reverse gap-1 text-white/40">
             <span>54</span>
             <p>تومان</p>
           </div>
         </div>
-        <div class="flex justify-between flex-row-reverse mt-3">
+        <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
           <h1>:قیمت روزانه</h1>
           <div class="flex flex-row-reverse gap-1 text-white/40">
             <span>1،300</span>

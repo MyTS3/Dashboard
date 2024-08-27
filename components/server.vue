@@ -53,18 +53,19 @@
         </div>
       </li>
     </main>
-    <footer class="flex mt-auto justify-around w-full absolute bottom-10">
+    <footer class="flex mt-auto gap-1 justify-around w-full absolute bottom-10">
       <button
-        class="border py-6 w-1/2 rounded-l-lg
-        bg-white/10 max-w-48 flex justify-center items-center gap-1
+        class="border py-4  w-full rounded-l-lg
+        bg-white/10 max-w-48 flex justify-center items-center gap-1 hover:border-main_orange hover:bg-main_orange/10
       "
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
       </button>
       <button
-        class="border py-6 w-1/2 rounded-r-lg
-        border-main_orange bg-main_orange/10 max-w-48
+        class="border py-4  w-full rounded-r-lg
+        bg-white/10
+        hover:border-main_orange hover:bg-main_orange/10 max-w-48
         flex justify-center items-center gap-1
       "
       >
@@ -73,5 +74,18 @@
       </button>
     </footer>
   </section>
+  <changeSlot class="hidden" />
+  <yatqaPassChange class="hidden" />
+  <moveLocation class="hidden" />
+  <restartServer class="hidden" />
+  <turnoffServer class="hidden" />
+  <deleteServer class="hidden" />
 </template>
-<script setup></script>
+<script setup>
+import changeSlot from './modules/server/changeSlot.vue'
+import yatqaPassChange from './modules/server/yatqaPassChange.vue'
+import moveLocation from './modules/server/moveLocation.vue'
+import restartServer from './modules/server/restartServer.vue'
+import turnoffServer from './modules/server/turnoffServer.vue'
+import deleteServer from './modules/server/deleteServer.vue'
+</script>

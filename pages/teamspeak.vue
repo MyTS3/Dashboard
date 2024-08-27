@@ -96,5 +96,5 @@
 </template>
 <script setup lang="ts">
 const route = useRoute()
-const activeTab = ref("user")
+const activeTab = ref("server")
 </script>
