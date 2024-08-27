@@ -23,27 +23,27 @@
         <li>-Guest</li>
       </div>
     </main>
-    <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-4 px-4">
+    <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
       <button
-        class="flex justify-center items-center gap-3  user-sec-btn rounded-tl-lg"
+        class="flex justify-center items-center gap-2 py-2 btn rounded-tl-lg"
       >
         <p>بن از سرور</p>
         <img src="/images/ban_client.png" alt="" />
       </button>
       <button
-        class="flex justify-center items-center gap-3  user-sec-btn rounded-tr-lg"
+        class="flex justify-center items-center gap-2 py-2 btn rounded-tr-lg"
       >
         <p>کیک از سرور</p>
         <img src="/images/kick_server.png" alt="" />
       </button>
       <button
-        class="flex justify-center items-center gap-3  user-sec-btn rounded-bl-lg"
+        class="flex justify-center items-center gap-2 py-2 btn rounded-bl-lg"
       >
         <p>رنک ها</p>
         <img src="/images/ranks.png" alt="" />
       </button>
       <button
-        class="flex justify-center items-center gap-3  user-sec-btn rounded-br-lg"
+        class="flex justify-center items-center gap-2 py-2 btn rounded-br-lg"
       >
         <p>کیک از چنل</p>
         <img src="/images/kick_channel.png" alt="" />

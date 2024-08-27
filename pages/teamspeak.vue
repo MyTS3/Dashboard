@@ -2,11 +2,10 @@
   <div class="bg-mainbg_400 w-full rounded-xl text-center">
     <header class="w-full relative my-4 px-4">
       <h1
-        class=" p-1 border-2 bg-white/10 rounded-2xl hover:bg-main_orange/20
-      hover:border-main_orange/20
+        class=" p-1 border-2 bg-white/10 rounded-2xl btn
       "
       >
-        daniel.v4.mts.ir
+        daniel.v4.myts.ir
       </h1>
       <img class="mt-3" src="/images/seprator-line.png" alt="" />
     </header>
@@ -15,8 +14,6 @@
         <div class="rounded-lg p-1 px-3 hover:bg-main_orange/20">
           <p>Music Channels</p>
         </div>
-
-        <li></li>
       </div>
       <div>
         <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
@@ -96,5 +93,5 @@
 </template>
 <script setup lang="ts">
 const route = useRoute()
-const activeTab = ref("server")
+const activeTab = ref("channel")
 </script>

@@ -6,7 +6,7 @@
     </header>
     <main class="list-none">
       <li class="grid gridList p-2 ">
-        <p>daniel.v4.mts.ir</p>
+        <p>daniel.v4.myts.ir</p>
         <p>:نام</p>
       </li>
       <li class="grid gridList p-2  relative">
@@ -53,21 +53,19 @@
         </div>
       </li>
     </main>
-    <footer class="flex mt-auto gap-1 justify-around w-full absolute bottom-10">
+    <footer
+      class="flex justify-center w-full absolute bottom-10 gap-3
+      items-center
+    "
+    >
       <button
-        class="border py-4  w-full rounded-l-lg
-        bg-white/10 max-w-48 flex justify-center items-center gap-1 hover:border-main_orange hover:bg-main_orange/10
-      "
+        class="flex border w-full gap-3 justify-center h-16 items-center ml-3 rounded-l-xl btn"
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
       </button>
       <button
-        class="border py-4  w-full rounded-r-lg
-        bg-white/10
-        hover:border-main_orange hover:bg-main_orange/10 max-w-48
-        flex justify-center items-center gap-1
-      "
+        class="flex border w-full gap-3 justify-center h-16 items-center mr-3 rounded-r-xl btn"
       >
         <p>لیست بن ها</p>
         <img src="/images/ban_list.png" alt="" />

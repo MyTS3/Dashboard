@@ -65,11 +65,9 @@
       </div>
     </header>
     <div class="flex flex-col gap-5 list-none text-center">
-      <li class="p-2 border-2 bg-white/10 rounded-2xl active-server">
-        daniel.v4.myts3.ir
-      </li>
-      <li class="p-2 border-2 bg-white/10 rounded-2xl">vipts.ir</li>
-      <li class="p-2 border-2 bg-white/10 rounded-2xl">test.v4.myts3.ir</li>
+      <li class="p-2 border-2 rounded-2xl btn ">daniel.v4.myts3.ir</li>
+      <li class="p-2 border-2 btn rounded-2xl">vipts.ir</li>
+      <li class="p-2 border-2 btn rounded-2xl">test.v4.myts3.ir</li>
     </div>
   </div>
   <makeServer v-if="makeServerTab" @close="makeServerTab=false" />
