@@ -80,6 +80,8 @@
   <restartServer class="hidden" />
   <turnoffServer class="hidden" />
   <deleteServer class="hidden" />
+  <banList class="hidden" />
+  <unban class="hidden" />
 </template>
 <script setup>
 import changeSlot from './modules/server/changeSlot.vue'
@@ -88,4 +90,6 @@ import moveLocation from './modules/server/moveLocation.vue'
 import restartServer from './modules/server/restartServer.vue'
 import turnoffServer from './modules/server/turnoffServer.vue'
 import deleteServer from './modules/server/deleteServer.vue'
+import banList from './modules/server/banList.vue'
+import unban from './modules/server/unban.vue'
 </script>
