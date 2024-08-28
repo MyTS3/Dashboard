@@ -96,5 +96,5 @@
 import musicbot from '~/components/musicbot.vue';
 
 const route = useRoute()
-const activeTab = ref("musicbot")
+const activeTab = ref("channel")
 </script>
