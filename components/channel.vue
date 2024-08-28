@@ -17,7 +17,7 @@
       </button>
     </footer>
   </section>
-  <MakeMusicbot />
+  <MakeMusicbot class="hidden" />
 </template>
 <script setup>
 import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';

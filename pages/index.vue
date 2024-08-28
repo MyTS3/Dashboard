@@ -44,7 +44,7 @@
     </div>
   </div>
   <!-- //////////////////////////// -->
-  <div class="bg-mainbg_400 w-full rounded-xl p-5">
+  <div class="bg-mainbg_400 w-full rounded-xl p-5 overflow-y-scroll">
     <header
       class="flex flex-row-reverse justify-between items-center mb-4 text-center"
     >

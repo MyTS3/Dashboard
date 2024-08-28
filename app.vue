@@ -17,6 +17,11 @@
         </li>
         <li class="flex gap-3 w-full justify-end p-3 ml-auto">
           <img class="mr-auto" src="./images/Arrow - Left.png" alt="" />
+          <p>پلی لیست</p>
+          <img src="./images/folder.png" alt="" />
+        </li>
+        <li class="flex gap-3 w-full justify-end p-3 ml-auto">
+          <img class="mr-auto" src="./images/Arrow - Left.png" alt="" />
           <p>ای پی ای</p>
           <img src="./images/ip.png" alt="" />
         </li>
