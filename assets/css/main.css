@@ -113,3 +113,27 @@ img{
 .items:nth-child(even){
   background-color:rgba(39, 43, 77, 1) ;
 }
+.audio-progress{
+  position: relative;
+  width: 70%;
+  height: 2px;
+  background-color: white;
+}
+.audio-progress::before{
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background-color:rgba(255, 158, 11, 1) ;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 30%;
+}
+.audio-progress::after{
+  content: "";
+  position: absolute;
+  background-color:rgba(255, 158, 11, 1) ;
+  width: 30%;
+  height: 2px;
+}

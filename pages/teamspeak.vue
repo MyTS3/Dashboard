@@ -89,9 +89,12 @@
     <server v-if="activeTab=='server' " />
     <user v-if="activeTab=='user' " />
     <channel v-if="activeTab=='channel' " />
+    <musicbot v-if="activeTab=='musicbot' " />
   </div>
 </template>
 <script setup lang="ts">
+import musicbot from '~/components/musicbot.vue';
+
 const route = useRoute()
-const activeTab = ref("channel")
+const activeTab = ref("musicbot")
 </script>

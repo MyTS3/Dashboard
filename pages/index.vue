@@ -64,16 +64,26 @@
         </button>
       </div>
     </header>
-    <div class="flex flex-col gap-5 list-none text-center">
-      <li class="p-2 border-2 rounded-2xl btn ">daniel.v4.myts3.ir</li>
-      <li class="p-2 border-2 btn rounded-2xl">vipts.ir</li>
-      <li class="p-2 border-2 btn rounded-2xl">test.v4.myts3.ir</li>
+    <div class="flex flex-col list-none text-center">
+      <!-- <li class="p-2 border-2 my-2 rounded-2xl btn ">{{ server.name }}</li> -->
+      <li class="p-2 my-2 border-2 btn rounded-2xl">test.v4.myts3.ir</li>
+      <li class="p-2 my-2 border-2 btn rounded-2xl">vipts.ir</li>
     </div>
   </div>
   <makeServer v-if="makeServerTab" @close="makeServerTab=false" />
 </template>
 <script setup>
 import makeServer from "/components/modules/makeServer.vue"
+////////////////////////////////variables
 const route = useRoute()
 const makeServerTab = ref(false)
+let servers = reactive()
+//////////////////////////////functions
+async function getServers() {
+  const apiUrl = 'http://10.8.0.2:5342/api/v1/tservers/'
+  const data = await $fetch(apiUrl)
+  servers = data
+}
+///////////////////////////calling functions
+// await getServers()
 </script>
