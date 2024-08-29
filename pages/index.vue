@@ -74,13 +74,18 @@
 </template>
 <script setup>
 import makeServer from "/components/modules/makeServer.vue"
+import { apiStore } from "~/stores/apistore";
+import { storeToRefs } from "pinia";
 ////////////////////////////////variables
+const store = apiStore()
+const {url} = storeToRefs(store)
 const route = useRoute()
 const makeServerTab = ref(false)
 let servers = reactive()
 //////////////////////////////functions
+console.log()
 async function getServers() {
-  const apiUrl = 'http://10.8.0.2:5342/api/v1/tservers/'
+  const apiUrl = `${url.value}/api/v1/tservers/`
   const data = await $fetch(apiUrl)
   servers = data
 }
