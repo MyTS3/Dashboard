@@ -59,36 +59,62 @@
         <button class="btn flex items-center px-2 py-2 rounded-xl gap-2">
           <div class="flex text-sm gap-2">
             <p>عدد</p>
-            <span>3</span>
+            <span>{{ servers.length }}</span>
           </div>
         </button>
       </div>
     </header>
     <div v-for="server in servers" class="flex flex-col list-none text-center">
-      <li class="p-2 border-2 my-2 rounded-2xl btn ">{{ server.name }}</li>
-      <!-- <li class="p-2 my-2 border-2 btn rounded-2xl">test.v4.myts3.ir</li>
-      <li class="p-2 my-2 border-2 btn rounded-2xl">vipts.ir</li> -->
+      <li
+        @click="serverClicked(server)"
+        class="p-2 border-2 my-2 rounded-2xl btn "
+      >
+        {{ server.name }}
+      </li>
     </div>
   </div>
-  <makeServer v-if="makeServerTab" @close="makeServerTab=false" />
+  <makeServer
+    v-if="makeServerTab"
+    @close="makeServerTab=false,reloadNuxtApp()"
+  />
 </template>
 <script setup>
 import makeServer from "/components/modules/makeServer.vue"
+const router = useRouter()
+////
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
-////////////////////////////////variables
+//////
+import { selected } from "~/stores/selectedServer";
+////variables
 const store = apiStore()
 const {url} = storeToRefs(store)
+/////
+const serverStore = selected()
+
+/////
 const route = useRoute()
 const makeServerTab = ref(false)
 let servers = reactive()
-//////////////////////////////functions
+////functions
 console.log()
 async function getServers() {
   const apiUrl = `${url.value}/api/v1/tservers/`
   const data = await $fetch(apiUrl)
   servers = data
 }
+// async function serverChoose(server){
+//   const apiUrl = `${url.value}/api/v1/tservers/${server.uuid}`
+//   const serverDetails = await $fetch(apiUrl)
+//   console.log(serverDetails)
+// }
+
+function serverClicked(server){
+  serverStore.serverChoose(server)
+  router.push(`/teamspeak/${server.uuid}`)
+
+}
+
 ///////////////////////////calling functions
 await getServers()
 </script>

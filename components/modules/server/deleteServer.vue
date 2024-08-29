@@ -23,14 +23,32 @@
       </p>
       <div class="grid grid-cols-2 gap-3">
         <button
+          @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
         >
           لغو
         </button>
-        <button class="p-4 text-center rounded-xl bg-main_red module-btn">
+        <button
+          @click.prevent="deleteTheServer()"
+          class="p-4 text-center rounded-xl bg-main_red module-btn"
+        >
           حذف سرور
         </button>
       </div>
     </main>
   </section>
 </template>
+<script setup>
+const emit = defineEmits(["close"])
+const route = useRoute()
+const router = useRouter()
+const store = apiStore()
+const {url} = storeToRefs(store)
+async function deleteTheServer(){
+  const deleteServer = await $fetch(`${url.value}/api/v1/tservers/${route.params.id}`,{
+    method:"DELETE",
+  })
+  emit("close")
+  router.back()
+}
+</script>

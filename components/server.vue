@@ -1,23 +1,29 @@
 <template>
   <section class="h-full relative">
-    <header>
+    <header class="relative">
       <h1 class="text-center my-4">سرور</h1>
+      <img
+        @click.prevent="deleteServerTab=true"
+        class="absolute right-4 top-0 cursor-pointer "
+        src="/images/trash.png"
+        alt=""
+      />
       <img src="/images/seprator-line.png" alt="" />
     </header>
     <main class="list-none">
       <li class="grid gridList p-2 ">
-        <p>daniel.v4.myts.ir</p>
+        <p>{{ selectedServer.name }}</p>
         <p>:نام</p>
       </li>
       <li class="grid gridList p-2  relative">
-        <p>8</p>
+        <p>{{selectedServer.slots}}</p>
         <p>:تعداد اسلات</p>
         <button class="absolute left-4">
           <img src="/images/edit.png" alt="" />
         </button>
       </li>
       <li class="grid gridList p-2 relative">
-        <p>DJJADKLKLDDKKDKLSOP</p>
+        <p>{{selectedServer.queryPassword}}</p>
         <p>:رمز یاتکا</p>
         <div class="absolute left-4">
           <button><img src="/images/edit.png" alt="" /></button>
@@ -26,29 +32,41 @@
         </div>
       </li>
       <li class="grid gridList p-2 ">
-        <p>2216</p>
+        <p>
+          {{selectedServer.queryPort}}
+        </p>
         <p>پورت</p>
       </li>
       <li class="grid gridList p-2 ">
-        <p>077ad0d8_2069_55445488mkjkjjjfjek5f55ee5f4e</p>
+        <p>{{selectedServer.uuid}}</p>
         <p>آیدی</p>
       </li>
       <li class="grid gridList p-2 ">
-        <p>1.5.6</p>
+        <p>{{selectedServer.version}}</p>
         <p>:ورژن</p>
       </li>
       <li class="grid gridList p-2 relative">
-        <p>5.57.33.184</p>
+        <p>
+          {{selectedServer.deployedOn
+          }}
+        </p>
         <p>:موقعیت مکانی</p>
         <button class="absolute left-4">
           <img src="/images/location.png" alt="" />
         </button>
       </li>
       <li class="grid gridList p-2 relative">
-        <p class="text-main_green">روشن</p>
+        <p v-if="!selectedServer.mustRunning" class="text-main_red">خاموش</p>
+        <p v-if="selectedServer.mustRunning" class="text-main_green">روشن</p>
         <p>:وضعیت</p>
         <div class="absolute left-4 top-1/3">
-          <input class="hidden" type="checkbox" id="server-status" />
+          <input
+            :checked="selectedServer.mustRunning"
+            class="hidden"
+            type="checkbox"
+            id="server-status"
+            @click.prevent="shutDownServer()"
+          />
           <label class="button" for="server-status"></label>
         </div>
       </li>
@@ -77,7 +95,7 @@
   <moveLocation class="hidden" />
   <restartServer class="hidden" />
   <turnoffServer class="hidden" />
-  <deleteServer class="hidden" />
+  <deleteServer @close="deleteServerTab=false" v-if="deleteServerTab" />
   <banList class="hidden" />
   <unban class="hidden" />
 </template>
@@ -90,4 +108,21 @@ import turnoffServer from './modules/server/turnoffServer.vue'
 import deleteServer from './modules/server/deleteServer.vue'
 import banList from './modules/server/banList.vue'
 import unban from './modules/server/unban.vue'
+/////
+import { apiStore } from "~/stores/apistore";
+import { storeToRefs } from "pinia";
+////
+const deleteServerTab = ref(false)
+///
+const route = useRoute()
+const store = apiStore()
+const {url} = storeToRefs(store)
+let selectedServer = {}
+async function getServerDeatails(){
+  // `${url.value}/api/v1/tservers/{uuid}`
+  const serverDetails = await $fetch(`${url.value}/api/v1/tservers/${route.params.id}`)
+  selectedServer =  await serverDetails
+}
+
+await getServerDeatails()
 </script>

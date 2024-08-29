@@ -240,6 +240,7 @@ const serverName = ref()
 const disableInputs = ref(false)
 let token = ref()
 let tsURL = ref()
+let tsuuid = ref()
 // functions
 async function makeServer(){
 
@@ -260,6 +261,7 @@ const server = await $fetch(url,{
   })
 })
  token = await ref(server.privilegeKey)
+ tsuuid = await ref(server.uuid)
  tsURL = await ref(`ts3server://${server.name}`)
 serverTokenTab.value = true
 }

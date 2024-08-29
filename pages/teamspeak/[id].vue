@@ -93,8 +93,11 @@
   </div>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
 import musicbot from '~/components/musicbot.vue';
 
-const route = useRoute()
-const activeTab = ref("channel")
+
+////
+
+const activeTab = ref("server")
 </script>
