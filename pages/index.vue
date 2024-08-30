@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-mainbg_400 w-full rounded-xl p-5">
+  <div class="bg-mainbg_400 w-full rounded-xl p-5 mr-3">
     <header class="flex flex-row-reverse justify-between items-center mb-4">
       <h1 class="font-medium">کیف پول</h1>
       <div class="flex gap-4">
@@ -44,7 +44,7 @@
     </div>
   </div>
   <!-- //////////////////////////// -->
-  <div class="bg-mainbg_400 w-full rounded-xl p-5 overflow-y-scroll">
+  <div class="bg-mainbg_400 w-full rounded-xl p-5 overflow-y-scroll ml-3">
     <header
       class="flex flex-row-reverse justify-between items-center mb-4 text-center"
     >
@@ -103,11 +103,7 @@ async function getServers() {
   const data = await $fetch(apiUrl)
   servers = data
 }
-// async function serverChoose(server){
-//   const apiUrl = `${url.value}/api/v1/tservers/${server.uuid}`
-//   const serverDetails = await $fetch(apiUrl)
-//   console.log(serverDetails)
-// }
+
 
 function serverClicked(server){
   serverStore.serverChoose(server)

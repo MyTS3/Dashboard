@@ -29,21 +29,29 @@
         !توکن کپی شد
       </p>
       <a
+        @click="goToServer()"
         class="p-4 py-5 text-center rounded-xl module-btn bg-main_blue"
         :href="tsURL"
       >
-        <button @click="$emit('close')">اوکی</button>
+        <button>اوکی</button>
       </a>
     </main>
   </section>
 </template>
 <script setup>
-const props = defineProps(["token","tsURL"])
+const props = defineProps(["token","tsURL","tsuuid"])
+const emit = defineEmits(["close"])
+
+/////
 const {tsURL} = props
-console.log(props.token)
 const copy = ref(false)
 function copyToClipboard(){
   navigator.clipboard.writeText(props.token);
   copy.value = true
+}
+function goToServer(){
+  // router.push(`/teamspeak/${props.tsuuid}`)
+  emit('close')
+  console.log("yo")
 }
 </script>

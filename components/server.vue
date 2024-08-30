@@ -72,20 +72,32 @@
       </li>
     </main>
     <footer
-      class="flex justify-center w-full absolute bottom-10 gap-3
-      items-center
+      class="grid grid-cols-2 gap-5 w-full absolute bottom-10 p-4
+      
     "
     >
       <button
-        class="flex border w-full gap-3 justify-center h-16 items-center ml-3 rounded-l-xl btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center  rounded-l-xl btn"
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-16 items-center mr-3 rounded-r-xl btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center  rounded-r-xl btn"
       >
         <p>لیست بن ها</p>
+        <img src="/images/ban_list.png" alt="" />
+      </button>
+      <button
+        class="flex border w-full gap-3 justify-center h-20 items-center  rounded-l-xl btn"
+      >
+        <p>ریسیت کانفگ</p>
+        <img src="/images/ban_list.png" alt="" />
+      </button>
+      <button
+        class="flex border w-full gap-3 justify-center h-20 items-center  rounded-r-xl btn"
+      >
+        <p>ساب دامنه ها</p>
         <img src="/images/ban_list.png" alt="" />
       </button>
     </footer>

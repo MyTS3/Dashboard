@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-mainbg_400 w-full rounded-xl text-center">
+  <div class="bg-mainbg_400 w-full rounded-xl text-center mr-3">
     <header class="w-full relative my-4 px-4">
       <h1
         class=" p-1 border-2 bg-white/10 rounded-2xl btn
@@ -85,7 +85,7 @@
       </div>
     </main>
   </div>
-  <div class="bg-mainbg_400 w-full rounded-xl">
+  <div class="bg-mainbg_400 w-full rounded-xl ml-3">
     <server v-if="activeTab=='server' " />
     <user v-if="activeTab=='user' " />
     <channel v-if="activeTab=='channel' " />

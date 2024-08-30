@@ -7,7 +7,7 @@
     <div id="modules" class="absolute top-0 left-0"></div>
     <div
       class="bg-mainbg_400
-       max-w-64 p-8 justify-center rounded-tl-2xl rounded-bl-2xl h-full"
+       max-w-64 p-8 justify-center rounded-tl-2xl rounded-bl-2xl h-full max-[1256px]:hidden"
     >
       <header><img src="./images/User info.png" alt="logo" /></header>
       <nav class="list-none flex flex-col gap-4 mt-7 ">
@@ -53,8 +53,9 @@
         </div>
       </header>
       <div
+        style="max-width: 69rem;"
         class="flex my-6 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl
-        items-center min-[1280px]:w-3/4 mx-auto 
+        items-center  mx-auto 
         "
       >
         <img
@@ -69,7 +70,8 @@
       </div>
 
       <main
-        class="w-full mt-6 min-[1280px]:w-3/4 grid grid-cols-2 h-3/4 gap-8 mx-auto "
+        style="max-width: 69rem;"
+        class=" w-full mt-6  flex h-3/4  mx-auto  "
       >
         <NuxtPage />
       </main>

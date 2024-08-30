@@ -220,6 +220,7 @@
     <serverToken
       :tsURL="tsURL"
       :token="token"
+      :tsuuid="tsuuid"
       v-if="serverTokenTab"
       @close="serverTokenTab=false,$emit('close')"
     />
