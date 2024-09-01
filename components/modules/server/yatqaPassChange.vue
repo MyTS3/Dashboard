@@ -21,14 +21,30 @@
       </p>
       <div class="grid grid-cols-2 gap-3">
         <button
+          @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
         >
           لغو
         </button>
-        <button class="p-4 text-center rounded-xl bg-main_red module-btn">
+        <button
+          @click="changeYatqaPass()"
+          class="p-4 text-center rounded-xl bg-main_red module-btn"
+        >
           تایید
         </button>
       </div>
     </main>
   </section>
 </template>
+<script setup>
+const props = defineProps(['selectedServer'])
+const emit = defineEmits(["close"])
+const store = apiStore()
+const {url} = storeToRefs(store)
+async function changeYatqaPass(){
+  const changePass = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-password`,{
+    method:"POST"
+  })
+  emit("close")
+}
+</script>

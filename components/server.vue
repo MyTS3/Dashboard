@@ -18,17 +18,25 @@
       <li class="grid gridList p-2  relative">
         <p>{{selectedServer.slots}}</p>
         <p>:تعداد اسلات</p>
-        <button class="absolute left-4">
+        <button class="absolute left-4" @click="changeSlotTab=true">
           <img src="/images/edit.png" alt="" />
         </button>
       </li>
       <li class="grid gridList p-2 relative">
-        <p>{{selectedServer.queryPassword}}</p>
+        <p :style="{'-webkit-text-security':showYatqaPass}">
+          {{selectedServer.queryPassword}}
+        </p>
         <p>:رمز یاتکا</p>
         <div class="absolute left-4">
-          <button><img src="/images/edit.png" alt="" /></button>
-          <button><img src="/images/copy.png" alt="" /></button>
-          <button><img src="/images/hide.png" alt="" /></button>
+          <button @click.prevent="yatqaPassReset=true">
+            <img src="/images/edit.png" alt="" />
+          </button>
+          <button @click="copyYatqaPass()">
+            <img src="/images/copy.png" alt="" />
+          </button>
+          <button @click.prevent="showYatqaPass='none'  ">
+            <img src="/images/hide.png" alt="" />
+          </button>
         </div>
       </li>
       <li class="grid gridList p-2 ">
@@ -45,13 +53,12 @@
         <p>{{selectedServer.version}}</p>
         <p>:ورژن</p>
       </li>
-      <li class="grid gridList p-2 relative">
+      <li v-if="selectedServer.mustRunning" class="grid gridList p-2 relative">
         <p>
-          {{selectedServer.deployedOn
-          }}
+          {{selectedServer.deployedOn}}
         </p>
         <p>:موقعیت مکانی</p>
-        <button class="absolute left-4">
+        <button @click.prevent="serverLocationTab=true" class="absolute left-4">
           <img src="/images/location.png" alt="" />
         </button>
       </li>
@@ -65,7 +72,7 @@
             class="hidden"
             type="checkbox"
             id="server-status"
-            @click.prevent="shutDownServer()"
+            @click.prevent="turnServerOffOrOn()"
           />
           <label class="button" for="server-status"></label>
         </div>
@@ -102,11 +109,27 @@
       </button>
     </footer>
   </section>
-  <changeSlot class="hidden" />
-  <yatqaPassChange class="hidden" />
-  <moveLocation class="hidden" />
+  <changeSlot
+    :selectedServer="selectedServer"
+    @close="getServerDeatails(),changeSlotTab=false"
+    v-if="changeSlotTab"
+  />
+  <yatqaPassChange
+    :selectedServer="selectedServer"
+    @close="yatqaPassReset=false"
+    v-if="yatqaPassReset"
+  />
+  <moveLocation
+    :selectedServer="selectedServer"
+    v-if="serverLocationTab"
+    @close="serverLocationTab=false "
+  />
   <restartServer class="hidden" />
-  <turnoffServer class="hidden" />
+  <turnoffServer
+    :selectedServer="selectedServer"
+    @close="turnOffServerTab = false,getServerDeatails()"
+    v-if="turnOffServerTab"
+  />
   <deleteServer @close="deleteServerTab=false" v-if="deleteServerTab" />
   <banList class="hidden" />
   <unban class="hidden" />
@@ -125,16 +148,33 @@ import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
 ////
 const deleteServerTab = ref(false)
+const changeSlotTab = ref(false)
+const showYatqaPass = ref('disc')
+const yatqaPassReset = ref(false)
+const turnOffServerTab = ref(false)
+const serverLocationTab =ref(false)
 ///
 const route = useRoute()
 const store = apiStore()
 const {url} = storeToRefs(store)
-let selectedServer = {}
+//////
+const selectedServer = ref()
 async function getServerDeatails(){
   // `${url.value}/api/v1/tservers/{uuid}`
   const serverDetails = await $fetch(`${url.value}/api/v1/tservers/${route.params.id}`)
-  selectedServer =  await serverDetails
+  selectedServer.value =  await serverDetails
 }
-
+function copyYatqaPass(){
+  navigator.clipboard.writeText(selectedServer.queryPassword)
+}
+async function turnServerOffOrOn(){
+  if (selectedServer.value.mustRunning == true) {
+    turnOffServerTab.value = true
+  }
+  else {
+    const respone = await $fetch(`${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,{method:"POST"})
+    await getServerDeatails()
+  }
+}
 await getServerDeatails()
 </script>

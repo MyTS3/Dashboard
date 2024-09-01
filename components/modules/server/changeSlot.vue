@@ -10,6 +10,8 @@
       "
     >
       <button
+        :class="{'bg-main_red/50':disable}"
+        :disabled="disable"
         @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
       >
@@ -18,7 +20,9 @@
       <div>
         <h1 class="text-3xl font-extrabold ">تغییر اسلات</h1>
         <p class="my-4 mx-12 text-center font-medium text-white/80">
-          هستید<span class="mx-1 font-bold text-white">daniel.v4.myts3.ir</span
+          هستید<span
+            class="mx-1 font-bold text-white"
+            >{{ selectedServer.name }}</span
           >شما در حال تغییر اسلات های سرور
         </p>
         <div class="flex justify-between">
@@ -30,7 +34,14 @@
           <p>512</p>
           <p>1024</p>
         </div>
-        <input class="w-full" type="range" min="1" max="7" />
+        <input
+          :disabled="disable"
+          v-model="selectedSlot"
+          class="w-full"
+          type="range"
+          min="1"
+          max="7"
+        />
       </div>
       <!-- /////////////////price started//////// -->
       <div id="price" class="w-full">
@@ -56,10 +67,34 @@
           </div>
         </div>
       </div>
-      <button class="w-full p-4 bg-main_blue rounded-xl mt-8 mb-2">
+      <button
+        :disabled="disable"
+        @click.prevent="chaneSlots()"
+        class="w-full p-4 bg-main_blue rounded-xl mt-8 mb-2"
+      >
         تایید و تغییر اسلات
       </button>
     </main>
   </section>
   <!-- //////////////////price eneded////////////// -->
 </template>
+<script setup>
+let disable = ref(false)
+const props = defineProps(["selectedServer"])
+const emit = defineEmits(["close"])
+let selectedSlot = ref(16)
+const store = apiStore()
+const {url} = storeToRefs(store)
+async function chaneSlots(){
+  disable = true
+  const slots = 2**(Number(selectedSlot.value) + 3 )
+  const response = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/change-slots`,{
+    method:"POST",
+    body:JSON.stringify({
+      "slots": slots
+    })
+  })
+  emit("close")
+
+}
+</script>

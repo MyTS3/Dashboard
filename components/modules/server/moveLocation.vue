@@ -20,22 +20,58 @@
       <from class="w-full my-4">
         <select
           class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
+          v-model="selectedLocation"
           name="locations"
         >
-          <option class="dropdown" value="میلاد">میلاد</option>
-          <option class="dropdown" value="یزد">یزد</option>
+          <option
+            v-for="available in availables"
+            :value="available.node"
+            class="dropdown"
+          >
+            {{ available.node }}
+          </option>
         </select>
       </from>
       <div class="grid grid-cols-2 gap-3">
         <button
+          @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
         >
           لغو
         </button>
-        <button class="p-4 text-center rounded-xl bg-main_blue module-btn">
+        <button
+          @click.prevent="moveServer()"
+          class="p-4 text-center rounded-xl bg-main_blue module-btn"
+        >
           تایید
         </button>
       </div>
     </main>
   </section>
 </template>
+<script setup>
+import { apiStore } from "~/stores/apistore";
+import { storeToRefs } from "pinia";
+const emit = defineEmits(["close"])
+const props = defineProps(["selectedServer"])
+const store = apiStore()
+const {url} = storeToRefs(store)
+////////
+const availables = ref({})
+const selectedLocation = ref()
+async function getAvailble(){
+  const respone = $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`)
+   availables.value = await respone
+  await console.log(availables.value[0].node)
+}
+async function moveServer(){
+  const respone = $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move`,{
+    method:"POST",
+    body:JSON.stringify({
+      "node":`${selectedLocation.value}`
+    })
+  })
+  emit("close")
+}
+await getAvailble()
+</script>

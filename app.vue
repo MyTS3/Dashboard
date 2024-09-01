@@ -39,7 +39,16 @@
       <header
         class="flex justify-between flex-row-reverse min-[1280px]:w-3/4 mx-auto"
       >
-        <h1 class="font-medium text-xl">داشبورد</h1>
+        <h1 v-if="$route.name =='index' " class="font-medium text-xl">
+          داشبورد
+        </h1>
+        <button
+          @click="$router.back()"
+          v-if="$route.name !='index'"
+          class="btn h-15 p-3 flex items-center rounded-xl"
+        >
+          <img class="" src="./images/Arrow-Right.png" alt="" />
+        </button>
         <div class="flex gap-4 ">
           <button
             class="flex items-center flex-row-reverse gap-1 p-1.5 rounded-lg btn"

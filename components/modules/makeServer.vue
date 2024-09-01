@@ -231,6 +231,10 @@
 import serverToken from "./serverToken.vue";
 ///////////////////////////////////////
 const serverTokenTab = ref(false)
+////
+const store = apiStore()
+const {url} = storeToRefs(store)
+////
 
 const emit = defineEmits(["close"])
 const moreoptions = ref(false)
@@ -251,7 +255,7 @@ async function makeServer(){
   const slots = 2**(Number(slot.value) + 3)
 
   //////////////
-const url = "http://10.8.0.2:5342/api/v1/tservers/"
+const url = `${url.value}/api/v1/tservers/`
 const server = await $fetch(url,{
   method:'POST',
   body:JSON.stringify({
