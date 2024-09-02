@@ -23,7 +23,7 @@
 
         <li
           class="flex pl-6 gap-1 my-1
-          p-1 px-3 rounded-lg hover:bg-main_orange/20
+          p-2 px-3 rounded-lg hover:bg-main_orange/20
         "
         >
           <img src="/images/normal-user.png" alt="" />
@@ -31,7 +31,7 @@
         </li>
         <li
           class="flex pl-6 gap-1 my-1
-          p-1 px-3 rounded-lg hover:bg-main_orange/20
+          p-2 px-3 rounded-lg hover:bg-main_orange/20
         "
         >
           <img src="/images/bot-icon.png" alt="" />
@@ -39,14 +39,14 @@
         </li>
       </div>
       <div>
-        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
+        <div class="flex p-2 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
           <img src="/images/channel-icon.png" alt="" />
           <p>Music Channels 2</p>
         </div>
 
         <li
           class="flex pl-6 gap-1 my-1
-          p-1 px-3 rounded-lg hover:bg-main_orange/20
+          p-2 px-3 rounded-lg hover:bg-main_orange/20
         "
         >
           <img src="/images/output_muted.png" alt="" />
@@ -54,14 +54,14 @@
         </li>
       </div>
       <div>
-        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
+        <div class="flex p-2 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
           <img src="/images/channel-icon.png" alt="" />
           <p>Music Channels 3</p>
         </div>
 
         <li
           class="flex pl-6 gap-1 my-1
-          p-1 px-3 rounded-lg hover:bg-main_orange/20
+          p-2 px-3 rounded-lg hover:bg-main_orange/20
         "
         >
           <img src="/images/input_muted.png" alt="" />
@@ -69,14 +69,14 @@
         </li>
       </div>
       <div>
-        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
+        <div class="flex p-2 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
           <img src="/images/channel-icon.png" alt="" />
           <p>Music Channels 4</p>
         </div>
 
         <li
           class="flex pl-6 gap-1 my-1
-          p-1 px-3 rounded-lg hover:bg-main_orange/20 
+          p-2 px-3 rounded-lg hover:bg-main_orange/20 
         "
         >
           <img src="/images/away.png" alt="" />

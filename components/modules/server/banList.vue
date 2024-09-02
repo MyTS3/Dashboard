@@ -6,7 +6,7 @@
   >
     <main
       class="text-white bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-    rounded-xl font-medium w-4/5 max-h-screen
+    rounded-xl font-medium w-4/5 
     "
     >
       <button
@@ -16,35 +16,66 @@
         X
       </button>
       <h1 class="my-4">لیست بن ها</h1>
-      <div class="text-sm gap-1 ban-list text-right relative">
-        <div class="bg-mainbg_400 rounded-lg">
-          <p class="text-lg text-right p-4">دلیل</p>
-          <div class="items p-4 flex flex-row-reverse justify-between">
-            <p class="">نا مشخص</p>
-            <button class="text-main_red font-bold ">X</button>
-          </div>
-          <div class="items p-4 flex flex-row-reverse justify-between">
-            <p class="">نا مشخص</p>
-            <button class="text-main_red font-bold ">X</button>
-          </div>
-          <div class="items p-4 flex flex-row-reverse justify-between">
-            <p class="">نا مشخص</p>
-            <button class="text-main_red font-bold ">X</button>
-          </div>
+      <div
+        style="gap: 2px;min-height: 20rem;"
+        class="text-sm ban-list text-right relative overflow-y-scroll"
+      >
+        <div class="flex flex-col text-right bg-mainbg_400">
+          <p class="items text-lg p-4">دلیل</p>
+          <p
+            class="items p-4 flex flex-row-reverse items-center"
+            v-for="bans in banList"
+          >
+            {{bans.reason}}
+            <p v-if="!bans.reason">بدون دلیل</p>
+            <img
+              @click="openUnBanPopUp(bans,index)"
+              class="w-10 absolute left-8 cursor-pointer"
+              src="/images/x-symbpl.png"
+              alt=""
+            />
+          </p>
         </div>
-        <div class="flex flex-col text-right  bg-mainbg_400 rounded-lg">
-          <p class="items text-lg p-4">انقضا</p>
-          <p class="items p-4">قیامت</p>
-          <p class="items p-4">قیامت</p>
-          <p class="items p-4">قیامت</p>
+
+        <div class="flex flex-col text-right bg-mainbg_400 ">
+          <p class="items text-lg p-4">بن شده توسط</p>
+          <p v-for="bans in banList" class="items p-4">
+            {{bans.invokername}}
+          </p>
         </div>
-        <div class="flex flex-col text-right  bg-mainbg_400 rounded-lg">
+        <div class="flex flex-col text-right  bg-mainbg_400 ">
           <p class="items text-lg p-4">نام،آیپی،آیدی</p>
-          <p class="items p-4">uid=q4+fkC6VwO/UdpTaRQxLFdF0U+Q=</p>
-          <p class="items p-4">uid=q4+fkC6VwO/UdpTaRQxLFdF0U+Q=</p>
-          <p class="items p-4">name=Daniel, ip=hidden</p>
+          <p v-for="bans in banList" class="items p-4">
+            <span v-if="bans.name">name={{bans.name}},ip={{bans.ip}}</span>
+            <span v-if="bans.uid">uid={{bans.uid}}</span>
+          </p>
         </div>
       </div>
     </main>
   </section>
+  <unBan @close="getBanList(),unBanTab=false" :selectedServer="selectedServer" :unBaning="unBaning" v-if="unBanTab" />
 </template>
+<script setup>
+import { apiStore } from "~/stores/apistore";
+import { storeToRefs } from "pinia";
+import unBan from './unban.vue'
+// variables
+const props = defineProps(["selectedServer"])
+const emit = defineEmits(["close"])
+const store = apiStore()
+const {url} = storeToRefs(store)
+const banList = ref()
+const unBaning = ref()
+const unBanTab = ref(false)
+//functions
+async function getBanList(){
+  const respone = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans`)
+  banList.value = await respone
+}
+ function openUnBanPopUp(ban){
+  unBaning.value = ban
+  unBanTab.value = true
+}
+//
+await getBanList()
+</script>

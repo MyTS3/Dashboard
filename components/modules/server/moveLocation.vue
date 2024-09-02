@@ -62,7 +62,7 @@ const selectedLocation = ref()
 async function getAvailble(){
   const respone = $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`)
    availables.value = await respone
-  await console.log(availables.value[0].node)
+
 }
 async function moveServer(){
   const respone = $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move`,{

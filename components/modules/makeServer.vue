@@ -255,8 +255,9 @@ async function makeServer(){
   const slots = 2**(Number(slot.value) + 3)
 
   //////////////
-const url = `${url.value}/api/v1/tservers/`
-const server = await $fetch(url,{
+  console.log("before")
+
+const server = await $fetch(`${url.value}/api/v1/tservers/`,{
   method:'POST',
   body:JSON.stringify({
     "name": `${serverName.value}.v4.myts3.ir`,
@@ -265,6 +266,7 @@ const server = await $fetch(url,{
     "slots": slots
   })
 })
+console.log("after")
  token = await ref(server.privilegeKey)
  tsuuid = await ref(server.uuid)
  tsURL = await ref(`ts3server://${server.name}`)

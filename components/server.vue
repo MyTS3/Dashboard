@@ -90,6 +90,7 @@
         <img src="/images/restart.png" alt="" />
       </button>
       <button
+        @click="bansListTab=true"
         class="flex border w-full gap-3 justify-center h-20 items-center  rounded-r-xl btn"
       >
         <p>لیست بن ها</p>
@@ -122,7 +123,7 @@
   <moveLocation
     :selectedServer="selectedServer"
     v-if="serverLocationTab"
-    @close="serverLocationTab=false "
+    @close="getServerDeatails(),serverLocationTab=false"
   />
   <restartServer class="hidden" />
   <turnoffServer
@@ -131,8 +132,11 @@
     v-if="turnOffServerTab"
   />
   <deleteServer @close="deleteServerTab=false" v-if="deleteServerTab" />
-  <banList class="hidden" />
-  <unban class="hidden" />
+  <banList
+    :selectedServer="selectedServer"
+    @close="bansListTab=false"
+    v-if="bansListTab"
+  />
 </template>
 <script setup>
 import changeSlot from './modules/server/changeSlot.vue'
@@ -142,7 +146,7 @@ import restartServer from './modules/server/restartServer.vue'
 import turnoffServer from './modules/server/turnoffServer.vue'
 import deleteServer from './modules/server/deleteServer.vue'
 import banList from './modules/server/banList.vue'
-import unban from './modules/server/unban.vue'
+
 /////
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
@@ -153,6 +157,7 @@ const showYatqaPass = ref('disc')
 const yatqaPassReset = ref(false)
 const turnOffServerTab = ref(false)
 const serverLocationTab =ref(false)
+const bansListTab = ref(false)
 ///
 const route = useRoute()
 const store = apiStore()
