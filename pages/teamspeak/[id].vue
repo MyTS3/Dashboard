@@ -9,22 +9,59 @@
       </h1>
       <img class="mt-3" src="/images/seprator-line.png" alt="" />
     </header>
-    <main class="list-none teamspeak text-xs px-4">
+    <main
+      style="max-height: 33rem;"
+      class="list-none teamspeak text-xs px-4 overflow-y-scroll"
+    >
       <!-- <div>
         <div class="rounded-lg p-1 px-3 hover:bg-main_orange/20">
           <p>Music Channels</p>
         </div>
       </div> -->
-      <div v-for="channel in teamspeakserver">
-        <div class="flex p-1 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
-          <img
-            v-if="channel.channelType=='normal'"
-            src="/images/channel-icon.png"
-            alt=""
-          />
-          <p :style="{'text-align':channel.align}" class="w-full text-left">
-            {{channel.channelName}}
-          </p>
+      <div v-for="row in teamspeakserver">
+        <div
+          class=" p-1 max-h-6 overflow-hidden px-3 rounded-lg hover:bg-main_orange/20"
+        >
+          <div :style="{'margin-left': row.level * 1 + 'rem'}">
+            <div class="flex gap-1" v-if="row.rowType == 'channel'">
+              <img
+                v-if="row.channel.channelType=='normal'"
+                src="/images/channel-icon.png"
+                alt=""
+              />
+              <p
+                :style="{'text-align': row.channel.align}"
+                class="w-full text-left"
+              >
+                {{row.channel.channelName}}
+              </p>
+            </div>
+            <div class="flex gap-1" v-if="row.rowType == 'user'">
+              <img
+                v-if="row.user.status=='openMic'"
+                src="/images/normal-user.png"
+                alt=""
+              />
+              <img
+                v-if="row.user.status=='micMute'"
+                src="/images/input_muted.png"
+                alt=""
+              />
+              <img
+                v-if="row.user.status=='soundMute'"
+                src="/images/output_muted.png"
+                alt=""
+              />
+              <img
+                v-if="row.user.status=='away'"
+                src="/images/away.png"
+                alt=""
+              />
+              <p class="w-full text-left">
+                {{row.user.userNickname}}
+              </p>
+            </div>
+          </div>
         </div>
 
         <!-- <li
@@ -33,7 +70,7 @@
         "
         >
           <img src="/images/normal-user.png" alt="" />
-          <p>Daniel</p>
+          <p ></p>
         </li> -->
         <!-- ////// -->
         <!-- <li
@@ -108,7 +145,12 @@ import { storeToRefs } from '#imports';
 
 //variables
 const activeTab = ref("server")
-const teamspeakserver  = ref<{channelName: string, align:string, cid: string, channelType: channelType, users: []}[]>([])
+type alignType = 'start' | 'center' | 'end'
+type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away'
+type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number}
+type channel = {channelName: string, align: alignType, cid: string, channelType: channelType}
+type user = {userNickname: string, status: statusType}
+const teamspeakserver = ref<row[]>([])
 const route = useRoute()
 const serverUuid = route.params.id
 const store = apiStore()
@@ -116,7 +158,7 @@ const {url} = storeToRefs(store)
 //function
 
 type channelType = "*spacer" | "lspacer" | "cspacer" | "rspacer" | "normal"
-function findChannelTypeAndNameByFullName(fullName: string): {type: channelType, name: string, align:string} {
+function findChannelTypeAndNameByFullName(fullName: string): {type: channelType, name: string, align: alignType} {
   const splitedName = fullName.split(']')
   if (splitedName.length > 1) {
     if (splitedName[0].startsWith('[')) {
@@ -130,22 +172,54 @@ function findChannelTypeAndNameByFullName(fullName: string): {type: channelType,
 }
 
 async function getTeamspeakChannels(){
-  const response: {channelName: string, cid: string}[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`)
-  console.log(response)
-  response.forEach((res)=>{
-    const channelTypeAndName = findChannelTypeAndNameByFullName(res.channelName)
+  const response: {channelName: string, cid: string, pid: string}[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`)
+  response.forEach((channel)=>{
+    const channelTypeAndName = findChannelTypeAndNameByFullName(channel.channelName)
     const channelType = channelTypeAndName.type
     const channelName = channelTypeAndName.name
     const align = channelTypeAndName.align
-    teamspeakserver.value.push({
+
+    let level = 0
+    let parentChannel: {cid: string, pid: string, channelName: string} | undefined = channel
+    while (parentChannel) {
+      level+=1
+      parentChannel = response.find(c => {
+        if (!parentChannel) return false
+        return c.cid == parentChannel.pid
+      })
+    }
+    teamspeakserver.value.push({rowType: 'channel', channel: {
       channelName,
-      cid:res.cid,
+      cid:channel.cid,
       channelType,
       align,
-      users:[]
-    })
+    }, level})
   })
 
 }
+async function getTeamspeakUsers(){
+  const users: {
+    cid: string,
+    clid: string,
+    clientInputMuted: boolean,
+    clientInputHardware: boolean,
+    clientOutputMuted: boolean,
+    clientOutputHardware: boolean,
+    clientNickname: string,
+    clientAway: boolean
+  }[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`)
+  users.forEach(user => {
+    const channelIndex = teamspeakserver.value.findIndex(row => {
+      if (row.rowType != 'channel') return false
+      return row.channel.cid == user.cid
+    })
+    let status: statusType = 'openMic'
+    if (user.clientInputMuted || !user.clientInputHardware) status = 'micMute'
+    if (user.clientOutputMuted || !user.clientOutputHardware) status = 'soundMute'
+    if (user.clientAway) status = 'away'
+    teamspeakserver.value.splice(channelIndex+1, 0, {rowType: 'user', user: {userNickname: user.clientNickname, status}, level: teamspeakserver.value[channelIndex].level+1})
+  })
+}
 await getTeamspeakChannels()
+await getTeamspeakUsers()
 </script>
