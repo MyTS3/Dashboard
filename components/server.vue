@@ -31,10 +31,13 @@
           <button @click.prevent="yatqaPassReset=true">
             <img src="/images/edit.png" alt="" />
           </button>
-          <button @click="copyYatqaPass()">
+          <button v-if="showYatqaPass=='none'" @click="copyYatqaPass()">
             <img src="/images/copy.png" alt="" />
           </button>
-          <button @click.prevent="showYatqaPass='none'  ">
+          <button
+            v-if="showYatqaPass=='disc'"
+            @click.prevent="showYatqaPass='none'  "
+          >
             <img src="/images/hide.png" alt="" />
           </button>
         </div>
@@ -84,6 +87,7 @@
     "
     >
       <button
+        @click="restartServerTab=true"
         class="flex border w-full gap-3 justify-center h-20 items-center  rounded-l-xl btn"
       >
         <p>ری استارت</p>
@@ -125,7 +129,11 @@
     v-if="serverLocationTab"
     @close="getServerDeatails(),serverLocationTab=false"
   />
-  <restartServer class="hidden" />
+  <restartServer
+    :selectedServer="selectedServer"
+    @close="restartServerTab=false"
+    v-if="restartServerTab"
+  />
   <turnoffServer
     :selectedServer="selectedServer"
     @close="turnOffServerTab = false,getServerDeatails()"
@@ -158,6 +166,7 @@ const yatqaPassReset = ref(false)
 const turnOffServerTab = ref(false)
 const serverLocationTab =ref(false)
 const bansListTab = ref(false)
+const restartServerTab = ref(false)
 ///
 const route = useRoute()
 const store = apiStore()
