@@ -80,7 +80,7 @@
 
       <main
         style="max-width: 69rem;"
-        class=" w-full mt-6  flex h-3/4  mx-auto  "
+        class=" w-full mt-6 grid grid-cols-2 h-3/4  mx-auto  "
       >
         <NuxtPage />
       </main>

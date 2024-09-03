@@ -2,17 +2,15 @@
   <div class="bg-mainbg_400 w-full rounded-xl text-center mr-3">
     <header class="w-full relative my-4 px-4">
       <h1
-        class=" p-1 border-2 bg-white/10 rounded-2xl btn
-      "
+        @click="selectedRow = {rowType:'server', server:{name:serverInfo.name}}"
+        :class=" selectedRow?.rowType == 'server' ?'btn-active':'btn '  "
+        class="p-1 border-2 bg-white/10 rounded-2xl "
       >
-        daniel.v4.myts.ir
+        {{serverInfo.name}}
       </h1>
       <img class="mt-3" src="/images/seprator-line.png" alt="" />
     </header>
-    <main
-      style="max-height: 33rem;"
-      class="list-none teamspeak text-xs px-4 overflow-y-scroll"
-    >
+    <main class="list-none teamspeak text-xs px-4 ">
       <!-- <div>
         <div class="rounded-lg p-1 px-3 hover:bg-main_orange/20">
           <p>Music Channels</p>
@@ -20,7 +18,9 @@
       </div> -->
       <div v-for="row in teamspeakserver">
         <div
-          class=" p-1 max-h-6 overflow-hidden px-3 rounded-lg hover:bg-main_orange/20"
+          @click="selectedRow = row"
+          class=" p-1 max-h-6 overflow-hidden px-3 rounded-lg "
+          :class=" selectedRow == row?'btn-active':'hover:bg-main_orange/20' "
         >
           <div :style="{'margin-left': row.level * 1 + 'rem'}">
             <div class="flex gap-1" v-if="row.rowType == 'channel'">
@@ -130,7 +130,11 @@
     </main>
   </div>
   <div class="bg-mainbg_400 w-full rounded-xl ml-3">
-    <server v-if="activeTab=='server' " />
+    <server
+      @getServerDeatails="getServerDeatails"
+      :serverInfo.value="serverInfo"
+      v-if="activeTab=='server' "
+    />
     <user v-if="activeTab=='user' " />
     <channel v-if="activeTab=='channel' " />
     <musicbot v-if="activeTab=='musicbot' " />
@@ -147,15 +151,31 @@ import { storeToRefs } from '#imports';
 const activeTab = ref("server")
 type alignType = 'start' | 'center' | 'end'
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away'
-type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number}
+type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number} | {rowType: 'server', server: server}
 type channel = {channelName: string, align: alignType, cid: string, channelType: channelType}
 type user = {userNickname: string, status: statusType}
+type server = {name:string}
 const teamspeakserver = ref<row[]>([])
 const route = useRoute()
 const serverUuid = route.params.id
 const store = apiStore()
 const {url} = storeToRefs(store)
+const serverInfo = ref()
+const selectedRow = ref<row>()
 //function
+async function getServerDeatails(){
+  const respone:{
+    deployedOn: String,
+    mustRunning: boolean,
+    name:String,
+    queryPassword:String,
+    queryPort:Number,
+    slots:Number,
+    uuid:String,
+    version:String
+   } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`)
+  serverInfo.value = await respone
+}
 
 type channelType = "*spacer" | "lspacer" | "cspacer" | "rspacer" | "normal"
 function findChannelTypeAndNameByFullName(fullName: string): {type: channelType, name: string, align: alignType} {
@@ -220,6 +240,9 @@ async function getTeamspeakUsers(){
     teamspeakserver.value.splice(channelIndex+1, 0, {rowType: 'user', user: {userNickname: user.clientNickname, status}, level: teamspeakserver.value[channelIndex].level+1})
   })
 }
-await getTeamspeakChannels()
-await getTeamspeakUsers()
+await getServerDeatails()
+if(serverInfo.value.mustRunning){
+  await getTeamspeakChannels()
+  await getTeamspeakUsers()
+}
 </script>

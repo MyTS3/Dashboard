@@ -49,7 +49,9 @@
         <p>پورت</p>
       </li>
       <li class="grid gridList p-2 ">
-        <p>{{selectedServer.uuid}}</p>
+        <p class="w-2/3 text-nowrap  overflow-hidden mx-auto">
+          {{selectedServer.uuid}}
+        </p>
         <p>آیدی</p>
       </li>
       <li class="grid gridList p-2 ">
@@ -57,7 +59,7 @@
         <p>:ورژن</p>
       </li>
       <li v-if="selectedServer.mustRunning" class="grid gridList p-2 relative">
-        <p>
+        <p class="w-2/3 text-nowrap overflow-hidden mx-auto">
           {{selectedServer.deployedOn}}
         </p>
         <p>:موقعیت مکانی</p>
@@ -168,15 +170,16 @@ const serverLocationTab =ref(false)
 const bansListTab = ref(false)
 const restartServerTab = ref(false)
 ///
+const props = defineProps(["serverInfo"])
+const emit = defineEmits(["getServerDeatails"])
 const route = useRoute()
 const store = apiStore()
 const {url} = storeToRefs(store)
 //////
-const selectedServer = ref()
-async function getServerDeatails(){
-  // `${url.value}/api/v1/tservers/{uuid}`
-  const serverDetails = await $fetch(`${url.value}/api/v1/tservers/${route.params.id}`)
-  selectedServer.value =  await serverDetails
+const selectedServer = ref(props.serverInfo)
+//functions
+function getServerDeatails(){
+  emit("getServerDeatails")
 }
 function copyYatqaPass(){
   navigator.clipboard.writeText(selectedServer.queryPassword)
@@ -187,8 +190,7 @@ async function turnServerOffOrOn(){
   }
   else {
     const respone = await $fetch(`${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,{method:"POST"})
-    await getServerDeatails()
+     getServerDeatails()
   }
 }
-await getServerDeatails()
 </script>
