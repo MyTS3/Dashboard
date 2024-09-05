@@ -133,11 +133,11 @@
     <server
       @getServerDeatails="getServerDeatails"
       :serverInfo.value="serverInfo"
-      v-if="activeTab=='server' "
+      v-if="selectedRow?.rowType=='server' "
     />
-    <user v-if="activeTab=='user' " />
-    <channel v-if="activeTab=='channel' " />
-    <musicbot v-if="activeTab=='musicbot' " />
+    <user v-if="selectedRow?.rowType=='user' " />
+    <channel v-if="selectedRow?.rowType=='channel' " />
+    <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
   </div>
 </template>
 <script setup lang="ts">
@@ -148,7 +148,6 @@ import { apiStore } from '#imports';
 import { storeToRefs } from '#imports';
 
 //variables
-const activeTab = ref("server")
 type alignType = 'start' | 'center' | 'end'
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away'
 type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number} | {rowType: 'server', server: server}

@@ -5,5 +5,5 @@ export const apiStore = defineStore({
     return {
       url:"http://10.8.0.2:5342"
     }
-  }
+  },
 })
