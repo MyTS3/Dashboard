@@ -11,6 +11,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        mainbg_300: "rgba(56, 61, 99, 1)",
         mainbg_400: "rgba(37, 41, 67, 1)",
         mainbg_500: "rgba(37, 40, 65, 1)",
         mainbg_600: "rgba(20, 25, 49, 1)",

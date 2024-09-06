@@ -3,12 +3,12 @@
     <div>
       <div style="max-width: 69rem;" class="py-3 mx-auto">
         <header class=" w-full flex justify-between flex-row-reverse">
-          <h1 v-if="$route.name =='index' " class="font-medium text-xl">
+          <h1 v-if="$route.name =='main' " class="font-medium text-xl">
             داشبورد
           </h1>
           <button
             @click="$router.back()"
-            v-if="$route.name !='index'"
+            v-if="$route.name !='main'"
             class="btn h-15 p-3 flex items-center rounded-xl"
           >
             <img class="" src="/images/Arrow-Right.png" alt="" />
