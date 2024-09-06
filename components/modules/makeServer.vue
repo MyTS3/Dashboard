@@ -259,6 +259,9 @@ async function makeServer(){
 
 const server = await $fetch(`${url.value}/api/v1/tservers/`,{
   method:'POST',
+  headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        },
   body:JSON.stringify({
     "name": `${serverName.value}.v4.myts3.ir`,
     "version":version.value,

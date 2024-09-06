@@ -86,6 +86,11 @@
   </section>
 </template>
 <script setup>
+
+definePageMeta({
+  layout: false,
+});
+
 import nuxtStorage from 'nuxt-storage';
 import { apiStore } from '#imports';
 import { storeToRefs } from '#imports';
@@ -95,10 +100,15 @@ const { url } = storeToRefs(store)
 const password  = ref("password")
 const inputGmail = ref()
 const inputPass = ref()
+const route = useRoute()
 //function
 function showPass(){
   if (password.value == 'password') password.value = 'text'
   else password.value = 'password'
+}
+if(route.query.token){
+  nuxtStorage.localStorage.setData('token',route.query.token,7,'d')
+  navigateTo('/main')
 }
 async function signIn(){
       const response = await $fetch(`${url.value}/api/v1/token`,{
@@ -112,5 +122,4 @@ async function signIn(){
       nuxtStorage.localStorage.setData('token',response.access_token,7,'d')
 
     }
-    console.log("asdad")
 </script>

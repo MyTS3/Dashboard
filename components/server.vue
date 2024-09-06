@@ -189,7 +189,12 @@ async function turnServerOffOrOn(){
     turnOffServerTab.value = true
   }
   else {
-    const respone = await $fetch(`${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,{method:"POST"})
+    const respone = await $fetch(`${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,{
+      method:"POST",
+      headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        }
+    })
      getServerDeatails()
   }
 }

@@ -44,7 +44,12 @@ const {url} = storeToRefs(store)
 const props = defineProps(["unBaning","selectedServer"])
 const emit = defineEmits(["close"])
 async function deleteBan(){
-  const respone = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans/${props.unBaning.banid}`,{method:"DELETE"})
+  const respone = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans/${props.unBaning.banid}`,{
+    method:"DELETE",
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        }
+  })
   emit("close")
 }
 </script>

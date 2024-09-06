@@ -1,84 +1,127 @@
 <template>
   <section
-    class=" bg-mainbg_600 text-white
-h-dvh flex flex-row-reverse w-full  relative
-"
+    style="max-width: 69rem;"
+    class=" mt-6 grid w-full grid-cols-2 h-[40rem] mx-auto text-white "
   >
-    <div id="modules" class="absolute top-0 left-0"></div>
-    <div
-      class="bg-mainbg_400
-   max-w-64 p-8 justify-center rounded-tl-2xl rounded-bl-2xl h-full max-[1256px]:hidden"
-    >
-      <header><img src="./images/User info.png" alt="logo" /></header>
-      <nav class="list-none flex flex-col gap-4 mt-7 ">
-        <li class="flex gap-3 w-full justify-end p-3 ml-auto activePanel">
-          <p>داشبورد</p>
-          <img src="./images/dash.png" alt="dashboard" />
-        </li>
-        <li class="flex gap-3 w-full justify-end p-3 ml-auto">
-          <img class="mr-auto" src="./images/Arrow - Left.png" alt="" />
-          <p>پلی لیست</p>
-          <img src="./images/folder.png" alt="" />
-        </li>
-        <li class="flex gap-3 w-full justify-end p-3 ml-auto">
-          <img class="mr-auto" src="./images/Arrow - Left.png" alt="" />
-          <p>ای پی ای</p>
-          <img src="./images/ip.png" alt="" />
-        </li>
-        <li class="flex gap-3 w-full justify-end p-3 ml-auto">
-          <img class="mr-auto" src="./images/Arrow - Left.png" alt="" />
-          <p>پشتیبانی</p>
-          <img src="./images/poshtibani.png" alt="" />
-        </li>
-      </nav>
-      <button class="bg-main_red  rounded-2xl py-2 px-8 absolute bottom-5">
-        <p>خروج از حساب کاربری</p>
-      </button>
-    </div>
-    <div class="w-4/5 p-5 mx-auto">
-      <header
-        class="flex justify-between flex-row-reverse min-[1280px]:w-3/4 mx-auto"
-      >
-        <h1 v-if="$route.name =='index' " class="font-medium text-xl">
-          داشبورد
-        </h1>
-        <button
-          @click="$router.back()"
-          v-if="$route.name !='index'"
-          class="btn h-15 p-3 flex items-center rounded-xl"
-        >
-          <img class="" src="./images/Arrow-Right.png" alt="" />
-        </button>
-        <div class="flex gap-4 ">
-          <button
-            class="flex items-center flex-row-reverse gap-1 p-1.5 rounded-lg btn"
-          >
-            <img src="./images/User.png" alt="user" />
-            <p class="text-xs">ماکان</p>
+    <div class="bg-mainbg_400 w-full rounded-xl p-5 mr-3">
+      <header class="flex flex-row-reverse justify-between items-center mb-4">
+        <h1 class="font-medium">کیف پول</h1>
+        <div class="flex gap-4">
+          <button class="btn py-1 px-3 rounded-xl">
+            <P class="text-2xl text-center">+</P>
           </button>
-          <button class="btn p-3 rounded-lg">
-            <img src="./images/bell.png" alt="bell" />
+          <button class="btn flex items-center px-2 py-2 rounded-xl gap-2">
+            <div class="flex  text-sm">
+              <p>هزار تومان</p>
+              <span>120</span>
+            </div>
+
+            <img src="/images/Wallet.png" alt="wallet" />
+          </button>
+        </div>
+      </header>
+      <div class="flex flex-col list-none gap-5">
+        <li
+          class="flex p-2 border-2  justify-center rounded-2xl
+    border-main_orange bg-main_orange/10
+    "
+        >
+          <p><span>1402/2/9</span>تومان + ازتاریخ</p>
+          <span> 5000</span>
+        </li>
+        <li
+          class="flex p-2 border-2  justify-center rounded-2xl
+    border-main_green bg-main_green/10
+    "
+        >
+          <p><span>1402/2/9</span>تومان + ازتاریخ</p>
+          <span> 5000</span>
+        </li>
+        <li
+          class="flex p-2 border-2  justify-center rounded-2xl
+    border-main_red bg-main_red/10
+    "
+        >
+          <p><span>1402/1/9</span>تومان + ازتاریخ</p>
+          <span> 5000</span>
+        </li>
+      </div>
+    </div>
+    <!-- //////////////////////////// -->
+    <div
+      class="bg-mainbg_400 w-full rounded-xl p-5 overflow-y-scroll ml-3 flex-shrink-0"
+    >
+      <header
+        class="flex flex-row-reverse justify-between items-center mb-4 text-center"
+      >
+        <h1 class="font-medium">سرورها</h1>
+        <div class="flex gap-4">
+          <button
+            @click.prevent="makeServerTab=true"
+            class="btn py-1 px-3 rounded-xl"
+          >
+            <P class="text-2xl text-center">+</P>
+          </button>
+          <button class="btn flex items-center px-2 py-2 rounded-xl gap-2">
+            <div class="flex text-sm gap-2">
+              <p>عدد</p>
+              <span>{{ servers.length }}</span>
+            </div>
           </button>
         </div>
       </header>
       <div
-        style="max-width: 69rem;"
-        class="flex my-6 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl
-    items-center  mx-auto 
-    "
+        v-for="server in servers"
+        class="flex flex-col list-none text-center"
       >
-        <img
-          class="bg-white p-1.5 rounded-lg"
-          src="./images/bell-alarm.png"
-          alt="bell-alarm"
-        />
-        <p class="font-medium text-sm">
-          پنل جدید در دست ساخت است و این یک نسخه بتا از آن میباشد
-        </p>
-        <button class="absolute left-4">x</button>
+        <li
+          @click="serverClicked(server)"
+          class="p-2 border-2 my-2 rounded-2xl btn "
+        >
+          {{ server.name }}
+        </li>
       </div>
-      <ViewServer />
     </div>
   </section>
+  <makeServer
+    v-if="makeServerTab"
+    @close="makeServerTab=false,reloadNuxtApp()"
+  />
 </template>
-<script setup></script>
+<script setup>
+  import nuxtStorage from 'nuxt-storage';
+
+import makeServer from "/components/modules/makeServer.vue"
+const router = useRouter()
+////
+import { apiStore } from "~/stores/apistore";
+import { storeToRefs } from "pinia";
+//////
+////variables
+const store = apiStore()
+const {url} = storeToRefs(store)
+
+/////
+
+/////
+const route = useRoute()
+const makeServerTab = ref(false)
+const servers = ref()
+// functions
+async function getServers() {
+  const response = await $fetch(`${url.value}/api/v1/tservers/`,{
+        method:"GET",
+        headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        }
+      })
+ servers.value = response
+}
+
+
+function serverClicked(server){
+  router.push(`/main/teamspeak/${server.uuid}`)
+}
+///////////////////////////calling functions
+await getServers()
+</script>

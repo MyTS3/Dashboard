@@ -43,7 +43,10 @@ const store = apiStore()
 const {url} = storeToRefs(store)
 async function changeYatqaPass(){
   const changePass = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-password`,{
-    method:"POST"
+    method:"POST",
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        }
   })
   emit("close")
 }

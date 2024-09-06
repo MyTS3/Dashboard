@@ -1,144 +1,86 @@
 <template>
-  <div class="bg-mainbg_400 w-full rounded-xl text-center mr-3">
-    <header class="w-full relative my-4 px-4">
-      <h1
-        @click="selectedRow = {rowType:'server', server:{name:serverInfo.name}}"
-        :class=" selectedRow?.rowType == 'server' ?'btn-active':'btn '  "
-        class="p-1 border-2 bg-white/10 rounded-2xl "
-      >
-        {{serverInfo.name}}
-      </h1>
-      <img class="mt-3" src="/images/seprator-line.png" alt="" />
-    </header>
-    <main class="list-none teamspeak text-xs px-4 ">
-      <!-- <div>
+  <section
+    style="max-width: 69rem;"
+    class=" mt-6 grid w-full grid-cols-2 h-[40rem] mx-auto text-white text-center "
+  >
+    <div class="bg-mainbg_400 w-full rounded-xl">
+      <header class="w-full relative my-4 px-4">
+        <h1
+          @click="selectedRow = {rowType:'server', server:{name:serverInfo.name}}"
+          :class=" selectedRow?.rowType == 'server' ?'btn-active':'btn '  "
+          class="p-1 border-2 bg-white/10 rounded-2xl "
+        >
+          {{serverInfo.name}}
+        </h1>
+        <img class="mt-3" src="/images/seprator-line.png" alt="" />
+      </header>
+      <main class="list-none teamspeak text-xs px-4 ">
+        <!-- <div>
         <div class="rounded-lg p-1 px-3 hover:bg-main_orange/20">
           <p>Music Channels</p>
         </div>
       </div> -->
-      <div v-for="row in teamspeakserver">
-        <div
-          @click="selectedRow = row"
-          class=" p-1 max-h-6 overflow-hidden px-3 rounded-lg "
-          :class=" selectedRow == row?'btn-active':'hover:bg-main_orange/20' "
-        >
-          <div :style="{'margin-left': row.level * 1 + 'rem'}">
-            <div class="flex gap-1" v-if="row.rowType == 'channel'">
-              <img
-                v-if="row.channel.channelType=='normal'"
-                src="/images/channel-icon.png"
-                alt=""
-              />
-              <p
-                :style="{'text-align': row.channel.align}"
-                class="w-full text-left"
-              >
-                {{row.channel.channelName}}
-              </p>
-            </div>
-            <div class="flex gap-1" v-if="row.rowType == 'user'">
-              <img
-                v-if="row.user.status=='openMic'"
-                src="/images/normal-user.png"
-                alt=""
-              />
-              <img
-                v-if="row.user.status=='micMute'"
-                src="/images/input_muted.png"
-                alt=""
-              />
-              <img
-                v-if="row.user.status=='soundMute'"
-                src="/images/output_muted.png"
-                alt=""
-              />
-              <img
-                v-if="row.user.status=='away'"
-                src="/images/away.png"
-                alt=""
-              />
-              <p class="w-full text-left">
-                {{row.user.userNickname}}
-              </p>
+        <div v-for="row in teamspeakserver">
+          <div
+            @click="selectedRow = row"
+            class=" p-1 max-h-6 overflow-hidden px-3 rounded-lg "
+            :class=" selectedRow == row?'btn-active':'hover:bg-main_orange/20' "
+          >
+            <div :style="{'margin-left': row.level * 1 + 'rem'}">
+              <div class="flex gap-1" v-if="row.rowType == 'channel'">
+                <img
+                  v-if="row.channel.channelType=='normal'"
+                  src="/images/channel-icon.png"
+                  alt=""
+                />
+                <p
+                  :style="{'text-align': row.channel.align}"
+                  class="w-full text-left"
+                >
+                  {{row.channel.channelName}}
+                </p>
+              </div>
+              <div class="flex gap-1" v-if="row.rowType == 'user'">
+                <img
+                  v-if="row.user.status=='openMic'"
+                  src="/images/normal-user.png"
+                  alt=""
+                />
+                <img
+                  v-if="row.user.status=='micMute'"
+                  src="/images/input_muted.png"
+                  alt=""
+                />
+                <img
+                  v-if="row.user.status=='soundMute'"
+                  src="/images/output_muted.png"
+                  alt=""
+                />
+                <img
+                  v-if="row.user.status=='away'"
+                  src="/images/away.png"
+                  alt=""
+                />
+                <p class="w-full text-left">
+                  {{row.user.userNickname}}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-
-        <!-- <li
-          class="flex pl-6 gap-1 my-1
-          p-2 px-3 rounded-lg hover:bg-main_orange/20
-        "
-        >
-          <img src="/images/normal-user.png" alt="" />
-          <p ></p>
-        </li> -->
-        <!-- ////// -->
-        <!-- <li
-          class="flex pl-6 gap-1 my-1
-          p-2 px-3 rounded-lg hover:bg-main_orange/20
-        "
-        >
-          <img src="/images/bot-icon.png" alt="" />
-          <p>RadioJavan</p>
-        </li> -->
-      </div>
-      <!-- <div>
-        <div class="flex p-2 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
-          <img src="/images/channel-icon.png" alt="" />
-          <p>Music Channels 2</p>
-        </div>
-
-        <li
-          class="flex pl-6 gap-1 my-1
-          p-2 px-3 rounded-lg hover:bg-main_orange/20
-        "
-        >
-          <img src="/images/output_muted.png" alt="" />
-          <p>toz</p>
-        </li>
-      </div>
-      <div>
-        <div class="flex p-2 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
-          <img src="/images/channel-icon.png" alt="" />
-          <p>Music Channels 3</p>
-        </div>
-
-        <li
-          class="flex pl-6 gap-1 my-1
-          p-2 px-3 rounded-lg hover:bg-main_orange/20
-        "
-        >
-          <img src="/images/input_muted.png" alt="" />
-          <p>oblack</p>
-        </li>
-      </div>
-      <div>
-        <div class="flex p-2 px-3 rounded-lg hover:bg-main_orange/20 gap-1">
-          <img src="/images/channel-icon.png" alt="" />
-          <p>Music Channels 4</p>
-        </div>
-
-        <li
-          class="flex pl-6 gap-1 my-1
-          p-2 px-3 rounded-lg hover:bg-main_orange/20 
-        "
-        >
-          <img src="/images/away.png" alt="" />
-          <p>fier</p>
-        </li>
-      </div> -->
-    </main>
-  </div>
-  <div class="bg-mainbg_400 w-full rounded-xl ml-3">
-    <server
-      @getServerDeatails="getServerDeatails"
-      :serverInfo.value="serverInfo"
-      v-if="selectedRow?.rowType=='server' "
-    />
-    <user v-if="selectedRow?.rowType=='user' " />
-    <channel v-if="selectedRow?.rowType=='channel' " />
-    <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
-  </div>
+      </main>
+    </div>
+    <div class="bg-mainbg_400 w-full rounded-xl ml-3">
+      <server
+        @getServerDeatails="getServerDeatails"
+        :serverInfo.value="serverInfo"
+        v-if="selectedRow?.rowType=='server' "
+      />
+      <user v-if="selectedRow?.rowType=='user' " />
+      <channel v-if="selectedRow?.rowType=='channel' " />
+      <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
+    </div>
+  </section>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -146,6 +88,7 @@ import musicbot from '~/components/musicbot.vue';
 import { useRoute } from '#app';
 import { apiStore } from '#imports';
 import { storeToRefs } from '#imports';
+import nuxtStorage from 'nuxt-storage';
 
 //variables
 type alignType = 'start' | 'center' | 'end'
@@ -172,7 +115,11 @@ async function getServerDeatails(){
     slots:Number,
     uuid:String,
     version:String
-   } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`)
+   } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`,{
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        }
+   })
   serverInfo.value = await respone
 }
 
@@ -191,7 +138,11 @@ function findChannelTypeAndNameByFullName(fullName: string): {type: channelType,
 }
 
 async function getTeamspeakChannels(){
-  const response: {channelName: string, cid: string, pid: string}[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`)
+  const response: {channelName: string, cid: string, pid: string}[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`,{
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        }
+  })
   response.forEach((channel)=>{
     const channelTypeAndName = findChannelTypeAndNameByFullName(channel.channelName)
     const channelType = channelTypeAndName.type
@@ -226,7 +177,11 @@ async function getTeamspeakUsers(){
     clientOutputHardware: boolean,
     clientNickname: string,
     clientAway: boolean
-  }[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`)
+  }[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`,{
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        }
+  })
   users.forEach(user => {
     const channelIndex = teamspeakserver.value.findIndex(row => {
       if (row.rowType != 'channel') return false
