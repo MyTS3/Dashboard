@@ -57,5 +57,4 @@ async function deleteTheServer(){
   emit("close")
   if(route.path != '/main') router.back()
 }
-console.log(props.selectedServer)
 </script>

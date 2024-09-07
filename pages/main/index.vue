@@ -32,10 +32,7 @@
       </button>
     </main>
   </section>
-  <makeServer
-    v-if="makeServerTab"
-    @close="makeServerTab=false,reloadNuxtApp()"
-  />
+  <makeServer v-if="makeServerTab" @close="getServers(),makeServerTab=false" />
   <DeleteServer
     :selectedServer="selectedServer"
     @close="getServers(),ServerDeleteTab=false"

@@ -25,17 +25,15 @@
           برای ساخت سرور اطلاعات زیر را کامل کنید
         </p>
       </header>
-      <div class="flex flex-col">
-        <label class="text-right font-medium mb-4">نام سرور</label>
+      <div class="flex flex-col relative">
+        <label class="text-right font-medium mb-4 ">نام سرور</label>
         <input
           :disabled="disableInputs"
           v-model="serverName"
-          class="bg-transparent border rounded-lg p-4 placeholder:text-right
-          placeholder:text-white/30
-            "
+          class="bg-transparent border rounded-lg p-4 "
           type="text"
-          placeholder=".v4.myts3.ir"
         />
+        <p class="absolute right-8 bottom-4 text-blue-300/60">.v4.myts3.ir</p>
       </div>
       <div>
         <p class="my-4 text-right font-medium">تعداد اسلات</p>
@@ -277,3 +275,4 @@ console.log("after")
 serverTokenTab.value = true
 }
 </script>
+<style scoped></style>

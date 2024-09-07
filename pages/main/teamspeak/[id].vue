@@ -23,7 +23,7 @@
         <div v-for="row in teamspeakserver">
           <div
             @click="selectedRow = row"
-            class=" p-1 max-h-6 overflow-hidden px-3 rounded-lg "
+            class=" py-1 max-h-7 overflow-hidden px-3 rounded-lg "
             :class=" selectedRow == row?'btn-active':'hover:bg-main_orange/20' "
           >
             <div :style="{'margin-left': row.level * 1 + 'rem'}">
