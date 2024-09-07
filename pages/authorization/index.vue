@@ -120,6 +120,6 @@ async function signIn(){
         })
       })
       nuxtStorage.localStorage.setData('token',response.access_token,7,'d')
-
+      navigateTo('/main')
     }
 </script>

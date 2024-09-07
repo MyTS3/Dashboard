@@ -4,30 +4,19 @@
     class=" mt-6 grid w-full h-[40rem] mx-auto text-white  "
   >
     <main class="w-full flex flex-col bg-mainbg_500 rounded-2xl text">
-      <div
-        class=" bg-mainbg_300 rounded-t-2xl h-14 flex justify-around text-center"
-      >
-        <div class="w-1/5">
-          <p>نام</p>
-        </div>
-        <div class="flex w-2/3 justify-around text-center">
-          <p>تعداد اسلات</p>
-          <p>تاریخ ساخت</p>
-          <p>عمل</p>
-        </div>
+      <div class="table bg-mainbg_300 rounded-t-2xl">
+        <p>نام</p>
+        <p>تعداد اسلات</p>
+        <p>تاریخ ساخت</p>
+        <p>عمل</p>
       </div>
-      <div
-        class="flex justify-around items py-7 text-center"
-        v-for="server in servers"
-      >
-        <div class="w-1/5">
-          <p>{{server.name}}</p>
-        </div>
-        <div class="flex w-2/3 justify-around text-center">
-          <p>{{server.slots}}</p>
-          <p>{{server.createdAt}}</p>
-          <img src="/images/trash.png" alt="" />
-        </div>
+      <div v-for="server in servers" class="table items">
+        <p class="cursor-pointer" @click="serverClicked(server)">
+          {{server.name}}
+        </p>
+        <p>{{server.slots}}</p>
+        <p>{{server.createdAt}}</p>
+        <img src="/images/trash.png" alt="" />
       </div>
       <button
         @click.prevent="makeServerTab=true"
@@ -70,7 +59,10 @@ async function getServers() {
           'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
         }
       })
-
+      // response.map((re)=>{
+      //   console.log(re.createdAt)
+      // })
+ response.map((re)=>re.createdAt.split('T')[0])
  servers.value = response
 }
 
@@ -81,3 +73,12 @@ function serverClicked(server){
 ///////////////////////////calling functions
 await getServers()
 </script>
+<style scoped>
+.table{
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  text-align: center;
+  justify-items: center;
+  padding: 1rem;
+}
+</style>
