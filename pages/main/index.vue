@@ -15,8 +15,13 @@
           {{server.name}}
         </p>
         <p>{{server.slots}}</p>
-        <p>{{server.createdAt}}</p>
-        <img src="/images/trash.png" alt="" />
+        <p>{{timeAgo.format(new Date(server.createdAt))}}</p>
+        <img
+          @click="removeServer(server.name,server.uuid)"
+          class="cursor-pointer"
+          src="/images/trash.png"
+          alt=""
+        />
       </div>
       <button
         @click.prevent="makeServerTab=true"
@@ -31,42 +36,48 @@
     v-if="makeServerTab"
     @close="makeServerTab=false,reloadNuxtApp()"
   />
+  <DeleteServer
+    :selectedServer="selectedServer"
+    @close="getServers(),ServerDeleteTab=false"
+    v-if="ServerDeleteTab"
+  />
 </template>
 <script setup>
-  import nuxtStorage from 'nuxt-storage';
+import nuxtStorage from 'nuxt-storage';
+import TimeAgo from 'javascript-time-ago'
+import fa from 'javascript-time-ago/locale/fa'
+TimeAgo.addDefaultLocale(fa)
+const timeAgo = new TimeAgo('fa')
 
 import makeServer from "/components/modules/makeServer.vue"
 const router = useRouter()
 ////
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
+import DeleteServer from '~/components/modules/server/deleteServer.vue';
 //////
 ////variables
 const store = apiStore()
 const {url} = storeToRefs(store)
-
-/////
-
-/////
 const route = useRoute()
 const makeServerTab = ref(false)
 const servers = ref()
+const ServerDeleteTab = ref(false)
+const selectedServer = ref()
 // functions
 async function getServers() {
   const response = await $fetch(`${url.value}/api/v1/tservers/`,{
-        method:"GET",
-        headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        }
-      })
-      // response.map((re)=>{
-      //   console.log(re.createdAt)
-      // })
- response.map((re)=>re.createdAt.split('T')[0])
- servers.value = response
+    method:"GET",
+    headers:{
+      'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+    }
+  })
+  servers.value = response
 }
-
-
+function removeServer(name,uuid){
+  ServerDeleteTab.value =true
+  selectedServer.value = {'name':name,'uuid':uuid}
+}
 function serverClicked(server){
   router.push(`/main/teamspeak/${server.uuid}`)
 }

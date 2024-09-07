@@ -141,7 +141,11 @@
     @close="turnOffServerTab = false,getServerDeatails()"
     v-if="turnOffServerTab"
   />
-  <deleteServer @close="deleteServerTab=false" v-if="deleteServerTab" />
+  <deleteServer
+    :selectedServer="selectedServer"
+    @close="deleteServerTab=false"
+    v-if="deleteServerTab"
+  />
   <banList
     :selectedServer="selectedServer"
     @close="bansListTab=false"

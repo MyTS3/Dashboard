@@ -18,8 +18,8 @@
       <h1 class="text-xl my-4 font-bolder">حذف سرور</h1>
       <p class="font-thin max-w-80 text-center mx-auto mb-4 mx-10">
         این عمل قابل بازگردانی نیست و تمامی اطلاعات سرور را حذف میکند، اطمینان
+        <span class="font-bold">{{selectedServer.name}}</span>
         دارید؟
-        <span class="font-bold">daniel.v4.myts3.ir</span>
       </p>
       <div class="grid grid-cols-2 gap-3">
         <button
@@ -39,16 +39,23 @@
   </section>
 </template>
 <script setup>
+import nuxtStorage from 'nuxt-storage';
+//variables
 const emit = defineEmits(["close"])
+const props = defineProps(["selectedServer"])
 const route = useRoute()
 const router = useRouter()
 const store = apiStore()
 const {url} = storeToRefs(store)
 async function deleteTheServer(){
-  const deleteServer = await $fetch(`${url.value}/api/v1/tservers/${route.params.id}`,{
+  const deleteServer = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}`,{
     method:"DELETE",
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        }
   })
   emit("close")
-  router.back()
+  if(route.path != '/main') router.back()
 }
+console.log(props.selectedServer)
 </script>

@@ -46,7 +46,7 @@
     </div>
     <div class="relative bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl">
       <header>
-        <img src="/images/User info.png" alt="logo" />
+        <img class="mx-auto mt-5" src="/images/User info.png" alt="logo" />
       </header>
       <nav class="list-none flex flex-col gap-4 mt-7 ">
         <li class="flex gap-3 w-full justify-end p-3 ml-auto activePanel">
@@ -56,7 +56,7 @@
         <li class="flex gap-3 w-full justify-end p-3 ml-auto">
           <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
           <p>پلی لیست</p>
-          <img src="./images/folder.png" alt="" />
+          <img src="/images/folder.png" alt="" />
         </li>
         <li class="flex gap-3 w-full justify-end p-3 ml-auto">
           <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
