@@ -11,7 +11,10 @@
     
     "
     >
-      <button class="flex items-center py-3 justify-center btn rounded-l-lg">
+      <button
+        disabled
+        class="flex items-center py-3 justify-center btn rounded-l-lg"
+      >
         <p>ساخت موزیک بات جدید</p>
         <img src="/images/addon.png" alt="" />
       </button>

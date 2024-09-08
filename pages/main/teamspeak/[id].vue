@@ -6,7 +6,7 @@
     <div class="bg-mainbg_400 w-full rounded-xl">
       <header class="w-full relative my-4 px-4">
         <h1
-          @click="selectedRow = {rowType:'server', server:{name:serverInfo.name}}"
+          @click="selectedRow = {rowType:'server', level: 0}"
           :class=" selectedRow?.rowType == 'server' ?'btn-active':'btn '  "
           class="p-1 border-2 bg-white/10 rounded-2xl "
         >
@@ -93,17 +93,16 @@ import nuxtStorage from 'nuxt-storage';
 //variables
 type alignType = 'start' | 'center' | 'end'
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away'
-type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number} | {rowType: 'server', server: server}
+type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number} | {rowType: 'server', level: 0}
 type channel = {channelName: string, align: alignType, cid: string, channelType: channelType}
 type user = {userNickname: string, status: statusType}
-type server = {name:string}
 const teamspeakserver = ref<row[]>([])
 const route = useRoute()
 const serverUuid = route.params.id
 const store = apiStore()
 const {url} = storeToRefs(store)
 const serverInfo = ref()
-const selectedRow = ref<row>()
+const selectedRow = ref<row>({rowType: 'server', level: 0 })
 //function
 async function getServerDeatails(){
   const respone:{
