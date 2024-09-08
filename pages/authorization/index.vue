@@ -108,7 +108,7 @@ function showPass(){
 }
 if(route.query.token){
   nuxtStorage.localStorage.setData('token',route.query.token,7,'d')
-  navigateTo('/main')
+  navigateTo('/tservers')
 }
 async function signIn(){
       const response = await $fetch(`${url.value}/api/v1/token`,{
@@ -120,6 +120,6 @@ async function signIn(){
         })
       })
       nuxtStorage.localStorage.setData('token',response.access_token,7,'d')
-      navigateTo('/main')
+      navigateTo('/tservers')
     }
 </script>

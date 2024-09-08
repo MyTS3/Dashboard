@@ -55,6 +55,6 @@ async function deleteTheServer(){
         }
   })
   emit("close")
-  if(route.path != '/main') router.back()
+  if(route.path != '/tservers') router.back()
 }
 </script>

@@ -50,8 +50,6 @@ function copyToClipboard(){
   copy.value = true
 }
 function goToServer(){
-  // router.push(`/teamspeak/${props.tsuuid}`)
   emit('close')
-
 }
 </script>

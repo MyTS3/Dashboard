@@ -76,7 +76,7 @@ function removeServer(name,uuid){
   selectedServer.value = {'name':name,'uuid':uuid}
 }
 function serverClicked(server){
-  router.push(`/main/teamspeak/${server.uuid}`)
+  router.push(`/tservers/${server.uuid}`)
 }
 ///////////////////////////calling functions
 await getServers()
