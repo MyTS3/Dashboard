@@ -22,14 +22,7 @@
     <img src="/images/seprator-line.png" alt="" />
     <main>
       <div class="text-left mt-3 mb-6 px-4">
-        <p>ServerGroups:</p>
-        <li>-Configure</li>
-        <li>Admin Server Query</li>
-        <li>-Manager</li>
-      </div>
-      <div class="px-4 text-left ">
-        <p>Channel Groups:</p>
-        <li>-Guest</li>
+        <li v-for="servergroup in servergroups">{{ servergroup.name }}</li>
       </div>
     </main>
     <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
@@ -50,6 +43,7 @@
         <img src="/images/kick_server.png" alt="" />
       </button>
       <button
+        @click="servergroupsTab = true "
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin' "
         class="flex justify-center items-center gap-2 py-2 btn rounded-bl-lg"
       >
@@ -84,19 +78,29 @@
     @close="kickFromServerTab = false"
     v-if="kickFromServerTab"
   />
-  <changeServerGroups class="hidden" />
+  <changeServerGroups
+    :serverInfo="serverInfo"
+    :user="selectedRow.user.userNickname"
+    @close="servergroupsTab = false "
+    v-if="servergroupsTab"
+  />
 </template>
 <script setup lang="ts">
 import banFromServer from './modules/user/banFromServer.vue'
 import kickFromChannel from './modules/user/kickFromChannel.vue'
 import kickFromServer from './modules/user/kickFromServer.vue'
 import changeServerGroups from './modules/user/changeServerGroups.vue'
+import nuxtStorage from 'nuxt-storage';
 
 const props = defineProps(["selectedRow","serverInfo"])
 const serverInfo = props.serverInfo
 const kickFromChannelTab = ref(false)
 const kickFromServerTab = ref(false)
 const banUserTab = ref(false)
+const servergroupsTab = ref(false)
+const store = apiStore()
+const {url} = storeToRefs(store)
+const servergroups = ref()
 
 const persianNumbers: {[key: string]: string} = {
   "0": "۰",
@@ -143,4 +147,13 @@ function calculateUptime(lastConnected: number){
   const uptime = now - lastConnected
   return secondsToString(uptime)
 }
+async function getServerGroups(){
+  const response = await $fetch(`${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.selectedRow.user.userNickname}/servergroups`,{
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        },
+  })
+  servergroups.value = response
+}
+await getServerGroups()
 </script>
