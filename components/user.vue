@@ -3,12 +3,21 @@
     <h1 class="font-medium my-3">کاربر</h1>
     <img src="/images/seprator-line.png" alt="" />
     <header class="grid  text-right user-grid my-4 px-4">
-      <p>Daniel</p>
+      <p>{{selectedRow.user.userNickname}}</p>
       <p>:نام</p>
-      <p>3.5.6 [Beta_linux_x86] Windows</p>
-      <p>:ورژن</p>
-      <p>یک روز و دو ساعت و پنجاه دقیقه</p>
-      <p>:اپتایم</p>
+      <p v-if="selectedRow.user.clientPlatform != 'unknown'">
+        {{selectedRow.user.clientPlatform}}
+      </p>
+      <p v-if="selectedRow.user.clientPlatform != 'unknown'">:پلتفرم</p>
+      <p v-if="selectedRow.user.clientVersion != 'unknown'">
+        {{selectedRow.user.clientVersion}}
+      </p>
+      <p v-if="selectedRow.user.clientVersion != 'unknown'">:ورژن</p>
+
+      <p v-if="selectedRow.user.clientLastconnected != 0">
+        {{ calculateUptime(selectedRow.user.clientLastconnected) }}
+      </p>
+      <p v-if="selectedRow.user.clientLastconnected != 0">:اپتایم</p>
     </header>
     <img src="/images/seprator-line.png" alt="" />
     <main>
@@ -60,4 +69,52 @@ import banFromServer from './modules/user/banFromServer.vue'
 import kickFromChannel from './modules/user/kickFromChannel.vue'
 import kickFromServer from './modules/user/kickFromServer.vue'
 import changeServerGroups from './modules/user/changeServerGroups.vue'
+
+const props = defineProps(["selectedRow"])
+
+const persianNumbers = {
+  "0": "۰",
+  "1": "۱",
+  "2": "۲",
+  "3": "۳",
+  "4": "۴",
+  "5": "۵",
+  "6": "۶",
+  "7": "۷",
+  "8": "۸",
+  "9": "۹",
+}
+
+function convertEnglishNumberToPersian(number) {
+  const string = number.toString()
+  let persianString = ''
+  for (const c of string) {
+    persianString += persianNumbers[c]
+  }
+  return persianString
+}
+
+
+function secondsToString(seconds){
+  const numyears = Math.floor(seconds / 31536000);
+  const numdays = Math.floor((seconds % 31536000) / 86400);
+  const numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
+  const numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
+  // const numseconds = Math.floor((((seconds % 31536000) % 86400) % 3600) % 60);
+
+  let string = '\u200F'
+  if (numyears) string += convertEnglishNumberToPersian(numyears) + " سال "
+  if (numdays) string += convertEnglishNumberToPersian(numdays) + " روز "
+  if (numhours) string += convertEnglishNumberToPersian(numhours) + " ساعت "
+  if (numminutes) string += convertEnglishNumberToPersian(numminutes) + " دقیقه "
+  // if (numseconds) string += convertEnglishNumberToPersian(numseconds) + " ثانیه "
+
+  return string
+}
+
+function calculateUptime(lastConnected){
+  const now = Number(Date.now()/1000)
+  const uptime = now - lastConnected
+  return secondsToString(uptime)
+}
 </script>

@@ -76,7 +76,10 @@
         :serverInfo.value="serverInfo"
         v-if="selectedRow?.rowType=='server' "
       />
-      <user v-if="selectedRow?.rowType=='user' " />
+      <user
+        :selectedRow.value="selectedRow"
+        v-if="selectedRow?.rowType=='user' "
+      />
       <channel v-if="selectedRow?.rowType=='channel' " />
       <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
     </div>
@@ -95,7 +98,7 @@ type alignType = 'start' | 'center' | 'end'
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away'
 type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number} | {rowType: 'server', level: 0}
 type channel = {channelName: string, align: alignType, cid: string, channelType: channelType}
-type user = {userNickname: string, status: statusType}
+type user = {userNickname: string, status: statusType, clientLastconnected: number, clientVersion: string, clientPlatform: string}
 const teamspeakserver = ref<row[]>([])
 const route = useRoute()
 const serverUuid = route.params.id
@@ -175,7 +178,11 @@ async function getTeamspeakUsers(){
     clientOutputMuted: boolean,
     clientOutputHardware: boolean,
     clientNickname: string,
-    clientAway: boolean
+    clientAway: boolean,
+    clientLastconnected: number,
+    clientVersion: string,
+    clientPlatform: string
+
   }[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`,{
     headers:{
           'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
@@ -190,7 +197,16 @@ async function getTeamspeakUsers(){
     if (user.clientInputMuted || !user.clientInputHardware) status = 'micMute'
     if (user.clientOutputMuted || !user.clientOutputHardware) status = 'soundMute'
     if (user.clientAway) status = 'away'
-    teamspeakserver.value.splice(channelIndex+1, 0, {rowType: 'user', user: {userNickname: user.clientNickname, status}, level: teamspeakserver.value[channelIndex].level+1})
+    teamspeakserver.value.splice(channelIndex+1, 0,{
+      rowType: 'user', user: {
+        userNickname: user.clientNickname,
+        status,
+        clientLastconnected: user.clientLastconnected,
+        clientVersion: user.clientVersion,
+        clientPlatform: user.clientPlatform
+      },
+      level: teamspeakserver.value[channelIndex].level+1
+    })
   })
 }
 await getServerDeatails()
