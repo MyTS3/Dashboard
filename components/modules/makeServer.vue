@@ -1,36 +1,32 @@
 <template>
   <!-- <Teleport to=""> -->
   <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex
-      justify-center top-0 left-0 items-center
-      "
+    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      :class="{'hidden':serverTokenTab}"
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-        rounded-xl
-        "
+      :class="{ hidden: serverTokenTab }"
+      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl"
     >
       <button
         :disabled="disableInputs"
         @click="$emit('close')"
-        :class="{'bg-main_red/30':disableInputs }"
+        :class="{ 'bg-main_red/30': disableInputs }"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
       >
         X
       </button>
-      <header class="my-5  ">
+      <header class="my-5">
         <h1 class="text-xl font-bold">ساخت سرور تیم اسپیک</h1>
         <p class="text-xs text-white/65 mt-4 mx-40">
           برای ساخت سرور اطلاعات زیر را کامل کنید
         </p>
       </header>
       <div class="flex flex-col relative">
-        <label class="text-right font-medium mb-4 ">نام سرور</label>
+        <label class="text-right font-medium mb-4">نام سرور</label>
         <input
           :disabled="disableInputs"
           v-model="serverName"
-          class="bg-transparent border rounded-lg p-4 "
+          class="bg-transparent border rounded-lg p-4"
           type="text"
         />
         <p class="absolute right-8 bottom-4 text-blue-300/60">.v4.myts3.ir</p>
@@ -83,11 +79,11 @@
       <div class="flex flex-row-reverse text-center mt-4">
         <p>گزینه های بیشتر</p>
         <div
-          @click="moreoptions=!moreoptions"
+          @click="moreoptions = !moreoptions"
           class="flex items-center mx-auto gap-2"
         >
           <img
-            :class="{'rotate-180':moreoptions}"
+            :class="{ 'rotate-180': moreoptions }"
             class="cursor-pointer transition-all"
             src="/images/arrow.png"
             alt=""
@@ -142,7 +138,7 @@
       <button
         :disabled="disableInputs"
         @click.prevent="makeServer()"
-        class="flex w-full items-center justify-center make-server font-medium gap-2 "
+        class="flex w-full items-center justify-center make-server font-medium gap-2"
       >
         <div
           class="flex w-full items-center justify-center font-medium gap-2"
@@ -220,59 +216,58 @@
       :token="token"
       :tsuuid="tsuuid"
       v-if="serverTokenTab"
-      @close="serverTokenTab=false,$emit('close')"
+      @close="(serverTokenTab = false), $emit('close')"
     />
   </section>
   <!-- </Teleport> -->
 </template>
 <script setup>
 import serverToken from "./serverToken.vue";
-import nuxtStorage from 'nuxt-storage';
+import nuxtStorage from "nuxt-storage";
 ///////////////////////////////////////
-const serverTokenTab = ref(false)
+const serverTokenTab = ref(false);
 ////
-const store = apiStore()
-const {url} = storeToRefs(store)
+const store = apiStore();
+const { url } = storeToRefs(store);
 ////
 
-const emit = defineEmits(["close"])
-const moreoptions = ref(false)
-const version = ref()
-const port = ref()
-const slot = ref(1)
-const serverName = ref()
-const disableInputs = ref(false)
-let token = ref()
-let tsURL = ref()
-let tsuuid = ref()
+const emit = defineEmits(["close"]);
+const moreoptions = ref(false);
+const version = ref();
+const port = ref();
+const slot = ref(1);
+const serverName = ref();
+const disableInputs = ref(false);
+let token = ref();
+let tsURL = ref();
+let tsuuid = ref();
 // functions
-async function makeServer(){
-
+async function makeServer() {
   ////disabling///
-  disableInputs.value = true
+  disableInputs.value = true;
   ////////////////
-  const slots = 2**(Number(slot.value) + 3)
+  const slots = 2 ** (Number(slot.value) + 3);
 
   //////////////
-  console.log("before")
+  console.log("before");
 
-const server = await $fetch(`${url.value}/api/v1/tservers/`,{
-  method:'POST',
-  headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        },
-  body:JSON.stringify({
-    "name": `${serverName.value}.v4.myts3.ir`,
-    "version":version.value,
-    "voicePort": port.value,
-    "slots": slots
-  })
-})
-console.log("after")
- token = await ref(server.privilegeKey)
- tsuuid = await ref(server.uuid)
- tsURL = await ref(`ts3server://${server.name}`)
-serverTokenTab.value = true
+  const server = await $fetch(`${url.value}/api/v1/tservers/`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
+    body: JSON.stringify({
+      name: `${serverName.value}.v4.myts3.ir`,
+      version: version.value,
+      voicePort: port.value,
+      slots: slots,
+    }),
+  });
+  console.log("after");
+  token = await ref(server.privilegeKey);
+  tsuuid = await ref(server.uuid);
+  tsURL = await ref(`ts3server://${server.name}`);
+  serverTokenTab.value = true;
 }
 </script>
 <style scoped></style>

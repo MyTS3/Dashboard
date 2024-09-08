@@ -1,13 +1,9 @@
 <template>
   <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex
-  justify-center top-0 left-0 items-center
-  "
+    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-    rounded-xl font-medium
-    "
+      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
         @click="$emit('close')"
@@ -22,7 +18,7 @@
         </p>
       </header>
       <div>
-        <p class="font-bold w-full text-right ">پلی لیست</p>
+        <p class="font-bold w-full text-right">پلی لیست</p>
 
         <select
           class="text-white bg-transparent my-4 border w-full text-right min-h-16 rounded-2xl"
@@ -57,7 +53,7 @@
         <!-- ////////////////////////////////// -->
       </div>
       <button
-        class="flex w-full items-center justify-center make-server font-medium gap-2 "
+        class="flex w-full items-center justify-center make-server font-medium gap-2"
       >
         <span><img src="/images/plus.png" alt="" /></span>ساخت
       </button>

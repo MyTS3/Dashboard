@@ -1,13 +1,9 @@
 <template>
   <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex
-      justify-center top-0 left-0 items-center
-      "
+    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-        rounded-xl font-medium
-        "
+      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
         @click="$emit('close')"
@@ -37,17 +33,20 @@
   </section>
 </template>
 <script setup>
-const props = defineProps(['selectedServer'])
-const emit = defineEmits(["close"])
-const store = apiStore()
-const {url} = storeToRefs(store)
-async function changeYatqaPass(){
-  const changePass = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-password`,{
-    method:"POST",
-    headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        }
-  })
-  emit("close")
+const props = defineProps(["selectedServer"]);
+const emit = defineEmits(["close"]);
+const store = apiStore();
+const { url } = storeToRefs(store);
+async function changeYatqaPass() {
+  const changePass = await $fetch(
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-password`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
+    },
+  );
+  emit("close");
 }
 </script>

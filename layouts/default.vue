@@ -1,19 +1,19 @@
 <template>
   <div class="layout bg-mainbg_600 text-white h-screen">
     <div>
-      <div style="max-width: 69rem;" class="py-3 mx-auto">
-        <header class=" w-full flex justify-between flex-row-reverse">
-          <h1 v-if="$route.name =='main' " class="font-medium text-xl">
+      <div style="max-width: 69rem" class="py-3 mx-auto">
+        <header class="w-full flex justify-between flex-row-reverse">
+          <h1 v-if="$route.name == 'main'" class="font-medium text-xl">
             داشبورد
           </h1>
           <button
             @click="$router.back()"
-            v-if="$route.name !='main'"
+            v-if="$route.name != 'main'"
             class="btn h-15 p-3 flex items-center rounded-xl"
           >
             <img class="" src="/images/Arrow-Right.png" alt="" />
           </button>
-          <div class="flex gap-4 ">
+          <div class="flex gap-4">
             <button
               class="flex items-center flex-row-reverse gap-1 p-1.5 rounded-lg btn"
             >
@@ -27,10 +27,8 @@
         </header>
       </div>
       <div
-        style="max-width: 69rem;"
-        class="flex my-2 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl
-  items-center  mx-auto 
-  "
+        style="max-width: 69rem"
+        class="flex my-2 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl items-center mx-auto"
       >
         <img
           class="bg-white p-1.5 rounded-lg"
@@ -48,7 +46,7 @@
       <header>
         <img class="mx-auto mt-5" src="/images/User info.png" alt="logo" />
       </header>
-      <nav class="list-none flex flex-col gap-4 mt-7 ">
+      <nav class="list-none flex flex-col gap-4 mt-7">
         <li class="flex gap-3 w-full justify-end p-3 ml-auto activePanel">
           <p>داشبورد</p>
           <img src="/images/dash.png" alt="dashboard" />
@@ -78,7 +76,7 @@
   </div>
 </template>
 <style scoped>
-.layout{
+.layout {
   display: grid;
   grid-template-columns: 6fr 1fr;
 }

@@ -1,13 +1,9 @@
 <template>
   <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex
-      justify-center top-0 left-0 items-center
-      "
+    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-        rounded-xl font-medium
-        "
+      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
         @click="$emit('close')"
@@ -18,7 +14,7 @@
       <h1 class="text-xl my-4 font-bolder">حذف سرور</h1>
       <p class="font-thin max-w-80 text-center mx-auto mb-4 mx-10">
         این عمل قابل بازگردانی نیست و تمامی اطلاعات سرور را حذف میکند، اطمینان
-        <span class="font-bold">{{selectedServer.name}}</span>
+        <span class="font-bold">{{ selectedServer.name }}</span>
         دارید؟
       </p>
       <div class="grid grid-cols-2 gap-3">
@@ -39,22 +35,25 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
+import nuxtStorage from "nuxt-storage";
 //variables
-const emit = defineEmits(["close"])
-const props = defineProps(["selectedServer"])
-const route = useRoute()
-const router = useRouter()
-const store = apiStore()
-const {url} = storeToRefs(store)
-async function deleteTheServer(){
-  const deleteServer = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}`,{
-    method:"DELETE",
-    headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        }
-  })
-  emit("close")
-  if(route.path != '/tservers') router.back()
+const emit = defineEmits(["close"]);
+const props = defineProps(["selectedServer"]);
+const route = useRoute();
+const router = useRouter();
+const store = apiStore();
+const { url } = storeToRefs(store);
+async function deleteTheServer() {
+  const deleteServer = await $fetch(
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
+    },
+  );
+  emit("close");
+  if (route.path != "/tservers") router.back();
 }
 </script>

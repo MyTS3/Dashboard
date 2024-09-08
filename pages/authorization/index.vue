@@ -9,7 +9,7 @@
     />
 
     <main
-      style="width: 30rem; z-index: 100;"
+      style="width: 30rem; z-index: 100"
       class="border-t border-l border-r mx-auto rounded-2xl bg-mainbg_600 text-white p-4 relative"
     >
       <header class="flex justify-center items-center flex-col mb-4">
@@ -45,8 +45,7 @@
           <div class="w-full h-full relative">
             <input
               v-model="inputPass"
-              class="
-              p-4 pl-10 w-full h-full border my-4 rounded-xl bg-transparent"
+              class="p-4 pl-10 w-full h-full border my-4 rounded-xl bg-transparent"
               placeholder="---"
               :type="password"
             />
@@ -73,53 +72,52 @@
         <p>ورود به پنل</p>
       </button>
       <img
-        style="z-index: -1;"
-        class="absolute top-1/4 -translate-y-full  left-1/3 -translate-x-full pointer-events-none "
+        style="z-index: -1"
+        class="absolute top-1/4 -translate-y-full left-1/3 -translate-x-full pointer-events-none"
         src="/images/boxes.png"
       />
       <img
-        style="z-index: -1;"
-        class="absolute bottom-1/4 translate-y-full  right-1/3 translate-x-full pointer-events-none rotate-180 opacity-85"
+        style="z-index: -1"
+        class="absolute bottom-1/4 translate-y-full right-1/3 translate-x-full pointer-events-none rotate-180 opacity-85"
         src="/images/boxes.png"
       />
     </main>
   </section>
 </template>
 <script setup>
-
 definePageMeta({
   layout: false,
 });
 
-import nuxtStorage from 'nuxt-storage';
-import { apiStore } from '#imports';
-import { storeToRefs } from '#imports';
-const store = apiStore()
-const { url } = storeToRefs(store)
+import nuxtStorage from "nuxt-storage";
+import { apiStore } from "#imports";
+import { storeToRefs } from "#imports";
+const store = apiStore();
+const { url } = storeToRefs(store);
 //variables
-const password  = ref("password")
-const inputGmail = ref()
-const inputPass = ref()
-const route = useRoute()
+const password = ref("password");
+const inputGmail = ref();
+const inputPass = ref();
+const route = useRoute();
 //function
-function showPass(){
-  if (password.value == 'password') password.value = 'text'
-  else password.value = 'password'
+function showPass() {
+  if (password.value == "password") password.value = "text";
+  else password.value = "password";
 }
-if(route.query.token){
-  nuxtStorage.localStorage.setData('token',route.query.token,7,'d')
-  navigateTo('/tservers')
+if (route.query.token) {
+  nuxtStorage.localStorage.setData("token", route.query.token, 7, "d");
+  navigateTo("/tservers");
 }
-async function signIn(){
-      const response = await $fetch(`${url.value}/api/v1/token`,{
-        method:"POST",
-        body:JSON.stringify({
-          "grant_type": "password",
-          "username": `${inputGmail.value}`,
-          "password": `${inputPass.value}`
-        })
-      })
-      nuxtStorage.localStorage.setData('token',response.access_token,7,'d')
-      navigateTo('/tservers')
-    }
+async function signIn() {
+  const response = await $fetch(`${url.value}/api/v1/token`, {
+    method: "POST",
+    body: JSON.stringify({
+      grant_type: "password",
+      username: `${inputGmail.value}`,
+      password: `${inputPass.value}`,
+    }),
+  });
+  nuxtStorage.localStorage.setData("token", response.access_token, 7, "d");
+  navigateTo("/tservers");
+}
 </script>

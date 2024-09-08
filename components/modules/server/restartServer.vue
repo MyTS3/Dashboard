@@ -1,13 +1,9 @@
 <template>
   <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex
-      justify-center top-0 left-0 items-center
-      "
+    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-        rounded-xl font-medium
-        "
+      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
         @click="$emit('close')"
@@ -17,10 +13,10 @@
       </button>
       <h1 class="my-4 font-bold text-xl">ری استارت کردن سرور</h1>
       <p class="text-center max-w-96 text-xs mx-auto text-white/70 mx-6">
-        <span class="text-white text-sm ">{{selectedServer.name}}</span>
+        <span class="text-white text-sm">{{ selectedServer.name }}</span>
         این عمل باعث ری استارت شدن میشود و ممکن است کمی طول بکشد
       </p>
-      <h2 class="text-right mt-3 mb-1 ">:دلیل</h2>
+      <h2 class="text-right mt-3 mb-1">:دلیل</h2>
       <input
         v-model="reasson"
         class="my-4 bg-transparent border p-3 rounded-xl text-right"
@@ -44,20 +40,23 @@
   </section>
 </template>
 <script setup>
-import { apiStore } from '#imports';
-import { storeToRefs } from '#imports';
-const props = defineProps(["selectedServer"])
-const emit = defineEmits(["emit"])
-const store = apiStore()
-const {url} = storeToRefs(store)
-const reasson = ref()
+import { apiStore } from "#imports";
+import { storeToRefs } from "#imports";
+const props = defineProps(["selectedServer"]);
+const emit = defineEmits(["emit"]);
+const store = apiStore();
+const { url } = storeToRefs(store);
+const reasson = ref();
 async function restartServer() {
-  const respone = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/restart`,{
-    method:"POST",
-    body:JSON.stringify({
-      "reason":`${reasson.value}`
-    })
-  })
-  emit("close")
+  const respone = await $fetch(
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/restart`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        reason: `${reasson.value}`,
+      }),
+    },
+  );
+  emit("close");
 }
 </script>

@@ -1,16 +1,12 @@
 <template>
   <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex
-    justify-center top-0 left-0 items-center
-    "
+    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-      rounded-xl font-medium
-      "
+      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
-        :class="{'bg-main_red/50':disable}"
+        :class="{ 'bg-main_red/50': disable }"
         :disabled="disable"
         @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
@@ -18,11 +14,11 @@
         X
       </button>
       <div>
-        <h1 class="text-3xl font-extrabold ">تغییر اسلات</h1>
+        <h1 class="text-3xl font-extrabold">تغییر اسلات</h1>
         <p class="my-4 mx-12 text-center font-medium text-white/80">
-          هستید<span
-            class="mx-1 font-bold text-white"
-            >{{ selectedServer.name }}</span
+          هستید<span class="mx-1 font-bold text-white">{{
+            selectedServer.name
+          }}</span
           >شما در حال تغییر اسلات های سرور
         </p>
         <div class="flex justify-between">
@@ -79,22 +75,24 @@
   <!-- //////////////////price eneded////////////// -->
 </template>
 <script setup>
-let disable = ref(false)
-const props = defineProps(["selectedServer"])
-const emit = defineEmits(["close"])
-let selectedSlot = ref(16)
-const store = apiStore()
-const {url} = storeToRefs(store)
-async function chaneSlots(){
-  disable = true
-  const slots = 2**(Number(selectedSlot.value) + 3 )
-  const response = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/change-slots`,{
-    method:"POST",
-    body:JSON.stringify({
-      "slots": slots
-    })
-  })
-  emit("close")
-
+let disable = ref(false);
+const props = defineProps(["selectedServer"]);
+const emit = defineEmits(["close"]);
+let selectedSlot = ref(16);
+const store = apiStore();
+const { url } = storeToRefs(store);
+async function chaneSlots() {
+  disable = true;
+  const slots = 2 ** (Number(selectedSlot.value) + 3);
+  const response = await $fetch(
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/change-slots`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        slots: slots,
+      }),
+    },
+  );
+  emit("close");
 }
 </script>

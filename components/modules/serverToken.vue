@@ -1,13 +1,9 @@
 <template>
   <section
-    class="h-full absolute z-50 w-full flex
-        justify-center top-0 left-0 items-center
-        "
+    class="h-full absolute z-50 w-full flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-          rounded-xl font-medium
-          "
+      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
         @click="$emit('close')"
@@ -25,7 +21,7 @@
           <img src="/images/copy.png" alt="" />
         </button>
       </div>
-      <p :class="{'opacity-0':!copy}" class="mb-6 text-main_green ">
+      <p :class="{ 'opacity-0': !copy }" class="mb-6 text-main_green">
         !توکن کپی شد
       </p>
       <a
@@ -39,17 +35,17 @@
   </section>
 </template>
 <script setup>
-const props = defineProps(["token","tsURL","tsuuid"])
-const emit = defineEmits(["close"])
+const props = defineProps(["token", "tsURL", "tsuuid"]);
+const emit = defineEmits(["close"]);
 
 /////
-const {tsURL} = props
-const copy = ref(false)
-function copyToClipboard(){
+const { tsURL } = props;
+const copy = ref(false);
+function copyToClipboard() {
   navigator.clipboard.writeText(props.token);
-  copy.value = true
+  copy.value = true;
 }
-function goToServer(){
-  emit('close')
+function goToServer() {
+  emit("close");
 }
 </script>

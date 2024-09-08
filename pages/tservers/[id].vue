@@ -1,20 +1,20 @@
 <template>
   <section
-    style="max-width: 69rem;"
-    class=" mt-6 grid w-full grid-cols-2 h-[40rem] mx-auto text-white text-center "
+    style="max-width: 69rem"
+    class="mt-6 grid w-full grid-cols-2 h-[40rem] mx-auto text-white text-center"
   >
     <div class="bg-mainbg_400 w-full rounded-xl">
       <header class="w-full relative my-4 px-4">
         <h1
-          @click="selectedRow = {rowType:'server', level: 0}"
-          :class=" selectedRow?.rowType == 'server' ?'btn-active':'btn '  "
-          class="p-1 border-2 bg-white/10 rounded-2xl "
+          @click="selectedRow = { rowType: 'server', level: 0 }"
+          :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
+          class="p-1 border-2 bg-white/10 rounded-2xl"
         >
-          {{serverInfo.name}}
+          {{ serverInfo.name }}
         </h1>
         <img class="mt-3" src="/images/seprator-line.png" alt="" />
       </header>
-      <main class="list-none teamspeak text-xs px-4 ">
+      <main class="list-none teamspeak text-xs px-4">
         <!-- <div>
         <div class="rounded-lg p-1 px-3 hover:bg-main_orange/20">
           <p>Music Channels</p>
@@ -23,46 +23,48 @@
         <div v-for="row in teamspeakserver">
           <div
             @click="selectedRow = row"
-            class=" py-1 max-h-7 overflow-hidden px-3 rounded-lg "
-            :class=" selectedRow == row?'btn-active':'hover:bg-main_orange/20' "
+            class="py-1 max-h-7 overflow-hidden px-3 rounded-lg"
+            :class="
+              selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
+            "
           >
-            <div :style="{'margin-left': row.level * 1 + 'rem'}">
+            <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
               <div class="flex gap-1" v-if="row.rowType == 'channel'">
                 <img
-                  v-if="row.channel.channelType=='normal'"
+                  v-if="row.channel.channelType == 'normal'"
                   src="/images/channel-icon.png"
                   alt=""
                 />
                 <p
-                  :style="{'text-align': row.channel.align}"
+                  :style="{ 'text-align': row.channel.align }"
                   class="w-full text-left"
                 >
-                  {{row.channel.channelName}}
+                  {{ row.channel.channelName }}
                 </p>
               </div>
               <div class="flex gap-1" v-if="row.rowType == 'user'">
                 <img
-                  v-if="row.user.status=='openMic'"
+                  v-if="row.user.status == 'openMic'"
                   src="/images/normal-user.png"
                   alt=""
                 />
                 <img
-                  v-if="row.user.status=='micMute'"
+                  v-if="row.user.status == 'micMute'"
                   src="/images/input_muted.png"
                   alt=""
                 />
                 <img
-                  v-if="row.user.status=='soundMute'"
+                  v-if="row.user.status == 'soundMute'"
                   src="/images/output_muted.png"
                   alt=""
                 />
                 <img
-                  v-if="row.user.status=='away'"
+                  v-if="row.user.status == 'away'"
                   src="/images/away.png"
                   alt=""
                 />
                 <p class="w-full text-left">
-                  {{row.user.userNickname}}
+                  {{ row.user.userNickname }}
                 </p>
               </div>
             </div>
@@ -74,147 +76,183 @@
       <server
         @getServerDeatails="getServerDeatails"
         :serverInfo.value="serverInfo"
-        v-if="selectedRow?.rowType=='server' "
+        v-if="selectedRow?.rowType == 'server'"
       />
       <user
         :serverInfo.value="serverInfo"
         :selectedRow.value="selectedRow"
-        v-if="selectedRow?.rowType=='user' "
+        v-if="selectedRow?.rowType == 'user'"
       />
-      <channel v-if="selectedRow?.rowType=='channel' " />
+      <channel v-if="selectedRow?.rowType == 'channel'" />
       <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
     </div>
   </section>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import musicbot from '~/components/musicbot.vue';
-import { useRoute } from '#app';
-import { apiStore } from '#imports';
-import { storeToRefs } from '#imports';
-import nuxtStorage from 'nuxt-storage';
+import { ref } from "vue";
+import musicbot from "~/components/musicbot.vue";
+import { useRoute } from "#app";
+import { apiStore } from "#imports";
+import { storeToRefs } from "#imports";
+import nuxtStorage from "nuxt-storage";
 
 //variables
-type alignType = 'start' | 'center' | 'end'
-type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away'
-type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number} | {rowType: 'server', level: 0}
-type channel = {channelName: string, align: alignType, cid: string, channelType: channelType}
-type user = {userNickname: string, status: statusType, clientLastconnected: number, clientVersion: string, clientPlatform: string, clientUniqueIdentifier:string}
-const teamspeakserver = ref<row[]>([])
-const route = useRoute()
-const serverUuid = route.params.id
-const store = apiStore()
-const {url} = storeToRefs(store)
-const serverInfo = ref()
-const selectedRow = ref<row>({rowType: 'server', level: 0 })
+type alignType = "start" | "center" | "end";
+type statusType = "openMic" | "micMute" | "soundMute" | "away";
+type row =
+  | { rowType: "channel"; channel: channel; level: number }
+  | { rowType: "user"; user: user; level: number }
+  | { rowType: "server"; level: 0 };
+type channel = {
+  channelName: string;
+  align: alignType;
+  cid: string;
+  channelType: channelType;
+};
+type user = {
+  userNickname: string;
+  status: statusType;
+  clientLastconnected: number;
+  clientVersion: string;
+  clientPlatform: string;
+  clientUniqueIdentifier: string;
+};
+const teamspeakserver = ref<row[]>([]);
+const route = useRoute();
+const serverUuid = route.params.id;
+const store = apiStore();
+const { url } = storeToRefs(store);
+const serverInfo = ref();
+const selectedRow = ref<row>({ rowType: "server", level: 0 });
 //function
-async function getServerDeatails(){
-  const respone:{
-    deployedOn: String,
-    mustRunning: boolean,
-    name:String,
-    queryPassword:String,
-    queryPort:Number,
-    slots:Number,
-    uuid:String,
-    version:String
-   } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`,{
-    headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        }
-   })
-  serverInfo.value = await respone
+async function getServerDeatails() {
+  const respone: {
+    deployedOn: String;
+    mustRunning: boolean;
+    name: String;
+    queryPassword: String;
+    queryPort: Number;
+    slots: Number;
+    uuid: String;
+    version: String;
+  } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`, {
+    headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
+  });
+  serverInfo.value = await respone;
 }
 
-type channelType = "*spacer" | "lspacer" | "cspacer" | "rspacer" | "normal"
-function findChannelTypeAndNameByFullName(fullName: string): {type: channelType, name: string, align: alignType} {
-  const splitedName = fullName.split(']')
+type channelType = "*spacer" | "lspacer" | "cspacer" | "rspacer" | "normal";
+function findChannelTypeAndNameByFullName(fullName: string): {
+  type: channelType;
+  name: string;
+  align: alignType;
+} {
+  const splitedName = fullName.split("]");
   if (splitedName.length > 1) {
-    if (splitedName[0].startsWith('[')) {
-      if (splitedName[0].includes("cspacer")) return {type: "cspacer", name: splitedName[1], align:"center"};
-      if (splitedName[0].includes("lspacer")) return {type: "lspacer", name: splitedName[1], align:"start"};
-      if (splitedName[0].includes("rspacer")) return {type: "rspacer", name: splitedName[1], align:"end"};
-      if (splitedName[0].includes("*spacer")) return {type: "*spacer", name: splitedName[1].repeat(100), align:"center"};
+    if (splitedName[0].startsWith("[")) {
+      if (splitedName[0].includes("cspacer"))
+        return { type: "cspacer", name: splitedName[1], align: "center" };
+      if (splitedName[0].includes("lspacer"))
+        return { type: "lspacer", name: splitedName[1], align: "start" };
+      if (splitedName[0].includes("rspacer"))
+        return { type: "rspacer", name: splitedName[1], align: "end" };
+      if (splitedName[0].includes("*spacer"))
+        return {
+          type: "*spacer",
+          name: splitedName[1].repeat(100),
+          align: "center",
+        };
     }
   }
-  return {type: "normal", name: fullName, align:'start'}
+  return { type: "normal", name: fullName, align: "start" };
 }
 
-async function getTeamspeakChannels(){
-  const response: {channelName: string, cid: string, pid: string}[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`,{
-    headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        }
-  })
-  response.forEach((channel)=>{
-    const channelTypeAndName = findChannelTypeAndNameByFullName(channel.channelName)
-    const channelType = channelTypeAndName.type
-    const channelName = channelTypeAndName.name
-    const align = channelTypeAndName.align
+async function getTeamspeakChannels() {
+  const response: { channelName: string; cid: string; pid: string }[] =
+    await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
+    });
+  response.forEach((channel) => {
+    const channelTypeAndName = findChannelTypeAndNameByFullName(
+      channel.channelName,
+    );
+    const channelType = channelTypeAndName.type;
+    const channelName = channelTypeAndName.name;
+    const align = channelTypeAndName.align;
 
-    let level = 0
-    let parentChannel: {cid: string, pid: string, channelName: string} | undefined = channel
+    let level = 0;
+    let parentChannel:
+      | { cid: string; pid: string; channelName: string }
+      | undefined = channel;
     while (parentChannel) {
-      level+=1
-      parentChannel = response.find(c => {
-        if (!parentChannel) return false
-        return c.cid == parentChannel.pid
-      })
+      level += 1;
+      parentChannel = response.find((c) => {
+        if (!parentChannel) return false;
+        return c.cid == parentChannel.pid;
+      });
     }
-    teamspeakserver.value.push({rowType: 'channel', channel: {
-      channelName,
-      cid:channel.cid,
-      channelType,
-      align,
-    }, level})
-  })
-
+    teamspeakserver.value.push({
+      rowType: "channel",
+      channel: {
+        channelName,
+        cid: channel.cid,
+        channelType,
+        align,
+      },
+      level,
+    });
+  });
 }
-async function getTeamspeakUsers(){
+async function getTeamspeakUsers() {
   const users: {
-    cid: string,
-    clid: string,
-    clientInputMuted: boolean,
-    clientInputHardware: boolean,
-    clientOutputMuted: boolean,
-    clientOutputHardware: boolean,
-    clientNickname: string,
-    clientAway: boolean,
-    clientLastconnected: number,
-    clientVersion: string,
-    clientPlatform: string,
-    clientUniqueIdentifier:string
-
-  }[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`,{
-    headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        }
-  })
-  users.forEach(user => {
-    const channelIndex = teamspeakserver.value.findIndex(row => {
-      if (row.rowType != 'channel') return false
-      return row.channel.cid == user.cid
-    })
-    let status: statusType = 'openMic'
-    if (user.clientInputMuted || !user.clientInputHardware) status = 'micMute'
-    if (user.clientOutputMuted || !user.clientOutputHardware) status = 'soundMute'
-    if (user.clientAway) status = 'away'
-    teamspeakserver.value.splice(channelIndex+1, 0,{
-      rowType: 'user', user: {
+    cid: string;
+    clid: string;
+    clientInputMuted: boolean;
+    clientInputHardware: boolean;
+    clientOutputMuted: boolean;
+    clientOutputHardware: boolean;
+    clientNickname: string;
+    clientAway: boolean;
+    clientLastconnected: number;
+    clientVersion: string;
+    clientPlatform: string;
+    clientUniqueIdentifier: string;
+  }[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
+    headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
+  });
+  users.forEach((user) => {
+    const channelIndex = teamspeakserver.value.findIndex((row) => {
+      if (row.rowType != "channel") return false;
+      return row.channel.cid == user.cid;
+    });
+    let status: statusType = "openMic";
+    if (user.clientInputMuted || !user.clientInputHardware) status = "micMute";
+    if (user.clientOutputMuted || !user.clientOutputHardware)
+      status = "soundMute";
+    if (user.clientAway) status = "away";
+    teamspeakserver.value.splice(channelIndex + 1, 0, {
+      rowType: "user",
+      user: {
         userNickname: user.clientNickname,
         status,
         clientLastconnected: user.clientLastconnected,
         clientVersion: user.clientVersion,
         clientPlatform: user.clientPlatform,
-        clientUniqueIdentifier:user.clientUniqueIdentifier
+        clientUniqueIdentifier: user.clientUniqueIdentifier,
       },
-      level: teamspeakserver.value[channelIndex].level+1
-    })
-  })
+      level: teamspeakserver.value[channelIndex].level + 1,
+    });
+  });
 }
-await getServerDeatails()
-if(serverInfo.value.mustRunning){
-  await getTeamspeakChannels()
-  await getTeamspeakUsers()
+await getServerDeatails();
+if (serverInfo.value.mustRunning) {
+  await getTeamspeakChannels();
+  await getTeamspeakUsers();
 }
 </script>

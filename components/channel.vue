@@ -6,11 +6,7 @@
       <p><span>MusicChannel </span>:نام</p>
       <p><span>1 </span>:تعدادکاربران</p>
     </main>
-    <footer
-      class="w-full absolute bottom-10 px-4 grid  gap-4
-    
-    "
-    >
+    <footer class="w-full absolute bottom-10 px-4 grid gap-4">
       <button class="flex items-center py-3 justify-center btn rounded-l-lg">
         <p>ساخت موزیک بات جدید</p>
         <img src="/images/addon.png" alt="" />
@@ -20,5 +16,5 @@
   <MakeMusicbot class="hidden" />
 </template>
 <script setup>
-import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';
+import MakeMusicbot from "./modules/musicbot/makeMusicbot.vue";
 </script>

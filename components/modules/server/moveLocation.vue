@@ -1,13 +1,9 @@
 <template>
   <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex
-      justify-center top-0 left-0 items-center
-      "
+    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative
-        rounded-xl font-medium
-        "
+      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
         @click="$emit('close')"
@@ -16,7 +12,7 @@
         X
       </button>
       <h1 class="text-xl my-4 font-bolder">انتقال سرور به مکانی دیگر</h1>
-      <p class="font-bold max-w-80 text-center ml-auto ">:لوکیشن مد نظر</p>
+      <p class="font-bold max-w-80 text-center ml-auto">:لوکیشن مد نظر</p>
       <from class="w-full my-4">
         <select
           class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
@@ -52,26 +48,30 @@
 <script setup>
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
-const emit = defineEmits(["close"])
-const props = defineProps(["selectedServer"])
-const store = apiStore()
-const {url} = storeToRefs(store)
+const emit = defineEmits(["close"]);
+const props = defineProps(["selectedServer"]);
+const store = apiStore();
+const { url } = storeToRefs(store);
 ////////
-const availables = ref({})
-const selectedLocation = ref()
-async function getAvailble(){
-  const respone = $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`)
-   availables.value = await respone
-
+const availables = ref({});
+const selectedLocation = ref();
+async function getAvailble() {
+  const respone = $fetch(
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`,
+  );
+  availables.value = await respone;
 }
-async function moveServer(){
-  const respone = $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move`,{
-    method:"POST",
-    body:JSON.stringify({
-      "node":`${selectedLocation.value}`
-    })
-  })
-  emit("close")
+async function moveServer() {
+  const respone = $fetch(
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        node: `${selectedLocation.value}`,
+      }),
+    },
+  );
+  emit("close");
 }
-await getAvailble()
+await getAvailble();
 </script>

@@ -3,67 +3,70 @@
     <header class="relative">
       <h1 class="text-center my-4">سرور</h1>
       <img
-        @click.prevent="deleteServerTab=true"
-        class="absolute right-4 top-0 cursor-pointer "
+        @click.prevent="deleteServerTab = true"
+        class="absolute right-4 top-0 cursor-pointer"
         src="/images/trash.png"
         alt=""
       />
       <img src="/images/seprator-line.png" alt="" />
     </header>
     <main class="list-none">
-      <li class="grid gridList p-2 ">
+      <li class="grid gridList p-2">
         <p>{{ selectedServer.name }}</p>
         <p>:نام</p>
       </li>
-      <li class="grid gridList p-2  relative">
-        <p>{{selectedServer.slots}}</p>
+      <li class="grid gridList p-2 relative">
+        <p>{{ selectedServer.slots }}</p>
         <p>:تعداد اسلات</p>
-        <button class="absolute left-4" @click="changeSlotTab=true">
+        <button class="absolute left-4" @click="changeSlotTab = true">
           <img src="/images/edit.png" alt="" />
         </button>
       </li>
       <li class="grid gridList p-2 relative">
-        <p :style="{'-webkit-text-security':showYatqaPass}">
-          {{selectedServer.queryPassword}}
+        <p :style="{ '-webkit-text-security': showYatqaPass }">
+          {{ selectedServer.queryPassword }}
         </p>
         <p>:رمز یاتکا</p>
         <div class="absolute left-4">
-          <button @click.prevent="yatqaPassReset=true">
+          <button @click.prevent="yatqaPassReset = true">
             <img src="/images/edit.png" alt="" />
           </button>
-          <button v-if="showYatqaPass=='none'" @click="copyYatqaPass()">
+          <button v-if="showYatqaPass == 'none'" @click="copyYatqaPass()">
             <img src="/images/copy.png" alt="" />
           </button>
           <button
-            v-if="showYatqaPass=='disc'"
-            @click.prevent="showYatqaPass='none'  "
+            v-if="showYatqaPass == 'disc'"
+            @click.prevent="showYatqaPass = 'none'"
           >
             <img src="/images/hide.png" alt="" />
           </button>
         </div>
       </li>
-      <li class="grid gridList p-2 ">
+      <li class="grid gridList p-2">
         <p>
-          {{selectedServer.queryPort}}
+          {{ selectedServer.queryPort }}
         </p>
         <p>پورت</p>
       </li>
-      <li class="grid gridList p-2 ">
-        <p class="w-2/3 text-nowrap  overflow-hidden mx-auto">
-          {{selectedServer.uuid}}
+      <li class="grid gridList p-2">
+        <p class="w-2/3 text-nowrap overflow-hidden mx-auto">
+          {{ selectedServer.uuid }}
         </p>
         <p>آیدی</p>
       </li>
-      <li class="grid gridList p-2 ">
-        <p>{{selectedServer.version}}</p>
+      <li class="grid gridList p-2">
+        <p>{{ selectedServer.version }}</p>
         <p>:ورژن</p>
       </li>
       <li v-if="selectedServer.mustRunning" class="grid gridList p-2 relative">
         <p class="w-2/3 text-nowrap overflow-hidden mx-auto">
-          {{selectedServer.deployedOn}}
+          {{ selectedServer.deployedOn }}
         </p>
         <p>:موقعیت مکانی</p>
-        <button @click.prevent="serverLocationTab=true" class="absolute left-4">
+        <button
+          @click.prevent="serverLocationTab = true"
+          class="absolute left-4"
+        >
           <img src="/images/location.png" alt="" />
         </button>
       </li>
@@ -83,33 +86,29 @@
         </div>
       </li>
     </main>
-    <footer
-      class="grid grid-cols-2 gap-5 w-full absolute bottom-10 p-4
-      
-    "
-    >
+    <footer class="grid grid-cols-2 gap-5 w-full absolute bottom-10 p-4">
       <button
-        @click="restartServerTab=true"
-        class="flex border w-full gap-3 justify-center h-20 items-center  rounded-l-xl btn"
+        @click="restartServerTab = true"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
       </button>
       <button
-        @click="bansListTab=true"
-        class="flex border w-full gap-3 justify-center h-20 items-center  rounded-r-xl btn"
+        @click="bansListTab = true"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
       >
         <p>لیست بن ها</p>
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center  rounded-l-xl btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
       >
         <p>ریسیت کانفگ</p>
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center  rounded-r-xl btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
       >
         <p>ساب دامنه ها</p>
         <img src="/images/ban_list.png" alt="" />
@@ -118,88 +117,90 @@
   </section>
   <changeSlot
     :selectedServer="selectedServer"
-    @close="getServerDeatails(),changeSlotTab=false"
+    @close="getServerDeatails(), (changeSlotTab = false)"
     v-if="changeSlotTab"
   />
   <yatqaPassChange
     :selectedServer="selectedServer"
-    @close="yatqaPassReset=false"
+    @close="yatqaPassReset = false"
     v-if="yatqaPassReset"
   />
   <moveLocation
     :selectedServer="selectedServer"
     v-if="serverLocationTab"
-    @close="getServerDeatails(),serverLocationTab=false"
+    @close="getServerDeatails(), (serverLocationTab = false)"
   />
   <restartServer
     :selectedServer="selectedServer"
-    @close="restartServerTab=false"
+    @close="restartServerTab = false"
     v-if="restartServerTab"
   />
   <turnoffServer
     :selectedServer="selectedServer"
-    @close="turnOffServerTab = false,getServerDeatails()"
+    @close="(turnOffServerTab = false), getServerDeatails()"
     v-if="turnOffServerTab"
   />
   <deleteServer
     :selectedServer="selectedServer"
-    @close="deleteServerTab=false"
+    @close="deleteServerTab = false"
     v-if="deleteServerTab"
   />
   <banList
     :selectedServer="selectedServer"
-    @close="bansListTab=false"
+    @close="bansListTab = false"
     v-if="bansListTab"
   />
 </template>
 <script setup>
-import changeSlot from './modules/server/changeSlot.vue'
-import yatqaPassChange from './modules/server/yatqaPassChange.vue'
-import moveLocation from './modules/server/moveLocation.vue'
-import restartServer from './modules/server/restartServer.vue'
-import turnoffServer from './modules/server/turnoffServer.vue'
-import deleteServer from './modules/server/deleteServer.vue'
-import banList from './modules/server/banList.vue'
+import changeSlot from "./modules/server/changeSlot.vue";
+import yatqaPassChange from "./modules/server/yatqaPassChange.vue";
+import moveLocation from "./modules/server/moveLocation.vue";
+import restartServer from "./modules/server/restartServer.vue";
+import turnoffServer from "./modules/server/turnoffServer.vue";
+import deleteServer from "./modules/server/deleteServer.vue";
+import banList from "./modules/server/banList.vue";
 
 /////
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
 ////
-const deleteServerTab = ref(false)
-const changeSlotTab = ref(false)
-const showYatqaPass = ref('disc')
-const yatqaPassReset = ref(false)
-const turnOffServerTab = ref(false)
-const serverLocationTab =ref(false)
-const bansListTab = ref(false)
-const restartServerTab = ref(false)
+const deleteServerTab = ref(false);
+const changeSlotTab = ref(false);
+const showYatqaPass = ref("disc");
+const yatqaPassReset = ref(false);
+const turnOffServerTab = ref(false);
+const serverLocationTab = ref(false);
+const bansListTab = ref(false);
+const restartServerTab = ref(false);
 ///
-const props = defineProps(["serverInfo"])
-const emit = defineEmits(["getServerDeatails"])
-const route = useRoute()
-const store = apiStore()
-const {url} = storeToRefs(store)
+const props = defineProps(["serverInfo"]);
+const emit = defineEmits(["getServerDeatails"]);
+const route = useRoute();
+const store = apiStore();
+const { url } = storeToRefs(store);
 //////
-const selectedServer = ref(props.serverInfo)
+const selectedServer = ref(props.serverInfo);
 //functions
-function getServerDeatails(){
-  emit("getServerDeatails")
+function getServerDeatails() {
+  emit("getServerDeatails");
 }
-function copyYatqaPass(){
-  navigator.clipboard.writeText(selectedServer.queryPassword)
+function copyYatqaPass() {
+  navigator.clipboard.writeText(selectedServer.queryPassword);
 }
-async function turnServerOffOrOn(){
+async function turnServerOffOrOn() {
   if (selectedServer.value.mustRunning == true) {
-    turnOffServerTab.value = true
-  }
-  else {
-    const respone = await $fetch(`${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,{
-      method:"POST",
-      headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        }
-    })
-     getServerDeatails()
+    turnOffServerTab.value = true;
+  } else {
+    const respone = await $fetch(
+      `${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        },
+      },
+    );
+    getServerDeatails();
   }
 }
 </script>

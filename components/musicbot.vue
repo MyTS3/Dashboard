@@ -8,10 +8,10 @@
     </header>
     <img class="mx-auto" src="/images/seprator-line.png" alt="" />
     <main
-      class="w-4/5 bg-white/10 mx-auto rounded-lg my-6 p-2 overflow-y-auto max-h-96 "
+      class="w-4/5 bg-white/10 mx-auto rounded-lg my-6 p-2 overflow-y-auto max-h-96"
     >
       <!-- //////////////////////////////////playlist -->
-      <li class="list-none my-1 p-3  rounded-xl relative btn-active">
+      <li class="list-none my-1 p-3 rounded-xl relative btn-active">
         <h2 class="text-lg font-bold">Khabam Nemibare</h2>
         <p class="text-sm mt-1 text-white/50">Amir Tataloo</p>
         <button class="absolute bottom-1/2 translate-y-1/2 right-4">
@@ -61,12 +61,12 @@
         <h2 class="font-bold">Khabam Nemibare</h2>
         <p class="text-sm text-white/50">Amir Tataloo</p>
       </div>
-      <div class="flex  my-2 items-center w-full justify-around">
+      <div class="flex my-2 items-center w-full justify-around">
         <p>02:36</p>
         <div class="audio-progress"></div>
         <p>3:56</p>
       </div>
-      <div class="flex w-full justify-between px-4 mt-2 ">
+      <div class="flex w-full justify-between px-4 mt-2">
         <button>
           <img src="/images/repeate-one.png" alt="" />
         </button>
