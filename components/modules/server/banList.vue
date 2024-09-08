@@ -56,6 +56,7 @@
   <unBan @close="getBanList(),unBanTab=false" :selectedServer="selectedServer" :unBaning="unBaning" v-if="unBanTab" />
 </template>
 <script setup>
+import nuxtStorage from 'nuxt-storage';
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
 import unBan from './unban.vue'
@@ -69,7 +70,11 @@ const unBaning = ref()
 const unBanTab = ref(false)
 //functions
 async function getBanList(){
-  const respone = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans`)
+  const respone = await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans`,{
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        },
+  })
   banList.value = await respone
 }
  function openUnBanPopUp(ban){

@@ -34,24 +34,31 @@
     </main>
     <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
       <button
+        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin' "
+        @click="banUserTab  = true "
         class="flex justify-center items-center gap-2 py-2 btn rounded-tl-lg"
       >
         <p>بن از سرور</p>
         <img src="/images/ban_client.png" alt="" />
       </button>
       <button
+        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin' "
+        @click="kickFromServerTab = true"
         class="flex justify-center items-center gap-2 py-2 btn rounded-tr-lg"
       >
         <p>کیک از سرور</p>
         <img src="/images/kick_server.png" alt="" />
       </button>
       <button
+        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin' "
         class="flex justify-center items-center gap-2 py-2 btn rounded-bl-lg"
       >
         <p>رنک ها</p>
         <img src="/images/ranks.png" alt="" />
       </button>
       <button
+        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin' "
+        @click="kickFromChannelTab = true"
         class="flex justify-center items-center gap-2 py-2 btn rounded-br-lg"
       >
         <p>کیک از چنل</p>
@@ -59,20 +66,39 @@
       </button>
     </footer>
   </section>
-  <banFromServer class="hidden" />
-  <kickFromChannel class="hidden" />
-  <kickFromServer class="hidden" />
+  <banFromServer
+    :user="selectedRow.user.userNickname"
+    :serverInfo="serverInfo"
+    @close="banUserTab = false"
+    v-if="banUserTab"
+  />
+  <kickFromChannel
+    :user="selectedRow.user.userNickname"
+    :serverInfo="serverInfo"
+    @close="kickFromChannelTab = false"
+    v-if="kickFromChannelTab"
+  />
+  <kickFromServer
+    :user="selectedRow.user.userNickname"
+    :serverInfo="serverInfo"
+    @close="kickFromServerTab = false"
+    v-if="kickFromServerTab"
+  />
   <changeServerGroups class="hidden" />
 </template>
-<script setup>
+<script setup lang="ts">
 import banFromServer from './modules/user/banFromServer.vue'
 import kickFromChannel from './modules/user/kickFromChannel.vue'
 import kickFromServer from './modules/user/kickFromServer.vue'
 import changeServerGroups from './modules/user/changeServerGroups.vue'
 
-const props = defineProps(["selectedRow"])
+const props = defineProps(["selectedRow","serverInfo"])
+const serverInfo = props.serverInfo
+const kickFromChannelTab = ref(false)
+const kickFromServerTab = ref(false)
+const banUserTab = ref(false)
 
-const persianNumbers = {
+const persianNumbers: {[key: string]: string} = {
   "0": "۰",
   "1": "۱",
   "2": "۲",
@@ -85,7 +111,7 @@ const persianNumbers = {
   "9": "۹",
 }
 
-function convertEnglishNumberToPersian(number) {
+function convertEnglishNumberToPersian(number:number) {
   const string = number.toString()
   let persianString = ''
   for (const c of string) {
@@ -95,7 +121,7 @@ function convertEnglishNumberToPersian(number) {
 }
 
 
-function secondsToString(seconds){
+function secondsToString(seconds: number){
   const numyears = Math.floor(seconds / 31536000);
   const numdays = Math.floor((seconds % 31536000) / 86400);
   const numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
@@ -112,7 +138,7 @@ function secondsToString(seconds){
   return string
 }
 
-function calculateUptime(lastConnected){
+function calculateUptime(lastConnected: number){
   const now = Number(Date.now()/1000)
   const uptime = now - lastConnected
   return secondsToString(uptime)

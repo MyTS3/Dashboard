@@ -77,6 +77,7 @@
         v-if="selectedRow?.rowType=='server' "
       />
       <user
+        :serverInfo.value="serverInfo"
         :selectedRow.value="selectedRow"
         v-if="selectedRow?.rowType=='user' "
       />
@@ -98,7 +99,7 @@ type alignType = 'start' | 'center' | 'end'
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away'
 type row = {rowType: 'channel', channel: channel, level: number} | {rowType: 'user', user: user, level: number} | {rowType: 'server', level: 0}
 type channel = {channelName: string, align: alignType, cid: string, channelType: channelType}
-type user = {userNickname: string, status: statusType, clientLastconnected: number, clientVersion: string, clientPlatform: string}
+type user = {userNickname: string, status: statusType, clientLastconnected: number, clientVersion: string, clientPlatform: string, clientUniqueIdentifier:string}
 const teamspeakserver = ref<row[]>([])
 const route = useRoute()
 const serverUuid = route.params.id
@@ -181,7 +182,8 @@ async function getTeamspeakUsers(){
     clientAway: boolean,
     clientLastconnected: number,
     clientVersion: string,
-    clientPlatform: string
+    clientPlatform: string,
+    clientUniqueIdentifier:string
 
   }[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`,{
     headers:{
@@ -203,7 +205,8 @@ async function getTeamspeakUsers(){
         status,
         clientLastconnected: user.clientLastconnected,
         clientVersion: user.clientVersion,
-        clientPlatform: user.clientPlatform
+        clientPlatform: user.clientPlatform,
+        clientUniqueIdentifier:user.clientUniqueIdentifier
       },
       level: teamspeakserver.value[channelIndex].level+1
     })

@@ -23,14 +23,38 @@
       />
       <div class="grid grid-cols-2 gap-3">
         <button
+          @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
         >
           لغو
         </button>
-        <button class="p-4 text-center rounded-xl bg-main_red module-btn">
+        <button
+          @click="banUser()"
+          class="p-4 text-center rounded-xl bg-main_red module-btn"
+        >
           تایید
         </button>
       </div>
     </main>
   </section>
 </template>
+<script setup>
+import nuxtStorage from 'nuxt-storage';
+const store = apiStore()
+const {url} = storeToRefs(store)
+const props = defineProps(["serverInfo","user"])
+const emit = defineEmits("close")
+const reason = ref('')
+async function banUser(){
+  const response = await $fetch(`${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/ban`,{
+    method:"POST",
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        },
+    body:JSON.stringify({
+       "reason": reason.value
+    })
+  })
+  emit("close")
+}
+</script>

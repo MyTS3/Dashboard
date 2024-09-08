@@ -36,6 +36,7 @@
   </section>
 </template>
 <script setup>
+import nuxtStorage from 'nuxt-storage';
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
 //variables
