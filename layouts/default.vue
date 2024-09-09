@@ -1,5 +1,5 @@
 <template>
-  <div class="layout bg-mainbg_600 text-white h-screen">
+  <div class="layout bg-mainbg_600 text-white min-h-screen overflow-hidden">
     <div>
       <div style="max-width: 69rem" class="py-3 mx-auto">
         <header class="w-full flex justify-between flex-row-reverse">
@@ -45,9 +45,15 @@
       </div>
       <slot />
     </div>
-    <div class="relative bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl">
+    <div
+      class="relative bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[1346px]:hidden "
+    >
       <header>
-        <img class="mx-auto mt-5" src="/images/User info.png" alt="logo" />
+        <img
+          class="mx-auto mt-5 max-w-80"
+          src="/images/User info.png"
+          alt="logo"
+        />
       </header>
       <nav class="list-none flex flex-col gap-4 mt-7">
         <li
@@ -117,5 +123,10 @@
 .layout {
   display: grid;
   grid-template-columns: 6fr 1fr;
+}
+@media only screen and (max-width: 1346px){
+  .layout{
+    grid-template-columns: 1fr;
+  }
 }
 </style>
