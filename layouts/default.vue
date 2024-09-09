@@ -6,10 +6,13 @@
           <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
             داشبورد
           </h1>
+          <h1 class="font-medium text-xl" v-if="$route.name == 'domains' ">
+            دامین ها
+          </h1>
           <button
             @click="$router.back()"
-            v-if="$route.name != 'tservers'"
-            class="btn h-15 p-3 flex items-center rounded-xl"
+            v-if="$route.name != 'tservers'&& $route.name != 'domains' "
+            class="btn h-12 p-3 flex items-center rounded-xl"
           >
             <img class="" src="/images/Arrow-Right.png" alt="" />
           </button>
@@ -20,7 +23,7 @@
               <img src="/images/User.png" alt="user" />
               <p class="text-xs">ماکان</p>
             </button>
-            <button class="btn p-3 rounded-lg">
+            <button class="btn p-3 px-4 rounded-lg">
               <img src="/images/bell.png" alt="bell" />
             </button>
           </div>
@@ -47,21 +50,35 @@
         <img class="mx-auto mt-5" src="/images/User info.png" alt="logo" />
       </header>
       <nav class="list-none flex flex-col gap-4 mt-7">
-        <li class="flex gap-3 w-full justify-end p-3 ml-auto activePanel">
+        <li
+          @click="navigateTo('/tservers');"
+          :class="$route.name=='tservers'?'activePanel':'' "
+          class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+        >
           <p>داشبورد</p>
           <img src="/images/dash.png" alt="dashboard" />
         </li>
-        <li class="flex gap-3 w-full justify-end p-3 ml-auto">
+        <li
+          :class="$route.name=='playlist'?'activePanel':'' "
+          class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+        >
           <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
           <p>پلی لیست</p>
           <img src="/images/folder.png" alt="" />
         </li>
-        <li class="flex gap-3 w-full justify-end p-3 ml-auto">
+        <li
+          :class="$route.name=='domains'?'activePanel':'' "
+          class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+          @click="navigateTo('/domains');"
+        >
           <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
           <p>دامین ها</p>
           <img src="/images/domain.png" alt="" />
         </li>
-        <li class="flex gap-3 w-full justify-end p-3 ml-auto">
+        <li
+          :class="$route.name=='poshtibani'?'activePanel':'' "
+          class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+        >
           <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
           <p>پشتیبانی</p>
           <img src="/images/poshtibani.png" alt="" />

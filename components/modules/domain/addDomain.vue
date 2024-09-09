@@ -16,16 +16,12 @@
         !تغییر دهید ns.myts3.ir مهم: نیم سرور های خودرا به
       </p>
       <h2 class="text-right w-full mt-3 mb-1">دامنه</h2>
-      <div class="my-4 p-3 relative">
-        <p class="absolute top-1/2 -translate-y-1/2 right-6 text-white/50 ">
-          vipsts.ir
-        </p>
-        <input
-          v-model="domainName"
-          class="bg-transparent w-full border p-3 rounded-xl text-left relative"
-          type="text"
-        />
-      </div>
+      <input
+        v-model="domainName"
+        class="bg-transparent my-4 p-3 w-full border rounded-xl text-left relative placeholder:text-right"
+        type="text"
+        placeholder="vipts.ir"
+      />
       <div class="grid gap-3">
         <button
           @click="AddDomain()"
