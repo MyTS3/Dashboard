@@ -169,14 +169,40 @@ function findChannelTypeAndNameByFullName(fullName: string): {
   return { type: "normal", name: fullName, align: "start" };
 }
 
-async function getTeamspeakChannels() {
-  const response: { channelName: string; cid: string; pid: string }[] =
-    await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
-      headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
-      },
-    });
-  response.forEach((channel) => {
+async function getUsersAndChannels(){
+
+  const channelsReq: Promise<{
+    channelName: string;
+    cid: string;
+    pid: string
+  }[]> = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
+    headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
+  });
+
+  const usersReq: Promise<{
+    cid: string;
+    clid: string;
+    clientInputMuted: boolean;
+    clientInputHardware: boolean;
+    clientOutputMuted: boolean;
+    clientOutputHardware: boolean;
+    clientNickname: string;
+    clientAway: boolean;
+    clientLastconnected: number;
+    clientVersion: string;
+    clientPlatform: string;
+    clientUniqueIdentifier: string;
+  }[]> = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
+    headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
+  });
+
+  const rows: row[] = [];
+  const channels = await channelsReq
+  channels.forEach((channel) => {
     const channelTypeAndName = findChannelTypeAndNameByFullName(
       channel.channelName,
     );
@@ -190,12 +216,12 @@ async function getTeamspeakChannels() {
       | undefined = channel;
     while (parentChannel) {
       level += 1;
-      parentChannel = response.find((c) => {
+      parentChannel = channels.find((c) => {
         if (!parentChannel) return false;
         return c.cid == parentChannel.pid;
       });
     }
-    teamspeakserver.value.push({
+    rows.push({
       rowType: "channel",
       channel: {
         channelName,
@@ -206,28 +232,10 @@ async function getTeamspeakChannels() {
       level,
     });
   });
-}
-async function getTeamspeakUsers() {
-  const users: {
-    cid: string;
-    clid: string;
-    clientInputMuted: boolean;
-    clientInputHardware: boolean;
-    clientOutputMuted: boolean;
-    clientOutputHardware: boolean;
-    clientNickname: string;
-    clientAway: boolean;
-    clientLastconnected: number;
-    clientVersion: string;
-    clientPlatform: string;
-    clientUniqueIdentifier: string;
-  }[] = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
-    headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
-    },
-  });
+
+  const users = await usersReq
   users.forEach((user) => {
-    const channelIndex = teamspeakserver.value.findIndex((row) => {
+    const channelIndex = rows.findIndex((row) => {
       if (row.rowType != "channel") return false;
       return row.channel.cid == user.cid;
     });
@@ -236,7 +244,7 @@ async function getTeamspeakUsers() {
     if (user.clientOutputMuted || !user.clientOutputHardware)
       status = "soundMute";
     if (user.clientAway) status = "away";
-    teamspeakserver.value.splice(channelIndex + 1, 0, {
+    rows.splice(channelIndex + 1, 0, {
       rowType: "user",
       user: {
         userNickname: user.clientNickname,
@@ -246,13 +254,25 @@ async function getTeamspeakUsers() {
         clientPlatform: user.clientPlatform,
         clientUniqueIdentifier: user.clientUniqueIdentifier,
       },
-      level: teamspeakserver.value[channelIndex].level + 1,
+      level: rows[channelIndex].level + 1,
     });
   });
+  teamspeakserver.value = rows
 }
 await getServerDeatails();
 if (serverInfo.value.mustRunning) {
-  await getTeamspeakChannels();
-  await getTeamspeakUsers();
+  longpoll()
+}
+function longpoll(time = 1){
+  fetch(`${url.value}/api/v1/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,{
+    headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
+  })
+  .then(re => re.json())
+  .then(async(data) => {
+    await getUsersAndChannels()
+    longpoll(data.at)
+  })
 }
 </script>
