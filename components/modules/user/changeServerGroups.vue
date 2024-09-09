@@ -17,10 +17,22 @@
       <div class="flex flex-col gap-4">
         <!-- //////////////////////////////lists -->
         <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
-          <li v-for="servergroup in queryServerGroups" class="flex gap-2">
-            <button class="checkbox"></button>
-            <button class="checkbox-active"></button>
-            <p>{{ servergroup.name }}</p>
+          <li v-for="serverGroup in queryServerGroups" class="flex gap-2">
+            <button
+              v-if="!isAssigned(serverGroup)"
+              @click="
+                toApply[serverGroup.sgid] = { serverGroup, action: 'add' }
+              "
+              class="checkbox"
+            ></button>
+            <button
+              v-if="isAssigned(serverGroup)"
+              @click="
+                toApply[serverGroup.sgid] = { serverGroup, action: 'remove' }
+              "
+              class="checkbox-active"
+            ></button>
+            <p>{{ serverGroup.name }}</p>
           </li>
         </div>
         <!-- //////////////////////////////////list -->
@@ -56,6 +68,7 @@
 <script setup lang="ts">
 import nuxtStorage from "nuxt-storage";
 const store = apiStore();
+const emit = defineEmits(["close"])
 const { url } = storeToRefs(store);
 const props = defineProps(["user", "serverInfo"]);
 const ServerGroupsWeHave = ref<serverGroup[]>([]);
@@ -128,20 +141,26 @@ async function removeServerGroup(sgid: string) {
 }
 
 async function applyServerGroups() {
-  console.log(toApply.value)
-  // for (const sgid in toApply.value) {
-  //   const { action, serverGroup } = toApply.value[sgid];
-  //   switch (action) {
-  //     case "add": {
-  //       await addServerGroup(serverGroup.sgid);
-  //       break;
-  //     }
-  //     case "remove": {
-  //       await removeServerGroup(serverGroup.sgid);
-  //       break;
-  //     }
-  //   }
-  // }
+  // console.log(toApply.value)
+  for (const sgid in toApply.value) {
+      const { action, serverGroup } = toApply.value[sgid];
+    switch (action) {
+      case "add": {
+        if(!ServerGroupsWeHave.value.find((s)=>s.sgid == sgid)) {
+          await addServerGroup(serverGroup.sgid);
+        } else console.log("cant add twice")
+
+        break;
+      }
+      case "remove": {
+        if(ServerGroupsWeHave.value.find((s)=>s.sgid == sgid)) {
+          await removeServerGroup(serverGroup.sgid);
+        } else console.log("cant remove twice")
+        break;
+      }
+    }
+  }
+  emit("close")
 }
 
 await getUserServerGroups();
