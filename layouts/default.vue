@@ -55,6 +55,12 @@
           :class="$route.name=='tservers'?'activePanel':'' "
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
         >
+          <img
+            v-if="$route.name!='/tservers' "
+            class="mr-auto"
+            src="/images/Arrow - Left.png"
+            alt=""
+          />
           <p>داشبورد</p>
           <img src="/images/dash.png" alt="dashboard" />
         </li>
@@ -62,7 +68,12 @@
           :class="$route.name=='playlist'?'activePanel':'' "
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
         >
-          <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
+          <img
+            v-if="$route.name!='playlist' "
+            class="mr-auto"
+            src="/images/Arrow - Left.png"
+            alt=""
+          />
           <p>پلی لیست</p>
           <img src="/images/folder.png" alt="" />
         </li>
@@ -71,7 +82,12 @@
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
           @click="navigateTo('/domains');"
         >
-          <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
+          <img
+            v-if="$route.name!='domains' "
+            class="mr-auto"
+            src="/images/Arrow - Left.png"
+            alt=""
+          />
           <p>دامین ها</p>
           <img src="/images/domain.png" alt="" />
         </li>
@@ -79,7 +95,12 @@
           :class="$route.name=='poshtibani'?'activePanel':'' "
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
         >
-          <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
+          <img
+            v-if="$route.name!='poshtibani' "
+            class="mr-auto"
+            src="/images/Arrow - Left.png"
+            alt=""
+          />
           <p>پشتیبانی</p>
           <img src="/images/poshtibani.png" alt="" />
         </li>
