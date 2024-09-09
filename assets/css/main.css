@@ -116,6 +116,9 @@ img {
   display: grid;
   grid-template-columns: 2fr 2fr 4fr;
 }
+.items{
+  height: 4rem;
+}
 .items:nth-child(even) {
   background-color: rgba(39, 43, 77, 1);
 }

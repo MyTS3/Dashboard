@@ -56,7 +56,7 @@
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
         >
           <img
-            v-if="$route.name!='/tservers' "
+            v-if="$route.name!='tservers' "
             class="mr-auto"
             src="/images/Arrow - Left.png"
             alt=""

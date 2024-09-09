@@ -10,18 +10,18 @@
       <div v-for="domain in domainList" class="table items">
         <p class="font-semibold">{{domain.domain}}</p>
         <div
-          class="flex w-28 justify-center items-center rounded-3xl h-10 bg-main_green/15"
+          class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_green/15"
           v-if="true"
         >
-          <img class="w-6" src="/images/check.png" alt="" />
-          <p class="font-bold text-main_green">فعال</p>
+          <img class="w-5" src="/images/check.png" alt="" />
+          <p class="font-bold text-sm text-main_green">فعال</p>
         </div>
         <div
-          class="flex w-28 justify-center items-center rounded-3xl h-10 bg-main_orange/15"
+          class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_orange/15"
           v-if="false"
         >
-          <img class="w-6" src="/images/waiting.png" alt="" />
-          <p class="font-bold text-main_orange">در انتظار</p>
+          <img class="w-5" src="/images/waiting.png" alt="" />
+          <p class="font-bold text-sm text-main_orange">در انتظار</p>
         </div>
         <p>{{ timeAgo.format(new Date(domain.createdAt)) }}</p>
         <img
