@@ -1,16 +1,18 @@
 <template>
   <section
-    class="h-screen bg-mainbg_600 overflow-hidden relative flex items-center"
+    class="h-screen z-10   bg-mainbg_600 overflow-hidden relative flex items-center"
   >
     <img
-      class="object-cover h-full w-full my-auto absolute top-0 left-0 pointer-events-none"
+      class="object-cover h-full blur-[2px] w-full my-auto absolute top-0 left-0 pointer-events-none"
       src="/images/wave Lines.png"
       alt=""
     />
-
+    <div
+      class="absolute pointer-events-none blur-lg  w-screen h-screen  top-0 left-0 z-60 "
+    ></div>
     <main
-      style="width: 30rem; z-index: 100"
-      class="border-t border-l border-r mx-auto rounded-2xl bg-mainbg_600 text-white p-4 relative"
+      style="width: 30rem;"
+      class="border-t isolate border-l border-r mx-auto rounded-2xl z-50 bg-mainbg_600 text-white p-4 relative"
     >
       <header class="flex justify-center items-center flex-col mb-4">
         <img

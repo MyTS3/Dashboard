@@ -3,12 +3,12 @@
     <div>
       <div style="max-width: 69rem" class="py-3 mx-auto">
         <header class="w-full flex justify-between flex-row-reverse">
-          <h1 v-if="$route.name == 'main'" class="font-medium text-xl">
+          <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
             داشبورد
           </h1>
           <button
             @click="$router.back()"
-            v-if="$route.name != 'main'"
+            v-if="$route.name != 'tservers'"
             class="btn h-15 p-3 flex items-center rounded-xl"
           >
             <img class="" src="/images/Arrow-Right.png" alt="" />
@@ -58,11 +58,11 @@
         </li>
         <li class="flex gap-3 w-full justify-end p-3 ml-auto">
           <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
-          <p>ای پی ای</p>
-          <img src="/images/ip.png" alt="" />
+          <p>دامین ها</p>
+          <img src="/images/domain.png" alt="" />
         </li>
         <li class="flex gap-3 w-full justify-end p-3 ml-auto">
-          <img class="mr-auto" src="./images/Arrow - Left.png" alt="" />
+          <img class="mr-auto" src="/images/Arrow - Left.png" alt="" />
           <p>پشتیبانی</p>
           <img src="/images/poshtibani.png" alt="" />
         </li>

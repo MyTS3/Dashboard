@@ -12,6 +12,13 @@ input[type="number"]::-webkit-outer-spin-button {
 img {
   object-fit: contain;
 }
+*:-webkit-scrollbar {
+  display: none;
+}
+*{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
 
 /* //////////////////////////////////////////// */
 .btn {

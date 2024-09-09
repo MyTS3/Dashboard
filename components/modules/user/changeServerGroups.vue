@@ -61,9 +61,7 @@ const props = defineProps(["user", "serverInfo"]);
 const ServerGroupsWeHave = ref<serverGroup[]>([]);
 const serverGroups = ref<serverGroup[]>([]);
 const queryServerGroups = ref<serverGroup[]>([]);
-const toApply = ref<{
-  [key: string]: { serverGroup: serverGroup; action: "add" | "remove" };
-}>({});
+const toApply = ref<{[key: string]: { serverGroup: serverGroup; action: "add" | "remove" };}>({});
 
 type serverGroup = {
   sgid: string;
@@ -130,19 +128,20 @@ async function removeServerGroup(sgid: string) {
 }
 
 async function applyServerGroups() {
-  for (const sgid in toApply.value) {
-    const { action, serverGroup } = toApply.value[sgid];
-    switch (action) {
-      case "add": {
-        await addServerGroup(serverGroup.sgid);
-        break;
-      }
-      case "remove": {
-        await removeServerGroup(serverGroup.sgid);
-        break;
-      }
-    }
-  }
+  console.log(toApply.value)
+  // for (const sgid in toApply.value) {
+  //   const { action, serverGroup } = toApply.value[sgid];
+  //   switch (action) {
+  //     case "add": {
+  //       await addServerGroup(serverGroup.sgid);
+  //       break;
+  //     }
+  //     case "remove": {
+  //       await removeServerGroup(serverGroup.sgid);
+  //       break;
+  //     }
+  //   }
+  // }
 }
 
 await getUserServerGroups();
