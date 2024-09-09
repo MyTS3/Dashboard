@@ -49,7 +49,6 @@ import nuxtStorage from "nuxt-storage";
 import TimeAgo from "javascript-time-ago";
 import fa from "javascript-time-ago/locale/fa";
 import AddDomain from '~/components/modules/domain/addDomain.vue';
-TimeAgo.addDefaultLocale(fa);
 const timeAgo = new TimeAgo("fa");
 
 const store = apiStore()
