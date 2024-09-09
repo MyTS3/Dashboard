@@ -81,7 +81,7 @@
   <changeServerGroups
     :serverInfo="serverInfo"
     :user="selectedRow.user.userNickname"
-    @close="servergroupsTab = false"
+    @close="getServerGroups(),servergroupsTab = false"
     v-if="servergroupsTab"
   />
 </template>

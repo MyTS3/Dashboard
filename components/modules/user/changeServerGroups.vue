@@ -6,6 +6,8 @@
       class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
+        :class="disable?'disable':'' "
+        :disabled="disable"
         @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
       >
@@ -57,6 +59,8 @@
         </div>
       </div>
       <button
+        :class="disable?'disable':'' "
+        :disabled="disable"
         @click="applyServerGroups()"
         class="w-full p-4 bg-main_blue rounded-xl my-2"
       >
@@ -75,6 +79,7 @@ const ServerGroupsWeHave = ref<serverGroup[]>([]);
 const serverGroups = ref<serverGroup[]>([]);
 const queryServerGroups = ref<serverGroup[]>([]);
 const toApply = ref<{[key: string]: { serverGroup: serverGroup; action: "add" | "remove" };}>({});
+const disable = ref(false)
 
 type serverGroup = {
   sgid: string;
@@ -141,7 +146,7 @@ async function removeServerGroup(sgid: string) {
 }
 
 async function applyServerGroups() {
-  // console.log(toApply.value)
+  disable.value = true
   for (const sgid in toApply.value) {
       const { action, serverGroup } = toApply.value[sgid];
     switch (action) {
@@ -160,6 +165,7 @@ async function applyServerGroups() {
       }
     }
   }
+  disable.value = false
   emit("close")
 }
 
