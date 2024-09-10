@@ -30,6 +30,7 @@
           >
             <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
               <div
+                @click=" selectedChannel = row.channel "
                 dropzone="true"
                 @drop="dragended(row.channel)"
                 @dragover.prevent
@@ -95,7 +96,10 @@
         :selectedRow.value="selectedRow"
         v-if="selectedRow?.rowType == 'user'"
       />
-      <channel v-if="selectedRow?.rowType == 'channel'" />
+      <channel
+        :selectedChannel="selectedChannel"
+        v-if="selectedRow?.rowType == 'channel'"
+      />
       <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
     </div>
   </section>
@@ -138,6 +142,7 @@ const { url } = storeToRefs(store);
 const serverInfo = ref();
 const selectedRow = ref<row>({ rowType: "server", level: 0 });
 const movingUser = ref<string>()
+const selectedChannel = ref<channel>()
 //function
 function draged(user:user){
   movingUser.value = user.userNickname
