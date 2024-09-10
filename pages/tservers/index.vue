@@ -46,7 +46,7 @@
 import nuxtStorage from "nuxt-storage";
 import TimeAgo from "javascript-time-ago";
 import fa from "javascript-time-ago/locale/fa";
-TimeAgo.addDefaultLocale(fa);
+TimeAgo.addLocale(fa);
 const timeAgo = new TimeAgo("fa");
 
 import makeServer from "/components/modules/makeServer.vue";

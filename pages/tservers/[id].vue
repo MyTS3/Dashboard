@@ -29,7 +29,14 @@
             "
           >
             <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
-              <div class="flex gap-1" v-if="row.rowType == 'channel'">
+              <div
+                dropzone="true"
+                @drop="dragended(row.channel)"
+                @dragover.prevent
+                @dragenter.prevent
+                class="flex gap-1 "
+                v-if="row.rowType == 'channel'"
+              >
                 <img
                   v-if="row.channel.channelType == 'normal'"
                   src="/images/channel-icon.png"
@@ -42,7 +49,12 @@
                   {{ row.channel.channelName }}
                 </p>
               </div>
-              <div class="flex gap-1" v-if="row.rowType == 'user'">
+              <div
+                draggable="true"
+                @dragstart="draged(row.user)"
+                class="flex gap-1"
+                v-if="row.rowType == 'user'"
+              >
                 <img
                   v-if="row.user.status == 'openMic'"
                   src="/images/normal-user.png"
@@ -104,6 +116,7 @@ type row =
   | { rowType: "user"; user: user; level: number }
   | { rowType: "server"; level: 0 };
 type channel = {
+  channelFullName:string,
   channelName: string;
   align: alignType;
   cid: string;
@@ -124,7 +137,22 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const serverInfo = ref();
 const selectedRow = ref<row>({ rowType: "server", level: 0 });
+const movingUser = ref<string>()
 //function
+function draged(user:user){
+  movingUser.value = user.userNickname
+}
+async function dragended(channel:channel){
+  const respone = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users/${movingUser.value}/move`,{
+    method:"POST",
+    headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
+    body:JSON.stringify({
+      "channel":channel.channelFullName
+    })
+  })
+}
 async function getServerDeatails() {
   const respone: {
     deployedOn: String;
@@ -145,6 +173,7 @@ async function getServerDeatails() {
 
 type channelType = "*spacer" | "lspacer" | "cspacer" | "rspacer" | "normal";
 function findChannelTypeAndNameByFullName(fullName: string): {
+  channelFullName:string,
   type: channelType;
   name: string;
   align: alignType;
@@ -153,24 +182,24 @@ function findChannelTypeAndNameByFullName(fullName: string): {
   if (splitedName.length > 1) {
     if (splitedName[0].startsWith("[")) {
       if (splitedName[0].includes("cspacer"))
-        return { type: "cspacer", name: splitedName[1], align: "center" };
+        return { type: "cspacer", name: splitedName[1], align: "center", channelFullName: fullName };
       if (splitedName[0].includes("lspacer"))
-        return { type: "lspacer", name: splitedName[1], align: "start" };
+        return { type: "lspacer", name: splitedName[1], align: "start", channelFullName: fullName };
       if (splitedName[0].includes("rspacer"))
-        return { type: "rspacer", name: splitedName[1], align: "end" };
+        return { type: "rspacer", name: splitedName[1], align: "end", channelFullName: fullName };
       if (splitedName[0].includes("*spacer"))
         return {
           type: "*spacer",
           name: splitedName[1].repeat(100),
           align: "center",
+          channelFullName: fullName
         };
     }
   }
-  return { type: "normal", name: fullName, align: "start" };
+  return { type: "normal", name: fullName, align: "start", channelFullName: fullName };
 }
 
 async function getUsersAndChannels(){
-
   const channelsReq: Promise<{
     channelName: string;
     cid: string;
@@ -203,17 +232,15 @@ async function getUsersAndChannels(){
   const rows: row[] = [];
   const channels = await channelsReq
   channels.forEach((channel) => {
-    const channelTypeAndName = findChannelTypeAndNameByFullName(
-      channel.channelName,
-    );
+    const channelTypeAndName = findChannelTypeAndNameByFullName(channel.channelName);
     const channelType = channelTypeAndName.type;
     const channelName = channelTypeAndName.name;
     const align = channelTypeAndName.align;
+    const channelFullName = channelTypeAndName.channelFullName
 
     let level = 0;
     let parentChannel:
-      | { cid: string; pid: string; channelName: string }
-      | undefined = channel;
+      | { cid: string; pid: string; channelName: string } | undefined = channel;
     while (parentChannel) {
       level += 1;
       parentChannel = channels.find((c) => {
@@ -224,6 +251,7 @@ async function getUsersAndChannels(){
     rows.push({
       rowType: "channel",
       channel: {
+        channelFullName,
         channelName,
         cid: channel.cid,
         channelType,
