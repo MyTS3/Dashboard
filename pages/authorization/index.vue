@@ -67,6 +67,8 @@
         بازیابی رمز عبور
       </p>
       <button
+        :class="disable?'disable':'' "
+        :disabled="disable"
         @click="signIn()"
         class="bg-main_blue w-full p-4 flex items-center justify-center gap-2 rounded-xl"
       >
@@ -101,6 +103,8 @@ const password = ref("password");
 const inputGmail = ref();
 const inputPass = ref();
 const route = useRoute();
+const disable = ref(false)
+
 //function
 function showPass() {
   if (password.value == "password") password.value = "text";
@@ -111,8 +115,12 @@ if (route.query.token) {
   navigateTo("/tservers");
 }
 async function signIn() {
+  disable.value = true
   const response = await $fetch(`${url.value}/api/v1/token`, {
     method: "POST",
+    headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        },
     body: JSON.stringify({
       grant_type: "password",
       username: `${inputGmail.value}`,

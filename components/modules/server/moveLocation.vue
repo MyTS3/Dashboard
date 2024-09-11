@@ -48,6 +48,7 @@
   </section>
 </template>
 <script setup>
+import nuxtStorage from "nuxt-storage";
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
 const emit = defineEmits(["close"]);
@@ -61,7 +62,12 @@ const selectedLocation = ref();
 async function getAvailble() {
   disable.value = true
   const respone = $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`,
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`,{
+      headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        },
+    }
+
   );
   availables.value = await respone;
 }
@@ -70,6 +76,9 @@ async function moveServer() {
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move`,
     {
       method: "POST",
+      headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        },
       body: JSON.stringify({
         node: `${selectedLocation.value}`,
       }),
