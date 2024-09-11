@@ -40,6 +40,7 @@
   </section>
 </template>
 <script setup>
+import nuxtStorage from "nuxt-storage";
 import { apiStore } from "#imports";
 import { storeToRefs } from "#imports";
 const props = defineProps(["selectedServer"]);
@@ -52,6 +53,9 @@ async function restartServer() {
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/restart`,
     {
       method: "POST",
+      headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
       body: JSON.stringify({
         reason: `${reasson.value}`,
       }),

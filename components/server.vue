@@ -132,12 +132,12 @@
   />
   <restartServer
     :selectedServer="selectedServer"
-    @close="restartServerTab = false"
+    @close=" getServerDeatails(), restartServerTab = false "
     v-if="restartServerTab"
   />
   <turnoffServer
     :selectedServer="selectedServer"
-    @close="(turnOffServerTab = false), getServerDeatails()"
+    @close=" getServerDeatails(),turnOffServerTab=false "
     v-if="turnOffServerTab"
   />
   <deleteServer
@@ -160,10 +160,12 @@ import turnoffServer from "./modules/server/turnoffServer.vue";
 import deleteServer from "./modules/server/deleteServer.vue";
 import banList from "./modules/server/banList.vue";
 
-/////
+
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
-////
+import nuxtStorage from "nuxt-storage";
+
+
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
 const showYatqaPass = ref("disc");
@@ -186,7 +188,6 @@ function getServerDeatails() {
 }
 function copyYatqaPass() {
   navigator.clipboard.writeText(selectedServer.value.queryPassword);
-  console.log(selectedServer)
 }
 async function turnServerOffOrOn() {
   if (selectedServer.value.mustRunning == true) {
