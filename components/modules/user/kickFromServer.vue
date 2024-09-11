@@ -26,6 +26,8 @@
           لغو
         </button>
         <button
+          :class="disable?'disable':'' "
+          :disabled="disable"
           @click="kickUser()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
         >
@@ -37,12 +39,14 @@
 </template>
 <script setup>
 import nuxtStorage from "nuxt-storage";
+const disable = ref(false)
 const store = apiStore();
 const { url } = storeToRefs(store);
 const props = defineProps(["serverInfo", "user"]);
 const emit = defineEmits("close");
 const reason = ref("");
 async function kickUser() {
+  disable.value = true
   const response = await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-server`,
     {

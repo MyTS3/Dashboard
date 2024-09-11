@@ -36,6 +36,8 @@
           لغو
         </button>
         <button
+          :class="disable?'disable':'' "
+          :disabled="disable"
           @click.prevent="moveServer()"
           class="p-4 text-center rounded-xl bg-main_blue module-btn"
         >
@@ -52,10 +54,12 @@ const emit = defineEmits(["close"]);
 const props = defineProps(["selectedServer"]);
 const store = apiStore();
 const { url } = storeToRefs(store);
+const disable = ref(false)
 ////////
 const availables = ref({});
 const selectedLocation = ref();
 async function getAvailble() {
+  disable.value = true
   const respone = $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`,
   );

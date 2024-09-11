@@ -23,6 +23,8 @@
           لغو
         </button>
         <button
+          :class="disable?'disable':'' "
+          :disabled="disable"
           @click="changeYatqaPass()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
         >
@@ -33,11 +35,14 @@
   </section>
 </template>
 <script setup>
+import nuxtStorage from "nuxt-storage";
 const props = defineProps(["selectedServer"]);
 const emit = defineEmits(["close"]);
 const store = apiStore();
 const { url } = storeToRefs(store);
+const disable = ref(false)
 async function changeYatqaPass() {
+  disable.value = true
   const changePass = await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-password`,
     {
