@@ -185,7 +185,8 @@ function getServerDeatails() {
   emit("getServerDeatails");
 }
 function copyYatqaPass() {
-  navigator.clipboard.writeText(selectedServer.queryPassword);
+  navigator.clipboard.writeText(selectedServer.value.queryPassword);
+  console.log(selectedServer)
 }
 async function turnServerOffOrOn() {
   if (selectedServer.value.mustRunning == true) {
