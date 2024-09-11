@@ -1,6 +1,6 @@
 <template>
   <section
-    class=" z-10 bg-mainbg_600 overflow-hidden relative flex items-center"
+    class=" z-10 bg-mainbg_600 overflow-hidden relative flex items-center min-h-dvh "
   >
     <img
       class="object-cover h-full blur-[2px] w-full my-auto absolute top-0 left-0 pointer-events-none"

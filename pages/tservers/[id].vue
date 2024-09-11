@@ -1,7 +1,7 @@
 <template>
   <section
     style="max-width: 69rem"
-    class="mt-6 grid w-full grid-cols-2 h-[40rem] mx-auto text-white text-center"
+    class="mt-6 grid w-full grid-cols-2 h-[40rem] mx-auto text-white text-center gap-2"
   >
     <div class="bg-mainbg_400 w-full rounded-xl">
       <header class="w-full relative my-4 px-4">
@@ -12,7 +12,7 @@
         >
           {{ serverInfo.name }}
         </h1>
-        <img class="mt-3" src="/images/seprator-line.png" alt="" />
+        <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
       </header>
       <main class="list-none teamspeak text-xs px-4">
         <!-- <div>
@@ -85,7 +85,7 @@
         </div>
       </main>
     </div>
-    <div class="bg-mainbg_400 w-full rounded-xl ml-3">
+    <div class="bg-mainbg_400 w-full rounded-xl">
       <server
         @getServerDeatails="getServerDeatails"
         :serverInfo.value="serverInfo"

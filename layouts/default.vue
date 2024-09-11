@@ -112,13 +112,19 @@
         </li>
       </nav>
       <button
+        @click="logoutTab = true "
         class="bg-main_red w-3/4 left-1/2 -translate-x-1/2 rounded-2xl py-3 text-center absolute bottom-5"
       >
         <p>خروج از حساب کاربری</p>
       </button>
     </div>
   </div>
+  <logoutPopup @close="logoutTab=false" v-if="logoutTab" />
 </template>
+<script setup>
+import logoutPopup from '@/components/modules/logoutPopup.vue'
+const logoutTab = ref(false)
+</script>
 <style scoped>
 .layout {
   display: grid;
@@ -127,6 +133,7 @@
 @media only screen and (max-width: 1346px){
   .layout{
     grid-template-columns: 1fr;
+    padding-inline: 1rem;
   }
 }
 </style>

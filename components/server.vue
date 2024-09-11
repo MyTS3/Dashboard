@@ -8,7 +8,7 @@
         src="/images/trash.png"
         alt=""
       />
-      <img src="/images/seprator-line.png" alt="" />
+      <img class="w-ful mx-auto mt-6" src="/images/seprator-line.png" alt="" />
     </header>
     <main class="list-none">
       <li class="grid gridList p-2">
@@ -202,6 +202,7 @@ async function turnServerOffOrOn() {
         },
       },
     );
+    console.log(nuxtStorage.localStorage)
     getServerDeatails();
   }
 }
