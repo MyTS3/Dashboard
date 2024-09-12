@@ -102,6 +102,7 @@
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
+        @click="resetConfigTab = true"
         class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
       >
         <p>ریسیت کانفگ</p>
@@ -150,6 +151,11 @@
     @close="bansListTab = false"
     v-if="bansListTab"
   />
+  <resetConfig
+    :selectedServer="selectedServer"
+    @close="resetConfigTab = false"
+    v-if="resetConfigTab"
+  />
 </template>
 <script setup>
 import changeSlot from "./modules/server/changeSlot.vue";
@@ -159,6 +165,7 @@ import restartServer from "./modules/server/restartServer.vue";
 import turnoffServer from "./modules/server/turnoffServer.vue";
 import deleteServer from "./modules/server/deleteServer.vue";
 import banList from "./modules/server/banList.vue";
+import resetConfig from "./modules/server/resetConfig.vue";
 
 
 import { apiStore } from "~/stores/apistore";
@@ -174,6 +181,7 @@ const turnOffServerTab = ref(false);
 const serverLocationTab = ref(false);
 const bansListTab = ref(false);
 const restartServerTab = ref(false);
+const resetConfigTab = ref(false);
 ///
 const props = defineProps(["serverInfo"]);
 const emit = defineEmits(["getServerDeatails"]);
