@@ -16,8 +16,9 @@
         X
       </button>
       <h1 class="my-4">لیست بن ها</h1>
+      <table>
       <div
-        style="gap: 2px;min-height: 20rem;"
+        style="gap: 2px;max-height: 20rem;"
         class="text-sm ban-list text-right relative overflow-y-scroll"
       >
         <div class="flex flex-col text-right bg-mainbg_400">
@@ -51,6 +52,7 @@
           </p>
         </div>
       </div>
+    </table>
     </main>
   </section>
   <unBan @close="getBanList(),unBanTab=false" :selectedServer="selectedServer" :unBaning="unBaning" v-if="unBanTab" />
@@ -60,6 +62,7 @@ import nuxtStorage from 'nuxt-storage';
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
 import unBan from './unban.vue'
+import Table from '~/components/reusable/table.vue';
 // variables
 const props = defineProps(["selectedServer"])
 const emit = defineEmits(["close"])
