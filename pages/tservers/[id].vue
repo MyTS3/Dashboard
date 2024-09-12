@@ -15,11 +15,6 @@
         <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
       </header>
       <main class="list-none teamspeak text-xs px-4">
-        <!-- <div>
-        <div class="rounded-lg p-1 px-3 hover:bg-main_orange/20">
-          <p>Music Channels</p>
-        </div>
-      </div> -->
         <div v-for="row in teamspeakserver">
           <div
             @click="selectedRow = row"

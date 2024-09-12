@@ -2,12 +2,19 @@
   <section class="h-full relative">
     <header class="relative">
       <h1 class="text-center my-4">سرور</h1>
-      <img
-        @click.prevent="deleteServerTab = true"
-        class="absolute right-4 top-0 cursor-pointer"
-        src="/images/trash.png"
-        alt=""
-      />
+      <div class="absolute right-4 top-0 flex gap-2">
+        <a :href="tsUrl">
+          <img class="cursor-pointer w-8" src="/images/User info.png" alt="" />
+        </a>
+
+        <img
+          @click.prevent="deleteServerTab = true"
+          class="cursor-pointer w-6"
+          src="/images/trash.png"
+          alt=""
+        />
+      </div>
+
       <img class="w-ful mx-auto mt-6" src="/images/seprator-line.png" alt="" />
     </header>
     <main class="list-none">
@@ -190,6 +197,7 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 //////
 const selectedServer = ref(props.serverInfo);
+const tsUrl = ref(`ts3server://${props.serverInfo.name}`)
 //functions
 function getServerDeatails() {
   emit("getServerDeatails");
@@ -210,7 +218,6 @@ async function turnServerOffOrOn() {
         },
       },
     );
-    console.log(nuxtStorage.localStorage)
     getServerDeatails();
   }
 }
