@@ -36,7 +36,7 @@
       @click="addDomainTab = true"
       class="flex w-full items-center justify-center btn rounded-xl py-3"
     >
-      ساخت سرور
+      ساخت دامین
       <img src="/images/addon.png" alt="" />
     </button>
   </Table>
