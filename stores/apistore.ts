@@ -3,7 +3,7 @@ export const apiStore = defineStore({
   id: "api",
   state: () => {
     return {
-      url: "http://10.8.0.2:5342",
+      url: "https://v4.api.myts3.ir",
     };
   },
 });
