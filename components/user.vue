@@ -161,6 +161,7 @@ async function getServerGroups() {
   servergroups.value = response;
   response.forEach((re)=>{
     if(re.name.includes('Admin Server Query')) disable.value = true
+    else disable.value = false
   })
 }
 await getServerGroups();
