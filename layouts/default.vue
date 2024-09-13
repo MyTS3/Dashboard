@@ -81,7 +81,7 @@
             alt=""
           />
           <p>پلی لیست</p>
-          <img src="/images/folder.png" alt="" />
+          <img src="/images/Folder.png" alt="" />
         </li>
         <li
           :class="$route.name=='domains'?'activePanel':'' "
