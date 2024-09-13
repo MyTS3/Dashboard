@@ -101,9 +101,52 @@
         @click.prevent="makeServer()"
         class="flex w-full items-center justify-center make-server font-medium gap-2"
       >
-        <div class="flex w-full items-center justify-center font-medium gap-2">
+        <div
+          v-if="!disableInputs"
+          class="flex w-full items-center justify-center font-medium gap-2"
+        >
           <span><img src="/images/plus.png" alt="" /></span>ساخت
         </div>
+        <svg
+          v-if="disableInputs"
+          class="h-6  "
+          version="1.1"
+          id="L3"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px"
+          y="0px"
+          viewBox="0 0 100 100"
+          enable-background="new 0 0 0 0"
+          xml:space="preserve"
+        >
+          <circle
+            fill="none"
+            stroke="#fff"
+            stroke-width="10"
+            cx="50"
+            cy="50"
+            r="44"
+            style="opacity:0.5;"
+          />
+          <circle
+            fill="#fff"
+            stroke="#e74c3c"
+            stroke-width="10"
+            cx="8"
+            cy="54"
+            r="6"
+          >
+            <animateTransform
+              attributeName="transform"
+              dur="2s"
+              type="rotate"
+              from="0 50 48"
+              to="360 50 52"
+              repeatCount="indefinite"
+            />
+          </circle>
+        </svg>
       </button>
     </main>
     <serverToken
