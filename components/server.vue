@@ -2,12 +2,19 @@
   <section class="h-full relative">
     <header class="relative">
       <h1 class="text-center my-4">سرور</h1>
-      <img
-        @click.prevent="deleteServerTab = true"
-        class="absolute right-4 top-0 cursor-pointer"
-        src="/images/trash.png"
-        alt=""
-      />
+      <div class="absolute right-4 top-0 flex gap-2">
+        <a :href="tsUrl">
+          <img class="cursor-pointer w-8" src="/images/User info.png" alt="" />
+        </a>
+
+        <img
+          @click.prevent="deleteServerTab = true"
+          class="cursor-pointer w-6"
+          src="/images/trash.png"
+          alt=""
+        />
+      </div>
+
       <img class="w-ful mx-auto mt-6" src="/images/seprator-line.png" alt="" />
     </header>
     <main class="list-none">
@@ -102,6 +109,7 @@
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
+        @click="resetConfigTab = true"
         class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
       >
         <p>ریسیت کانفگ</p>
@@ -150,6 +158,11 @@
     @close="bansListTab = false"
     v-if="bansListTab"
   />
+  <resetConfig
+    :selectedServer="selectedServer"
+    @close="resetConfigTab = false"
+    v-if="resetConfigTab"
+  />
 </template>
 <script setup>
 import changeSlot from "./modules/server/changeSlot.vue";
@@ -159,6 +172,7 @@ import restartServer from "./modules/server/restartServer.vue";
 import turnoffServer from "./modules/server/turnoffServer.vue";
 import deleteServer from "./modules/server/deleteServer.vue";
 import banList from "./modules/server/banList.vue";
+import resetConfig from "./modules/server/resetConfig.vue";
 
 
 import { apiStore } from "~/stores/apistore";
@@ -174,6 +188,7 @@ const turnOffServerTab = ref(false);
 const serverLocationTab = ref(false);
 const bansListTab = ref(false);
 const restartServerTab = ref(false);
+const resetConfigTab = ref(false);
 ///
 const props = defineProps(["serverInfo"]);
 const emit = defineEmits(["getServerDeatails"]);
@@ -182,6 +197,7 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 //////
 const selectedServer = ref(props.serverInfo);
+const tsUrl = ref(`ts3server://${props.serverInfo.name}`)
 //functions
 function getServerDeatails() {
   emit("getServerDeatails");
@@ -202,7 +218,6 @@ async function turnServerOffOrOn() {
         },
       },
     );
-    console.log(nuxtStorage.localStorage)
     getServerDeatails();
   }
 }

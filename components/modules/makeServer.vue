@@ -31,6 +31,24 @@
         />
         <p class="absolute right-8 bottom-4 text-blue-300/60">.v4.myts3.ir</p>
       </div>
+      <P class="text-right font-medium mt-3"
+        >لطفا کانفیگ سرور خودرا انتخاب کنید</P
+      >
+      <from class="w-full my-4">
+        <select
+          class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
+          v-model="selectedConfig"
+          name="locations"
+        >
+          <option
+            v-for="available in availables"
+            :value="available"
+            class="dropdown"
+          >
+            {{ available }}
+          </option>
+        </select>
+      </from>
       <div>
         <p class="my-4 text-right font-medium">تعداد اسلات</p>
         <div class="flex justify-between">
@@ -76,138 +94,15 @@
         </div>
       </div>
       <!-- //////////////////price eneded////////////// -->
-      <div class="flex flex-row-reverse text-center mt-4">
-        <p>گزینه های بیشتر</p>
-        <div
-          @click="moreoptions = !moreoptions"
-          class="flex items-center mx-auto gap-2"
-        >
-          <img
-            :class="{ 'rotate-180': moreoptions }"
-            class="cursor-pointer transition-all"
-            src="/images/arrow.png"
-            alt=""
-          />
-          <img src="/images/line.png" alt="" />
-        </div>
-      </div>
-      <!-- /////////////////////moreoptions//////// -->
-      <div
-        class="grid grid-cols-2 w-full justify-around mt-5"
-        v-if="moreoptions"
-      >
-        <div>
-          <p class="text-right mb-4">ورژن</p>
-          <form class="flex justify-around" action="/action_page.php">
-            <div>
-              <label>1.5.6</label>
-              <input
-                :disabled="disableInputs"
-                v-model="version"
-                class="ml-2 scale-150"
-                type="radio"
-                name="version"
-                value="1.5.6"
-              />
-            </div>
-            <div>
-              <label>1.4.22</label>
-              <input
-                :disabled="disableInputs"
-                v-model="version"
-                class="ml-2 scale-150"
-                type="radio"
-                name="version"
-                value="1.4.22"
-              />
-            </div>
-          </form>
-        </div>
 
-        <div class="flex flex-col items-end">
-          <p class="text-right mb-4">پورت</p>
-          <input
-            :disabled="disableInputs"
-            v-model="port"
-            class="w-4/5 py-2 bg-transparent border rounded-lg px-4"
-            type="number"
-          />
-        </div>
-      </div>
-      <!-- /////////////////end of more options/////////// -->
       <button
+        :class="{ 'btn-disable, opacity-55': disableInputs }"
         :disabled="disableInputs"
         @click.prevent="makeServer()"
         class="flex w-full items-center justify-center make-server font-medium gap-2"
       >
-        <div
-          class="flex w-full items-center justify-center font-medium gap-2"
-          v-if="!disableInputs"
-        >
+        <div class="flex w-full items-center justify-center font-medium gap-2">
           <span><img src="/images/plus.png" alt="" /></span>ساخت
-        </div>
-
-        <div v-if="disableInputs">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="30"
-            viewBox="0 0 24 24"
-          >
-            <g>
-              <circle
-                cx="12"
-                cy="2.5"
-                r="1.5"
-                fill="currentColor"
-                opacity="0.14"
-              />
-              <circle
-                cx="16.75"
-                cy="3.77"
-                r="1.5"
-                fill="currentColor"
-                opacity="0.29"
-              />
-              <circle
-                cx="20.23"
-                cy="7.25"
-                r="1.5"
-                fill="currentColor"
-                opacity="0.43"
-              />
-              <circle
-                cx="21.5"
-                cy="12"
-                r="1.5"
-                fill="currentColor"
-                opacity="0.57"
-              />
-              <circle
-                cx="20.23"
-                cy="16.75"
-                r="1.5"
-                fill="currentColor"
-                opacity="0.71"
-              />
-              <circle
-                cx="16.75"
-                cy="20.23"
-                r="1.5"
-                fill="currentColor"
-                opacity="0.86"
-              />
-              <circle cx="12" cy="21.5" r="1.5" fill="currentColor" />
-              <animateTransform
-                attributeName="transform"
-                calcMode="discrete"
-                dur="0.75s"
-                repeatCount="indefinite"
-                type="rotate"
-                values="0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12"
-              />
-            </g>
-          </svg>
         </div>
       </button>
     </main>
@@ -230,14 +125,14 @@ const serverTokenTab = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
 ////
-
 const emit = defineEmits(["close"]);
+
 const moreoptions = ref(false);
-const version = ref();
-const port = ref();
 const slot = ref(1);
 const serverName = ref();
+const selectedConfig = ref('CONFIG_DEFAULT')
 const disableInputs = ref(false);
+const availables = ref()
 let token = ref();
 let tsURL = ref();
 let tsuuid = ref();
@@ -245,11 +140,8 @@ let tsuuid = ref();
 async function makeServer() {
   ////disabling///
   disableInputs.value = true;
-  ////////////////
   const slots = 2 ** (Number(slot.value) + 3);
 
-  //////////////
-  console.log("before");
 
   const server = await $fetch(`${url.value}/api/v1/tservers/`, {
     method: "POST",
@@ -258,16 +150,26 @@ async function makeServer() {
     },
     body: JSON.stringify({
       name: `${serverName.value}.v4.myts3.ir`,
-      version: version.value,
-      voicePort: port.value,
+      config: selectedConfig.value,
       slots: slots,
     }),
   });
-  console.log("after");
   token = await ref(server.privilegeKey);
   tsuuid = await ref(server.uuid);
   tsURL = await ref(`ts3server://${server.name}`);
   serverTokenTab.value = true;
 }
+
+async function getAvailble() {
+  const respone = $fetch(
+    `${url.value}/api/v1/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,{
+      headers:{
+          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
+        },
+    }
+  );
+  availables.value = await respone;
+}
+await getAvailble()
 </script>
 <style scoped></style>

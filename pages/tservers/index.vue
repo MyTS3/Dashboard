@@ -1,9 +1,6 @@
 <template>
-  <section
-    style="max-width: 69rem"
-    class="mt-6 grid w-full h-[40rem] mx-auto text-white"
-  >
-    <main class="w-full flex flex-col bg-mainbg_500 rounded-2xl text">
+  <Table>
+    <div class="h-full overflow-y-scroll">
       <div class="table bg-mainbg_300 rounded-t-2xl">
         <p>نام</p>
         <p>تعداد اسلات</p>
@@ -23,16 +20,17 @@
           alt=""
         />
       </div>
-      <button
-        @click.prevent="makeServerTab = true"
-        class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
-      >
-        ساخت سرور
-        <img src="/images/addon.png" alt="" />
-      </button>
-    </main>
-  </section>
+    </div>
+    <button
+      @click.prevent="makeServerTab = true"
+      class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+    >
+      ساخت سرور
+      <img src="/images/addon.png" alt="" />
+    </button>
+  </Table>
   <makeServer
+    :selectedServer="selectedServer"
     v-if="makeServerTab"
     @close="getServers(), (makeServerTab = false)"
   />
@@ -49,6 +47,8 @@ import fa from "javascript-time-ago/locale/fa";
 TimeAgo.addLocale(fa);
 const timeAgo = new TimeAgo("fa");
 
+
+import Table from '~/components/reusable/table.vue';
 import makeServer from "/components/modules/makeServer.vue";
 const router = useRouter();
 ////
