@@ -113,7 +113,7 @@
       </nav>
       <button
         @click="logoutTab = true "
-        class="bg-main_red w-3/4 left-1/2 -translate-x-1/2 rounded-2xl py-3 text-center absolute bottom-5"
+        class="bg-main_red w-[95%] left-1/2 -translate-x-1/2 rounded-2xl py-3 text-center absolute bottom-5"
       >
         <p>خروج از حساب کاربری</p>
       </button>
@@ -128,7 +128,7 @@ const logoutTab = ref(false)
 <style scoped>
 .layout {
   display: grid;
-  grid-template-columns: 6fr 1fr;
+  grid-template-columns: 7fr 1fr;
 }
 @media only screen and (max-width: 1346px){
   .layout{
