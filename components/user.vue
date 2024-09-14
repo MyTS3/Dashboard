@@ -86,13 +86,13 @@
   />
 </template>
 <script setup lang="ts">
-import banFromServer from "./modules/user/banFromServer.vue";
-import kickFromChannel from "./modules/user/kickFromChannel.vue";
-import kickFromServer from "./modules/user/kickFromServer.vue";
-import changeServerGroups from "./modules/user/changeServerGroups.vue";
-import nuxtStorage from "nuxt-storage";
+import banFromServer from './modules/user/banFromServer.vue';
+import kickFromChannel from './modules/user/kickFromChannel.vue';
+import kickFromServer from './modules/user/kickFromServer.vue';
+import changeServerGroups from './modules/user/changeServerGroups.vue';
+import nuxtStorage from 'nuxt-storage';
 
-const props = defineProps(["selectedRow", "serverInfo"]);
+const props = defineProps(['selectedRow', 'serverInfo']);
 const serverInfo = props.serverInfo;
 const kickFromChannelTab = ref(false);
 const kickFromServerTab = ref(false);
@@ -103,21 +103,21 @@ const { url } = storeToRefs(store);
 const servergroups = ref();
 
 const persianNumbers: { [key: string]: string } = {
-  "0": "۰",
-  "1": "۱",
-  "2": "۲",
-  "3": "۳",
-  "4": "۴",
-  "5": "۵",
-  "6": "۶",
-  "7": "۷",
-  "8": "۸",
-  "9": "۹",
+  '0': '۰',
+  '1': '۱',
+  '2': '۲',
+  '3': '۳',
+  '4': '۴',
+  '5': '۵',
+  '6': '۶',
+  '7': '۷',
+  '8': '۸',
+  '9': '۹',
 };
 
 function convertEnglishNumberToPersian(number: number) {
   const string = number.toString();
-  let persianString = "";
+  let persianString = '';
   for (const c of string) {
     persianString += persianNumbers[c];
   }
@@ -131,12 +131,12 @@ function secondsToString(seconds: number) {
   const numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
   // const numseconds = Math.floor((((seconds % 31536000) % 86400) % 3600) % 60);
 
-  let string = "\u200F";
-  if (numyears) string += convertEnglishNumberToPersian(numyears) + " سال ";
-  if (numdays) string += convertEnglishNumberToPersian(numdays) + " روز ";
-  if (numhours) string += convertEnglishNumberToPersian(numhours) + " ساعت ";
+  let string = '\u200F';
+  if (numyears) string += convertEnglishNumberToPersian(numyears) + ' سال ';
+  if (numdays) string += convertEnglishNumberToPersian(numdays) + ' روز ';
+  if (numhours) string += convertEnglishNumberToPersian(numhours) + ' ساعت ';
   if (numminutes)
-    string += convertEnglishNumberToPersian(numminutes) + " دقیقه ";
+    string += convertEnglishNumberToPersian(numminutes) + ' دقیقه ';
   // if (numseconds) string += convertEnglishNumberToPersian(numseconds) + " ثانیه "
 
   return string;
@@ -152,9 +152,9 @@ async function getServerGroups() {
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.selectedRow.user.userNickname}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
   servergroups.value = response;
 }

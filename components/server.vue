@@ -165,22 +165,22 @@
   />
 </template>
 <script setup>
-import changeSlot from "./modules/server/changeSlot.vue";
-import yatqaPassChange from "./modules/server/yatqaPassChange.vue";
-import moveLocation from "./modules/server/moveLocation.vue";
-import restartServer from "./modules/server/restartServer.vue";
-import turnoffServer from "./modules/server/turnoffServer.vue";
-import deleteServer from "./modules/server/deleteServer.vue";
-import banList from "./modules/server/banList.vue";
-import resetConfig from "./modules/server/resetConfig.vue";
+import changeSlot from './modules/server/changeSlot.vue';
+import yatqaPassChange from './modules/server/yatqaPassChange.vue';
+import moveLocation from './modules/server/moveLocation.vue';
+import restartServer from './modules/server/restartServer.vue';
+import turnoffServer from './modules/server/turnoffServer.vue';
+import deleteServer from './modules/server/deleteServer.vue';
+import banList from './modules/server/banList.vue';
+import resetConfig from './modules/server/resetConfig.vue';
 
-import { apiStore } from "~/stores/apistore";
-import { storeToRefs } from "pinia";
-import nuxtStorage from "nuxt-storage";
+import { apiStore } from '~/stores/apistore';
+import { storeToRefs } from 'pinia';
+import nuxtStorage from 'nuxt-storage';
 
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
-const showYatqaPass = ref("disc");
+const showYatqaPass = ref('disc');
 const yatqaPassReset = ref(false);
 const turnOffServerTab = ref(false);
 const serverLocationTab = ref(false);
@@ -188,8 +188,8 @@ const bansListTab = ref(false);
 const restartServerTab = ref(false);
 const resetConfigTab = ref(false);
 ///
-const props = defineProps(["serverInfo"]);
-const emit = defineEmits(["getServerDeatails"]);
+const props = defineProps(['serverInfo']);
+const emit = defineEmits(['getServerDeatails']);
 const route = useRoute();
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -198,7 +198,7 @@ const selectedServer = ref(props.serverInfo);
 const tsUrl = ref(`ts3server://${props.serverInfo.name}`);
 //functions
 function getServerDeatails() {
-  emit("getServerDeatails");
+  emit('getServerDeatails');
 }
 function copyYatqaPass() {
   navigator.clipboard.writeText(selectedServer.value.queryPassword);
@@ -210,11 +210,11 @@ async function turnServerOffOrOn() {
     const respone = await $fetch(
       `${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+          Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
         },
-      }
+      },
     );
     getServerDeatails();
   }

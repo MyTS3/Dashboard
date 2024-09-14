@@ -40,11 +40,11 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
-import { apiStore } from "#imports";
-import { storeToRefs } from "#imports";
-const props = defineProps(["selectedServer"]);
-const emit = defineEmits(["emit"]);
+import nuxtStorage from 'nuxt-storage';
+import { apiStore } from '#imports';
+import { storeToRefs } from '#imports';
+const props = defineProps(['selectedServer']);
+const emit = defineEmits(['emit']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const reasson = ref();
@@ -52,15 +52,15 @@ async function restartServer() {
   const respone = await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/restart`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
       body: JSON.stringify({
         reason: `${reasson.value}`,
       }),
-    }
+    },
   );
-  emit("close");
+  emit('close');
 }
 </script>

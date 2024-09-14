@@ -43,13 +43,13 @@
   <AddDomain @close="getDomain(), (addDomainTab = false)" v-if="addDomainTab" />
 </template>
 <script setup>
-import Table from "~/components/reusable/table.vue";
-import nuxtStorage from "nuxt-storage";
+import Table from '~/components/reusable/table.vue';
+import nuxtStorage from 'nuxt-storage';
 
-import TimeAgo from "javascript-time-ago";
-import fa from "javascript-time-ago/locale/fa";
-import AddDomain from "~/components/modules/domain/addDomain.vue";
-const timeAgo = new TimeAgo("fa");
+import TimeAgo from 'javascript-time-ago';
+import fa from 'javascript-time-ago/locale/fa';
+import AddDomain from '~/components/modules/domain/addDomain.vue';
+const timeAgo = new TimeAgo('fa');
 
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -59,16 +59,16 @@ const addDomainTab = ref(false);
 async function getDomain() {
   const response = await $fetch(`${url.value}/api/v1/tdomains`, {
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
   });
   domainList.value = await response;
 }
 async function deleteDomain(uuid) {
   const response = await $fetch(`${url.value}/api/v1/tdomains/${uuid}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
   });
   await getDomain();

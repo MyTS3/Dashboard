@@ -35,8 +35,8 @@
   </section>
 </template>
 <script setup>
-const props = defineProps(["token", "tsURL", "tsuuid"]);
-const emit = defineEmits(["close"]);
+const props = defineProps(['token', 'tsURL', 'tsuuid']);
+const emit = defineEmits(['close']);
 
 /////
 const { tsURL } = props;
@@ -46,6 +46,6 @@ function copyToClipboard() {
   copy.value = true;
 }
 function goToServer() {
-  emit("close");
+  emit('close');
 }
 </script>

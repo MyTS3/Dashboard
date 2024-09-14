@@ -117,20 +117,20 @@
   <!-- </Teleport> -->
 </template>
 <script setup>
-import serverToken from "./serverToken.vue";
-import nuxtStorage from "nuxt-storage";
+import serverToken from './serverToken.vue';
+import nuxtStorage from 'nuxt-storage';
 ///////////////////////////////////////
 const serverTokenTab = ref(false);
 ////
 const store = apiStore();
 const { url } = storeToRefs(store);
 ////
-const emit = defineEmits(["close"]);
+const emit = defineEmits(['close']);
 
 const moreoptions = ref(false);
 const slot = ref(1);
 const serverName = ref();
-const selectedConfig = ref("CONFIG_DEFAULT");
+const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
 const availables = ref();
 let token = ref();
@@ -143,9 +143,9 @@ async function makeServer() {
   const slots = 2 ** (Number(slot.value) + 3);
 
   const server = await $fetch(`${url.value}/api/v1/tservers/`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
     body: JSON.stringify({
       name: `${serverName.value}.v4.myts3.ir`,
@@ -164,9 +164,9 @@ async function getAvailble() {
     `${url.value}/api/v1/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
   availables.value = await respone;
 }

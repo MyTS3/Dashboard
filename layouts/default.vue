@@ -122,7 +122,7 @@
   <logoutPopup @close="logoutTab = false" v-if="logoutTab" />
 </template>
 <script setup>
-import logoutPopup from "@/components/modules/logoutPopup.vue";
+import logoutPopup from '@/components/modules/logoutPopup.vue';
 const logoutTab = ref(false);
 </script>
 <style scoped>

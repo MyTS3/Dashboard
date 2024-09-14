@@ -20,6 +20,6 @@
   <MakeMusicbot class="hidden" />
 </template>
 <script setup>
-import MakeMusicbot from "./modules/musicbot/makeMusicbot.vue";
-const props = defineProps(["selectedChannel"]);
+import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';
+const props = defineProps(['selectedChannel']);
 </script>

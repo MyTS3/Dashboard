@@ -38,27 +38,27 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
+import nuxtStorage from 'nuxt-storage';
 const disable = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
-const props = defineProps(["serverInfo", "user"]);
-const emit = defineEmits("close");
-const reason = ref("");
+const props = defineProps(['serverInfo', 'user']);
+const emit = defineEmits('close');
+const reason = ref('');
 async function kickUser() {
   disable.value = true;
   const response = await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-server`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
       body: JSON.stringify({
         reason: reason.value,
       }),
-    }
+    },
   );
-  emit("close");
+  emit('close');
 }
 </script>

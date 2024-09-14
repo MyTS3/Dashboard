@@ -75,11 +75,11 @@
   <!-- //////////////////price eneded////////////// -->
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
+import nuxtStorage from 'nuxt-storage';
 
 let disable = ref(false);
-const props = defineProps(["selectedServer"]);
-const emit = defineEmits(["close"]);
+const props = defineProps(['selectedServer']);
+const emit = defineEmits(['close']);
 let selectedSlot = ref(16);
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -89,15 +89,15 @@ async function chaneSlots() {
   const response = await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/change-slots`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
       body: JSON.stringify({
         slots: slots,
       }),
-    }
+    },
   );
-  emit("close");
+  emit('close');
 }
 </script>

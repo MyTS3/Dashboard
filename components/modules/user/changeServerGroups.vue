@@ -70,16 +70,16 @@
   </section>
 </template>
 <script setup lang="ts">
-import nuxtStorage from "nuxt-storage";
+import nuxtStorage from 'nuxt-storage';
 const store = apiStore();
-const emit = defineEmits(["close"]);
+const emit = defineEmits(['close']);
 const { url } = storeToRefs(store);
-const props = defineProps(["user", "serverInfo"]);
+const props = defineProps(['user', 'serverInfo']);
 const ServerGroupsWeHave = ref<serverGroup[]>([]);
 const serverGroups = ref<serverGroup[]>([]);
 const queryServerGroups = ref<serverGroup[]>([]);
 const toApply = ref<{
-  [key: string]: { serverGroup: serverGroup; action: "add" | "remove" };
+  [key: string]: { serverGroup: serverGroup; action: 'add' | 'remove' };
 }>({});
 const disable = ref(false);
 
@@ -96,9 +96,9 @@ async function getUserServerGroups() {
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
   ServerGroupsWeHave.value = response;
 }
@@ -107,9 +107,9 @@ async function getAllServerGroups() {
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
   const allServerGroups = response;
   allServerGroups.forEach((serverGroup) => {
@@ -120,7 +120,7 @@ async function getAllServerGroups() {
 
 function isAssigned(serverGroup: serverGroup) {
   if (serverGroup.sgid in toApply.value)
-    return toApply.value[serverGroup.sgid].action == "add";
+    return toApply.value[serverGroup.sgid].action == 'add';
   return !!ServerGroupsWeHave.value.find((s) => s.sgid == serverGroup.sgid);
 }
 
@@ -128,22 +128,22 @@ async function addServerGroup(sgid: string) {
   const response = await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
 }
 async function removeServerGroup(sgid: string) {
   const response = await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
     {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
 }
 
@@ -152,23 +152,23 @@ async function applyServerGroups() {
   for (const sgid in toApply.value) {
     const { action, serverGroup } = toApply.value[sgid];
     switch (action) {
-      case "add": {
+      case 'add': {
         if (!ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
           await addServerGroup(serverGroup.sgid);
-        } else console.log("cant add twice");
+        } else console.log('cant add twice');
 
         break;
       }
-      case "remove": {
+      case 'remove': {
         if (ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
           await removeServerGroup(serverGroup.sgid);
-        } else console.log("cant remove twice");
+        } else console.log('cant remove twice');
         break;
       }
     }
   }
   disable.value = false;
-  emit("close");
+  emit('close');
 }
 
 await getUserServerGroups();

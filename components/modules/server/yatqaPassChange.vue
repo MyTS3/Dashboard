@@ -35,9 +35,9 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
-const props = defineProps(["selectedServer"]);
-const emit = defineEmits(["close"]);
+import nuxtStorage from 'nuxt-storage';
+const props = defineProps(['selectedServer']);
+const emit = defineEmits(['close']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
@@ -46,12 +46,12 @@ async function changeYatqaPass() {
   const changePass = await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-password`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
-  emit("close");
+  emit('close');
 }
 </script>

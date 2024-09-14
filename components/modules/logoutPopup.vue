@@ -35,22 +35,22 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
-const props = defineProps(["selectedServer"]);
-const emit = defineEmits(["close"]);
+import nuxtStorage from 'nuxt-storage';
+const props = defineProps(['selectedServer']);
+const emit = defineEmits(['close']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
 async function logOut() {
   disable.value = true;
   const respone = await $fetch(`${url.value}/api/v1/logout`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
   });
-  navigateTo("/authorization");
-  nuxtStorage.localStorage.removeItem("token");
-  emit("close");
+  navigateTo('/authorization');
+  nuxtStorage.localStorage.removeItem('token');
+  emit('close');
 }
 </script>

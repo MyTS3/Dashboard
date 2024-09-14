@@ -100,20 +100,20 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
-import musicbot from "~/components/musicbot.vue";
-import { useRoute } from "#app";
-import { apiStore } from "#imports";
-import { storeToRefs } from "#imports";
-import nuxtStorage from "nuxt-storage";
+import { ref } from 'vue';
+import musicbot from '~/components/musicbot.vue';
+import { useRoute } from '#app';
+import { apiStore } from '#imports';
+import { storeToRefs } from '#imports';
+import nuxtStorage from 'nuxt-storage';
 
 //variables
-type alignType = "start" | "center" | "end";
-type statusType = "openMic" | "micMute" | "soundMute" | "away";
+type alignType = 'start' | 'center' | 'end';
+type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
 type row =
-  | { rowType: "channel"; channel: channel; level: number }
-  | { rowType: "user"; user: user; level: number }
-  | { rowType: "server"; level: 0 };
+  | { rowType: 'channel'; channel: channel; level: number }
+  | { rowType: 'user'; user: user; level: number }
+  | { rowType: 'server'; level: 0 };
 type channel = {
   channelFullName: string;
   channelName: string;
@@ -135,7 +135,7 @@ const serverUuid = route.params.id;
 const store = apiStore();
 const { url } = storeToRefs(store);
 const serverInfo = ref();
-const selectedRow = ref<row>({ rowType: "server", level: 0 });
+const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
 const selectedChannel = ref<channel>();
 //function
@@ -146,14 +146,14 @@ async function dragended(channel: channel) {
   const respone = await $fetch(
     `${url.value}/api/v1/tservers/${serverUuid}/users/${movingUser.value}/move`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
       body: JSON.stringify({
         channel: channel.channelFullName,
       }),
-    }
+    },
   );
 }
 async function getServerDeatails() {
@@ -168,56 +168,56 @@ async function getServerDeatails() {
     version: String;
   } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`, {
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
   });
   serverInfo.value = await respone;
 }
 
-type channelType = "*spacer" | "lspacer" | "cspacer" | "rspacer" | "normal";
+type channelType = '*spacer' | 'lspacer' | 'cspacer' | 'rspacer' | 'normal';
 function findChannelTypeAndNameByFullName(fullName: string): {
   channelFullName: string;
   type: channelType;
   name: string;
   align: alignType;
 } {
-  const splitedName = fullName.split("]");
+  const splitedName = fullName.split(']');
   if (splitedName.length > 1) {
-    if (splitedName[0].startsWith("[")) {
-      if (splitedName[0].includes("cspacer"))
+    if (splitedName[0].startsWith('[')) {
+      if (splitedName[0].includes('cspacer'))
         return {
-          type: "cspacer",
+          type: 'cspacer',
           name: splitedName[1],
-          align: "center",
+          align: 'center',
           channelFullName: fullName,
         };
-      if (splitedName[0].includes("lspacer"))
+      if (splitedName[0].includes('lspacer'))
         return {
-          type: "lspacer",
+          type: 'lspacer',
           name: splitedName[1],
-          align: "start",
+          align: 'start',
           channelFullName: fullName,
         };
-      if (splitedName[0].includes("rspacer"))
+      if (splitedName[0].includes('rspacer'))
         return {
-          type: "rspacer",
+          type: 'rspacer',
           name: splitedName[1],
-          align: "end",
+          align: 'end',
           channelFullName: fullName,
         };
-      if (splitedName[0].includes("*spacer"))
+      if (splitedName[0].includes('*spacer'))
         return {
-          type: "*spacer",
+          type: '*spacer',
           name: splitedName[1].repeat(100),
-          align: "center",
+          align: 'center',
           channelFullName: fullName,
         };
     }
   }
   return {
-    type: "normal",
+    type: 'normal',
     name: fullName,
-    align: "start",
+    align: 'start',
     channelFullName: fullName,
   };
 }
@@ -231,7 +231,7 @@ async function getUsersAndChannels() {
     }[]
   > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
   });
 
@@ -252,7 +252,7 @@ async function getUsersAndChannels() {
     }[]
   > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
   });
 
@@ -260,7 +260,7 @@ async function getUsersAndChannels() {
   const channels = await channelsReq;
   channels.forEach((channel) => {
     const channelTypeAndName = findChannelTypeAndNameByFullName(
-      channel.channelName
+      channel.channelName,
     );
     const channelType = channelTypeAndName.type;
     const channelName = channelTypeAndName.name;
@@ -279,7 +279,7 @@ async function getUsersAndChannels() {
       });
     }
     rows.push({
-      rowType: "channel",
+      rowType: 'channel',
       channel: {
         channelFullName,
         channelName,
@@ -294,16 +294,16 @@ async function getUsersAndChannels() {
   const users = await usersReq;
   users.forEach((user) => {
     const channelIndex = rows.findIndex((row) => {
-      if (row.rowType != "channel") return false;
+      if (row.rowType != 'channel') return false;
       return row.channel.cid == user.cid;
     });
-    let status: statusType = "openMic";
-    if (user.clientInputMuted || !user.clientInputHardware) status = "micMute";
+    let status: statusType = 'openMic';
+    if (user.clientInputMuted || !user.clientInputHardware) status = 'micMute';
     if (user.clientOutputMuted || !user.clientOutputHardware)
-      status = "soundMute";
-    if (user.clientAway) status = "away";
+      status = 'soundMute';
+    if (user.clientAway) status = 'away';
     rows.splice(channelIndex + 1, 0, {
-      rowType: "user",
+      rowType: 'user',
       user: {
         userNickname: user.clientNickname,
         status,
@@ -326,9 +326,9 @@ function longpoll(time = 1) {
     `${url.value}/api/v1/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   )
     .then((re) => re.json())
     .then(async (data) => {

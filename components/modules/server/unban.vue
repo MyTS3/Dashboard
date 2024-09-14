@@ -39,24 +39,24 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
-import { apiStore } from "~/stores/apistore";
-import { storeToRefs } from "pinia";
+import nuxtStorage from 'nuxt-storage';
+import { apiStore } from '~/stores/apistore';
+import { storeToRefs } from 'pinia';
 //variables
 const store = apiStore();
 const { url } = storeToRefs(store);
-const props = defineProps(["unBaning", "selectedServer"]);
-const emit = defineEmits(["close"]);
+const props = defineProps(['unBaning', 'selectedServer']);
+const emit = defineEmits(['close']);
 async function deleteBan() {
   const respone = await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans/${props.unBaning.banid}`,
     {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
-  emit("close");
+  emit('close');
 }
 </script>

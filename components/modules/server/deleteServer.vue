@@ -35,10 +35,10 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
+import nuxtStorage from 'nuxt-storage';
 //variables
-const emit = defineEmits(["close"]);
-const props = defineProps(["selectedServer"]);
+const emit = defineEmits(['close']);
+const props = defineProps(['selectedServer']);
 const route = useRoute();
 const router = useRouter();
 const store = apiStore();
@@ -47,13 +47,13 @@ async function deleteTheServer() {
   const deleteServer = await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}`,
     {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
-  emit("close");
-  if (route.path != "/tservers") router.back();
+  emit('close');
+  if (route.path != '/tservers') router.back();
 }
 </script>

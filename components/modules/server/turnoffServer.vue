@@ -34,23 +34,23 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
-import { apiStore } from "~/stores/apistore";
-import { storeToRefs } from "pinia";
-const props = defineProps(["selectedServer"]);
-const emit = defineEmits(["close"]);
+import nuxtStorage from 'nuxt-storage';
+import { apiStore } from '~/stores/apistore';
+import { storeToRefs } from 'pinia';
+const props = defineProps(['selectedServer']);
+const emit = defineEmits(['close']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 async function turnOffserver() {
   const response = await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/stop`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
-  emit("close");
+  emit('close');
 }
 </script>

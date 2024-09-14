@@ -46,11 +46,11 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
-import { apiStore } from "~/stores/apistore";
-import { storeToRefs } from "pinia";
-const emit = defineEmits(["close"]);
-const props = defineProps(["selectedServer"]);
+import nuxtStorage from 'nuxt-storage';
+import { apiStore } from '~/stores/apistore';
+import { storeToRefs } from 'pinia';
+const emit = defineEmits(['close']);
+const props = defineProps(['selectedServer']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
@@ -63,9 +63,9 @@ async function getAvailble() {
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config/available`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
   availables.value = await respone;
   console.log(availables);
@@ -75,16 +75,16 @@ async function changeConfigue() {
   const respone = $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
       body: JSON.stringify({
         config: `${selectedConfigue.value}`,
       }),
-    }
+    },
   );
-  emit("close");
+  emit('close');
 }
 
 await getAvailble();

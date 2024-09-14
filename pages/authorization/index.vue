@@ -93,13 +93,13 @@ definePageMeta({
   layout: false,
 });
 
-import nuxtStorage from "nuxt-storage";
-import { apiStore } from "#imports";
-import { storeToRefs } from "#imports";
+import nuxtStorage from 'nuxt-storage';
+import { apiStore } from '#imports';
+import { storeToRefs } from '#imports';
 const store = apiStore();
 const { url } = storeToRefs(store);
 //variables
-const password = ref("password");
+const password = ref('password');
 const inputGmail = ref();
 const inputPass = ref();
 const route = useRoute();
@@ -107,27 +107,27 @@ const disable = ref(false);
 
 //function
 function showPass() {
-  if (password.value == "password") password.value = "text";
-  else password.value = "password";
+  if (password.value == 'password') password.value = 'text';
+  else password.value = 'password';
 }
 if (route.query.token) {
-  nuxtStorage.localStorage.setData("token", route.query.token, 7, "d");
-  navigateTo("/tservers");
+  nuxtStorage.localStorage.setData('token', route.query.token, 7, 'd');
+  navigateTo('/tservers');
 }
 async function signIn() {
   disable.value = true;
   const response = await $fetch(`${url.value}/api/v1/token`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
     body: JSON.stringify({
-      grant_type: "password",
+      grant_type: 'password',
       username: `${inputGmail.value}`,
       password: `${inputPass.value}`,
     }),
   });
-  nuxtStorage.localStorage.setData("token", response.access_token, 7, "d");
-  navigateTo("/tservers");
+  nuxtStorage.localStorage.setData('token', response.access_token, 7, 'd');
+  navigateTo('/tservers');
 }
 </script>

@@ -61,14 +61,14 @@
   />
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
-import { apiStore } from "~/stores/apistore";
-import { storeToRefs } from "pinia";
-import unBan from "./unban.vue";
-import Table from "~/components/reusable/table.vue";
+import nuxtStorage from 'nuxt-storage';
+import { apiStore } from '~/stores/apistore';
+import { storeToRefs } from 'pinia';
+import unBan from './unban.vue';
+import Table from '~/components/reusable/table.vue';
 // variables
-const props = defineProps(["selectedServer"]);
-const emit = defineEmits(["close"]);
+const props = defineProps(['selectedServer']);
+const emit = defineEmits(['close']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const banList = ref();
@@ -80,9 +80,9 @@ async function getBanList() {
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
       },
-    }
+    },
   );
   banList.value = await respone;
 }

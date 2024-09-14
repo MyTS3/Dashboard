@@ -41,19 +41,19 @@
   />
 </template>
 <script setup>
-import nuxtStorage from "nuxt-storage";
-import TimeAgo from "javascript-time-ago";
-import fa from "javascript-time-ago/locale/fa";
+import nuxtStorage from 'nuxt-storage';
+import TimeAgo from 'javascript-time-ago';
+import fa from 'javascript-time-ago/locale/fa';
 TimeAgo.addLocale(fa);
-const timeAgo = new TimeAgo("fa");
+const timeAgo = new TimeAgo('fa');
 
-import Table from "~/components/reusable/table.vue";
-import makeServer from "/components/modules/makeServer.vue";
+import Table from '~/components/reusable/table.vue';
+import makeServer from '/components/modules/makeServer.vue';
 const router = useRouter();
 ////
-import { apiStore } from "~/stores/apistore";
-import { storeToRefs } from "pinia";
-import DeleteServer from "~/components/modules/server/deleteServer.vue";
+import { apiStore } from '~/stores/apistore';
+import { storeToRefs } from 'pinia';
+import DeleteServer from '~/components/modules/server/deleteServer.vue';
 //////
 ////variables
 const store = apiStore();
@@ -66,9 +66,9 @@ const selectedServer = ref();
 // functions
 async function getServers() {
   const response = await $fetch(`${url.value}/api/v1/tservers/`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
     },
   });
   servers.value = response;
