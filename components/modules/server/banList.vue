@@ -23,7 +23,7 @@
       >
         <div class="flex flex-col text-right bg-mainbg_400">
           <p class="items text-lg p-4">دلیل</p>
-          <p
+          <div
             class="items p-4 flex flex-row-reverse items-center"
             v-for="bans in banList"
           >
@@ -35,7 +35,7 @@
               src="/images/x-symbpl.png"
               alt=""
             />
-          </p>
+          </div>
         </div>
 
         <div class="flex flex-col text-right bg-mainbg_400 ">

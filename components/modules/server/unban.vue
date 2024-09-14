@@ -16,9 +16,9 @@
         X
       </button>
       <h1 class="text-xl my-4 font-bolder">آن بن</h1>
+      <h2 v-if="unBaning.name"><span>name={{ unBaning.name }}, ip={{unBaning.ip}}</span></h2>
+      <h2 v-if="unBaning.uid"><span>uid = {{ unBaning.uid }}</span></h2>
       <p class="font-medium max-w-80 text-center mx-auto mb-4">
-        <h2 v-if="unBaning.name"><span>name={{ unBaning.name }}, ip={{unBaning.ip}}</span></h2>
-        <h2 v-if="unBaning.uid"><span>uid = {{ unBaning.uid }}</span></h2>
         شما در حال حذف بن هستید
       </p>
       <div class="grid grid-cols-2 gap-3">
