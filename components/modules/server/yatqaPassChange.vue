@@ -43,7 +43,7 @@ const { url } = storeToRefs(store);
 const disable = ref(false);
 async function changeYatqaPass() {
   disable.value = true;
-  const changePass = await $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-password`,
     {
       method: 'POST',

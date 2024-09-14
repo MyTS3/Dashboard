@@ -41,15 +41,14 @@
 </template>
 <script setup>
 import nuxtStorage from 'nuxt-storage';
-import { apiStore } from '#imports';
-import { storeToRefs } from '#imports';
+import { apiStore, storeToRefs } from '#imports';
 const props = defineProps(['selectedServer']);
 const emit = defineEmits(['emit']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const reasson = ref();
 async function restartServer() {
-  const respone = await $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/restart`,
     {
       method: 'POST',

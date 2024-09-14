@@ -47,7 +47,7 @@ const emit = defineEmits('close');
 const reason = ref('');
 async function kickUser() {
   disable.value = true;
-  const response = await $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-server`,
     {
       method: 'POST',

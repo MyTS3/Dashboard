@@ -89,23 +89,21 @@
   </section>
 </template>
 <script setup>
+import nuxtStorage from 'nuxt-storage';
+import { apiStore, storeToRefs } from '#imports';
+
 definePageMeta({
   layout: false,
 });
 
-import nuxtStorage from 'nuxt-storage';
-import { apiStore } from '#imports';
-import { storeToRefs } from '#imports';
 const store = apiStore();
 const { url } = storeToRefs(store);
-//variables
 const password = ref('password');
 const inputGmail = ref();
 const inputPass = ref();
 const route = useRoute();
 const disable = ref(false);
 
-//function
 function showPass() {
   if (password.value == 'password') password.value = 'text';
   else password.value = 'password';

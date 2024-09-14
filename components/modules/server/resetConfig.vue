@@ -26,6 +26,7 @@
           <option
             v-for="available in availables"
             :value="available"
+            :key="available"
             class="dropdown"
           >
             {{ available }}
@@ -72,7 +73,7 @@ async function getAvailble() {
 }
 async function changeConfigue() {
   disable.value = true;
-  const respone = $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config`,
     {
       method: 'POST',

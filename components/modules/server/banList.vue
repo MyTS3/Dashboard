@@ -21,12 +21,13 @@
             <p class="items text-lg p-4">دلیل</p>
             <div
               class="items p-4 flex flex-row-reverse items-center"
-              v-for="bans in banList"
+              v-for="ban in banList"
+              :key="ban.banid"
             >
-              {{ bans.reason }}
-              <p v-if="!bans.reason">بدون دلیل</p>
+              {{ ban.reason }}
+              <p v-if="!ban.reason">بدون دلیل</p>
               <img
-                @click="openUnBanPopUp(bans, index)"
+                @click="openUnBanPopUp(ban)"
                 class="w-10 absolute left-8 cursor-pointer"
                 src="/images/x-symbpl.png"
                 alt=""
@@ -36,17 +37,15 @@
 
           <div class="flex flex-col text-right bg-mainbg_400">
             <p class="items text-lg p-4">بن شده توسط</p>
-            <p v-for="bans in banList" class="items p-4">
-              {{ bans.invokername }}
+            <p v-for="ban in banList" :key="ban.banid" class="items p-4">
+              {{ ban.invokername }}
             </p>
           </div>
           <div class="flex flex-col text-right bg-mainbg_400">
             <p class="items text-lg p-4">نام،آیپی،آیدی</p>
-            <p v-for="bans in banList" class="items p-4">
-              <span v-if="bans.name"
-                >name={{ bans.name }},ip={{ bans.ip }}</span
-              >
-              <span v-if="bans.uid">uid={{ bans.uid }}</span>
+            <p v-for="ban in banList" :key="ban.banid" class="items p-4">
+              <span v-if="ban.name">name={{ ban.name }},ip={{ ban.ip }}</span>
+              <span v-if="ban.uid">uid={{ ban.uid }}</span>
             </p>
           </div>
         </div>
@@ -65,16 +64,14 @@ import nuxtStorage from 'nuxt-storage';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import unBan from './unban.vue';
-import Table from '~/components/reusable/table.vue';
-// variables
+
 const props = defineProps(['selectedServer']);
-const emit = defineEmits(['close']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const banList = ref();
 const unBaning = ref();
 const unBanTab = ref(false);
-//functions
+
 async function getBanList() {
   const respone = await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans`,

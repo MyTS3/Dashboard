@@ -22,7 +22,9 @@
     <img src="/images/seprator-line.png" alt="" />
     <main>
       <div class="text-left mt-3 mb-6 px-4">
-        <li v-for="servergroup in servergroups">{{ servergroup.name }}</li>
+        <li v-for="servergroup in servergroups" :key="servergroup.sgid">
+          {{ servergroup.name }}
+        </li>
       </div>
     </main>
     <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
@@ -90,7 +92,6 @@ import banFromServer from './modules/user/banFromServer.vue';
 import kickFromChannel from './modules/user/kickFromChannel.vue';
 import kickFromServer from './modules/user/kickFromServer.vue';
 import changeServerGroups from './modules/user/changeServerGroups.vue';
-import nuxtStorage from 'nuxt-storage';
 
 const props = defineProps(['selectedRow', 'serverInfo']);
 const serverInfo = props.serverInfo;
@@ -152,7 +153,7 @@ async function getServerGroups() {
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.selectedRow.user.userNickname}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getData('token')}`,
       },
     },
   );

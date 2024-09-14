@@ -21,6 +21,7 @@
         >
           <option
             v-for="available in availables"
+            :key="available.node"
             :value="available.node"
             class="dropdown"
           >
@@ -72,7 +73,7 @@ async function getAvailble() {
 }
 async function moveServer() {
   disable.value = true;
-  const respone = $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move`,
     {
       method: 'POST',

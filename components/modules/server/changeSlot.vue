@@ -77,16 +77,16 @@
 <script setup>
 import nuxtStorage from 'nuxt-storage';
 
-let disable = ref(false);
+const disable = ref(false);
 const props = defineProps(['selectedServer']);
 const emit = defineEmits(['close']);
-let selectedSlot = ref(16);
+const selectedSlot = ref(16);
 const store = apiStore();
 const { url } = storeToRefs(store);
 async function chaneSlots() {
-  disable = true;
+  disable.value = true;
   const slots = 2 ** (Number(selectedSlot.value) + 3);
-  const response = await $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/change-slots`,
     {
       method: 'POST',

@@ -15,7 +15,7 @@
         <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
       </header>
       <main class="list-none teamspeak text-xs px-4">
-        <div v-for="row in teamspeakserver">
+        <div v-for="row in teamspeakserver" :key="objectHash(row)">
           <div
             @click="selectedRow = row"
             class="py-1 max-h-7 overflow-hidden px-3 rounded-lg"
@@ -83,12 +83,12 @@
     <div class="bg-mainbg_400 w-full rounded-xl">
       <server
         @getServerDeatails="getServerDeatails"
-        :serverInfo.value="serverInfo"
+        :serverInfo="serverInfo"
         v-if="selectedRow?.rowType == 'server'"
       />
       <user
-        :serverInfo.value="serverInfo"
-        :selectedRow.value="selectedRow"
+        :serverInfo="serverInfo"
+        :selectedRow="selectedRow"
         v-if="selectedRow?.rowType == 'user'"
       />
       <channel
@@ -101,13 +101,10 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import musicbot from '~/components/musicbot.vue';
 import { useRoute } from '#app';
-import { apiStore } from '#imports';
-import { storeToRefs } from '#imports';
-import nuxtStorage from 'nuxt-storage';
+import { apiStore, storeToRefs } from '#imports';
+import objectHash from 'object-hash';
 
-//variables
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
 type row =
@@ -143,12 +140,12 @@ function draged(user: user) {
   movingUser.value = user.userNickname;
 }
 async function dragended(channel: channel) {
-  const respone = await $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${serverUuid}/users/${movingUser.value}/move`,
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getData('token')}`,
       },
       body: JSON.stringify({
         channel: channel.channelFullName,
@@ -158,20 +155,20 @@ async function dragended(channel: channel) {
 }
 async function getServerDeatails() {
   const respone: {
-    deployedOn: String;
+    deployedOn: string;
     mustRunning: boolean;
-    name: String;
-    queryPassword: String;
-    queryPort: Number;
-    slots: Number;
-    uuid: String;
-    version: String;
+    name: string;
+    queryPassword: string;
+    queryPort: number;
+    slots: number;
+    uuid: string;
+    version: string;
   } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`, {
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getData('token')}`,
     },
   });
-  serverInfo.value = await respone;
+  serverInfo.value = respone;
 }
 
 type channelType = '*spacer' | 'lspacer' | 'cspacer' | 'rspacer' | 'normal';
@@ -231,7 +228,7 @@ async function getUsersAndChannels() {
     }[]
   > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getData('token')}`,
     },
   });
 
@@ -252,7 +249,7 @@ async function getUsersAndChannels() {
     }[]
   > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getData('token')}`,
     },
   });
 
@@ -326,7 +323,7 @@ function longpoll(time = 1) {
     `${url.value}/api/v1/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getData('token')}`,
       },
     },
   )

@@ -187,27 +187,28 @@ const serverLocationTab = ref(false);
 const bansListTab = ref(false);
 const restartServerTab = ref(false);
 const resetConfigTab = ref(false);
-///
+
 const props = defineProps(['serverInfo']);
 const emit = defineEmits(['getServerDeatails']);
-const route = useRoute();
 const store = apiStore();
 const { url } = storeToRefs(store);
-//////
+
 const selectedServer = ref(props.serverInfo);
 const tsUrl = ref(`ts3server://${props.serverInfo.name}`);
-//functions
+
 function getServerDeatails() {
   emit('getServerDeatails');
 }
+
 function copyYatqaPass() {
   navigator.clipboard.writeText(selectedServer.value.queryPassword);
 }
+
 async function turnServerOffOrOn() {
-  if (selectedServer.value.mustRunning == true) {
+  if (selectedServer.value.mustRunning === true) {
     turnOffServerTab.value = true;
   } else {
-    const respone = await $fetch(
+    await $fetch(
       `${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,
       {
         method: 'POST',

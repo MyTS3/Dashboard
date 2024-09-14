@@ -19,7 +19,11 @@
       <div class="flex flex-col gap-4">
         <!-- //////////////////////////////lists -->
         <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
-          <li v-for="serverGroup in queryServerGroups" class="flex gap-2">
+          <li
+            v-for="serverGroup in queryServerGroups"
+            :key="serverGroup.sgid"
+            class="flex gap-2"
+          >
             <button
               v-if="!isAssigned(serverGroup)"
               @click="
@@ -39,7 +43,11 @@
         </div>
         <!-- //////////////////////////////////list -->
         <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
-          <li v-for="serverGroup in serverGroups" class="flex gap-2">
+          <li
+            v-for="serverGroup in serverGroups"
+            :key="serverGroup.sgid"
+            class="flex gap-2"
+          >
             <button
               v-if="!isAssigned(serverGroup)"
               @click="
@@ -70,7 +78,6 @@
   </section>
 </template>
 <script setup lang="ts">
-import nuxtStorage from 'nuxt-storage';
 const store = apiStore();
 const emit = defineEmits(['close']);
 const { url } = storeToRefs(store);
@@ -96,22 +103,21 @@ async function getUserServerGroups() {
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getData('token')}`,
       },
     },
   );
   ServerGroupsWeHave.value = response;
 }
 async function getAllServerGroups() {
-  const response: serverGroup[] = await $fetch(
+  const allServerGroups: serverGroup[] = await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getData('token')}`,
       },
     },
   );
-  const allServerGroups = response;
   allServerGroups.forEach((serverGroup) => {
     if (serverGroup.type == 2) queryServerGroups.value.push(serverGroup);
     if (serverGroup.type == 1) serverGroups.value.push(serverGroup);
@@ -125,23 +131,23 @@ function isAssigned(serverGroup: serverGroup) {
 }
 
 async function addServerGroup(sgid: string) {
-  const response = await $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getData('token')}`,
       },
     },
   );
 }
 async function removeServerGroup(sgid: string) {
-  const response = await $fetch(
+  await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
     {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getData('token')}`,
       },
     },
   );

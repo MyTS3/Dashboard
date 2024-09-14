@@ -42,6 +42,7 @@
         >
           <option
             v-for="available in availables"
+            :key="available"
             :value="available"
             class="dropdown"
           >
@@ -119,15 +120,12 @@
 <script setup>
 import serverToken from './serverToken.vue';
 import nuxtStorage from 'nuxt-storage';
-///////////////////////////////////////
+
 const serverTokenTab = ref(false);
-////
+
 const store = apiStore();
 const { url } = storeToRefs(store);
-////
-const emit = defineEmits(['close']);
 
-const moreoptions = ref(false);
 const slot = ref(1);
 const serverName = ref();
 const selectedConfig = ref('CONFIG_DEFAULT');
@@ -136,9 +134,8 @@ const availables = ref();
 let token = ref();
 let tsURL = ref();
 let tsuuid = ref();
-// functions
+
 async function makeServer() {
-  ////disabling///
   disableInputs.value = true;
   const slots = 2 ** (Number(slot.value) + 3);
 
@@ -153,9 +150,9 @@ async function makeServer() {
       slots: slots,
     }),
   });
-  token = await ref(server.privilegeKey);
-  tsuuid = await ref(server.uuid);
-  tsURL = await ref(`ts3server://${server.name}`);
+  token = ref(server.privilegeKey);
+  tsuuid = ref(server.uuid);
+  tsURL = ref(`ts3server://${server.name}`);
   serverTokenTab.value = true;
 }
 

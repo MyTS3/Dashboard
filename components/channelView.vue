@@ -21,5 +21,5 @@
 </template>
 <script setup>
 import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';
-const props = defineProps(['selectedChannel']);
+// const props = defineProps(['selectedChannel']);
 </script>
