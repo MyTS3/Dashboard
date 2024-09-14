@@ -6,12 +6,12 @@
           <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
             داشبورد
           </h1>
-          <h1 class="font-medium text-xl" v-if="$route.name == 'domains' ">
+          <h1 class="font-medium text-xl" v-if="$route.name == 'domains'">
             دامین ها
           </h1>
           <button
             @click="$router.back()"
-            v-if="$route.name != 'tservers'&& $route.name != 'domains' "
+            v-if="$route.name != 'tservers' && $route.name != 'domains'"
             class="btn h-12 p-3 flex items-center rounded-xl"
           >
             <img class="" src="/images/Arrow-Right.png" alt="" />
@@ -46,7 +46,7 @@
       <slot />
     </div>
     <div
-      class="relative bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[1346px]:hidden "
+      class="relative bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[1346px]:hidden"
     >
       <header>
         <img
@@ -57,12 +57,12 @@
       </header>
       <nav class="list-none flex flex-col gap-4 mt-7">
         <li
-          @click="navigateTo('/tservers');"
-          :class="$route.name=='tservers'?'activePanel':'' "
+          @click="navigateTo('/tservers')"
+          :class="$route.name == 'tservers' ? 'activePanel' : ''"
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
         >
           <img
-            v-if="$route.name!='tservers' "
+            v-if="$route.name != 'tservers'"
             class="mr-auto"
             src="/images/Arrow - Left.png"
             alt=""
@@ -71,11 +71,11 @@
           <img src="/images/dash.png" alt="dashboard" />
         </li>
         <li
-          :class="$route.name=='playlist'?'activePanel':'' "
+          :class="$route.name == 'playlist' ? 'activePanel' : ''"
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
         >
           <img
-            v-if="$route.name!='playlist' "
+            v-if="$route.name != 'playlist'"
             class="mr-auto"
             src="/images/Arrow - Left.png"
             alt=""
@@ -84,12 +84,12 @@
           <img src="/images/Folder.png" alt="" />
         </li>
         <li
-          :class="$route.name=='domains'?'activePanel':'' "
+          :class="$route.name == 'domains' ? 'activePanel' : ''"
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
-          @click="navigateTo('/domains');"
+          @click="navigateTo('/domains')"
         >
           <img
-            v-if="$route.name!='domains' "
+            v-if="$route.name != 'domains'"
             class="mr-auto"
             src="/images/Arrow - Left.png"
             alt=""
@@ -98,11 +98,11 @@
           <img src="/images/domain.png" alt="" />
         </li>
         <li
-          :class="$route.name=='poshtibani'?'activePanel':'' "
+          :class="$route.name == 'poshtibani' ? 'activePanel' : ''"
           class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
         >
           <img
-            v-if="$route.name!='poshtibani' "
+            v-if="$route.name != 'poshtibani'"
             class="mr-auto"
             src="/images/Arrow - Left.png"
             alt=""
@@ -112,14 +112,14 @@
         </li>
       </nav>
       <button
-        @click="logoutTab = true "
+        @click="logoutTab = true"
         class="bg-main_red w-[95%] left-1/2 -translate-x-1/2 rounded-2xl py-3 text-center absolute bottom-5"
       >
         <p>خروج از حساب کاربری</p>
       </button>
     </div>
   </div>
-  <logoutPopup @close="logoutTab=false" v-if="logoutTab" />
+  <logoutPopup @close="logoutTab = false" v-if="logoutTab" />
   <div>
     <div class="layout bg-mainbg_600 text-white min-h-screen overflow-hidden">
       <div>
