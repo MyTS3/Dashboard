@@ -37,8 +37,6 @@
   </div>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
-//variables
 const emit = defineEmits(['close']);
 const props = defineProps(['selectedServer']);
 const route = useRoute();
@@ -49,7 +47,7 @@ async function deleteTheServer() {
   await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}`, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
   emit('close');

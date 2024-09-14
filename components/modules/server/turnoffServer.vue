@@ -34,7 +34,6 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 const props = defineProps(['selectedServer']);
@@ -47,7 +46,7 @@ async function turnOffserver() {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );

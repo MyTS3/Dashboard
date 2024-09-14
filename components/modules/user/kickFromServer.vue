@@ -38,7 +38,6 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 const disable = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -52,7 +51,7 @@ async function kickUser() {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
         reason: reason.value,

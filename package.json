@@ -18,7 +18,6 @@
   "dependencies": {
     "javascript-time-ago": "^2.5.11",
     "nuxt": "^3.13.0",
-    "nuxt-storage": "^1.2.2",
     "object-hash": "^3.0.0",
     "pinia": "^2.2.2",
     "vue": "latest"

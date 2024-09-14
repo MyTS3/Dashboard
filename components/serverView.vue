@@ -176,7 +176,6 @@ import resetConfig from './modules/server/resetConfig.vue';
 
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
-import nuxtStorage from 'nuxt-storage';
 
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
@@ -213,7 +212,7 @@ async function turnServerOffOrOn() {
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       },
     );

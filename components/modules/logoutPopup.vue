@@ -35,7 +35,6 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 // const props = defineProps(['selectedServer']);
 const emit = defineEmits(['close']);
 const store = apiStore();
@@ -46,11 +45,11 @@ async function logOut() {
   await $fetch(`${url.value}/api/v1/logout`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
   navigateTo('/authorization');
-  nuxtStorage.localStorage.removeItem('token');
+  localStorage.removeItem('token');
   emit('close');
 }
 </script>

@@ -60,7 +60,6 @@
   />
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import unBan from './unban.vue';
@@ -77,7 +76,7 @@ async function getBanList() {
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );

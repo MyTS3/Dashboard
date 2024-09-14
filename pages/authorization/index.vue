@@ -89,7 +89,6 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 import { apiStore, storeToRefs } from '#imports';
 
 definePageMeta({
@@ -109,7 +108,7 @@ function showPass() {
   else password.value = 'password';
 }
 if (route.query.token) {
-  nuxtStorage.localStorage.setData('token', route.query.token, 7, 'd');
+  localStorage.setItem('token', route.query.token);
   navigateTo('/tservers');
 }
 async function signIn() {
@@ -117,7 +116,7 @@ async function signIn() {
   const response = await $fetch(`${url.value}/api/v1/token`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({
       grant_type: 'password',
@@ -125,7 +124,7 @@ async function signIn() {
       password: `${inputPass.value}`,
     }),
   });
-  nuxtStorage.localStorage.setData('token', response.access_token, 7, 'd');
+  localStorage.setItem('token', response.access_token);
   navigateTo('/tservers');
 }
 </script>

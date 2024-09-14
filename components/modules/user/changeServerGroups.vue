@@ -103,7 +103,7 @@ async function getUserServerGroups() {
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );
@@ -114,7 +114,7 @@ async function getAllServerGroups() {
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );
@@ -136,7 +136,7 @@ async function addServerGroup(sgid: string) {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );
@@ -147,7 +147,7 @@ async function removeServerGroup(sgid: string) {
     {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );

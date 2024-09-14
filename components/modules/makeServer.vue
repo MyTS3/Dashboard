@@ -124,7 +124,6 @@
 </template>
 <script setup>
 import serverToken from './serverToken.vue';
-import nuxtStorage from 'nuxt-storage';
 import loading from '../theLoading.vue';
 
 const serverTokenTab = ref(false);
@@ -148,7 +147,7 @@ async function makeServer() {
   const server = await $fetch(`${url.value}/api/v1/tservers/`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({
       name: `${serverName.value}.v4.myts3.ir`,
@@ -167,7 +166,7 @@ async function getAvailble() {
     `${url.value}/api/v1/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );

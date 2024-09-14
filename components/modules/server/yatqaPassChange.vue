@@ -35,7 +35,6 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 const props = defineProps(['selectedServer']);
 const emit = defineEmits(['close']);
 const store = apiStore();
@@ -48,7 +47,7 @@ async function changeYatqaPass() {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );

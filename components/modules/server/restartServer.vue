@@ -40,7 +40,6 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 import { apiStore, storeToRefs } from '#imports';
 const props = defineProps(['selectedServer']);
 const emit = defineEmits(['emit']);
@@ -53,7 +52,7 @@ async function restartServer() {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
         reason: `${reasson.value}`,

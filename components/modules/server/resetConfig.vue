@@ -47,7 +47,6 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 const emit = defineEmits(['close']);
@@ -64,7 +63,7 @@ async function getAvailble() {
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config/available`,
     {
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );
@@ -78,7 +77,7 @@ async function changeConfigue() {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
         config: `${selectedConfigue.value}`,

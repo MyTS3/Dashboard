@@ -162,7 +162,7 @@ async function getServerGroups() {
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.selectedRow.user.userNickname}/servergroups`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   );

@@ -75,8 +75,6 @@
   <!-- //////////////////price eneded////////////// -->
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
-
 const disable = ref(false);
 const props = defineProps(['selectedServer']);
 const emit = defineEmits(['close']);
@@ -91,7 +89,7 @@ async function chaneSlots() {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
         slots: slots,

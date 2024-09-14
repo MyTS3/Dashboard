@@ -43,7 +43,6 @@
   </div>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 import TimeAgo from 'javascript-time-ago';
 import fa from 'javascript-time-ago/locale/fa';
 import Table from '~/components/reusable/table.vue';
@@ -66,7 +65,7 @@ async function getServers() {
   const response = await $fetch(`${url.value}/api/v1/tservers/`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
   servers.value = response;

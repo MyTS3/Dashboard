@@ -49,7 +49,6 @@
 </template>
 <script setup>
 import Table from '~/components/reusable/table.vue';
-import nuxtStorage from 'nuxt-storage';
 import TimeAgo from 'javascript-time-ago';
 import AddDomain from '~/components/modules/domain/addDomain.vue';
 
@@ -62,7 +61,7 @@ const addDomainTab = ref(false);
 async function getDomain() {
   const response = await $fetch(`${url.value}/api/v1/tdomains`, {
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
   domainList.value = await response;
@@ -71,7 +70,7 @@ async function deleteDomain(uuid) {
   await $fetch(`${url.value}/api/v1/tdomains/${uuid}`, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
   await getDomain();

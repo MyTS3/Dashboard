@@ -37,7 +37,6 @@
   </section>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 const store = apiStore();
 const { url } = storeToRefs(store);
 const props = defineProps(['serverInfo', 'user']);
@@ -51,7 +50,7 @@ async function banUser() {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
         reason: reason.value,

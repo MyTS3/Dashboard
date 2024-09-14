@@ -36,7 +36,6 @@
   </div>
 </template>
 <script setup>
-import nuxtStorage from 'nuxt-storage';
 const store = apiStore();
 const { url } = storeToRefs(store);
 const emit = defineEmits(['close']);
@@ -46,7 +45,7 @@ async function AddDomain() {
   await $fetch(`${url.value}/api/v1/tdomains`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({
       domain: domainName.value,

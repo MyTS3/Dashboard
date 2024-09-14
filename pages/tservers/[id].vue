@@ -145,7 +145,7 @@ async function dragended(channel: channel) {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
         channel: channel.channelFullName,
@@ -165,7 +165,7 @@ async function getServerDeatails() {
     version: string;
   } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
   serverInfo.value = respone;
@@ -228,7 +228,7 @@ async function getUsersAndChannels() {
     }[]
   > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
 
@@ -249,7 +249,7 @@ async function getUsersAndChannels() {
     }[]
   > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getData('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
 
@@ -323,7 +323,7 @@ function longpoll(time = 1) {
     `${url.value}/api/v1/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getData('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
   )
