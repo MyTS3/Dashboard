@@ -125,7 +125,7 @@
 <script setup>
 import serverToken from './serverToken.vue';
 import nuxtStorage from 'nuxt-storage';
-import loading from '../loading .vue';
+import loading from '../theLoading.vue';
 
 const serverTokenTab = ref(false);
 
