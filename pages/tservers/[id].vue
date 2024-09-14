@@ -81,17 +81,17 @@
       </main>
     </div>
     <div class="bg-mainbg_400 w-full rounded-xl">
-      <server
+      <ServerView
         @getServerDeatails="getServerDeatails"
         :serverInfo="serverInfo"
         v-if="selectedRow?.rowType == 'server'"
       />
-      <user
+      <UserView
         :serverInfo="serverInfo"
         :selectedRow="selectedRow"
         v-if="selectedRow?.rowType == 'user'"
       />
-      <channel
+      <ChannelView
         :selectedChannel="selectedChannel"
         v-if="selectedRow?.rowType == 'channel'"
       />
