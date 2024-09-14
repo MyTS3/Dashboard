@@ -140,12 +140,12 @@
   />
   <restartServer
     :selectedServer="selectedServer"
-    @close=" getServerDeatails(), restartServerTab = false "
+    @close="getServerDeatails(), (restartServerTab = false)"
     v-if="restartServerTab"
   />
   <turnoffServer
     :selectedServer="selectedServer"
-    @close=" getServerDeatails(),turnOffServerTab=false "
+    @close="getServerDeatails(), (turnOffServerTab = false)"
     v-if="turnOffServerTab"
   />
   <deleteServer
@@ -174,11 +174,9 @@ import deleteServer from "./modules/server/deleteServer.vue";
 import banList from "./modules/server/banList.vue";
 import resetConfig from "./modules/server/resetConfig.vue";
 
-
 import { apiStore } from "~/stores/apistore";
 import { storeToRefs } from "pinia";
 import nuxtStorage from "nuxt-storage";
-
 
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
@@ -197,7 +195,7 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 //////
 const selectedServer = ref(props.serverInfo);
-const tsUrl = ref(`ts3server://${props.serverInfo.name}`)
+const tsUrl = ref(`ts3server://${props.serverInfo.name}`);
 //functions
 function getServerDeatails() {
   emit("getServerDeatails");
@@ -216,7 +214,7 @@ async function turnServerOffOrOn() {
         headers: {
           Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
         },
-      },
+      }
     );
     getServerDeatails();
   }

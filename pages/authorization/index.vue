@@ -1,6 +1,6 @@
 <template>
   <section
-    class=" z-10 bg-mainbg_600 overflow-hidden relative flex items-center min-h-dvh "
+    class="z-10 bg-mainbg_600 overflow-hidden relative flex items-center min-h-dvh"
   >
     <img
       class="object-cover h-full blur-[2px] w-full my-auto absolute top-0 left-0 pointer-events-none"
@@ -8,10 +8,10 @@
       alt=""
     />
     <div
-      class="absolute pointer-events-none blur-lg  w-screen min-h-screen  top-0 left-0 z-60 "
+      class="absolute pointer-events-none blur-lg w-screen min-h-screen top-0 left-0 z-60"
     ></div>
     <main
-      style="width: 30rem;"
+      style="width: 30rem"
       class="border-t isolate border-l border-r mx-auto rounded-2xl z-50 bg-mainbg_600 text-white p-4 relative"
     >
       <header class="flex justify-center items-center flex-col mb-4">
@@ -67,7 +67,7 @@
         بازیابی رمز عبور
       </p>
       <button
-        :class="disable?'disable':'' "
+        :class="disable ? 'disable' : ''"
         :disabled="disable"
         @click="signIn()"
         class="bg-main_blue w-full p-4 flex items-center justify-center gap-2 rounded-xl"
@@ -103,7 +103,7 @@ const password = ref("password");
 const inputGmail = ref();
 const inputPass = ref();
 const route = useRoute();
-const disable = ref(false)
+const disable = ref(false);
 
 //function
 function showPass() {
@@ -115,12 +115,12 @@ if (route.query.token) {
   navigateTo("/tservers");
 }
 async function signIn() {
-  disable.value = true
+  disable.value = true;
   const response = await $fetch(`${url.value}/api/v1/token`, {
     method: "POST",
-    headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        },
+    headers: {
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
     body: JSON.stringify({
       grant_type: "password",
       username: `${inputGmail.value}`,

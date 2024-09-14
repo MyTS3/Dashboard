@@ -75,7 +75,6 @@
   <!-- //////////////////price eneded////////////// -->
 </template>
 <script setup>
-
 import nuxtStorage from "nuxt-storage";
 
 let disable = ref(false);
@@ -91,13 +90,13 @@ async function chaneSlots() {
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/change-slots`,
     {
       method: "POST",
-      headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        },
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
       body: JSON.stringify({
         slots: slots,
       }),
-    },
+    }
   );
   emit("close");
 }

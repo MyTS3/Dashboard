@@ -25,12 +25,12 @@
           >
             <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
               <div
-                @click=" selectedChannel = row.channel "
+                @click="selectedChannel = row.channel"
                 dropzone="true"
                 @drop="dragended(row.channel)"
                 @dragover.prevent
                 @dragenter.prevent
-                class="flex gap-1 "
+                class="flex gap-1"
                 v-if="row.rowType == 'channel'"
               >
                 <img
@@ -115,7 +115,7 @@ type row =
   | { rowType: "user"; user: user; level: number }
   | { rowType: "server"; level: 0 };
 type channel = {
-  channelFullName:string,
+  channelFullName: string;
   channelName: string;
   align: alignType;
   cid: string;
@@ -136,22 +136,25 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const serverInfo = ref();
 const selectedRow = ref<row>({ rowType: "server", level: 0 });
-const movingUser = ref<string>()
-const selectedChannel = ref<channel>()
+const movingUser = ref<string>();
+const selectedChannel = ref<channel>();
 //function
-function draged(user:user){
-  movingUser.value = user.userNickname
+function draged(user: user) {
+  movingUser.value = user.userNickname;
 }
-async function dragended(channel:channel){
-  const respone = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users/${movingUser.value}/move`,{
-    method:"POST",
-    headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
-    },
-    body:JSON.stringify({
-      "channel":channel.channelFullName
-    })
-  })
+async function dragended(channel: channel) {
+  const respone = await $fetch(
+    `${url.value}/api/v1/tservers/${serverUuid}/users/${movingUser.value}/move`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
+      body: JSON.stringify({
+        channel: channel.channelFullName,
+      }),
+    }
+  );
 }
 async function getServerDeatails() {
   const respone: {
@@ -173,7 +176,7 @@ async function getServerDeatails() {
 
 type channelType = "*spacer" | "lspacer" | "cspacer" | "rspacer" | "normal";
 function findChannelTypeAndNameByFullName(fullName: string): {
-  channelFullName:string,
+  channelFullName: string;
   type: channelType;
   name: string;
   align: alignType;
@@ -182,65 +185,92 @@ function findChannelTypeAndNameByFullName(fullName: string): {
   if (splitedName.length > 1) {
     if (splitedName[0].startsWith("[")) {
       if (splitedName[0].includes("cspacer"))
-        return { type: "cspacer", name: splitedName[1], align: "center", channelFullName: fullName };
+        return {
+          type: "cspacer",
+          name: splitedName[1],
+          align: "center",
+          channelFullName: fullName,
+        };
       if (splitedName[0].includes("lspacer"))
-        return { type: "lspacer", name: splitedName[1], align: "start", channelFullName: fullName };
+        return {
+          type: "lspacer",
+          name: splitedName[1],
+          align: "start",
+          channelFullName: fullName,
+        };
       if (splitedName[0].includes("rspacer"))
-        return { type: "rspacer", name: splitedName[1], align: "end", channelFullName: fullName };
+        return {
+          type: "rspacer",
+          name: splitedName[1],
+          align: "end",
+          channelFullName: fullName,
+        };
       if (splitedName[0].includes("*spacer"))
         return {
           type: "*spacer",
           name: splitedName[1].repeat(100),
           align: "center",
-          channelFullName: fullName
+          channelFullName: fullName,
         };
     }
   }
-  return { type: "normal", name: fullName, align: "start", channelFullName: fullName };
+  return {
+    type: "normal",
+    name: fullName,
+    align: "start",
+    channelFullName: fullName,
+  };
 }
 
-async function getUsersAndChannels(){
-  const channelsReq: Promise<{
-    channelName: string;
-    cid: string;
-    pid: string
-  }[]> = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
+async function getUsersAndChannels() {
+  const channelsReq: Promise<
+    {
+      channelName: string;
+      cid: string;
+      pid: string;
+    }[]
+  > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
     headers: {
       Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
     },
   });
 
-  const usersReq: Promise<{
-    cid: string;
-    clid: string;
-    clientInputMuted: boolean;
-    clientInputHardware: boolean;
-    clientOutputMuted: boolean;
-    clientOutputHardware: boolean;
-    clientNickname: string;
-    clientAway: boolean;
-    clientLastconnected: number;
-    clientVersion: string;
-    clientPlatform: string;
-    clientUniqueIdentifier: string;
-  }[]> = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
+  const usersReq: Promise<
+    {
+      cid: string;
+      clid: string;
+      clientInputMuted: boolean;
+      clientInputHardware: boolean;
+      clientOutputMuted: boolean;
+      clientOutputHardware: boolean;
+      clientNickname: string;
+      clientAway: boolean;
+      clientLastconnected: number;
+      clientVersion: string;
+      clientPlatform: string;
+      clientUniqueIdentifier: string;
+    }[]
+  > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
     headers: {
       Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
     },
   });
 
   const rows: row[] = [];
-  const channels = await channelsReq
+  const channels = await channelsReq;
   channels.forEach((channel) => {
-    const channelTypeAndName = findChannelTypeAndNameByFullName(channel.channelName);
+    const channelTypeAndName = findChannelTypeAndNameByFullName(
+      channel.channelName
+    );
     const channelType = channelTypeAndName.type;
     const channelName = channelTypeAndName.name;
     const align = channelTypeAndName.align;
-    const channelFullName = channelTypeAndName.channelFullName
+    const channelFullName = channelTypeAndName.channelFullName;
 
     let level = 0;
     let parentChannel:
-      | { cid: string; pid: string; channelName: string } | undefined = channel;
+      | { cid: string; pid: string; channelName: string }
+      | undefined = channel;
     while (parentChannel) {
       level += 1;
       parentChannel = channels.find((c) => {
@@ -261,7 +291,7 @@ async function getUsersAndChannels(){
     });
   });
 
-  const users = await usersReq
+  const users = await usersReq;
   users.forEach((user) => {
     const channelIndex = rows.findIndex((row) => {
       if (row.rowType != "channel") return false;
@@ -285,22 +315,25 @@ async function getUsersAndChannels(){
       level: rows[channelIndex].level + 1,
     });
   });
-  teamspeakserver.value = rows
+  teamspeakserver.value = rows;
 }
 await getServerDeatails();
 if (serverInfo.value.mustRunning) {
-  longpoll()
+  longpoll();
 }
-function longpoll(time = 1){
-  fetch(`${url.value}/api/v1/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,{
-    headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
-    },
-  })
-  .then(re => re.json())
-  .then(async(data) => {
-    await getUsersAndChannels()
-    longpoll(data.at)
-  })
+function longpoll(time = 1) {
+  fetch(
+    `${url.value}/api/v1/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,
+    {
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
+    }
+  )
+    .then((re) => re.json())
+    .then(async (data) => {
+      await getUsersAndChannels();
+      longpoll(data.at);
+    });
 }
 </script>

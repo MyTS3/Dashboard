@@ -51,7 +51,7 @@ async function deleteTheServer() {
       headers: {
         Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
       },
-    },
+    }
   );
   emit("close");
   if (route.path != "/tservers") router.back();

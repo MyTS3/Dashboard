@@ -47,8 +47,7 @@ import fa from "javascript-time-ago/locale/fa";
 TimeAgo.addLocale(fa);
 const timeAgo = new TimeAgo("fa");
 
-
-import Table from '~/components/reusable/table.vue';
+import Table from "~/components/reusable/table.vue";
 import makeServer from "/components/modules/makeServer.vue";
 const router = useRouter();
 ////

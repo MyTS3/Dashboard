@@ -20,7 +20,7 @@
       />
       <div class="grid grid-cols-2 gap-3">
         <button
-          :class="disable?'disable':'' "
+          :class="disable ? 'disable' : ''"
           :disabled="disable"
           @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
@@ -28,7 +28,7 @@
           لغو
         </button>
         <button
-          :class="disable?'disable':'' "
+          :class="disable ? 'disable' : ''"
           :disabled="disable"
           @click.prevent="kickUser()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
@@ -46,9 +46,9 @@ const { url } = storeToRefs(store);
 const props = defineProps(["serverInfo", "user"]);
 const emit = defineEmits("close");
 const reason = ref("");
-const disable = ref(false)
+const disable = ref(false);
 async function kickUser() {
-  disable.value = true
+  disable.value = true;
   const response = await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-channel`,
     {
@@ -59,7 +59,7 @@ async function kickUser() {
       body: JSON.stringify({
         reason: reason.value,
       }),
-    },
+    }
   );
   emit("close");
 }

@@ -15,9 +15,9 @@ img {
 *:-webkit-scrollbar {
   display: none;
 }
-*{
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* //////////////////////////////////////////// */
@@ -121,7 +121,7 @@ img {
   display: grid;
   grid-template-columns: 2fr 2fr 4fr;
 }
-.items{
+.items {
   height: 4rem;
 }
 .items:nth-child(even) {
@@ -151,7 +151,7 @@ img {
   width: 30%;
   height: 2px;
 }
-.disable{
+.disable {
   cursor: wait;
   opacity: 0.8;
 }

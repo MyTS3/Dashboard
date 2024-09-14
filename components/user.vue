@@ -81,7 +81,7 @@
   <changeServerGroups
     :serverInfo="serverInfo"
     :user="selectedRow.user.userNickname"
-    @close="getServerGroups(),servergroupsTab = false"
+    @close="getServerGroups(), (servergroupsTab = false)"
     v-if="servergroupsTab"
   />
 </template>
@@ -154,7 +154,7 @@ async function getServerGroups() {
       headers: {
         Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
       },
-    },
+    }
   );
   servergroups.value = response;
 }

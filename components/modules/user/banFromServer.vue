@@ -25,7 +25,7 @@
           لغو
         </button>
         <button
-          :class="disable?'disable':'' "
+          :class="disable ? 'disable' : ''"
           :disabled="disable"
           @click="banUser()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
@@ -43,9 +43,9 @@ const { url } = storeToRefs(store);
 const props = defineProps(["serverInfo", "user"]);
 const emit = defineEmits("close");
 const reason = ref("");
-const disable = ref(false)
+const disable = ref(false);
 async function banUser() {
-  disable.value = true
+  disable.value = true;
   const response = await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/ban`,
     {
@@ -56,7 +56,7 @@ async function banUser() {
       body: JSON.stringify({
         reason: reason.value,
       }),
-    },
+    }
   );
   emit("close");
 }

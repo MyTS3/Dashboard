@@ -23,7 +23,7 @@
           لغو
         </button>
         <button
-          :class="disable?'disable':'' "
+          :class="disable ? 'disable' : ''"
           :disabled="disable"
           @click="logOut()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
@@ -40,17 +40,17 @@ const props = defineProps(["selectedServer"]);
 const emit = defineEmits(["close"]);
 const store = apiStore();
 const { url } = storeToRefs(store);
-const disable = ref(false)
+const disable = ref(false);
 async function logOut() {
-  disable.value = true
-  const respone = await $fetch(`${url.value}/api/v1/logout`,{
-    method:"POST",
+  disable.value = true;
+  const respone = await $fetch(`${url.value}/api/v1/logout`, {
+    method: "POST",
     headers: {
-          Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
-        },
-  })
-  navigateTo('/authorization')
-  nuxtStorage.localStorage.removeItem("token")
+      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+    },
+  });
+  navigateTo("/authorization");
+  nuxtStorage.localStorage.removeItem("token");
   emit("close");
 }
 </script>

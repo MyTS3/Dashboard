@@ -10,7 +10,7 @@
     </main>
     <footer class="w-full absolute bottom-10 px-4 grid gap-4">
       <button
-        class="flex items-center py-3 justify-center btn-disable rounded-l-lg  "
+        class="flex items-center py-3 justify-center btn-disable rounded-l-lg"
       >
         <p>ساخت موزیک بات جدید</p>
         <img src="/images/addon.png" alt="" />
@@ -21,5 +21,5 @@
 </template>
 <script setup>
 import MakeMusicbot from "./modules/musicbot/makeMusicbot.vue";
-const props = defineProps(["selectedChannel"])
+const props = defineProps(["selectedChannel"]);
 </script>

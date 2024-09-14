@@ -6,7 +6,7 @@
       class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
-        :class="disable?'disable':'' "
+        :class="disable ? 'disable' : ''"
         :disabled="disable"
         @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
@@ -59,7 +59,7 @@
         </div>
       </div>
       <button
-        :class="disable?'disable':'' "
+        :class="disable ? 'disable' : ''"
         :disabled="disable"
         @click="applyServerGroups()"
         class="w-full p-4 bg-main_blue rounded-xl my-2"
@@ -72,14 +72,16 @@
 <script setup lang="ts">
 import nuxtStorage from "nuxt-storage";
 const store = apiStore();
-const emit = defineEmits(["close"])
+const emit = defineEmits(["close"]);
 const { url } = storeToRefs(store);
 const props = defineProps(["user", "serverInfo"]);
 const ServerGroupsWeHave = ref<serverGroup[]>([]);
 const serverGroups = ref<serverGroup[]>([]);
 const queryServerGroups = ref<serverGroup[]>([]);
-const toApply = ref<{[key: string]: { serverGroup: serverGroup; action: "add" | "remove" };}>({});
-const disable = ref(false)
+const toApply = ref<{
+  [key: string]: { serverGroup: serverGroup; action: "add" | "remove" };
+}>({});
+const disable = ref(false);
 
 type serverGroup = {
   sgid: string;
@@ -96,7 +98,7 @@ async function getUserServerGroups() {
       headers: {
         Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
       },
-    },
+    }
   );
   ServerGroupsWeHave.value = response;
 }
@@ -107,7 +109,7 @@ async function getAllServerGroups() {
       headers: {
         Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
       },
-    },
+    }
   );
   const allServerGroups = response;
   allServerGroups.forEach((serverGroup) => {
@@ -130,7 +132,7 @@ async function addServerGroup(sgid: string) {
       headers: {
         Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
       },
-    },
+    }
   );
 }
 async function removeServerGroup(sgid: string) {
@@ -141,32 +143,32 @@ async function removeServerGroup(sgid: string) {
       headers: {
         Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
       },
-    },
+    }
   );
 }
 
 async function applyServerGroups() {
-  disable.value = true
+  disable.value = true;
   for (const sgid in toApply.value) {
-      const { action, serverGroup } = toApply.value[sgid];
+    const { action, serverGroup } = toApply.value[sgid];
     switch (action) {
       case "add": {
-        if(!ServerGroupsWeHave.value.find((s)=>s.sgid == sgid)) {
+        if (!ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
           await addServerGroup(serverGroup.sgid);
-        } else console.log("cant add twice")
+        } else console.log("cant add twice");
 
         break;
       }
       case "remove": {
-        if(ServerGroupsWeHave.value.find((s)=>s.sgid == sgid)) {
+        if (ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
           await removeServerGroup(serverGroup.sgid);
-        } else console.log("cant remove twice")
+        } else console.log("cant remove twice");
         break;
       }
     }
   }
-  disable.value = false
-  emit("close")
+  disable.value = false;
+  emit("close");
 }
 
 await getUserServerGroups();

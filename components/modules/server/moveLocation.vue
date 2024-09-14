@@ -36,7 +36,7 @@
           لغو
         </button>
         <button
-          :class="disable?'disable':'' "
+          :class="disable ? 'disable' : ''"
           :disabled="disable"
           @click.prevent="moveServer()"
           class="p-4 text-center rounded-xl bg-main_blue module-btn"
@@ -55,35 +55,34 @@ const emit = defineEmits(["close"]);
 const props = defineProps(["selectedServer"]);
 const store = apiStore();
 const { url } = storeToRefs(store);
-const disable = ref(false)
+const disable = ref(false);
 ////////
 const availables = ref({});
 const selectedLocation = ref();
 async function getAvailble() {
-
   const respone = $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`,{
-      headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        },
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`,
+    {
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
     }
-
   );
   availables.value = await respone;
 }
 async function moveServer() {
-  disable.value = true
+  disable.value = true;
   const respone = $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move`,
     {
       method: "POST",
-      headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        },
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
       body: JSON.stringify({
         node: `${selectedLocation.value}`,
       }),
-    },
+    }
   );
   emit("close");
 }

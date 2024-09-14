@@ -3,8 +3,8 @@ export default defineNuxtConfig({
   ssr: false,
   nitro: {
     prerender: {
-      autoSubfolderIndex: false
-    }
+      autoSubfolderIndex: false,
+    },
   },
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },

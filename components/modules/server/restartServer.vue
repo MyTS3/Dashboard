@@ -54,12 +54,12 @@ async function restartServer() {
     {
       method: "POST",
       headers: {
-      Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
       },
       body: JSON.stringify({
         reason: `${reasson.value}`,
       }),
-    },
+    }
   );
   emit("close");
 }

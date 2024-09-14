@@ -130,9 +130,9 @@ const emit = defineEmits(["close"]);
 const moreoptions = ref(false);
 const slot = ref(1);
 const serverName = ref();
-const selectedConfig = ref('CONFIG_DEFAULT')
+const selectedConfig = ref("CONFIG_DEFAULT");
 const disableInputs = ref(false);
-const availables = ref()
+const availables = ref();
 let token = ref();
 let tsURL = ref();
 let tsuuid = ref();
@@ -141,7 +141,6 @@ async function makeServer() {
   ////disabling///
   disableInputs.value = true;
   const slots = 2 ** (Number(slot.value) + 3);
-
 
   const server = await $fetch(`${url.value}/api/v1/tservers/`, {
     method: "POST",
@@ -162,14 +161,15 @@ async function makeServer() {
 
 async function getAvailble() {
   const respone = $fetch(
-    `${url.value}/api/v1/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,{
-      headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        },
+    `${url.value}/api/v1/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
+    {
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
     }
   );
   availables.value = await respone;
 }
-await getAvailble()
+await getAvailble();
 </script>
 <style scoped></style>

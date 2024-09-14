@@ -12,7 +12,7 @@
         X
       </button>
       <h1 class="text-2xl my-4 font-extrabold">ریسیت/کانفیگ</h1>
-      <p class="text-sm text-main_red  mb-2">
+      <p class="text-sm text-main_red mb-2">
         این عمل باعث پاک شدن تمامی اطلاعات فعلی سرور شما میشود، آیا اطمینان
         دارید؟
       </p>
@@ -34,7 +34,7 @@
       </from>
       <div class="grid">
         <button
-          :class="disable?'disable':'' "
+          :class="disable ? 'disable' : ''"
           :disabled="disable"
           @click.prevent="changeConfigue()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
@@ -53,38 +53,39 @@ const emit = defineEmits(["close"]);
 const props = defineProps(["selectedServer"]);
 const store = apiStore();
 const { url } = storeToRefs(store);
-const disable = ref(false)
+const disable = ref(false);
 
 const availables = ref({});
 const selectedConfigue = ref();
 
 async function getAvailble() {
   const respone = $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config/available`,{
-      headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        },
+    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config/available`,
+    {
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
     }
   );
   availables.value = await respone;
-  console.log(availables)
+  console.log(availables);
 }
 async function changeConfigue() {
-  disable.value = true
+  disable.value = true;
   const respone = $fetch(
     `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config`,
     {
       method: "POST",
-      headers:{
-          'Authorization': `Bearer ${nuxtStorage.localStorage.getData('token')}`
-        },
+      headers: {
+        Authorization: `Bearer ${nuxtStorage.localStorage.getData("token")}`,
+      },
       body: JSON.stringify({
         config: `${selectedConfigue.value}`,
       }),
-    },
+    }
   );
   emit("close");
 }
 
-await getAvailble()
+await getAvailble();
 </script>
