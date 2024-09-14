@@ -29,9 +29,11 @@
     </main>
     <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
       <button
+        :class=" disable?'btn-disable':'btn' "
+        :disabled="disable"
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         @click="banUserTab = true"
-        class="flex justify-center items-center gap-2 py-2 btn rounded-tl-lg"
+        class="flex justify-center items-center gap-2 py-2 rounded-tl-lg"
       >
         <p>بن از سرور</p>
         <img src="/images/ban_client.png" alt="" />
@@ -93,6 +95,7 @@ import kickFromChannel from './modules/user/kickFromChannel.vue';
 import kickFromServer from './modules/user/kickFromServer.vue';
 import changeServerGroups from './modules/user/changeServerGroups.vue';
 
+const disable = ref(false)
 const props = defineProps(['selectedRow', 'serverInfo']);
 const serverInfo = props.serverInfo;
 const kickFromChannelTab = ref(false);
@@ -149,7 +152,7 @@ function calculateUptime(lastConnected: number) {
   return secondsToString(uptime);
 }
 async function getServerGroups() {
-  const response = await $fetch(
+  const response:{sgid: number, name: string, type: number, iconid: string, sortid: number}[] = await $fetch(
     `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.selectedRow.user.userNickname}/servergroups`,
     {
       headers: {
@@ -158,6 +161,10 @@ async function getServerGroups() {
     },
   );
   servergroups.value = response;
+  response.forEach((re)=>{
+    if(re.name.includes('Admin Server Query')) disable.value = true
+    else disable.value = false
+  })
 }
 await getServerGroups();
 </script>

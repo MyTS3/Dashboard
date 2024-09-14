@@ -36,6 +36,7 @@
       >
       <from class="w-full my-4">
         <select
+          :disabled="disableInputs"
           class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
           v-model="selectedConfig"
           name="locations"
@@ -102,9 +103,13 @@
         @click.prevent="makeServer()"
         class="flex w-full items-center justify-center make-server font-medium gap-2"
       >
-        <div class="flex w-full items-center justify-center font-medium gap-2">
+        <div
+          v-if="!disableInputs"
+          class="flex w-full items-center justify-center font-medium gap-2"
+        >
           <span><img src="/images/plus.png" alt="" /></span>ساخت
         </div>
+        <loading v-if="disableInputs" />
       </button>
     </main>
     <serverToken
@@ -120,6 +125,7 @@
 <script setup>
 import serverToken from './serverToken.vue';
 import nuxtStorage from 'nuxt-storage';
+import loading from '../loading .vue';
 
 const serverTokenTab = ref(false);
 
