@@ -124,7 +124,7 @@
 </template>
 <script setup>
 import serverToken from './serverToken.vue';
-import loading from '../theLoading.vue';
+import loading from '@/components/reusable/theLoading.vue';
 
 const serverTokenTab = ref(false);
 

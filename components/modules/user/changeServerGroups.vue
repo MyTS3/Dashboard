@@ -8,8 +8,8 @@
       <button
         :class="disable ? 'disable' : ''"
         :disabled="disable"
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -26,18 +26,18 @@
           >
             <button
               v-if="!isAssigned(serverGroup)"
+              class="checkbox"
               @click="
                 toApply[serverGroup.sgid] = { serverGroup, action: 'add' }
               "
-              class="checkbox"
-            ></button>
+            />
             <button
               v-if="isAssigned(serverGroup)"
+              class="checkbox-active"
               @click="
                 toApply[serverGroup.sgid] = { serverGroup, action: 'remove' }
               "
-              class="checkbox-active"
-            ></button>
+            />
             <p>{{ serverGroup.name }}</p>
           </li>
         </div>
@@ -50,18 +50,18 @@
           >
             <button
               v-if="!isAssigned(serverGroup)"
+              class="checkbox"
               @click="
                 toApply[serverGroup.sgid] = { serverGroup, action: 'add' }
               "
-              class="checkbox"
-            ></button>
+            />
             <button
               v-if="isAssigned(serverGroup)"
+              class="checkbox-active"
               @click="
                 toApply[serverGroup.sgid] = { serverGroup, action: 'remove' }
               "
-              class="checkbox-active"
-            ></button>
+            />
             <p>{{ serverGroup.name }}</p>
           </li>
         </div>
@@ -69,8 +69,8 @@
       <button
         :class="disable ? 'disable' : ''"
         :disabled="disable"
-        @click="applyServerGroups()"
         class="w-full p-4 bg-main_blue rounded-xl my-2"
+        @click="applyServerGroups()"
       >
         اعمال تغییرات
       </button>
@@ -154,26 +154,29 @@ async function removeServerGroup(sgid: string) {
 }
 
 async function applyServerGroups() {
-  disable.value = true;
-  for (const sgid in toApply.value) {
-    const { action, serverGroup } = toApply.value[sgid];
-    switch (action) {
-      case 'add': {
-        if (!ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
-          await addServerGroup(serverGroup.sgid);
-        } else console.log('cant add twice');
+  if (toApply.value) {
+    disable.value = true;
+    for (const sgid in toApply.value) {
+      const { action, serverGroup } = toApply.value[sgid];
+      switch (action) {
+        case 'add': {
+          if (!ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
+            await addServerGroup(serverGroup.sgid);
+          } else console.log('cant add twice');
 
-        break;
-      }
-      case 'remove': {
-        if (ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
-          await removeServerGroup(serverGroup.sgid);
-        } else console.log('cant remove twice');
-        break;
+          break;
+        }
+        case 'remove': {
+          if (ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
+            await removeServerGroup(serverGroup.sgid);
+          } else console.log('cant remove twice');
+          break;
+        }
       }
     }
+    disable.value = false;
   }
-  disable.value = false;
+
   emit('close');
 }
 

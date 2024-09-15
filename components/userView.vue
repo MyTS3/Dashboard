@@ -29,35 +29,35 @@
     </main>
     <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
       <button
+        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         :class="disable ? 'btn-disable' : 'btn'"
         :disabled="disable"
-        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        @click="banUserTab = true"
         class="flex justify-center items-center gap-2 py-2 rounded-tl-lg"
+        @click="banUserTab = true"
       >
         <p>بن از سرور</p>
         <img src="/images/ban_client.png" alt="" />
       </button>
       <button
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        @click="kickFromServerTab = true"
         class="flex justify-center items-center gap-2 py-2 btn rounded-tr-lg"
+        @click="kickFromServerTab = true"
       >
         <p>کیک از سرور</p>
         <img src="/images/kick_server.png" alt="" />
       </button>
       <button
-        @click="servergroupsTab = true"
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex justify-center items-center gap-2 py-2 btn rounded-bl-lg"
+        @click="servergroupsTab = true"
       >
         <p>رنک ها</p>
         <img src="/images/ranks.png" alt="" />
       </button>
       <button
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        @click="kickFromChannelTab = true"
         class="flex justify-center items-center gap-2 py-2 btn rounded-br-lg"
+        @click="kickFromChannelTab = true"
       >
         <p>کیک از چنل</p>
         <img src="/images/kick_channel.png" alt="" />
@@ -65,28 +65,28 @@
     </footer>
   </section>
   <banFromServer
-    :user="selectedRow.user.userNickname"
-    :serverInfo="serverInfo"
-    @close="banUserTab = false"
     v-if="banUserTab"
+    :user="selectedRow.user.userNickname"
+    :server-info="serverInfo"
+    @close="banUserTab = false"
   />
   <kickFromChannel
-    :user="selectedRow.user.userNickname"
-    :serverInfo="serverInfo"
-    @close="kickFromChannelTab = false"
     v-if="kickFromChannelTab"
+    :user="selectedRow.user.userNickname"
+    :server-info="serverInfo"
+    @close="kickFromChannelTab = false"
   />
   <kickFromServer
-    :user="selectedRow.user.userNickname"
-    :serverInfo="serverInfo"
-    @close="kickFromServerTab = false"
     v-if="kickFromServerTab"
+    :user="selectedRow.user.userNickname"
+    :server-info="serverInfo"
+    @close="kickFromServerTab = false"
   />
   <changeServerGroups
-    :serverInfo="serverInfo"
+    v-if="servergroupsTab"
+    :server-info="serverInfo"
     :user="selectedRow.user.userNickname"
     @close="getServerGroups(), (servergroupsTab = false)"
-    v-if="servergroupsTab"
   />
 </template>
 <script setup lang="ts">
@@ -167,9 +167,9 @@ async function getServerGroups() {
     },
   );
   servergroups.value = response;
+  disable.value = false;
   response.forEach((re) => {
     if (re.name.includes('Admin Server Query')) disable.value = true;
-    else disable.value = false;
   });
 }
 await getServerGroups();
