@@ -49,7 +49,7 @@ const disable = ref(false);
 async function kickUser() {
   disable.value = true;
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-channel`,
+    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-channel`,
     {
       method: 'POST',
       headers: {

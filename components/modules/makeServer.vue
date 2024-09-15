@@ -144,7 +144,7 @@ async function makeServer() {
   disableInputs.value = true;
   const slots = 2 ** (Number(slot.value) + 3);
 
-  const server = await $fetch(`${url.value}/api/v1/tservers/`, {
+  const server = await $fetch(`${url.value}/api/v4/tservers/`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -163,7 +163,7 @@ async function makeServer() {
 
 async function getAvailble() {
   const respone = $fetch(
-    `${url.value}/api/v1/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
+    `${url.value}/api/v4/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -48,7 +48,7 @@ const { url } = storeToRefs(store);
 const reasson = ref();
 async function restartServer() {
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/restart`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/restart`,
     {
       method: 'POST',
       headers: {

@@ -43,7 +43,7 @@ const disable = ref(false);
 async function changeYatqaPass() {
   disable.value = true;
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-password`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-password`,
     {
       method: 'POST',
       headers: {

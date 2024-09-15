@@ -61,7 +61,7 @@ const availables = ref({});
 const selectedLocation = ref();
 async function getAvailble() {
   const respone = $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move/available`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move/available`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -73,7 +73,7 @@ async function getAvailble() {
 async function moveServer() {
   disable.value = true;
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/move`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move`,
     {
       method: 'POST',
       headers: {

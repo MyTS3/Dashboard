@@ -85,7 +85,7 @@ async function chaneSlots() {
   disable.value = true;
   const slots = 2 ** (Number(selectedSlot.value) + 3);
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/change-slots`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/change-slots`,
     {
       method: 'POST',
       headers: {

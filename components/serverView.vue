@@ -208,7 +208,7 @@ async function turnServerOffOrOn() {
     turnOffServerTab.value = true;
   } else {
     await $fetch(
-      `${url.value}/api/v1/tservers/${selectedServer.value.uuid}/start`,
+      `${url.value}/api/v4/tservers/${selectedServer.value.uuid}/start`,
       {
         method: 'POST',
         headers: {

@@ -48,7 +48,7 @@ const props = defineProps(['unBaning', 'selectedServer']);
 const emit = defineEmits(['close']);
 async function deleteBan() {
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans/${props.unBaning.banid}`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/bans/${props.unBaning.banid}`,
     {
       method: 'DELETE',
       headers: {

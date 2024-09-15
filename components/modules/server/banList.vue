@@ -73,7 +73,7 @@ const unBanTab = ref(false);
 
 async function getBanList() {
   const respone = await $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/bans`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/bans`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

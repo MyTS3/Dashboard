@@ -42,7 +42,7 @@ const { url } = storeToRefs(store);
 const disable = ref(false);
 async function logOut() {
   disable.value = true;
-  await $fetch(`${url.value}/api/v1/logout`, {
+  await $fetch(`${url.value}/api/v4/logout`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,

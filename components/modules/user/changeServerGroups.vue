@@ -100,7 +100,7 @@ type serverGroup = {
 
 async function getUserServerGroups() {
   const response: serverGroup[] = await $fetch(
-    `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups`,
+    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -111,7 +111,7 @@ async function getUserServerGroups() {
 }
 async function getAllServerGroups() {
   const allServerGroups: serverGroup[] = await $fetch(
-    `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/servergroups`,
+    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/servergroups`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -132,7 +132,7 @@ function isAssigned(serverGroup: serverGroup) {
 
 async function addServerGroup(sgid: string) {
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
+    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
     {
       method: 'POST',
       headers: {
@@ -143,7 +143,7 @@ async function addServerGroup(sgid: string) {
 }
 async function removeServerGroup(sgid: string) {
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
+    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
     {
       method: 'DELETE',
       headers: {

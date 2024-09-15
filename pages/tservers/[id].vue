@@ -141,7 +141,7 @@ function draged(user: user) {
 }
 async function dragended(channel: channel) {
   await $fetch(
-    `${url.value}/api/v1/tservers/${serverUuid}/users/${movingUser.value}/move`,
+    `${url.value}/api/v4/tservers/${serverUuid}/users/${movingUser.value}/move`,
     {
       method: 'POST',
       headers: {
@@ -163,7 +163,7 @@ async function getServerDeatails() {
     slots: number;
     uuid: string;
     version: string;
-  } = await $fetch(`${url.value}/api/v1/tservers/${serverUuid}`, {
+  } = await $fetch(`${url.value}/api/v4/tservers/${serverUuid}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
@@ -226,7 +226,7 @@ async function getUsersAndChannels() {
       cid: string;
       pid: string;
     }[]
-  > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/channels`, {
+  > = $fetch(`${url.value}/api/v4/tservers/${serverUuid}/channels`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
@@ -247,7 +247,7 @@ async function getUsersAndChannels() {
       clientPlatform: string;
       clientUniqueIdentifier: string;
     }[]
-  > = $fetch(`${url.value}/api/v1/tservers/${serverUuid}/users`, {
+  > = $fetch(`${url.value}/api/v4/tservers/${serverUuid}/users`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
@@ -320,7 +320,7 @@ if (serverInfo.value.mustRunning) {
 }
 function longpoll(time = 1) {
   fetch(
-    `${url.value}/api/v1/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,
+    `${url.value}/api/v4/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

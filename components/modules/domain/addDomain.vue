@@ -42,7 +42,7 @@ const emit = defineEmits(['close']);
 const domainName = ref();
 
 async function AddDomain() {
-  await $fetch(`${url.value}/api/v1/tdomains`, {
+  await $fetch(`${url.value}/api/v4/tdomains`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,

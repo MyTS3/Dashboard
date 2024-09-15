@@ -42,7 +42,7 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 async function turnOffserver() {
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/stop`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/stop`,
     {
       method: 'POST',
       headers: {

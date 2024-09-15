@@ -44,7 +44,7 @@ const router = useRouter();
 const store = apiStore();
 const { url } = storeToRefs(store);
 async function deleteTheServer() {
-  await $fetch(`${url.value}/api/v1/tservers/${props.selectedServer.uuid}`, {
+  await $fetch(`${url.value}/api/v4/tservers/${props.selectedServer.uuid}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,

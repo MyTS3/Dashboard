@@ -62,7 +62,7 @@ TimeAgo.addLocale(fa);
 const timeAgo = new TimeAgo('fa');
 
 async function getServers() {
-  const response = await $fetch(`${url.value}/api/v1/tservers/`, {
+  const response = await $fetch(`${url.value}/api/v4/tservers/`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,

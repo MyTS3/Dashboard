@@ -113,7 +113,7 @@ if (route.query.token) {
 }
 async function signIn() {
   disable.value = true;
-  const response = await $fetch(`${url.value}/api/v1/token`, {
+  const response = await $fetch(`${url.value}/api/v4/token`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,

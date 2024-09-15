@@ -46,7 +46,7 @@ const disable = ref(false);
 async function banUser() {
   disable.value = true;
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/ban`,
+    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/ban`,
     {
       method: 'POST',
       headers: {

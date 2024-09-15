@@ -159,7 +159,7 @@ async function getServerGroups() {
     iconid: string;
     sortid: number;
   }[] = await $fetch(
-    `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.selectedRow.user.userNickname}/servergroups`,
+    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.selectedRow.user.userNickname}/servergroups`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

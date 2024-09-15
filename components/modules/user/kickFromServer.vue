@@ -47,7 +47,7 @@ const reason = ref('');
 async function kickUser() {
   disable.value = true;
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-server`,
+    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-server`,
     {
       method: 'POST',
       headers: {

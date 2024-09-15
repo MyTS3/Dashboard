@@ -59,7 +59,7 @@ const domainList = ref();
 const addDomainTab = ref(false);
 
 async function getDomain() {
-  const response = await $fetch(`${url.value}/api/v1/tdomains`, {
+  const response = await $fetch(`${url.value}/api/v4/tdomains`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
@@ -67,7 +67,7 @@ async function getDomain() {
   domainList.value = await response;
 }
 async function deleteDomain(uuid) {
-  await $fetch(`${url.value}/api/v1/tdomains/${uuid}`, {
+  await $fetch(`${url.value}/api/v4/tdomains/${uuid}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,

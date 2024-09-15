@@ -60,7 +60,7 @@ const selectedConfigue = ref();
 
 async function getAvailble() {
   const respone = $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config/available`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config/available`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -73,7 +73,7 @@ async function getAvailble() {
 async function changeConfigue() {
   disable.value = true;
   await $fetch(
-    `${url.value}/api/v1/tservers/${props.selectedServer.uuid}/reset-config`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config`,
     {
       method: 'POST',
       headers: {
