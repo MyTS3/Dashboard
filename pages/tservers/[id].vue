@@ -6,9 +6,9 @@
     <div class="bg-mainbg_400 w-full rounded-xl">
       <header class="w-full relative my-4 px-4">
         <h1
-          @click="selectedRow = { rowType: 'server', level: 0 }"
           :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
           class="p-1 border-2 bg-white/10 rounded-2xl"
+          @click="selectedRow = { rowType: 'server', level: 0 }"
         >
           {{ serverInfo.name }}
         </h1>
@@ -17,21 +17,21 @@
       <main class="list-none teamspeak text-xs px-4">
         <div v-for="row in teamspeakserver" :key="objectHash(row)">
           <div
-            @click="selectedRow = row"
             class="py-1 max-h-7 overflow-hidden px-3 rounded-lg"
             :class="
               selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
             "
+            @click="selectedRow = row"
           >
             <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
               <div
-                @click="selectedChannel = row.channel"
+                v-if="row.rowType == 'channel'"
                 dropzone="true"
+                class="flex gap-1"
+                @click="selectedChannel = row.channel"
                 @drop="dragended(row.channel)"
                 @dragover.prevent
                 @dragenter.prevent
-                class="flex gap-1"
-                v-if="row.rowType == 'channel'"
               >
                 <img
                   v-if="row.channel.channelType == 'normal'"
@@ -46,10 +46,10 @@
                 </p>
               </div>
               <div
-                draggable="true"
-                @dragstart="draged(row.user)"
-                class="flex gap-1"
                 v-if="row.rowType == 'user'"
+                draggable="true"
+                class="flex gap-1"
+                @dragstart="draged(row.user)"
               >
                 <img
                   v-if="row.user.status == 'openMic'"
@@ -82,18 +82,18 @@
     </div>
     <div class="bg-mainbg_400 w-full rounded-xl">
       <ServerView
-        @getServerDeatails="getServerDeatails"
-        :serverInfo="serverInfo"
         v-if="selectedRow?.rowType == 'server'"
+        :server-info="serverInfo"
+        @get-server-deatails="getServerDeatails"
       />
       <UserView
-        :serverInfo="serverInfo"
-        :selectedRow="selectedRow"
         v-if="selectedRow?.rowType == 'user'"
+        :server-info="serverInfo"
+        :selected-row="selectedRow"
       />
       <ChannelView
-        :selectedChannel="selectedChannel"
         v-if="selectedRow?.rowType == 'channel'"
+        :selected-channel="selectedChannel"
       />
       <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
     </div>
@@ -316,6 +316,7 @@ async function getUsersAndChannels() {
 }
 await getServerDeatails();
 if (serverInfo.value.mustRunning) {
+  await getUsersAndChannels();
   longpoll();
 }
 function longpoll(time = 1) {

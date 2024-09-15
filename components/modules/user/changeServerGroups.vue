@@ -162,14 +162,17 @@ async function applyServerGroups() {
         case 'add': {
           if (!ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
             await addServerGroup(serverGroup.sgid);
-          } else console.log('cant add twice');
+          }
 
           break;
         }
         case 'remove': {
-          if (ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
+          if (
+            ServerGroupsWeHave.value.find((s) => s.sgid == sgid) &&
+            ServerGroupsWeHave.value.length > 1
+          ) {
             await removeServerGroup(serverGroup.sgid);
-          } else console.log('cant remove twice');
+          }
           break;
         }
       }
