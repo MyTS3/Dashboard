@@ -7,13 +7,13 @@
             <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
               داشبورد
             </h1>
-            <h1 class="font-medium text-xl" v-if="$route.name == 'domains'">
+            <h1 v-if="$route.name == 'domains'" class="font-medium text-xl">
               دامین ها
             </h1>
             <button
-              @click="$router.back()"
               v-if="$route.name != 'tservers' && $route.name != 'domains'"
               class="btn h-12 p-3 flex items-center rounded-xl"
+              @click="$router.back()"
             >
               <img class="" src="/images/Arrow-Right.png" alt="" />
             </button>
@@ -58,9 +58,9 @@
         </header>
         <nav class="list-none flex flex-col gap-4 mt-7">
           <li
-            @click="navigateTo('/tservers')"
             :class="$route.name == 'tservers' ? 'activePanel' : ''"
             class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+            @click="navigateTo('/tservers')"
           >
             <img
               v-if="$route.name != 'tservers'"
@@ -113,19 +113,22 @@
           </li>
         </nav>
         <button
-          @click="logoutTab = true"
           class="bg-main_red w-[95%] left-1/2 -translate-x-1/2 rounded-2xl py-3 text-center absolute bottom-5"
+          @click="logoutTab = true"
         >
           <p>خروج از حساب کاربری</p>
         </button>
       </div>
     </div>
-    <logoutPopup @close="logoutTab = false" v-if="logoutTab" />
+    <logoutPopup v-if="logoutTab" @close="logoutTab = false" />
   </div>
 </template>
 <script setup>
+import TimeAgo from 'javascript-time-ago';
+import fa from 'javascript-time-ago/locale/fa';
 import logoutPopup from '@/components/modules/logoutPopup.vue';
 const logoutTab = ref(false);
+TimeAgo.addLocale(fa);
 </script>
 <style scoped>
 .layout {

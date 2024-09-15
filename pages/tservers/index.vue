@@ -15,36 +15,36 @@
           <p>{{ server.slots }}</p>
           <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
           <img
-            @click="removeServer(server.name, server.uuid)"
             class="cursor-pointer"
             src="/images/trash.png"
             alt=""
+            @click="removeServer(server.name, server.uuid)"
           />
         </div>
       </div>
       <button
-        @click.prevent="makeServerTab = true"
         class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+        @click.prevent="makeServerTab = true"
       >
         ساخت سرور
         <img src="/images/addon.png" alt="" />
       </button>
     </Table>
     <makeServer
-      :selectedServer="selectedServer"
       v-if="makeServerTab"
+      :selected-server="selectedServer"
       @close="getServers(), (makeServerTab = false)"
     />
     <DeleteServer
-      :selectedServer="selectedServer"
-      @close="getServers(), (ServerDeleteTab = false)"
       v-if="ServerDeleteTab"
+      :selected-server="selectedServer"
+      @close="getServers(), (ServerDeleteTab = false)"
     />
   </div>
 </template>
 <script setup>
 import TimeAgo from 'javascript-time-ago';
-import fa from 'javascript-time-ago/locale/fa';
+
 import Table from '~/components/reusable/table.vue';
 import makeServer from '/components/modules/makeServer.vue';
 import { apiStore } from '~/stores/apistore';
@@ -58,7 +58,7 @@ const servers = ref();
 const ServerDeleteTab = ref(false);
 const selectedServer = ref();
 const router = useRouter();
-TimeAgo.addLocale(fa);
+
 const timeAgo = new TimeAgo('fa');
 
 async function getServers() {

@@ -11,43 +11,49 @@
         <div v-for="domain in domainList" :key="domain" class="table items">
           <p class="font-semibold">{{ domain.domain }}</p>
           <div
-            class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_green/15"
             v-if="true"
+            class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_green/15"
           >
             <img class="w-5" src="/images/check.png" alt="" />
             <p class="font-bold text-sm text-main_green">فعال</p>
           </div>
           <div
-            class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_orange/15"
             v-if="false"
+            class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_orange/15"
           >
             <img class="w-5" src="/images/waiting.png" alt="" />
             <p class="font-bold text-sm text-main_orange">در انتظار</p>
           </div>
           <p>{{ timeAgo.format(new Date(domain.createdAt)) }}</p>
           <img
-            @click="deleteDomain(domain.uuid)"
             class="cursor-pointer"
             src="/images/trash.png"
             alt=""
+            @click="(deleteDomainTab = true), (selectedDomain = domain)"
           />
         </div>
       </div>
       <button
-        @click="addDomainTab = true"
         class="flex w-full items-center justify-center btn rounded-xl py-3"
+        @click="addDomainTab = true"
       >
         ساخت دامین
         <img src="/images/addon.png" alt="" />
       </button>
     </Table>
     <AddDomain
-      @close="getDomain(), (addDomainTab = false)"
       v-if="addDomainTab"
+      @close="getDomain(), (addDomainTab = false)"
+    />
+    <deleteDomain
+      v-if="deleteDomainTab"
+      :selected-domain="selectedDomain"
+      @close="(deleteDomainTab = false), getDomain()"
     />
   </div>
 </template>
 <script setup>
+import deleteDomain from '~/components/modules/domain/deleteDomain.vue';
 import Table from '~/components/reusable/table.vue';
 import TimeAgo from 'javascript-time-ago';
 import AddDomain from '~/components/modules/domain/addDomain.vue';
@@ -57,6 +63,8 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const domainList = ref();
 const addDomainTab = ref(false);
+const deleteDomainTab = ref(false);
+const selectedDomain = ref();
 
 async function getDomain() {
   const response = await $fetch(`${url.value}/api/v4/tdomains`, {
@@ -66,15 +74,7 @@ async function getDomain() {
   });
   domainList.value = await response;
 }
-async function deleteDomain(uuid) {
-  await $fetch(`${url.value}/api/v4/tdomains/${uuid}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  await getDomain();
-}
+
 await getDomain();
 </script>
 <style scoped>
