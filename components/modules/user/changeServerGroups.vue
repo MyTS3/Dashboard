@@ -35,7 +35,10 @@
               v-if="isAssigned(serverGroup)"
               class="checkbox-active"
               @click="
-                toApply[serverGroup.sgid] = { serverGroup, action: 'remove' }
+                toApply[serverGroup.sgid] = {
+                  serverGroup,
+                  action: 'remove',
+                }
               "
             />
             <p>{{ serverGroup.name }}</p>
@@ -67,8 +70,8 @@
         </div>
       </div>
       <button
-        :class="disable ? 'disable' : ''"
-        :disabled="disable"
+        :class="submitDisable ? 'opacity-45' : ''"
+        :disabled="submitDisable"
         class="w-full p-4 bg-main_blue rounded-xl my-2"
         @click="applyServerGroups()"
       >
@@ -89,7 +92,7 @@ const toApply = ref<{
   [key: string]: { serverGroup: serverGroup; action: 'add' | 'remove' };
 }>({});
 const disable = ref(false);
-
+const submitDisable = ref(false);
 type serverGroup = {
   sgid: string;
   name: string;
@@ -182,7 +185,19 @@ async function applyServerGroups() {
 
   emit('close');
 }
-
+function checkForDisAbling() {
+  if (ServerGroupsWeHave.value.length == 1) {
+    submitDisable.value = true;
+    for (const action in toApply.value) {
+      if (toApply.value[action].action == 'add') {
+        submitDisable.value = false;
+      }
+    }
+  }
+}
+watch(toApply.value, () => {
+  checkForDisAbling();
+});
 await getUserServerGroups();
 await getAllServerGroups();
 </script>
