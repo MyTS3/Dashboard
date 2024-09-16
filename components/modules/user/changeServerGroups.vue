@@ -186,13 +186,20 @@ async function applyServerGroups() {
   emit('close');
 }
 function checkForDisAbling() {
-  if (ServerGroupsWeHave.value.length == 1) {
-    submitDisable.value = true;
-    for (const action in toApply.value) {
-      if (toApply.value[action].action == 'add') {
-        submitDisable.value = false;
-      }
-    }
+  submitDisable.value = false;
+  let removes = 0;
+  for (const id in toApply.value) {
+    if (
+      toApply.value[id].action == 'remove' &&
+      ServerGroupsWeHave.value.find(
+        (server) => server.sgid == toApply.value[id].serverGroup.sgid,
+      )
+    )
+      removes += 1;
+  }
+  if (removes >= ServerGroupsWeHave.value.length) submitDisable.value = true;
+  for (const id in toApply.value) {
+    if (toApply.value[id].action == 'add') submitDisable.value = false;
   }
 }
 watch(toApply.value, () => {
