@@ -2,3 +2,4 @@ migrations
 .nuxt
 .output
 dist
+.vscode
