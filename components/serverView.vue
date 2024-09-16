@@ -3,10 +3,6 @@
     <header class="relative">
       <h1 class="text-center my-4">سرور</h1>
       <div class="absolute right-4 top-0 flex gap-2">
-        <a :href="tsUrl">
-          <img class="cursor-pointer w-8" src="/images/User info.png" alt="" />
-        </a>
-
         <img
           class="cursor-pointer w-6"
           src="/images/trash.png"
@@ -15,12 +11,19 @@
         />
       </div>
 
-      <img class="w-ful mx-auto mt-6" src="/images/seprator-line.png" alt="" />
+      <img
+        class="w-ful mx-auto mt-6 mb-3"
+        src="/images/seprator-line.png"
+        alt=""
+      />
     </header>
     <main class="list-none">
       <li class="grid gridList p-2">
         <p>{{ selectedServer.name }}</p>
         <p>:نام</p>
+        <a class="absolute left-4" :href="tsUrl">
+          <img class="cursor-pointer w-8" src="/images/User info.png" alt="" />
+        </a>
       </li>
       <li class="grid gridList p-2 relative">
         <p>{{ selectedServer.slots }}</p>
