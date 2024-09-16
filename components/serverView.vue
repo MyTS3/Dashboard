@@ -8,10 +8,10 @@
         </a>
 
         <img
-          @click.prevent="deleteServerTab = true"
           class="cursor-pointer w-6"
           src="/images/trash.png"
           alt=""
+          @click.prevent="deleteServerTab = true"
         />
       </div>
 
@@ -61,18 +61,14 @@
         </p>
         <p>آیدی</p>
       </li>
-      <li class="grid gridList p-2">
-        <p>{{ selectedServer.version }}</p>
-        <p>:ورژن</p>
-      </li>
       <li v-if="selectedServer.mustRunning" class="grid gridList p-2 relative">
         <p class="w-2/3 text-nowrap overflow-hidden mx-auto">
           {{ selectedServer.deployedOn }}
         </p>
         <p>:موقعیت مکانی</p>
         <button
-          @click.prevent="serverLocationTab = true"
           class="absolute left-4"
+          @click.prevent="serverLocationTab = true"
         >
           <img src="/images/location.png" alt="" />
         </button>
@@ -83,34 +79,34 @@
         <p>:وضعیت</p>
         <div class="absolute left-4 top-1/3">
           <input
+            id="server-status"
             :checked="selectedServer.mustRunning"
             class="hidden"
             type="checkbox"
-            id="server-status"
             @click.prevent="turnServerOffOrOn()"
           />
-          <label class="button" for="server-status"></label>
+          <label class="button" for="server-status" />
         </div>
       </li>
     </main>
     <footer class="grid grid-cols-2 gap-5 w-full absolute bottom-10 p-4">
       <button
-        @click="restartServerTab = true"
         class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
+        @click="restartServerTab = true"
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
       </button>
       <button
-        @click="bansListTab = true"
         class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
+        @click="bansListTab = true"
       >
         <p>لیست بن ها</p>
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
-        @click="resetConfigTab = true"
         class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
+        @click="resetConfigTab = true"
       >
         <p>ریسیت کانفگ</p>
         <img src="/images/ban_list.png" alt="" />
@@ -124,44 +120,44 @@
     </footer>
   </section>
   <changeSlot
-    :selectedServer="selectedServer"
-    @close="getServerDeatails(), (changeSlotTab = false)"
     v-if="changeSlotTab"
+    :selected-server="selectedServer"
+    @close="getServerDeatails(), (changeSlotTab = false)"
   />
   <yatqaPassChange
-    :selectedServer="selectedServer"
-    @close="yatqaPassReset = false"
     v-if="yatqaPassReset"
+    :selected-server="selectedServer"
+    @close="yatqaPassReset = false"
   />
   <moveLocation
-    :selectedServer="selectedServer"
     v-if="serverLocationTab"
+    :selected-server="selectedServer"
     @close="getServerDeatails(), (serverLocationTab = false)"
   />
   <restartServer
-    :selectedServer="selectedServer"
-    @close="getServerDeatails(), (restartServerTab = false)"
     v-if="restartServerTab"
+    :selected-server="selectedServer"
+    @close="getServerDeatails(), (restartServerTab = false)"
   />
   <turnoffServer
-    :selectedServer="selectedServer"
-    @close="getServerDeatails(), (turnOffServerTab = false)"
     v-if="turnOffServerTab"
+    :selected-server="selectedServer"
+    @close="getServerDeatails(), (turnOffServerTab = false)"
   />
   <deleteServer
-    :selectedServer="selectedServer"
-    @close="deleteServerTab = false"
     v-if="deleteServerTab"
+    :selected-server="selectedServer"
+    @close="deleteServerTab = false"
   />
   <banList
-    :selectedServer="selectedServer"
-    @close="bansListTab = false"
     v-if="bansListTab"
+    :selected-server="selectedServer"
+    @close="bansListTab = false"
   />
   <resetConfig
-    :selectedServer="selectedServer"
-    @close="resetConfigTab = false"
     v-if="resetConfigTab"
+    :selected-server="selectedServer"
+    @close="resetConfigTab = false"
   />
 </template>
 <script setup>
