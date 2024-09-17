@@ -45,7 +45,7 @@
           <p class="font-medium text-sm">
             پنل جدید در دست ساخت است و این یک نسخه بتا از آن میباشد
           </p>
-          <button @click.prevent="panelAlert = false" class="absolute left-4">
+          <button class="absolute left-4" @click.prevent="panelAlert = false">
             x
           </button>
         </div>

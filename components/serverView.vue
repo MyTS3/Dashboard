@@ -91,8 +91,11 @@
           <label class="button" for="server-status" />
         </div>
       </li>
-      <p class="text-right p-2 cursor-pointer text-main_orange">
-        مشاهده اطلاعات در صفحه یاتکا
+      <p
+        class="m-3 text-main_orange text-right cursor-pointer font-bold"
+        @click="yatqaExampleTab = true"
+      >
+        برای مشاهده مثال یاتکا کلیک کنید
       </p>
     </main>
     <footer class="grid grid-cols-2 gap-5 w-full absolute bottom-10 p-4">
@@ -165,6 +168,11 @@
     :selected-server="selectedServer"
     @close="resetConfigTab = false"
   />
+  <yatqaExample
+    v-if="yatqaExampleTab"
+    :selected-server="selectedServer"
+    @close="yatqaExampleTab = false"
+  />
 </template>
 <script setup>
 import changeSlot from './modules/server/changeSlot.vue';
@@ -175,6 +183,7 @@ import turnoffServer from './modules/server/turnoffServer.vue';
 import deleteServer from './modules/server/deleteServer.vue';
 import banList from './modules/server/banList.vue';
 import resetConfig from './modules/server/resetConfig.vue';
+import yatqaExample from './modules/server/yatqaExample.vue';
 
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
@@ -188,6 +197,7 @@ const serverLocationTab = ref(false);
 const bansListTab = ref(false);
 const restartServerTab = ref(false);
 const resetConfigTab = ref(false);
+const yatqaExampleTab = ref(false);
 
 const props = defineProps(['serverInfo']);
 const emit = defineEmits(['getServerDeatails']);
