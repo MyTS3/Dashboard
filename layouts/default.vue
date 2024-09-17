@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="layout bg-mainbg_600 p-2 text-white min-h-screen overflow-hidden">
+    <div
+      class="layout bg-mainbg_600 p-2 text-white min-h-screen overflow-hidden"
+    >
       <div>
         <div style="max-width: 69rem" class="py-3 mx-auto">
           <header class="w-full flex justify-between flex-row-reverse">
@@ -31,7 +33,7 @@
           </header>
         </div>
         <div
-        v-if="panelAlert"
+          v-if="panelAlert"
           style="max-width: 69rem"
           class="flex my-2 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl items-center mx-auto"
         >
@@ -43,7 +45,9 @@
           <p class="font-medium text-sm">
             پنل جدید در دست ساخت است و این یک نسخه بتا از آن میباشد
           </p>
-          <button @click.prevent="panelAlert=false" class="absolute left-4">x</button>
+          <button @click.prevent="panelAlert = false" class="absolute left-4">
+            x
+          </button>
         </div>
         <slot />
       </div>
@@ -129,7 +133,7 @@ import TimeAgo from 'javascript-time-ago';
 import fa from 'javascript-time-ago/locale/fa';
 import logoutPopup from '@/components/modules/logoutPopup.vue';
 const logoutTab = ref(false);
-const panelAlert = ref(true)
+const panelAlert = ref(true);
 TimeAgo.addLocale(fa);
 </script>
 <style scoped>
