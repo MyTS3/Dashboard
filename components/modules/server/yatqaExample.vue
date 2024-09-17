@@ -52,6 +52,7 @@
 </template>
 <script setup>
 const props = defineProps(['selectedServer']);
+console.log(props);
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
 }
