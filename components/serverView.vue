@@ -91,7 +91,9 @@
           <label class="button" for="server-status" />
         </div>
       </li>
-      <p class='text-right p-2 cursor-pointer text-main_orange' >مشاهده اطلاعات در صفحه یاتکا</p>
+      <p class="text-right p-2 cursor-pointer text-main_orange">
+        مشاهده اطلاعات در صفحه یاتکا
+      </p>
     </main>
     <footer class="grid grid-cols-2 gap-5 w-full absolute bottom-10 p-4">
       <button
