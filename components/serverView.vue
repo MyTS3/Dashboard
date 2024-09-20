@@ -133,11 +133,7 @@
     :selected-server="selectedServer"
     @close="getServerDeatails(), (changeSlotTab = false)"
   />
-  <yatqaPassChange
-    v-if="yatqaPassReset"
-    :selected-server="selectedServer"
-    @close="yatqaPassReset = false"
-  />
+
   <moveLocation
     v-if="serverLocationTab"
     :selected-server="selectedServer"
@@ -176,7 +172,7 @@
 </template>
 <script setup>
 import changeSlot from './modules/server/changeSlot.vue';
-import yatqaPassChange from './modules/server/yatqaPassChange.vue';
+
 import moveLocation from './modules/server/moveLocation.vue';
 import restartServer from './modules/server/restartServer.vue';
 import turnoffServer from './modules/server/turnoffServer.vue';
@@ -190,8 +186,7 @@ import { storeToRefs } from 'pinia';
 
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
-const showYatqaPass = ref('disc');
-const yatqaPassReset = ref(false);
+
 const turnOffServerTab = ref(false);
 const serverLocationTab = ref(false);
 const bansListTab = ref(false);

@@ -6,8 +6,8 @@
       class="text-white min-w-[25rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -19,14 +19,14 @@
       <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
       <from class="w-full my-4">
         <select
-          class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
           v-model="selectedConfigue"
+          class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
           name="locations"
         >
           <option
             v-for="available in availables"
-            :value="available"
             :key="available"
+            :value="available"
             class="dropdown"
           >
             {{ available }}
@@ -37,8 +37,8 @@
         <button
           :class="disable ? 'disable' : ''"
           :disabled="disable"
-          @click.prevent="changeConfigue()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
+          @click.prevent="changeConfigue()"
         >
           تایید
         </button>
@@ -68,7 +68,6 @@ async function getAvailble() {
     },
   );
   availables.value = await respone;
-  console.log(availables);
 }
 async function changeConfigue() {
   disable.value = true;
