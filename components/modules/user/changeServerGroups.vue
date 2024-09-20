@@ -75,8 +75,14 @@
         class="w-full p-4 bg-main_blue rounded-xl my-2"
         @click="applyServerGroups()"
       >
-        اعمال تغییرات
+        <p>اعمال تغییرات</p>
       </button>
+      <p
+        :class="submitDisable ? 'opacity-100' : 'opacity-0'"
+        class="bg-mainbg_600 rounded-lg p-2 absolute left-1/2 -translate-x-1/2 bottom-[-3rem] transition-all"
+      >
+        {{ disableReasson }}
+      </p>
     </main>
   </section>
 </template>
@@ -88,6 +94,7 @@ const props = defineProps(['user', 'serverInfo']);
 const ServerGroupsWeHave = ref<serverGroup[]>([]);
 const serverGroups = ref<serverGroup[]>([]);
 const queryServerGroups = ref<serverGroup[]>([]);
+const disableReasson = ref('حداقل یک رنک باید انتخاب شود');
 const toApply = ref<{
   [key: string]: { serverGroup: serverGroup; action: 'add' | 'remove' };
 }>({});
