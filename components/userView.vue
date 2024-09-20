@@ -32,9 +32,15 @@
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         :class="disable ? 'btn-disable' : 'btn'"
         :disabled="disable"
-        class="flex justify-center items-center gap-2 py-2 rounded-tl-lg"
+        class="flex justify-center items-center gap-2 py-2 rounded-tl-lg parent"
         @click="banUserTab = true"
       >
+        <p
+          :class="disable ? 'opacity-100' : 'opacity-0'"
+          class="absolute bottom-[-5rem] left-0 -translate-x-1/2 bg-mainbg_400 rounded-lg p-2 hidden child"
+        >
+          نمیتوانید شخصی با رنک کوئری را بن کنید
+        </p>
         <p>بن از سرور</p>
         <img src="/images/ban_client.png" alt="" />
       </button>
@@ -174,3 +180,8 @@ async function getServerGroups() {
 }
 await getServerGroups();
 </script>
+<style scoped>
+.parent:hover .child {
+  display: block;
+}
+</style>
