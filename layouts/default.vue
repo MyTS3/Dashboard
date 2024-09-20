@@ -12,8 +12,15 @@
             <h1 v-if="$route.name == 'domains'" class="font-medium text-xl">
               دامین ها
             </h1>
+            <h1 v-if="$route.name == 'backups'" class="font-medium text-xl">
+              بک اپ ها
+            </h1>
             <button
-              v-if="$route.name != 'tservers' && $route.name != 'domains'"
+              v-if="
+                $route.name != 'tservers' &&
+                $route.name != 'domains' &&
+                $route.name != 'backups'
+              "
               class="btn h-12 p-3 flex items-center rounded-xl"
               @click="$router.back()"
             >
@@ -102,6 +109,20 @@
             />
             <p>دامین ها</p>
             <img src="/images/domain.png" alt="" />
+          </li>
+          <li
+            :class="$route.name == 'backups' ? 'activePanel' : ''"
+            class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+            @click="navigateTo('/backups')"
+          >
+            <img
+              v-if="$route.name != 'backups'"
+              class="mr-auto"
+              src="/images/Arrow - Left.png"
+              alt=""
+            />
+            <p>بکاپ ها</p>
+            <img src="/images/backups.png" alt="" />
           </li>
           <li
             :class="$route.name == 'poshtibani' ? 'activePanel' : ''"
