@@ -61,7 +61,7 @@
           v-if="showYatqaPass == 'none'"
           @click="copyToClipboard(selectedServer.queryPassword)"
         >
-          <img class="w-4" src="/images/copy2.png" alt="" />
+          <img class="w-4" src="/images/Copy2.png" alt="" />
         </button>
         <button
           v-if="showYatqaPass == 'disc'"

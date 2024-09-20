@@ -9,6 +9,7 @@
           :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
           class="p-1 border-2 bg-white/10 rounded-2xl"
           @click="selectedRow = { rowType: 'server', level: 0 }"
+          @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
           {{ serverInfo.name }}
         </h1>
@@ -22,6 +23,7 @@
               selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
             "
             @click="selectedRow = row"
+            @contextmenu.prevent="selectedRow = row"
           >
             <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
               <div
