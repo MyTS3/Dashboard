@@ -12,7 +12,7 @@
           <p class="cursor-pointer" @click="serverClicked(server)">
             {{ server.name }}
           </p>
-          <p>{{ server.slots }}</p>
+          <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
           <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
           <img
             class="cursor-pointer"
@@ -60,6 +60,28 @@ const selectedServer = ref();
 const router = useRouter();
 
 const timeAgo = new TimeAgo('fa');
+
+const persianNumbers = {
+  0: '۰',
+  1: '۱',
+  2: '۲',
+  3: '۳',
+  4: '۴',
+  5: '۵',
+  6: '۶',
+  7: '۷',
+  8: '۸',
+  9: '۹',
+};
+
+function convertEnglishNumberToPersian(number) {
+  const string = number.toString();
+  let persianString = '';
+  for (const c of string) {
+    persianString += persianNumbers[c];
+  }
+  return persianString;
+}
 
 async function getServers() {
   const response = await $fetch(`${url.value}/api/v4/tservers/`, {

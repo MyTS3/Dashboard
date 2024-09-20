@@ -6,8 +6,10 @@
       class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
-        @click="$emit('close')"
+        :class="disable ? 'disable' : ''"
+        :disabled="disable"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -17,16 +19,18 @@
       </p>
       <div class="grid grid-cols-2 gap-3">
         <button
-          @click="$emit('close')"
+          :class="disable ? 'disable' : ''"
+          :disabled="disable"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
+          @click="$emit('close')"
         >
           لغو
         </button>
         <button
           :class="disable ? 'disable' : ''"
           :disabled="disable"
-          @click="changeYatqaPass()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
+          @click="changeYatqaPass()"
         >
           تایید
         </button>
