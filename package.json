@@ -13,9 +13,11 @@
     "check": "tsc --noEmit && vue-tsc --noEmit",
     "ci": "npm run format:check && npm run lint:quiet && npm run check",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "prepare": "husky"
   },
   "dependencies": {
+    "husky": "^9.1.6",
     "javascript-time-ago": "^2.5.11",
     "nuxt": "^3.13.0",
     "object-hash": "^3.0.0",
