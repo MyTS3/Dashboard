@@ -23,5 +23,6 @@
 <script setup>
 import interval from '~/components/modules/backups-component/interval.vue';
 import backup from '~/components/modules/backups-component/backup.vue';
+
 const activeTab = ref('interval');
 </script>
