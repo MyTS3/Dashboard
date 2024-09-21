@@ -50,7 +50,6 @@ async function getBackups() {
     },
   });
   backups.value = respone;
-  console.log(backups.value);
 }
 getBackups();
 </script>
