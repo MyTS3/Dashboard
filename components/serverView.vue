@@ -122,6 +122,7 @@
       </button>
       <button
         class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
+        @click="subdomainTab = true"
       >
         <p>ساب دامنه ها</p>
         <img src="/images/ban_list.png" alt="" />
@@ -169,10 +170,11 @@
     :selected-server="selectedServer"
     @close="yatqaExampleTab = false"
   />
+  <subdomains v-if="subdomainTab" @close="subdomainTab = false" />
 </template>
 <script setup>
 import changeSlot from './modules/server/changeSlot.vue';
-
+import subdomains from './modules/server/subdomainList.vue';
 import moveLocation from './modules/server/moveLocation.vue';
 import restartServer from './modules/server/restartServer.vue';
 import turnoffServer from './modules/server/turnoffServer.vue';
@@ -193,6 +195,7 @@ const bansListTab = ref(false);
 const restartServerTab = ref(false);
 const resetConfigTab = ref(false);
 const yatqaExampleTab = ref(false);
+const subdomainTab = ref(false);
 
 const props = defineProps(['serverInfo']);
 const emit = defineEmits(['getServerDeatails']);
