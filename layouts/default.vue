@@ -48,7 +48,8 @@
             alt="bell-alarm"
           />
           <p class="font-medium text-sm">
-            پنل جدید در دست ساخت است و این یک نسخه بتا از آن میباشد
+            پنل جدید در دست ساخت است، این یک نسخه رایگان برای تست میباشد و هیچ
+            گونه مسئولیتی در نگهداری داده های شما ندارد
           </p>
           <button class="absolute left-4" @click.prevent="panelAlert = false">
             x
