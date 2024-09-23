@@ -37,7 +37,7 @@
         class="flex w-full items-center justify-center btn rounded-xl py-3"
         @click="addDomainTab = true"
       >
-        ساخت دامین
+        افزودن دامنه
         <img src="/images/addon.png" alt="" />
       </button>
     </Table>

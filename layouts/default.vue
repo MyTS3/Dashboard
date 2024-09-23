@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="layout bg-mainbg_600 p-2 text-white min-h-screen overflow-hidden"
-    >
+    <div class="layout bg-mainbg_600 text-white min-h-screen overflow-hidden">
       <div>
         <div style="max-width: 69rem" class="py-3 mx-auto">
           <header class="w-full flex justify-between flex-row-reverse">
@@ -80,10 +78,10 @@
               src="/images/Arrow - Left.png"
               alt=""
             />
-            <p>داشبورد</p>
+            <p>سرور ها</p>
             <img src="/images/dash.png" alt="dashboard" />
           </li>
-          <li
+          <!-- <li
             :class="$route.name == 'playlist' ? 'activePanel' : ''"
             class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
           >
@@ -95,21 +93,7 @@
             />
             <p>پلی لیست</p>
             <img src="/images/Folder.png" alt="" />
-          </li>
-          <li
-            :class="$route.name == 'domains' ? 'activePanel' : ''"
-            class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
-            @click="navigateTo('/domains')"
-          >
-            <img
-              v-if="$route.name != 'domains'"
-              class="mr-auto"
-              src="/images/Arrow - Left.png"
-              alt=""
-            />
-            <p>دامین ها</p>
-            <img src="/images/domain.png" alt="" />
-          </li>
+          </li> -->
           <li
             :class="$route.name == 'backups' ? 'activePanel' : ''"
             class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
@@ -125,6 +109,20 @@
             <img src="/images/backups.png" alt="" />
           </li>
           <li
+            :class="$route.name == 'domains' ? 'activePanel' : ''"
+            class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+            @click="navigateTo('/domains')"
+          >
+            <img
+              v-if="$route.name != 'domains'"
+              class="mr-auto"
+              src="/images/Arrow - Left.png"
+              alt=""
+            />
+            <p>دامین ها</p>
+            <img src="/images/domain.png" alt="" />
+          </li>
+          <!-- <li
             :class="$route.name == 'poshtibani' ? 'activePanel' : ''"
             class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
           >
@@ -136,7 +134,7 @@
             />
             <p>پشتیبانی</p>
             <img src="/images/poshtibani.png" alt="" />
-          </li>
+          </li> -->
         </nav>
         <button
           class="bg-main_red w-[95%] left-1/2 -translate-x-1/2 rounded-2xl py-3 text-center absolute bottom-5"

@@ -25,14 +25,14 @@
           </div>
         </div>
       </div>
+      <button
+        class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+        @click.prevent="makeServerTab = true"
+      >
+        ساخت بکاپ
+        <img src="/images/addon.png" alt="" />
+      </button>
     </Table>
-    <button
-      class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
-      @click.prevent="makeServerTab = true"
-    >
-      افزودن
-      <img src="/images/addon.png" alt="" />
-    </button>
   </section>
 </template>
 <script setup>

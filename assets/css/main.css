@@ -22,7 +22,7 @@ img {
 
 /* //////////////////////////////////////////// */
 .btn {
-  border: 2px solid white;
+  border: 1px solid white;
   background: rgba(255, 255, 255, 0.12);
 }
 .btn-disable {
@@ -35,11 +35,7 @@ img {
   background-color: rgba(255, 158, 11, 0.1);
 }
 .activePanel {
-  background-image: linear-gradient(
-    to left,
-    rgba(0, 149, 255, 0.6),
-    rgba(0, 149, 255, 0)
-  );
+  background-image: linear-gradient(to left, #141931, rgba(0, 149, 255, 0));
   border-bottom-right-radius: 1rem;
   border-top-right-radius: 1rem;
 }
