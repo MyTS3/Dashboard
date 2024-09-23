@@ -42,11 +42,11 @@
           </div>
           <div class="table items items-center text-center rounded-lg">
             <input
-              class="w-1/2 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
+              class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
               type="text"
             />
             <select
-              class="w-1/2 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
+              class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
             >
               <option value="ahmad">myts.ir</option>
             </select>
