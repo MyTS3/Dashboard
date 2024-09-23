@@ -3,7 +3,7 @@
     class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-[30rem] w-1/2 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+      class="text-white min-w-[30rem] w-2/5 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
@@ -42,11 +42,11 @@
           </div>
           <div class="table items items-center text-center rounded-lg">
             <input
-              class="w-1/2 mx-auto p-1 rounded-xl bg-transparent border text-right"
+              class="w-1/2 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
               type="text"
             />
             <select
-              class="w-1/2 mx-auto p-1 rounded-xl bg-transparent border text-right"
+              class="w-1/2 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
             >
               <option value="ahmad">myts.ir</option>
             </select>
@@ -61,7 +61,7 @@
       <button
         :class="submitDisable ? 'opacity-45' : ''"
         :disabled="submitDisable"
-        class="w-full max-w-[15rem] p-4 bg-main_blue rounded-xl my-2"
+        class="w-full p-4 bg-main_blue rounded-xl my-2"
         @click="applyServerGroups()"
       >
         <p>اعمال تغییرات</p>
