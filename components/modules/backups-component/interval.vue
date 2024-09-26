@@ -29,7 +29,7 @@
         class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
         @click.prevent="makeServerTab = true"
       >
-        ساخت بکاپ
+        افزودن
         <img src="/images/addon.png" alt="" />
       </button>
     </Table>

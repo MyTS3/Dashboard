@@ -18,11 +18,13 @@
     </div>
     <interval v-if="activeTab == 'interval'" />
     <backup v-if="activeTab == 'backup'" />
+    <add-backup v-if="addBackupTab" @close="addBackupTab = false" />
   </section>
 </template>
 <script setup>
 import interval from '~/components/modules/backups-component/interval.vue';
 import backup from '~/components/modules/backups-component/backup.vue';
-
+import addBackup from '~/components/modules/backups-component/addBackup.vue';
 const activeTab = ref('interval');
+const addBackupTab = ref(true);
 </script>
