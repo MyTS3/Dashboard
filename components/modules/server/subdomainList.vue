@@ -69,7 +69,24 @@
     </main>
   </section>
 </template>
-<script setup></script>
+<script setup>
+const subDomainList = ref();
+const props = defineProps(['selectedServer']);
+async function subDomains() {
+  const respone = await $fetch(
+    `/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    },
+  );
+  subDomainList.value = await respone;
+  console.log(respone);
+}
+await subDomains();
+</script>
 <style scoped>
 .table {
   display: grid;

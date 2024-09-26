@@ -170,7 +170,11 @@
     :selected-server="selectedServer"
     @close="yatqaExampleTab = false"
   />
-  <subdomains v-if="subdomainTab" @close="subdomainTab = false" />
+  <subdomains
+    v-if="subdomainTab"
+    :selected-server="selectedServer"
+    @close="subdomainTab = false"
+  />
 </template>
 <script setup>
 import changeSlot from './modules/server/changeSlot.vue';
