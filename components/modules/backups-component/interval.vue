@@ -27,7 +27,7 @@
       </div>
       <button
         class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
-        @click.prevent="makeServerTab = true"
+        @click="$emit('opentab')"
       >
         افزودن
         <img src="/images/addon.png" alt="" />

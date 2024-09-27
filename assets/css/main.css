@@ -151,3 +151,6 @@ img {
   cursor: wait;
   opacity: 0.8;
 }
+option {
+  background-color: rgba(37, 40, 65, 1);
+}
