@@ -22,47 +22,53 @@
           <p class="">اکشن</p>
         </div>
         <div class="overflow-scroll">
-          <div class="table items items-center text-center rounded-lg">
-            <p class="">mamad</p>
-            <p class="">myts3.ir</p>
+          <div
+            v-for="(subdomain, i) in subDomainList"
+            :key="subdomain"
+            class="table items items-center text-center rounded-lg"
+          >
+            <p class="">{{ subdomain.sub }}</p>
+            <p class="">{{ subdomain.domain.domain }}</p>
             <img
               class="mx-auto cursor-pointer"
               src="/images/trash.png"
               alt=""
+              @click="deleteSubDomain(i)"
             />
           </div>
-          <div class="table items items-center text-center rounded-lg">
-            <p class="">ali</p>
-            <p class="">vipts.ir</p>
-            <img
-              class="mx-auto cursor-pointer"
-              src="/images/trash.png"
-              alt=""
-            />
-          </div>
-          <div class="table items items-center text-center rounded-lg">
-            <input
-              class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
-              type="text"
-            />
-            <select
-              class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
+        </div>
+        <div class="table items items-center text-center rounded-lg">
+          <input
+            v-model="subToAdd"
+            class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
+            type="text"
+          />
+          <select
+            v-model="domainToAdd"
+            class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
+          >
+            <option
+              v-for="domain in domainList"
+              :key="domain.uuid"
+              class="bg-mainbg_500"
+              :value="domain"
             >
-              <option value="ahmad">myts.ir</option>
-            </select>
-            <img
-              class="mx-auto cursor-pointer"
-              src="/images/add-square.png"
-              alt=""
-            />
-          </div>
+              {{ domain.domain }}
+            </option>
+          </select>
+          <img
+            class="mx-auto cursor-pointer"
+            src="/images/add-square.png"
+            alt=""
+            @click="addToList()"
+          />
         </div>
       </div>
       <button
         :class="submitDisable ? 'opacity-45' : ''"
         :disabled="submitDisable"
         class="w-full p-4 bg-main_blue rounded-xl my-2"
-        @click="applyServerGroups()"
+        @click="submitSubdomains()"
       >
         <p>اعمال تغییرات</p>
       </button>
@@ -70,11 +76,27 @@
   </section>
 </template>
 <script setup>
+const store = apiStore();
+const { url } = storeToRefs(store);
+
+const domainList = ref();
+const domainToAdd = ref();
+const subToAdd = ref('');
+
+async function getDomain() {
+  const response = await $fetch(`${url.value}/api/v4/tdomains`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  domainList.value = await response;
+}
+
 const subDomainList = ref();
 const props = defineProps(['selectedServer']);
 async function subDomains() {
   const respone = await $fetch(
-    `/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
     {
       method: 'GET',
       headers: {
@@ -83,9 +105,42 @@ async function subDomains() {
     },
   );
   subDomainList.value = await respone;
-  console.log(respone);
+}
+function addToList() {
+  subDomainList.value.push({
+    sub: subToAdd.value,
+    domain: domainToAdd.value,
+  });
+  subToAdd.value = '';
+  domainToAdd.value = undefined;
+}
+function deleteSubDomain(i) {
+  const newList = [];
+  let index = 0;
+  subDomainList.value.forEach((subdomain) => {
+    if (index != i) {
+      newList.push(subdomain);
+    }
+    index += 1;
+  });
+  subDomainList.value = newList;
+}
+async function submitSubdomains() {
+  await $fetch(
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        subdomains: subDomainList.value,
+      }),
+    },
+  );
 }
 await subDomains();
+await getDomain();
 </script>
 <style scoped>
 .table {
