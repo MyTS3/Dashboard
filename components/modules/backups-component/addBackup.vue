@@ -6,8 +6,6 @@
       class="text-white max-w-[30rem] w-full bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
-        :class="disable ? 'disable' : ''"
-        :disabled="disable"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
         @click="$emit('close')"
       >
