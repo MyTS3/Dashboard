@@ -21,7 +21,7 @@
           <p class="">دامنه</p>
           <p class="">اکشن</p>
         </div>
-        <div class="overflow-scroll">
+        <div class="overflow-scroll max-h-[16.5rem]">
           <div
             v-for="(subdomain, i) in subDomainList"
             :key="subdomain"
@@ -78,7 +78,7 @@
 <script setup>
 const store = apiStore();
 const { url } = storeToRefs(store);
-
+const emit = defineEmits(['close']);
 const domainList = ref();
 const domainToAdd = ref();
 const subToAdd = ref('');
@@ -138,6 +138,7 @@ async function submitSubdomains() {
       }),
     },
   );
+  emit('close');
 }
 await subDomains();
 await getDomain();
