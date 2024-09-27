@@ -19,7 +19,7 @@
               <img
                 class="cursor-pointer w-8 h-8"
                 src="/images/trash.png"
-                @click="(deleteDomainTab = true), (selectedDomain = domain)"
+                @click="deleteInterval(interval.uuid)"
               />
             </div>
           </div>
@@ -50,7 +50,16 @@ async function getIntervals() {
   });
   intervals.value = respone;
 }
-getIntervals();
+async function deleteInterval(uuid) {
+  await $fetch(`${url.value}/api/v4/snapshots/intervals/${uuid}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  await getIntervals();
+}
+await getIntervals();
 </script>
 <style scoped>
 .table {

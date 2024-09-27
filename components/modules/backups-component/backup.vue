@@ -16,11 +16,12 @@
                 class="cursor-pointer w-8 h-8"
                 src="/images/arrow-up.png"
                 alt=""
+                @click="(deployBackupTab = true), (selecteduuid = backup.uuid)"
               />
               <img
                 class="cursor-pointer w-8 h-8"
                 src="/images/trash.png"
-                @click="(deleteDomainTab = true), (selectedDomain = domain)"
+                @click="deleteBackup(backup.uuid)"
               />
             </div>
           </div>
@@ -34,15 +35,33 @@
         <img src="/images/addon.png" alt="" />
       </button>
     </Table>
+    <restoreBackup
+      v-if="deployBackupTab"
+      :selecteduuid="selecteduuid"
+      @close="deployBackupTab = false"
+    />
   </section>
 </template>
 <script setup>
+import restoreBackup from './restoreBackup.vue';
 import Table from '~/components/reusable/table.vue';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
 
+const selecteduuid = ref();
+const deployBackupTab = ref(false);
 const backups = ref();
+async function deleteBackup(uuid) {
+  await $fetch(`${url.value}/api/v4/snapshots/${uuid}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  await getBackups();
+}
+
 async function getBackups() {
   const respone = await $fetch(`${url.value}/api/v4/snapshots`, {
     headers: {
