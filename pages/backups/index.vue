@@ -18,7 +18,7 @@
     </div>
     <interval v-if="activeTab == 'interval'" />
     <backup v-if="activeTab == 'backup'" />
-    <add-backup v-if="addBackupTab" @close="addBackupTab = false" />
+    <addBackup v-if="addBackupTab" @close="addBackupTab = false" />
   </section>
 </template>
 <script setup>
