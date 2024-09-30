@@ -54,7 +54,7 @@ import DeleteServer from '~/components/modules/server/deleteServer.vue';
 const store = apiStore();
 const { url } = storeToRefs(store);
 const makeServerTab = ref(false);
-const servers = ref();
+
 const ServerDeleteTab = ref(false);
 const selectedServer = ref();
 const router = useRouter();
@@ -83,15 +83,19 @@ function convertEnglishNumberToPersian(number) {
   return persianString;
 }
 
-async function getServers() {
-  const response = await $fetch(`${url.value}/api/v4/tservers/`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  servers.value = response;
-}
+const {
+  pending,
+  data: servers,
+  refresh: getServers,
+} = await useFetch(`${url.value}/api/v4/tservers/`, {
+  method: 'GET',
+  lazy: true,
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+watch(pending, () => {});
+
 function removeServer(name, uuid) {
   ServerDeleteTab.value = true;
   selectedServer.value = { name: name, uuid: uuid };
@@ -100,7 +104,6 @@ function serverClicked(server) {
   router.push(`/tservers/${server.uuid}`);
 }
 ///////////////////////////calling functions
-await getServers();
 </script>
 <style scoped>
 .table {
