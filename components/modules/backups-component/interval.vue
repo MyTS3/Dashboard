@@ -8,36 +8,39 @@
           <p>عمل</p>
         </div>
         <div class="h-[30rem] overflow-scroll">
-          <div v-if="status === 'pending'" v-for="_ in 5" class="table items">
-            <USkeleton
-              class="h-5 w-40"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-5 w-20"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-5 w-10"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-          </div>
-          <div
-            v-else
-            v-for="interval in intervals"
-            :key="interval"
-            class="table items"
-          >
-            <p class="font-semibold">{{ interval.tserver.name }}</p>
-            <p>{{ interval.interval }}</p>
-            <div class="flex gap-4">
-              <img
-                class="cursor-pointer w-8 h-8"
-                src="/images/trash.png"
-                @click="deleteInterval(interval.uuid)"
+          <template v-if="status === 'pending'">
+            <div v-for="_ in 5" :key="_" class="table items">
+              <USkeleton
+                class="h-5 w-40"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+              <USkeleton
+                class="h-5 w-20"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+              <USkeleton
+                class="h-5 w-10"
+                :ui="{ background: 'dark:bg-gray-500' }"
               />
             </div>
-          </div>
+          </template>
+          <template v-else>
+            <div
+              v-for="interval in intervals"
+              :key="interval"
+              class="table items"
+            >
+              <p class="font-semibold">{{ interval.tserver.name }}</p>
+              <p>{{ interval.interval }}</p>
+              <div class="flex gap-4">
+                <img
+                  class="cursor-pointer w-8 h-8"
+                  src="/images/trash.png"
+                  @click="deleteInterval(interval.uuid)"
+                />
+              </div>
+            </div>
+          </template>
         </div>
       </div>
       <button
