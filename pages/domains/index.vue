@@ -8,7 +8,30 @@
           <p>تاریخ ثبت</p>
           <p>عمل</p>
         </div>
-        <div v-for="domain in domainList" :key="domain" class="table items">
+        <div v-if="status === 'pending'" v-for="_ in 5" class="table items">
+          <USkeleton
+            class="h-5 w-40"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+          <USkeleton
+            class="h-5 w-20"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+          <USkeleton
+            class="h-5 w-20"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+          <USkeleton
+            class="h-5 w-10"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+        </div>
+        <div
+          v-else
+          v-for="domain in domainList"
+          :key="domain"
+          class="table items"
+        >
           <p class="font-semibold">{{ domain.domain }}</p>
           <div
             v-if="true"
@@ -61,21 +84,19 @@ import AddDomain from '~/components/modules/domain/addDomain.vue';
 const timeAgo = new TimeAgo('fa');
 const store = apiStore();
 const { url } = storeToRefs(store);
-const domainList = ref();
 const addDomainTab = ref(false);
 const deleteDomainTab = ref(false);
 const selectedDomain = ref();
 
-async function getDomain() {
-  const response = await $fetch(`${url.value}/api/v4/tdomains`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  domainList.value = await response;
-}
-
-await getDomain();
+const {
+  data: domainList,
+  status,
+  execute: getDomain,
+} = await useLazyFetch(`${url.value}/api/v4/tdomains`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
 </script>
 <style scoped>
 .table {
