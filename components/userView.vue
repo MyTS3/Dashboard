@@ -28,22 +28,21 @@
       </div>
     </main>
     <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
-      <button
-        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        :class="disable ? 'btn-disable' : 'btn'"
-        :disabled="disable"
-        class="flex justify-center items-center gap-2 py-2 rounded-tl-lg parent"
-        @click="banUserTab = true"
+      <UTooltip
+        class="flex justify-center items-center gap-2 rounded-tl-lg"
+        text="نمیتوانید شخصی با رنک کوئری را بن کنید"
       >
-        <p
-          :class="disable ? 'opacity-100' : 'opacity-0'"
-          class="absolute bottom-[-5rem] left-0 -translate-x-1/2 bg-mainbg_400 rounded-lg p-2 hidden child"
+        <button
+          v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
+          :class="disable ? 'btn-disable' : 'btn'"
+          :disabled="disable"
+          class="w-full h-full flex justify-center items-center rounded-tl-lg parent"
+          @click="banUserTab = true"
         >
-          نمیتوانید شخصی با رنک کوئری را بن کنید
-        </p>
-        <p>بن از سرور</p>
-        <img src="/images/ban_client.png" alt="" />
-      </button>
+          <p>بن از سرور</p>
+          <img src="/images/ban_client.png" alt="" />
+        </button>
+      </UTooltip>
       <button
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex justify-center items-center gap-2 py-2 btn rounded-tr-lg"
