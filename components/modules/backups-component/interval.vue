@@ -8,7 +8,22 @@
           <p>عمل</p>
         </div>
         <div class="h-[30rem] overflow-scroll">
+          <div v-if="status === 'pending'" v-for="_ in 5" class="table items">
+            <USkeleton
+                class="h-5 w-40"
+                :ui="{ background: 'dark:bg-gray-500' }"
+            />
+            <USkeleton
+                class="h-5 w-20"
+                :ui="{ background: 'dark:bg-gray-500' }"
+            />
+            <USkeleton
+                class="h-5 w-10"
+                :ui="{ background: 'dark:bg-gray-500' }"
+            />
+          </div>
           <div
+            v-else
             v-for="interval in intervals"
             :key="interval"
             class="table items"
@@ -41,15 +56,14 @@ import Table from '~/components/reusable/table.vue';
 const store = apiStore();
 const { url } = storeToRefs(store);
 
-const intervals = ref();
-async function getIntervals() {
-  const respone = await $fetch(`${url.value}/api/v4/snapshots/intervals`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  intervals.value = respone;
-}
+
+const { status, data: intervals, execute: getIntervals } = await useLazyFetch(`${url.value}/api/v4/snapshots/intervals`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+
+
 async function deleteInterval(uuid) {
   await $fetch(`${url.value}/api/v4/snapshots/intervals/${uuid}`, {
     method: 'DELETE',
@@ -59,7 +73,6 @@ async function deleteInterval(uuid) {
   });
   await getIntervals();
 }
-await getIntervals();
 </script>
 <style scoped>
 .table {
