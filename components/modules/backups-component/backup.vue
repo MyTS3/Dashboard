@@ -10,49 +10,54 @@
         <div class="h-[30rem] overflow-scroll">
           <div v-if="status === 'pending'" v-for="_ in 5" class="table items">
             <USkeleton
-                class="h-5 w-40"
-                :ui="{ background: 'dark:bg-gray-500' }"
+              class="h-5 w-40"
+              :ui="{ background: 'dark:bg-gray-500' }"
             />
             <USkeleton
-                class="h-5 w-40"
-                :ui="{ background: 'dark:bg-gray-500' }"
+              class="h-5 w-40"
+              :ui="{ background: 'dark:bg-gray-500' }"
             />
             <USkeleton
-                class="h-5 w-10"
-                :ui="{ background: 'dark:bg-gray-500' }"
+              class="h-5 w-10"
+              :ui="{ background: 'dark:bg-gray-500' }"
             />
           </div>
-          <div v-else v-for="backup in backups" :key="backup" class="table items">
+          <div
+            v-else
+            v-for="backup in backups"
+            :key="backup"
+            class="table items"
+          >
             <p class="font-semibold">{{ backup.tserver.name }}</p>
             <p>{{ backup.createdAt }}</p>
             <div class="flex gap-4">
               <img
-                  class="cursor-pointer w-8 h-8"
-                  src="/images/arrow-up.png"
-                  alt=""
-                  @click="(deployBackupTab = true), (selecteduuid = backup.uuid)"
+                class="cursor-pointer w-8 h-8"
+                src="/images/arrow-up.png"
+                alt=""
+                @click="(deployBackupTab = true), (selecteduuid = backup.uuid)"
               />
               <img
-                  class="cursor-pointer w-8 h-8"
-                  src="/images/trash.png"
-                  @click="deleteBackup(backup.uuid)"
+                class="cursor-pointer w-8 h-8"
+                src="/images/trash.png"
+                @click="deleteBackup(backup.uuid)"
               />
             </div>
           </div>
         </div>
       </div>
       <button
-          class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
-          @click="$emit('opentab')"
+        class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+        @click="$emit('opentab')"
       >
         افزودن
-        <img src="/images/addon.png" alt=""/>
+        <img src="/images/addon.png" alt="" />
       </button>
     </Table>
     <restoreBackup
-        v-if="deployBackupTab"
-        :selecteduuid="selecteduuid"
-        @close="deployBackupTab = false"
+      v-if="deployBackupTab"
+      :selecteduuid="selecteduuid"
+      @close="deployBackupTab = false"
     />
   </section>
 </template>
@@ -61,7 +66,7 @@ import restoreBackup from './restoreBackup.vue';
 import Table from '~/components/reusable/table.vue';
 
 const store = apiStore();
-const {url} = storeToRefs(store);
+const { url } = storeToRefs(store);
 
 const selecteduuid = ref();
 const deployBackupTab = ref(false);
@@ -76,7 +81,11 @@ async function deleteBackup(uuid) {
   await getBackups();
 }
 
-const {data: backups, status, execute: getBackups} = await useLazyFetch(`${url.value}/api/v4/snapshots`, {
+const {
+  data: backups,
+  status,
+  execute: getBackups,
+} = await useLazyFetch(`${url.value}/api/v4/snapshots`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },

@@ -10,16 +10,16 @@
         <div class="h-[30rem] overflow-scroll">
           <div v-if="status === 'pending'" v-for="_ in 5" class="table items">
             <USkeleton
-                class="h-5 w-40"
-                :ui="{ background: 'dark:bg-gray-500' }"
+              class="h-5 w-40"
+              :ui="{ background: 'dark:bg-gray-500' }"
             />
             <USkeleton
-                class="h-5 w-20"
-                :ui="{ background: 'dark:bg-gray-500' }"
+              class="h-5 w-20"
+              :ui="{ background: 'dark:bg-gray-500' }"
             />
             <USkeleton
-                class="h-5 w-10"
-                :ui="{ background: 'dark:bg-gray-500' }"
+              class="h-5 w-10"
+              :ui="{ background: 'dark:bg-gray-500' }"
             />
           </div>
           <div
@@ -56,13 +56,15 @@ import Table from '~/components/reusable/table.vue';
 const store = apiStore();
 const { url } = storeToRefs(store);
 
-
-const { status, data: intervals, execute: getIntervals } = await useLazyFetch(`${url.value}/api/v4/snapshots/intervals`, {
+const {
+  status,
+  data: intervals,
+  execute: getIntervals,
+} = await useLazyFetch(`${url.value}/api/v4/snapshots/intervals`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
-
 
 async function deleteInterval(uuid) {
   await $fetch(`${url.value}/api/v4/snapshots/intervals/${uuid}`, {
