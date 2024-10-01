@@ -3,7 +3,10 @@
     style="max-width: 69rem"
     class="mt-6 grid w-full grid-cols-2 h-[40rem] mx-auto text-white text-center gap-2"
   >
-    <div class="bg-mainbg_400 w-full rounded-xl">
+    <div
+      class="bg-mainbg_400 w-full rounded-xl"
+      v-if="teamspeakserverStatus === 'success'"
+    >
       <header class="w-full relative my-4 px-4">
         <h1
           :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
@@ -11,7 +14,10 @@
           @click="selectedRow = { rowType: 'server', level: 0 }"
           @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
-          {{ serverInfo.name }}
+          <div v-if="serverInfoStatus === 'success' && serverInfo">
+            {{ serverInfo.name }}
+          </div>
+          <div v-else>Loading...</div>
         </h1>
         <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
       </header>
@@ -82,9 +88,12 @@
         </div>
       </main>
     </div>
+    <div class="bg-mainbg_400 w-full rounded-xl" v-else></div>
     <div class="bg-mainbg_400 w-full rounded-xl">
       <ServerView
-        v-if="selectedRow?.rowType == 'server'"
+        v-if="
+          selectedRow?.rowType == 'server' && serverInfoStatus === 'success'
+        "
         :server-info="serverInfo"
         @get-server-deatails="getServerDeatails"
       />
@@ -128,12 +137,10 @@ type user = {
   clientPlatform: string;
   clientUniqueIdentifier: string;
 };
-const teamspeakserver = ref<row[]>([]);
 const route = useRoute();
 const serverUuid = route.params.id;
 const store = apiStore();
 const { url } = storeToRefs(store);
-const serverInfo = ref();
 const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
 const selectedChannel = ref<channel>();
@@ -142,7 +149,7 @@ function draged(user: user) {
   movingUser.value = user.userNickname;
 }
 async function dragended(channel: channel) {
-  await $fetch(
+  $fetch(
     `${url.value}/api/v4/tservers/${serverUuid}/users/${movingUser.value}/move`,
     {
       method: 'POST',
@@ -153,25 +160,33 @@ async function dragended(channel: channel) {
         channel: channel.channelFullName,
       }),
     },
-  );
+  ).catch((e) => {
+    throw e;
+  });
 }
-async function getServerDeatails() {
-  const respone: {
-    deployedOn: string;
-    mustRunning: boolean;
-    name: string;
-    queryPassword: string;
-    queryPort: number;
-    slots: number;
-    uuid: string;
-    version: string;
-  } = await $fetch(`${url.value}/api/v4/tservers/${serverUuid}`, {
+
+type serverInfoType = {
+  deployedOn: string;
+  mustRunning: boolean;
+  name: string;
+  queryPassword: string;
+  queryPort: number;
+  slots: number;
+  uuid: string;
+  version: string;
+};
+const {
+  data: serverInfo,
+  status: serverInfoStatus,
+  execute: getServerDeatails,
+} = await useLazyFetch<serverInfoType>(
+  `${url.value}/api/v4/tservers/${serverUuid}`,
+  {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  });
-  serverInfo.value = respone;
-}
+  },
+);
 
 type channelType = '*spacer' | 'lspacer' | 'cspacer' | 'rspacer' | 'normal';
 function findChannelTypeAndNameByFullName(fullName: string): {
@@ -221,7 +236,11 @@ function findChannelTypeAndNameByFullName(fullName: string): {
   };
 }
 
-async function getUsersAndChannels() {
+const {
+  data: teamspeakserver,
+  execute: getUsersAndChannels,
+  status: teamspeakserverStatus,
+} = useLazyAsyncData<row[]>(async () => {
   const channelsReq: Promise<
     {
       channelName: string;
@@ -314,16 +333,12 @@ async function getUsersAndChannels() {
       level: rows[channelIndex].level + 1,
     });
   });
-  teamspeakserver.value = rows;
-}
-await getServerDeatails();
-if (serverInfo.value.mustRunning) {
-  await getUsersAndChannels();
-  longpoll();
-}
+  return rows;
+});
+
 function longpoll(time = 1) {
   fetch(
-    `${url.value}/api/v4/tservers/${serverInfo.value.uuid}/last-server-event-after/${time}`,
+    `${url.value}/api/v4/tservers/${serverUuid}/last-server-event-after/${time}`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -331,9 +346,7 @@ function longpoll(time = 1) {
     },
   )
     .then((re) => re.json())
-    .then(async (data) => {
-      await getUsersAndChannels();
-      longpoll(data.at);
-    });
+    .then((data) => getUsersAndChannels().then(() => longpoll(data.at)));
 }
+longpoll();
 </script>
