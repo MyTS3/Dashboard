@@ -8,7 +8,30 @@
           <p>تاریخ ساخت</p>
           <p>عمل</p>
         </div>
-        <div v-for="server in servers" :key="server.uuid" class="table items">
+        <div v-if="status === 'pending'" v-for="_ in 5" class="table items">
+          <USkeleton
+            class="h-5 w-40"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+          <USkeleton
+            class="h-5 w-20"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+          <USkeleton
+            class="h-5 w-20"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+          <USkeleton
+            class="h-5 w-10"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+        </div>
+        <div
+          v-else
+          v-for="server in servers"
+          :key="server.uuid"
+          class="table items"
+        >
           <p class="cursor-pointer" @click="serverClicked(server)">
             {{ server.name }}
           </p>
@@ -84,17 +107,15 @@ function convertEnglishNumberToPersian(number) {
 }
 
 const {
-  pending,
+  status,
   data: servers,
   refresh: getServers,
-} = await useFetch(`${url.value}/api/v4/tservers/`, {
+} = await useLazyFetch(`${url.value}/api/v4/tservers/`, {
   method: 'GET',
-  lazy: true,
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
-watch(pending, () => {});
 
 function removeServer(name, uuid) {
   ServerDeleteTab.value = true;
