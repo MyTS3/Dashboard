@@ -105,14 +105,15 @@
       </div>
     </div>
     <div class="bg-mainbg_400 w-full rounded-xl">
-      <ServerView
-        v-if="
-          selectedRow?.rowType == 'server' && serverInfoStatus === 'success'
-        "
-        :server-info="serverInfo"
-        :server-info-status="serverInfoStatus"
-        @get-server-deatails="getServerDeatails"
-      />
+      <template v-if="selectedRow?.rowType == 'server'">
+        <ServerView
+          v-if="serverInfoStatus === 'success'"
+          :server-info="serverInfo"
+          :server-info-status="() => serverInfoStatus"
+          @get-server-deatails="getServerDeatails"
+        />
+        <ServerViewSkeleton v-else />
+      </template>
       <UserView
         v-if="selectedRow?.rowType == 'user'"
         :server-info="serverInfo"

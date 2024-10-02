@@ -1,114 +1,102 @@
 <template>
-  <template v-if="!serverInfoStatus">
-    <p>loading</p>
-  </template>
-  <template v-else>
-    <section class="h-full relative">
-      <header class="relative">
-        <h1 class="text-center my-4">سرور</h1>
-        <div class="absolute right-4 top-0 flex gap-2">
-          <img
-            class="cursor-pointer w-6"
-            src="/images/trash.png"
-            alt=""
-            @click.prevent="deleteServerTab = true"
-          />
-        </div>
-
+  <section class="h-full relative">
+    <header class="relative">
+      <h1 class="text-center my-4">سرور</h1>
+      <div class="absolute right-4 top-0 flex gap-2">
         <img
-          class="w-ful mx-auto mt-6 mb-3"
-          src="/images/seprator-line.png"
+          class="cursor-pointer w-6"
+          src="/images/trash.png"
           alt=""
+          @click.prevent="deleteServerTab = true"
         />
-      </header>
-      <main class="list-none">
-        <li class="grid gridList p-2">
-          <p>{{ selectedServer.name }}</p>
-          <p>:نام</p>
-          <a class="absolute left-4" :href="tsUrl">
-            <img
-              class="cursor-pointer w-8"
-              src="/images/User info.png"
-              alt=""
-            />
-          </a>
-        </li>
-        <li class="grid gridList p-2 relative">
-          <p>{{ selectedServer.slots }}</p>
-          <p>:تعداد اسلات</p>
-          <button class="absolute left-4" @click="changeSlotTab = true">
-            <img src="/images/edit.png" alt="" />
-          </button>
-        </li>
-        <li
-          v-if="selectedServer.mustRunning"
-          class="grid gridList p-2 relative"
-        >
-          <p class="w-2/3 text-nowrap overflow-hidden mx-auto">
-            {{ selectedServer.deployedOn }}
-          </p>
-          <p>:موقعیت مکانی</p>
-          <button
-            class="absolute left-4"
-            @click.prevent="serverLocationTab = true"
-          >
-            <img src="/images/location.png" alt="" />
-          </button>
-        </li>
-        <li class="grid gridList p-2 relative">
-          <p v-if="!selectedServer.mustRunning" class="text-main_red">خاموش</p>
-          <p v-if="selectedServer.mustRunning" class="text-main_green">روشن</p>
-          <p>:وضعیت</p>
-          <div class="absolute left-4 top-1/3">
-            <input
-              id="server-status"
-              :checked="selectedServer.mustRunning"
-              class="hidden"
-              type="checkbox"
-              @click.prevent="turnServerOffOrOn()"
-            />
-            <label class="button" for="server-status" />
-          </div>
-        </li>
-        <p
-          class="m-3 text-main_orange text-right cursor-pointer font-bold"
-          @click="yatqaExampleTab = true"
-        >
-          برای مشاهده مثال یاتکا کلیک کنید
+      </div>
+
+      <img
+        class="w-ful mx-auto mt-6 mb-3"
+        src="/images/seprator-line.png"
+        alt=""
+      />
+    </header>
+    <main class="list-none">
+      <li class="grid gridList p-2">
+        <p>{{ selectedServer.name }}</p>
+        <p>:نام</p>
+        <a class="absolute left-4" :href="tsUrl">
+          <img class="cursor-pointer w-8" src="/images/User info.png" alt="" />
+        </a>
+      </li>
+      <li class="grid gridList p-2 relative">
+        <p>{{ selectedServer.slots }}</p>
+        <p>:تعداد اسلات</p>
+        <button class="absolute left-4" @click="changeSlotTab = true">
+          <img src="/images/edit.png" alt="" />
+        </button>
+      </li>
+      <li v-if="selectedServer.mustRunning" class="grid gridList p-2 relative">
+        <p class="w-2/3 text-nowrap overflow-hidden mx-auto">
+          {{ selectedServer.deployedOn }}
         </p>
-      </main>
-      <footer class="grid grid-cols-2 gap-5 w-full absolute bottom-10 p-4">
+        <p>:موقعیت مکانی</p>
         <button
-          class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
-          @click="restartServerTab = true"
+          class="absolute left-4"
+          @click.prevent="serverLocationTab = true"
         >
-          <p>ری استارت</p>
-          <img src="/images/restart.png" alt="" />
+          <img src="/images/location.png" alt="" />
         </button>
-        <button
-          class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
-          @click="bansListTab = true"
-        >
-          <p>لیست بن ها</p>
-          <img src="/images/ban_list.png" alt="" />
-        </button>
-        <button
-          class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
-          @click="resetConfigTab = true"
-        >
-          <p>ریسیت کانفگ</p>
-          <img src="/images/ban_list.png" alt="" />
-        </button>
-        <button
-          class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
-          @click="subdomainTab = true"
-        >
-          <p>ساب دامنه ها</p>
-          <img src="/images/ban_list.png" alt="" />
-        </button>
-      </footer>
-    </section>
-  </template>
+      </li>
+      <li class="grid gridList p-2 relative">
+        <p v-if="!selectedServer.mustRunning" class="text-main_red">خاموش</p>
+        <p v-if="selectedServer.mustRunning" class="text-main_green">روشن</p>
+        <p>:وضعیت</p>
+        <div class="absolute left-4 top-1/3">
+          <input
+            id="server-status"
+            :checked="selectedServer.mustRunning"
+            class="hidden"
+            type="checkbox"
+            @click.prevent="turnServerOffOrOn()"
+          />
+          <label class="button" for="server-status" />
+        </div>
+      </li>
+      <p
+        class="m-3 text-main_orange text-right cursor-pointer font-bold"
+        @click="yatqaExampleTab = true"
+      >
+        برای مشاهده مثال یاتکا کلیک کنید
+      </p>
+    </main>
+    <footer class="grid grid-cols-2 gap-5 w-full absolute bottom-10 p-4">
+      <button
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
+        @click="restartServerTab = true"
+      >
+        <p>ری استارت</p>
+        <img src="/images/restart.png" alt="" />
+      </button>
+      <button
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
+        @click="bansListTab = true"
+      >
+        <p>لیست بن ها</p>
+        <img src="/images/ban_list.png" alt="" />
+      </button>
+      <button
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
+        @click="resetConfigTab = true"
+      >
+        <p>ریسیت کانفگ</p>
+        <img src="/images/ban_list.png" alt="" />
+      </button>
+      <button
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
+        @click="subdomainTab = true"
+      >
+        <p>ساب دامنه ها</p>
+        <img src="/images/ban_list.png" alt="" />
+      </button>
+    </footer>
+  </section>
   <changeSlot
     v-if="changeSlotTab"
     :selected-server="selectedServer"
@@ -181,7 +169,7 @@ const resetConfigTab = ref(false);
 const yatqaExampleTab = ref(false);
 const subdomainTab = ref(false);
 
-const props = defineProps(['serverInfo', 'serverInfoStatus']);
+const props = defineProps(['serverInfo']);
 const emit = defineEmits(['getServerDeatails']);
 const store = apiStore();
 const { url } = storeToRefs(store);
