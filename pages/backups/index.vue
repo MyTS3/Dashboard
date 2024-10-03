@@ -1,5 +1,5 @@
 <template>
-  <section style="max-width: 69rem" class="w-full h-full mx-auto">
+  <section class="w-full h-full mx-auto">
     <div class="max-w-[40rem] my-4 ml-auto grid grid-cols-2 self-start">
       <button
         :class="activeTab == 'interval' ? 'btn-active' : ''"

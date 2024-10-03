@@ -1,10 +1,10 @@
 <template>
   <span>
     <div
-      class="flex items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
+      class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
     >
-      <div class="flex-[7] h-full">
-        <div style="max-width: 69rem" class="py-3 mx-auto">
+      <div class="flex-1 h-screen flex flex-col items-stretch px-32 pb-5">
+        <div class="py-3">
           <header class="w-full flex justify-between flex-row-reverse">
             <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
               داشبورد
@@ -41,8 +41,7 @@
         </div>
         <div
           v-if="panelAlert"
-          style="max-width: 69rem"
-          class="flex my-2 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl items-center mx-auto"
+          class="flex my-2 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl items-center"
         >
           <img
             class="bg-white p-1.5 rounded-lg"
@@ -60,7 +59,7 @@
         <slot />
       </div>
       <div
-        class="flex-1 fixed top-0 right-0 bottom-0 bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[1346px]:hidden"
+        class="basis-40 flex flex-col h-full bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl"
       >
         <header>
           <img
@@ -139,8 +138,9 @@
             <img src="/images/poshtibani.png" alt="" />
           </li> -->
         </nav>
+        <div class="flex-1"></div>
         <button
-          class="bg-main_red w-[95%] left-1/2 -translate-x-1/2 rounded-2xl py-3 text-center absolute bottom-5"
+          class="bg-main_red rounded-2xl py-3 text-center m-2"
           @click="logoutTab = true"
         >
           <p>خروج از حساب کاربری</p>
@@ -154,6 +154,7 @@
 import TimeAgo from 'javascript-time-ago';
 import fa from 'javascript-time-ago/locale/fa';
 import logoutPopup from '@/components/modules/logoutPopup.vue';
+
 const logoutTab = ref(false);
 const panelAlert = ref(true);
 TimeAgo.addLocale(fa);

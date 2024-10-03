@@ -1,110 +1,109 @@
 <template>
   <section
-    style="max-width: 69rem"
-    class="mt-6 grid w-full grid-cols-2 mx-auto text-white text-center gap-2 h-[40rem]"
+    class="flex-1 mt-6 w-full mx-auto flex flex-row items-stretch text-white text-center gap-2 min-h-0"
   >
-    <div class="flex h-[40rem]">
-      <div class="bg-mainbg_400 h-full w-full rounded-xl overflow-y-hidden">
-        <header class="w-full relative my-4 px-4">
-          <h1
-            v-if="serverInfoStatus === 'success' && serverInfo"
-            :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
-            class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center"
-            @click="selectedRow = { rowType: 'server', level: 0 }"
-            @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
-          >
-            <div>
-              {{ serverInfo.name }}
-            </div>
-          </h1>
-          <div v-else>
-            <USkeleton
-              :ui="{ background: 'dark:bg-gray-500' }"
-              class="h-9 px-1 rounded-2xl"
-            />
-          </div>
-          <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
-        </header>
-        <main
-          v-if="teamspeakserverStatus === 'success'"
-          class="list-none teamspeak text-xs px-4 h-[40rem] overflow-scroll"
+    <div
+      class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl"
+    >
+      <header class="relative my-4 px-4">
+        <h1
+          v-if="serverInfoStatus === 'success' && serverInfo"
+          :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
+          class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center"
+          @click="selectedRow = { rowType: 'server', level: 0 }"
+          @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
-          <div v-for="row in teamspeakserver" :key="objectHash(row)">
-            <div
-              class="py-1 max-h-7 overflow-hidden px-3 rounded-lg"
-              :class="
-                selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
-              "
-              @click="selectedRow = row"
-              @contextmenu.prevent="selectedRow = row"
-            >
-              <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
-                <div
-                  v-if="row.rowType == 'channel'"
-                  dropzone="true"
-                  class="flex gap-1"
-                  @click="selectedChannel = row.channel"
-                  @drop="dragended(row.channel)"
-                  @dragover.prevent
-                  @dragenter.prevent
-                >
-                  <img
-                    v-if="row.channel.channelType == 'normal'"
-                    src="/images/channel-icon.png"
-                    alt=""
-                  />
-                  <p
-                    :style="{ 'text-align': row.channel.align }"
-                    class="w-full text-left"
-                  >
-                    {{ row.channel.channelName }}
-                  </p>
-                </div>
-                <div
-                  v-if="row.rowType == 'user'"
-                  draggable="true"
-                  class="flex gap-1"
-                  @dragstart="draged(row.user)"
-                >
-                  <img
-                    v-if="row.user.status == 'openMic'"
-                    src="/images/normal-user.png"
-                    alt=""
-                  />
-                  <img
-                    v-if="row.user.status == 'micMute'"
-                    src="/images/input_muted.png"
-                    alt=""
-                  />
-                  <img
-                    v-if="row.user.status == 'soundMute'"
-                    src="/images/output_muted.png"
-                    alt=""
-                  />
-                  <img
-                    v-if="row.user.status == 'away'"
-                    src="/images/away.png"
-                    alt=""
-                  />
-                  <p class="w-full text-left">
-                    {{ row.user.userNickname }}
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div>
+            {{ serverInfo.name }}
           </div>
-        </main>
-        <main v-else class="h-full px-4 overflow-y-hidden">
+        </h1>
+        <div v-else>
           <USkeleton
-            v-for="_ in 20"
-            :key="_"
             :ui="{ background: 'dark:bg-gray-500' }"
-            class="h-6 my-2 px-3 rounded-lg w-full"
+            class="h-9 px-1 rounded-2xl"
           />
-        </main>
-      </div>
+        </div>
+        <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
+      </header>
+      <main
+        v-if="teamspeakserverStatus === 'success'"
+        class="flex items-stretch flex-col teamspeak text-xs px-4 flex-1 overflow-y-auto"
+      >
+        <template v-for="row in teamspeakserver" :key="objectHash(row)">
+          <div
+            v-if="row.rowType == 'channel'"
+            dropzone="true"
+            @drop="dragended(row.channel)"
+            @dragover.prevent
+            @dragenter.prevent
+            class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-fit"
+            :class="
+              selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
+            "
+            @click="selectedRow = row"
+            @contextmenu.prevent="selectedRow = row"
+            :style="{ 'padding-left': row.level * 1 + 'rem' }"
+          >
+            <img
+              v-if="row.channel.channelType == 'normal'"
+              src="/images/channel-icon.png"
+              alt=""
+            />
+            <p
+              :style="{ 'text-align': row.channel.align }"
+              class="w-full text-left"
+            >
+              {{ row.channel.channelName }}
+            </p>
+          </div>
+          <div
+            v-if="row.rowType == 'user'"
+            draggable="true"
+            @dragstart="draged(row.user)"
+            class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit"
+            :class="
+              selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
+            "
+            @click="selectedRow = row"
+            @contextmenu.prevent="selectedRow = row"
+            :style="{ 'padding-left': row.level * 1 + 'rem' }"
+          >
+            <img
+              v-if="row.user.status == 'openMic'"
+              src="/images/normal-user.png"
+              alt=""
+            />
+            <img
+              v-if="row.user.status == 'micMute'"
+              src="/images/input_muted.png"
+              alt=""
+            />
+            <img
+              v-if="row.user.status == 'soundMute'"
+              src="/images/output_muted.png"
+              alt=""
+            />
+            <img
+              v-if="row.user.status == 'away'"
+              src="/images/away.png"
+              alt=""
+            />
+            <p class="w-full text-left">
+              {{ row.user.userNickname }}
+            </p>
+          </div>
+        </template>
+      </main>
+      <main v-else class="h-full px-4 overflow-y-hidden">
+        <USkeleton
+          v-for="_ in 20"
+          :key="_"
+          :ui="{ background: 'dark:bg-gray-500' }"
+          class="h-6 my-2 px-3 rounded-lg w-full"
+        />
+      </main>
     </div>
-    <div class="bg-mainbg_400 w-full rounded-xl overflow-y-auto">
+    <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto">
       <template v-if="selectedRow?.rowType == 'server'">
         <ServerView
           v-if="serverInfoStatus === 'success'"
@@ -121,7 +120,7 @@
       />
       <ChannelView
         v-if="selectedRow?.rowType == 'channel'"
-        :selected-channel="selectedChannel"
+        :selected-channel="selectedRow.channel"
       />
       <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
     </div>
@@ -160,7 +159,6 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
-const selectedChannel = ref<channel>();
 //function
 function draged(user: user) {
   movingUser.value = user.userNickname;
@@ -239,7 +237,7 @@ function findChannelTypeAndNameByFullName(fullName: string): {
       if (splitedName[0].includes('*spacer'))
         return {
           type: '*spacer',
-          name: splitedName[1].repeat(100),
+          name: splitedName[1].repeat(25),
           align: 'center',
           channelFullName: fullName,
         };
