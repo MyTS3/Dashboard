@@ -1,126 +1,119 @@
 <template>
   <section
     style="max-width: 69rem"
-    class="mt-6 grid w-full grid-cols-2 h-[40rem] mx-auto text-white text-center gap-2"
+    class="mt-6 grid w-full grid-cols-2 mx-auto text-white text-center gap-2 min-h-[75%]"
   >
-    <div class="h-[40rem] flex">
-      <template v-if="teamspeakserverStatus != 'success'">
-        <div class="bg-mainbg_400 w-full rounded-xl">
-          <main class="h-full px-4 overflow-y-hidden">
+    <div class="flex">
+      <div class="bg-mainbg_400 w-full rounded-xl overflow-y-hidden">
+        <header class="w-full relative my-4 px-4">
+          <h1
+            v-if="serverInfoStatus === 'success' && serverInfo"
+            :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
+            class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center"
+            @click="selectedRow = { rowType: 'server', level: 0 }"
+            @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
+          >
+            <div>
+              {{ serverInfo.name }}
+            </div>
+          </h1>
+          <div v-else>
             <USkeleton
               :ui="{ background: 'dark:bg-gray-500' }"
               class="h-9 px-1 rounded-2xl"
             />
-            <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
-            <USkeleton
-              v-for="_ in 20"
-              :key="_"
-              :ui="{ background: 'dark:bg-gray-500' }"
-              class="h-4 my-4 px-3 rounded-lg w-full"
-            />
-          </main>
-        </div>
-        <div />
-      </template>
-      <template v-if="teamspeakserverStatus == 'success'">
-        <div
+          </div>
+          <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
+        </header>
+        <main
+          class="list-none teamspeak text-xs px-4"
           v-if="teamspeakserverStatus === 'success'"
-          class="bg-mainbg_400 w-full rounded-xl"
         >
-          <header class="w-full relative my-4 px-4">
-            <h1
-              :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
-              class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center"
-              @click="selectedRow = { rowType: 'server', level: 0 }"
-              @contextmenu.prevent="
-                selectedRow = { rowType: 'server', level: 0 }
+          <div v-for="row in teamspeakserver" :key="objectHash(row)">
+            <div
+              class="py-1 max-h-7 overflow-hidden px-3 rounded-lg"
+              :class="
+                selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
               "
+              @click="selectedRow = row"
+              @contextmenu.prevent="selectedRow = row"
             >
-              <div v-if="serverInfoStatus === 'success' && serverInfo">
-                {{ serverInfo.name }}
-              </div>
-            </h1>
-            <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
-          </header>
-          <main class="list-none teamspeak text-xs px-4">
-            <div v-for="row in teamspeakserver" :key="objectHash(row)">
-              <div
-                class="py-1 max-h-7 overflow-hidden px-3 rounded-lg"
-                :class="
-                  selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
-                "
-                @click="selectedRow = row"
-                @contextmenu.prevent="selectedRow = row"
-              >
-                <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
-                  <div
-                    v-if="row.rowType == 'channel'"
-                    dropzone="true"
-                    class="flex gap-1"
-                    @click="selectedChannel = row.channel"
-                    @drop="dragended(row.channel)"
-                    @dragover.prevent
-                    @dragenter.prevent
+              <div :style="{ 'margin-left': row.level * 1 + 'rem' }">
+                <div
+                  v-if="row.rowType == 'channel'"
+                  dropzone="true"
+                  class="flex gap-1"
+                  @click="selectedChannel = row.channel"
+                  @drop="dragended(row.channel)"
+                  @dragover.prevent
+                  @dragenter.prevent
+                >
+                  <img
+                    v-if="row.channel.channelType == 'normal'"
+                    src="/images/channel-icon.png"
+                    alt=""
+                  />
+                  <p
+                    :style="{ 'text-align': row.channel.align }"
+                    class="w-full text-left"
                   >
-                    <img
-                      v-if="row.channel.channelType == 'normal'"
-                      src="/images/channel-icon.png"
-                      alt=""
-                    />
-                    <p
-                      :style="{ 'text-align': row.channel.align }"
-                      class="w-full text-left"
-                    >
-                      {{ row.channel.channelName }}
-                    </p>
-                  </div>
-                  <div
-                    v-if="row.rowType == 'user'"
-                    draggable="true"
-                    class="flex gap-1"
-                    @dragstart="draged(row.user)"
-                  >
-                    <img
-                      v-if="row.user.status == 'openMic'"
-                      src="/images/normal-user.png"
-                      alt=""
-                    />
-                    <img
-                      v-if="row.user.status == 'micMute'"
-                      src="/images/input_muted.png"
-                      alt=""
-                    />
-                    <img
-                      v-if="row.user.status == 'soundMute'"
-                      src="/images/output_muted.png"
-                      alt=""
-                    />
-                    <img
-                      v-if="row.user.status == 'away'"
-                      src="/images/away.png"
-                      alt=""
-                    />
-                    <p class="w-full text-left">
-                      {{ row.user.userNickname }}
-                    </p>
-                  </div>
+                    {{ row.channel.channelName }}
+                  </p>
+                </div>
+                <div
+                  v-if="row.rowType == 'user'"
+                  draggable="true"
+                  class="flex gap-1"
+                  @dragstart="draged(row.user)"
+                >
+                  <img
+                    v-if="row.user.status == 'openMic'"
+                    src="/images/normal-user.png"
+                    alt=""
+                  />
+                  <img
+                    v-if="row.user.status == 'micMute'"
+                    src="/images/input_muted.png"
+                    alt=""
+                  />
+                  <img
+                    v-if="row.user.status == 'soundMute'"
+                    src="/images/output_muted.png"
+                    alt=""
+                  />
+                  <img
+                    v-if="row.user.status == 'away'"
+                    src="/images/away.png"
+                    alt=""
+                  />
+                  <p class="w-full text-left">
+                    {{ row.user.userNickname }}
+                  </p>
                 </div>
               </div>
             </div>
-          </main>
-        </div>
-        <div v-else class="bg-mainbg_400 w-full rounded-xl" />
-      </template>
+          </div>
+        </main>
+        <main class="h-full px-4 overflow-y-hidden" v-else>
+          <USkeleton
+            v-for="_ in 20"
+            :key="_"
+            :ui="{ background: 'dark:bg-gray-500' }"
+            class="h-6 my-2 px-3 rounded-lg w-full"
+          />
+        </main>
+      </div>
     </div>
-    <div class="bg-mainbg_400 w-full rounded-xl">
-      <ServerView
-        v-if="
-          selectedRow?.rowType == 'server' && serverInfoStatus === 'success'
-        "
-        :server-info="serverInfo"
-        :server-info-status="serverInfoStatus"
-        @get-server-deatails="getServerDeatails"
-      />
+    <div class="bg-mainbg_400 w-full rounded-xl overflow-y-auto">
+      <template v-if="selectedRow?.rowType == 'server'">
+        <ServerView
+          v-if="serverInfoStatus === 'success'"
+          :server-info="serverInfo"
+          :server-info-status="() => serverInfoStatus"
+          @get-server-deatails="getServerDeatails"
+        />
+        <ServerViewSkeleton v-else />
+      </template>
       <UserView
         v-if="selectedRow?.rowType == 'user'"
         :server-info="serverInfo"
