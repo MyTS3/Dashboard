@@ -203,7 +203,7 @@ const {
   },
 );
 
-type channelType = '*spacer' | 'lspacer' | 'cspacer' | 'rspacer' | 'normal';
+type channelType = '*spacer' | 'spacer' | 'lspacer' | 'cspacer' | 'rspacer' | 'normal';
 function findChannelTypeAndNameByFullName(fullName: string): {
   channelFullName: string;
   type: channelType;
@@ -220,7 +220,7 @@ function findChannelTypeAndNameByFullName(fullName: string): {
           align: 'center',
           channelFullName: fullName,
         };
-      if (splitedName[0].includes('lspacer'))
+      if (splitedName[0].includes('lspacer') || splitedName[0].includes('spacer'))
         return {
           type: 'lspacer',
           name: splitedName[1],
