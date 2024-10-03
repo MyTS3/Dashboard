@@ -29,11 +29,11 @@
     </main>
     <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
       <UTooltip
+        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex justify-center items-center gap-2 rounded-tl-lg"
         text="نمیتوانید شخصی با رنک کوئری را بن کنید"
       >
         <button
-          v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
           :class="disable ? 'btn-disable' : 'btn'"
           :disabled="disable"
           class="w-full h-full flex justify-center items-center rounded-tl-lg parent"
