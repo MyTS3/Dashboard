@@ -1,10 +1,10 @@
 <template>
   <section
     style="max-width: 69rem"
-    class="mt-6 grid w-full grid-cols-2 mx-auto text-white text-center gap-2 min-h-[75%]"
+    class="mt-6 grid w-full grid-cols-2 mx-auto text-white text-center gap-2 h-[40rem]"
   >
-    <div class="flex">
-      <div class="bg-mainbg_400 w-full rounded-xl overflow-y-hidden">
+    <div class="flex h-[40rem]">
+      <div class="bg-mainbg_400 h-full w-full rounded-xl overflow-y-hidden">
         <header class="w-full relative my-4 px-4">
           <h1
             v-if="serverInfoStatus === 'success' && serverInfo"
@@ -26,8 +26,8 @@
           <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
         </header>
         <main
-          class="list-none teamspeak text-xs px-4"
           v-if="teamspeakserverStatus === 'success'"
+          class="list-none teamspeak text-xs px-4 h-[40rem] overflow-scroll"
         >
           <div v-for="row in teamspeakserver" :key="objectHash(row)">
             <div
@@ -94,7 +94,7 @@
             </div>
           </div>
         </main>
-        <main class="h-full px-4 overflow-y-hidden" v-else>
+        <main v-else class="h-full px-4 overflow-y-hidden">
           <USkeleton
             v-for="_ in 20"
             :key="_"
