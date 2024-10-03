@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <div class="layout bg-mainbg_600 text-white min-h-screen overflow-hidden">
-      <div>
+  <span>
+    <div
+      class="flex items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
+    >
+      <div class="flex-[7] h-full">
         <div style="max-width: 69rem" class="py-3 mx-auto">
           <header class="w-full flex justify-between flex-row-reverse">
             <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
@@ -58,7 +60,7 @@
         <slot />
       </div>
       <div
-        class="relative bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[1346px]:hidden"
+        class="flex-1 fixed top-0 right-0 bottom-0 bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[1346px]:hidden"
       >
         <header>
           <img
@@ -146,7 +148,7 @@
       </div>
     </div>
     <logoutPopup v-if="logoutTab" @close="logoutTab = false" />
-  </div>
+  </span>
 </template>
 <script setup>
 import TimeAgo from 'javascript-time-ago';
