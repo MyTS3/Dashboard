@@ -1,7 +1,7 @@
 <template>
   <section
     style="max-width: 69rem"
-    class="mt-6 grid w-full grid-cols-2 mx-auto text-white text-center gap-2 min-h-[80%]"
+    class="mt-6 grid w-full grid-cols-2 mx-auto text-white text-center gap-2 min-h-[75%]"
   >
     <div class="flex">
       <div class="bg-mainbg_400 w-full rounded-xl overflow-y-hidden">
