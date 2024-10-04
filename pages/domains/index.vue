@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex-1 py-4">
     <Table>
       <div class="h-full overflow-y-scroll">
         <div class="table bg-mainbg_300 rounded-t-2xl">
