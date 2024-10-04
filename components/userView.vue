@@ -31,7 +31,7 @@
       <UTooltip
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex justify-center items-center gap-2 rounded-tl-lg"
-        text="نمیتوانید شخصی با رنک کوئری را بن کنید"
+        :text="disable ? 'نمیتوانید شخصی یا رنک سرور کوئری را بن کنید' : 'ban'"
       >
         <button
           :class="disable ? 'btn-disable' : 'btn'"
