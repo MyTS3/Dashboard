@@ -1,9 +1,9 @@
 <template>
   <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
+    class="h-screen absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
   >
     <main
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+      class="text-white h-2/3 min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
         :class="disable ? 'disable' : ''"
@@ -16,7 +16,7 @@
       <h1 class="my-4 mx-24">
         <span>( {{ props.user }} )</span> تغییر رنک سرور گروه های
       </h1>
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4 overflow-y-scroll">
         <!-- //////////////////////////////lists -->
         <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
           <li
