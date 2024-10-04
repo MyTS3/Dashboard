@@ -6,8 +6,8 @@
       class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -17,7 +17,7 @@
       >
         <p>:توکن شما</p>
         <p>{{ token }}</p>
-        <button @click="copyToClipboard()" class="mr-3">
+        <button class="mr-3" @click="copyToClipboard()">
           <img src="/images/copy.png" alt="" />
         </button>
       </div>
@@ -25,9 +25,9 @@
         !توکن کپی شد
       </p>
       <a
-        @click="goToServer()"
         class="p-4 py-5 text-center rounded-xl module-btn bg-main_blue"
         :href="tsURL"
+        @click="goToServer()"
       >
         <button>اوکی</button>
       </a>
@@ -41,9 +41,14 @@ const emit = defineEmits(['close']);
 /////
 const { tsURL } = props;
 const copy = ref(false);
+const taost = useToast();
 function copyToClipboard() {
   navigator.clipboard.writeText(props.token);
-  copy.value = true;
+  taost.add({
+    title: 'کپی شد',
+    timeout: 2000,
+    color: 'blue',
+  });
 }
 function goToServer() {
   emit('close');

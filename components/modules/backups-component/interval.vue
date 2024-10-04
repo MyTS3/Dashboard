@@ -1,13 +1,13 @@
 <template>
-  <section>
+  <section class="h-full">
     <Table>
-      <div class="h-full overflow-y-scroll">
+      <div class="h-full">
         <div class="table bg-mainbg_300 rounded-t-2xl">
           <p>سرور</p>
           <p>دوره</p>
           <p>عمل</p>
         </div>
-        <div class="h-[30rem] overflow-scroll">
+        <div class="h-full overflow-scroll">
           <template v-if="status !== 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton

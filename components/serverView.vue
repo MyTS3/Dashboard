@@ -4,8 +4,9 @@
   >
     <span>
       <header class="relative">
-        <h1 class="text-center my-4">سرور</h1>
-        <div class="absolute right-4 top-0 flex gap-2">
+        <div class="flex justify-between items-center">
+          <div />
+          <h1 class="text-center">سرور</h1>
           <img
             class="cursor-pointer w-6"
             src="/images/trash.png"
@@ -15,16 +16,16 @@
         </div>
 
         <img
-          class="w-ful mx-auto mt-6 mb-3"
+          class="w-ful mx-auto my-6"
           src="/images/seprator-line.png"
           alt=""
         />
       </header>
-      <main class="list-none">
-        <li class="grid gridList p-2">
+      <main class="list-none flex flex-col gap-5">
+        <li class="grid gridList">
           <p>{{ selectedServer.name }}</p>
           <p>:نام</p>
-          <a class="absolute left-4" :href="tsUrl">
+          <a class="absolute left-0" :href="tsUrl">
             <img
               class="cursor-pointer w-8"
               src="/images/User info.png"
@@ -32,33 +33,34 @@
             />
           </a>
         </li>
-        <li class="grid gridList p-2 relative">
-          <p>{{ selectedServer.slots }}</p>
+        <li class="grid gridList relative">
+          <div class="flex gap-1">
+            <p v-if="usersCount">{{ usersCount }}</p>
+            <p v-if="usersCount">/</p>
+            <p>{{ selectedServer.slots }}</p>
+          </div>
           <p>:تعداد اسلات</p>
-          <button class="absolute left-4" @click="changeSlotTab = true">
+          <button class="absolute left-0" @click="changeSlotTab = true">
             <img src="/images/edit.png" alt="" />
           </button>
         </li>
-        <li
-          v-if="selectedServer.mustRunning"
-          class="grid gridList p-2 relative"
-        >
+        <li v-if="selectedServer.mustRunning" class="grid gridList relative">
           <p class="w-2/3 text-nowrap overflow-hidden mx-auto">
             {{ selectedServer.deployedOn }}
           </p>
           <p>:موقعیت مکانی</p>
           <button
-            class="absolute left-4"
+            class="absolute left-0"
             @click.prevent="serverLocationTab = true"
           >
             <img src="/images/location.png" alt="" />
           </button>
         </li>
-        <li class="grid gridList p-2 relative">
+        <li class="grid gridList relative">
           <p v-if="!selectedServer.mustRunning" class="text-main_red">خاموش</p>
           <p v-if="selectedServer.mustRunning" class="text-main_green">روشن</p>
           <p>:وضعیت</p>
-          <div class="absolute left-4 top-1/3">
+          <div class="absolute left-0 top-1/3">
             <input
               id="server-status"
               :checked="selectedServer.mustRunning"
@@ -73,34 +75,34 @@
           class="m-3 text-main_orange text-right cursor-pointer font-bold"
           @click="yatqaExampleTab = true"
         >
-          برای مشاهده مثال یاتکا کلیک کنید
+          برای مشاهده اطلاعات یاتکا کلیک کنید
         </p>
       </main>
     </span>
-    <footer class="grid grid-cols-2 gap-5 w-full bottom-10 p-4">
+    <footer class="grid grid-cols-2 w-full gap-3">
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-tl-lg btn"
         @click="restartServerTab = true"
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-tr-lg btn"
         @click="bansListTab = true"
       >
         <p>لیست بن ها</p>
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-l-xl btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-bl-lg btn"
         @click="resetConfigTab = true"
       >
         <p>ریسیت کانفگ</p>
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-r-xl btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-br-lg btn"
         @click="subdomainTab = true"
       >
         <p>ساب دامنه ها</p>
@@ -180,7 +182,7 @@ const resetConfigTab = ref(false);
 const yatqaExampleTab = ref(false);
 const subdomainTab = ref(false);
 
-const props = defineProps(['serverInfo']);
+const props = defineProps(['serverInfo', 'usersCount']);
 const emit = defineEmits(['getServerDeatails']);
 const store = apiStore();
 const { url } = storeToRefs(store);

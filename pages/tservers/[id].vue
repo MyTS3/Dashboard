@@ -1,6 +1,6 @@
 <template>
   <section
-    class="flex-1 mt-6 w-full mx-auto flex flex-row items-stretch text-white text-center gap-2 min-h-0"
+    class="flex-1 w-full mx-auto flex flex-row items-stretch text-white text-center gap-2 min-h-0"
   >
     <div
       class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl"
@@ -33,16 +33,16 @@
           <div
             v-if="row.rowType == 'channel'"
             dropzone="true"
-            @drop="dragended(row.channel)"
-            @dragover.prevent
-            @dragenter.prevent
             class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-fit"
             :class="
               selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
             "
+            :style="{ 'padding-left': row.level * 1 + 'rem' }"
+            @drop="dragended(row.channel)"
+            @dragover.prevent
+            @dragenter.prevent
             @click="selectedRow = row"
             @contextmenu.prevent="selectedRow = row"
-            :style="{ 'padding-left': row.level * 1 + 'rem' }"
           >
             <img
               v-if="row.channel.channelType == 'normal'"
@@ -59,14 +59,14 @@
           <div
             v-if="row.rowType == 'user'"
             draggable="true"
-            @dragstart="draged(row.user)"
             class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit"
             :class="
               selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
             "
+            :style="{ 'padding-left': row.level * 1 + 'rem' }"
+            @dragstart="draged(row.user)"
             @click="selectedRow = row"
             @contextmenu.prevent="selectedRow = row"
-            :style="{ 'padding-left': row.level * 1 + 'rem' }"
           >
             <img
               v-if="row.user.status == 'openMic'"
@@ -103,12 +103,13 @@
         />
       </main>
     </div>
-    <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto">
+    <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto p-4">
       <template v-if="selectedRow?.rowType == 'server'">
         <ServerView
           v-if="serverInfoStatus === 'success'"
           :server-info="serverInfo"
           :server-info-status="() => serverInfoStatus"
+          :users-count="usersCount"
           @get-server-deatails="getServerDeatails"
         />
         <ServerViewSkeleton v-else />
@@ -159,6 +160,7 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
+const usersCount = ref<number | undefined>();
 //function
 function draged(user: user) {
   movingUser.value = user.userNickname;
@@ -334,6 +336,7 @@ const {
   });
 
   const users = await usersReq;
+  usersCount.value = users.length;
   users.forEach((user) => {
     const channelIndex = rows.findIndex((row) => {
       if (row.rowType != 'channel') return false;
@@ -368,9 +371,12 @@ function longpoll(time = 1) {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
-  )
-    .then((re) => re.json())
-    .then((data) => getUsersAndChannels().then(() => longpoll(data.at)));
+  ).then(async (re) => {
+    if (re.status == 200) {
+      const data = await re.json();
+      getUsersAndChannels().then(() => longpoll(data.at));
+    }
+  });
 }
 longpoll();
 </script>

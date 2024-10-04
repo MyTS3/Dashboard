@@ -81,11 +81,17 @@
 </template>
 <script setup>
 import yatqaPassChange from '@/components/modules/server/yatqaPassChange.vue';
+const toast = useToast();
 const props = defineProps(['selectedServer']);
 const yatqaPassReset = ref(false);
 const showYatqaPass = ref('disc');
 console.log(props);
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
+  toast.add({
+    title: 'کپی شد',
+    timeout: 2000,
+    color: 'violet',
+  });
 }
 </script>

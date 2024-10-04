@@ -1,6 +1,6 @@
 <template>
-  <section class="w-full h-full mx-auto">
-    <div class="max-w-[40rem] my-4 ml-auto grid grid-cols-2 self-start">
+  <section class="w-full h-full mx-auto flex flex-col gap-4">
+    <div class="w-[50%] ml-auto grid grid-cols-2 self-start">
       <button
         :class="activeTab == 'interval' ? 'btn-active' : ''"
         class="rounded-l-xl p-4 bg-mainbg_400"
