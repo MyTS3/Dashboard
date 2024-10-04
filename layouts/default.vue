@@ -23,7 +23,7 @@
                 $route.name != 'domains' &&
                 $route.name != 'backups'
               "
-              class="btn h-12 p-3 flex items-center rounded-xl"
+              class="btn h-12 p-3 flex items-center rounded-lg"
               @click="$router.back()"
             >
               <img class="" src="/images/Arrow-Right.png" alt="" />
