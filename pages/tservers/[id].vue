@@ -1,6 +1,6 @@
 <template>
   <section
-    class="flex-1 mt-6 w-full mx-auto flex flex-row items-stretch text-white text-center gap-2 min-h-0"
+    class="flex-1 w-full mx-auto flex flex-row items-stretch text-white text-center gap-2 min-h-0"
   >
     <div
       class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl"
@@ -103,7 +103,7 @@
         />
       </main>
     </div>
-    <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto">
+    <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto p-4">
       <template v-if="selectedRow?.rowType == 'server'">
         <ServerView
           v-if="serverInfoStatus === 'success'"

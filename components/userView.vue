@@ -1,33 +1,38 @@
 <template>
-  <section class="list-none w-full h-full text-center relative">
-    <h1 class="font-medium my-3">کاربر</h1>
-    <img src="/images/seprator-line.png" alt="" />
-    <header class="grid text-right user-grid my-4 px-4">
-      <p>{{ selectedRow.user.userNickname }}</p>
-      <p>:نام</p>
-      <p v-if="selectedRow.user.clientPlatform != 'unknown'">
-        {{ selectedRow.user.clientPlatform }}
-      </p>
-      <p v-if="selectedRow.user.clientPlatform != 'unknown'">:پلتفرم</p>
-      <p v-if="selectedRow.user.clientVersion != 'unknown'">
-        {{ selectedRow.user.clientVersion }}
-      </p>
-      <p v-if="selectedRow.user.clientVersion != 'unknown'">:ورژن</p>
+  <section
+    class="list-none flex flex-col justify-between w-full h-full text-center relative"
+  >
+    <div>
+      <h1 class="font-medium">کاربر</h1>
+      <img class="my-6" src="/images/seprator-line.png" alt="" />
+      <header class="grid text-right user-grid">
+        <p>{{ selectedRow.user.userNickname }}</p>
+        <p>:نام</p>
+        <p v-if="selectedRow.user.clientPlatform != 'unknown'">
+          {{ selectedRow.user.clientPlatform }}
+        </p>
+        <p v-if="selectedRow.user.clientPlatform != 'unknown'">:پلتفرم</p>
+        <p v-if="selectedRow.user.clientVersion != 'unknown'">
+          {{ selectedRow.user.clientVersion }}
+        </p>
+        <p v-if="selectedRow.user.clientVersion != 'unknown'">:ورژن</p>
 
-      <p v-if="selectedRow.user.clientLastconnected != 0">
-        {{ calculateUptime(selectedRow.user.clientLastconnected) }}
-      </p>
-      <p v-if="selectedRow.user.clientLastconnected != 0">:اپتایم</p>
-    </header>
-    <img src="/images/seprator-line.png" alt="" />
-    <main>
-      <div class="text-left mt-3 mb-6 px-4">
-        <li v-for="servergroup in servergroups" :key="servergroup.sgid">
-          {{ servergroup.name }}
-        </li>
-      </div>
-    </main>
-    <footer class="grid grid-cols-2 absolute w-full bottom-8 gap-3 px-3">
+        <p v-if="selectedRow.user.clientLastconnected != 0">
+          {{ calculateUptime(selectedRow.user.clientLastconnected) }}
+        </p>
+        <p v-if="selectedRow.user.clientLastconnected != 0">:اپتایم</p>
+      </header>
+      <img class="my-6" src="/images/seprator-line.png" alt="" />
+      <main>
+        <div class="text-left">
+          <li v-for="servergroup in servergroups" :key="servergroup.sgid">
+            {{ servergroup.name }}
+          </li>
+        </div>
+      </main>
+    </div>
+    <div />
+    <footer class="grid grid-cols-2 w-full gap-3">
       <UTooltip
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex justify-center items-center gap-2 rounded-tl-lg"
