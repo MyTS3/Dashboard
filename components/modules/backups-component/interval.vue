@@ -1,5 +1,5 @@
 <template>
-  <section class="h-[88%]">
+  <section class="h-full">
     <Table>
       <div class="h-full">
         <div class="table bg-mainbg_300 rounded-t-2xl">

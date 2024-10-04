@@ -3,8 +3,10 @@
     <div
       class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
     >
-      <div class="flex-1 h-screen flex flex-col items-stretch px-[15%] pb-5">
-        <div class="py-3">
+      <div
+        class="flex-1 h-screen flex gap-4 flex-col items-stretch px-[15%] p-10"
+      >
+        <div class="">
           <header class="w-full flex justify-between flex-row-reverse">
             <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
               داشبورد
@@ -28,20 +30,22 @@
             </button>
             <div class="flex gap-4">
               <button
-                class="flex items-center flex-row-reverse gap-1 p-1.5 rounded-lg btn"
+                class="flex items-center flex-row-reverse gap-1 p-3 rounded-lg btn"
               >
                 <img src="/images/User.png" alt="user" />
                 <p class="text-xs">ماکان</p>
               </button>
-              <button class="btn p-3 px-4 rounded-lg">
-                <img src="/images/bell.png" alt="bell" />
+              <button class="flex gap-1 btn p-3 px-4 rounded-lg">
+                <p>تومان</p>
+                <p>۴۴,۰۰۰</p>
+                <img src="/images/Wallet.png" alt="bell" />
               </button>
             </div>
           </header>
         </div>
         <div
           v-if="panelAlert"
-          class="flex my-2 w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl items-center"
+          class="flex w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl items-center"
         >
           <img
             class="bg-white p-1.5 rounded-lg"
@@ -138,7 +142,7 @@
             <img src="/images/poshtibani.png" alt="" />
           </li> -->
         </nav>
-        <div class="flex-1"></div>
+        <div class="flex-1" />
         <button
           class="bg-main_red rounded-2xl py-3 text-center m-2"
           @click="logoutTab = true"
