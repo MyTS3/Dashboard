@@ -33,16 +33,16 @@
           <div
             v-if="row.rowType == 'channel'"
             dropzone="true"
-            @drop="dragended(row.channel)"
-            @dragover.prevent
-            @dragenter.prevent
             class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-fit"
             :class="
               selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
             "
+            :style="{ 'padding-left': row.level * 1 + 'rem' }"
+            @drop="dragended(row.channel)"
+            @dragover.prevent
+            @dragenter.prevent
             @click="selectedRow = row"
             @contextmenu.prevent="selectedRow = row"
-            :style="{ 'padding-left': row.level * 1 + 'rem' }"
           >
             <img
               v-if="row.channel.channelType == 'normal'"
@@ -59,14 +59,14 @@
           <div
             v-if="row.rowType == 'user'"
             draggable="true"
-            @dragstart="draged(row.user)"
             class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit"
             :class="
               selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
             "
+            :style="{ 'padding-left': row.level * 1 + 'rem' }"
+            @dragstart="draged(row.user)"
             @click="selectedRow = row"
             @contextmenu.prevent="selectedRow = row"
-            :style="{ 'padding-left': row.level * 1 + 'rem' }"
           >
             <img
               v-if="row.user.status == 'openMic'"
@@ -368,9 +368,12 @@ function longpoll(time = 1) {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
-  )
-    .then((re) => re.json())
-    .then((data) => getUsersAndChannels().then(() => longpoll(data.at)));
+  ).then(async (re) => {
+    if (re.status == 200) {
+      const data = await re.json();
+      getUsersAndChannels().then(() => longpoll(data.at));
+    }
+  });
 }
 longpoll();
 </script>
