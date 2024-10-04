@@ -3,7 +3,7 @@
     <div
       class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
     >
-      <div class="flex-1 h-screen flex flex-col items-stretch px-32 pb-5">
+      <div class="flex-1 h-screen flex flex-col items-stretch px-[15%] pb-5">
         <div class="py-3">
           <header class="w-full flex justify-between flex-row-reverse">
             <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
