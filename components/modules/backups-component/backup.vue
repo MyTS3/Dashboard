@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="h-[88%]">
     <Table>
       <div class="h-full">
         <div class="table static bg-mainbg_300 rounded-t-2xl">
@@ -7,7 +7,7 @@
           <p>تاریخ</p>
           <p>عمل</p>
         </div>
-        <div class="h-[30rem] overflow-scroll">
+        <div class="h-full overflow-scroll">
           <template v-if="status === 'pending'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
