@@ -109,6 +109,7 @@
           v-if="serverInfoStatus === 'success'"
           :server-info="serverInfo"
           :server-info-status="() => serverInfoStatus"
+          :users-count="usersCount"
           @get-server-deatails="getServerDeatails"
         />
         <ServerViewSkeleton v-else />
@@ -159,6 +160,7 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
+const usersCount = ref<number | undefined>();
 //function
 function draged(user: user) {
   movingUser.value = user.userNickname;
@@ -334,6 +336,7 @@ const {
   });
 
   const users = await usersReq;
+  usersCount.value = users.length;
   users.forEach((user) => {
     const channelIndex = rows.findIndex((row) => {
       if (row.rowType != 'channel') return false;

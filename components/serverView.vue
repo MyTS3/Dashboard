@@ -33,7 +33,11 @@
           </a>
         </li>
         <li class="grid gridList p-2 relative">
-          <p>{{ selectedServer.slots }}</p>
+          <div class="flex gap-1">
+            <p v-if="usersCount">{{ usersCount }}</p>
+            <p v-if="usersCount">/</p>
+            <p>{{ selectedServer.slots }}</p>
+          </div>
           <p>:تعداد اسلات</p>
           <button class="absolute left-4" @click="changeSlotTab = true">
             <img src="/images/edit.png" alt="" />
@@ -180,7 +184,7 @@ const resetConfigTab = ref(false);
 const yatqaExampleTab = ref(false);
 const subdomainTab = ref(false);
 
-const props = defineProps(['serverInfo']);
+const props = defineProps(['serverInfo', 'usersCount']);
 const emit = defineEmits(['getServerDeatails']);
 const store = apiStore();
 const { url } = storeToRefs(store);
