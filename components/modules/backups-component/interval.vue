@@ -8,7 +8,7 @@
           <p>عمل</p>
         </div>
         <div class="h-[30rem] overflow-scroll">
-          <template v-if="status === 'pending'">
+          <template v-if="status !== 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
                 class="h-5 w-40"

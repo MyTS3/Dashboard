@@ -8,7 +8,7 @@
           <p>تاریخ ثبت</p>
           <p>عمل</p>
         </div>
-        <template v-if="status === 'pending'">
+        <template v-if="status !== 'success'">
           <div v-for="_ in 5" :key="_" class="table items">
             <USkeleton
               class="h-5 w-40"
