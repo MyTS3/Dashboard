@@ -16,7 +16,7 @@
         </div>
 
         <img
-          class="w-ful mx-auto my-6"
+          class="w-full mx-auto my-6"
           src="/images/seprator-line.png"
           alt=""
         />
