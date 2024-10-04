@@ -91,7 +91,7 @@ function copyToClipboard(text) {
   toast.add({
     title: 'کپی شد',
     timeout: 2000,
-    color: 'blue',
+    color: 'violet',
   });
 }
 </script>
