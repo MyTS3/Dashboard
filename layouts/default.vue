@@ -33,7 +33,7 @@
                 class="flex items-center flex-row-reverse gap-1 p-3 rounded-lg btn"
               >
                 <img src="/images/User.png" alt="user" />
-                <p class="text-xs">ماکان</p>
+                <p class="text-xs">{{ name }}</p>
               </button>
               <button class="flex gap-1 btn p-3 px-4 rounded-lg">
                 <p>تومان</p>
@@ -161,6 +161,10 @@ import logoutPopup from '@/components/modules/logoutPopup.vue';
 
 const logoutTab = ref(false);
 const panelAlert = ref(true);
+const token = localStorage.getItem('token');
+const bodyToken = JSON.parse(atob(token.split('.')[1]));
+const name = ref(bodyToken.name);
+
 TimeAgo.addLocale(fa);
 </script>
 <style scoped>
