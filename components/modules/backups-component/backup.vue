@@ -29,19 +29,23 @@
               <p class="font-semibold">{{ backup.tserver.name }}</p>
               <p>{{ backup.createdAt }}</p>
               <div class="flex gap-4">
-                <img
-                  class="cursor-pointer w-8 h-8"
-                  src="/images/arrow-up.png"
-                  alt=""
-                  @click="
-                    (deployBackupTab = true), (selecteduuid = backup.uuid)
-                  "
-                />
-                <img
-                  class="cursor-pointer w-8 h-8"
-                  src="/images/trash.png"
-                  @click="deleteBackup(backup.uuid)"
-                />
+                <UTooltip text="اعمال بکاپ">
+                  <img
+                    class="cursor-pointer w-8 h-8"
+                    src="/images/arrow-up.png"
+                    alt=""
+                    @click="
+                      (deployBackupTab = true), (selecteduuid = backup.uuid)
+                    "
+                  />
+                </UTooltip>
+                <UTooltip text="حذف بکاپ">
+                  <img
+                    class="cursor-pointer w-8 h-8"
+                    src="/images/trash.png"
+                    @click="deleteBackup(backup.uuid)"
+                  />
+                </UTooltip>
               </div>
             </div>
           </template>
