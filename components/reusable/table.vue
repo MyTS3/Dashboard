@@ -1,5 +1,5 @@
 <template>
-  <section class="grid w-full h-full mx-auto text-white">
+  <section dir="rtl" class="grid w-full h-full mx-auto text-white">
     <main class="w-full flex flex-col bg-mainbg_500 rounded-2xl">
       <slot />
     </main>
