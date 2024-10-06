@@ -72,7 +72,7 @@
             alt="logo"
           />
         </header>
-        <nav class="list-none flex flex-col gap-4 mt-7">
+        <nav class="list-none flex flex-col gap-4 m-5">
           <li
             :class="$route.name == 'tservers' ? 'activePanel' : ''"
             class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
