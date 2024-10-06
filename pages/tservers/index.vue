@@ -1,48 +1,89 @@
 <template>
-  <div class="flex-1">
-    <Table>
-      <div class="h-full overflow-y-scroll">
+  <div class="h-full">
+    <Table class="flex">
+      <div class="h-full overflow-scroll">
         <div class="table bg-mainbg_300 rounded-t-2xl">
           <p>نام</p>
           <p>تعداد اسلات</p>
           <p>تاریخ ساخت</p>
           <p>عمل</p>
         </div>
-        <template v-if="status !== 'success'">
-          <div v-for="_ in 5" :key="_" class="table items">
-            <USkeleton
-              class="h-5 w-40"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-5 w-20"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-5 w-20"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-5 w-10"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-          </div>
-        </template>
-        <template v-else>
-          <div v-for="server in servers" :key="server.uuid" class="table items">
-            <p class="cursor-pointer" @click="serverClicked(server)">
-              {{ server.name }}
-            </p>
-            <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
-            <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
-            <img
-              class="cursor-pointer"
-              src="/images/trash.png"
-              alt=""
-              @click="removeServer(server.name, server.uuid)"
-            />
-          </div>
-        </template>
+        <div class="h-full overflow-scroll">
+          <template v-if="status !== 'success'">
+            <div v-for="_ in 5" :key="_" class="table items">
+              <USkeleton
+                class="h-5 w-40"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+              <USkeleton
+                class="h-5 w-20"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+              <USkeleton
+                class="h-5 w-20"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+              <USkeleton
+                class="h-5 w-10"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+            </div>
+          </template>
+          <template v-else>
+            <div class="h-1 flex flex-col">
+              <div
+                v-for="server in servers"
+                :key="server.uuid"
+                class="table items"
+              >
+                <p class="cursor-pointer" @click="serverClicked(server)">
+                  {{ server.name }}
+                </p>
+                <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
+                <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
+                <img
+                  class="cursor-pointer"
+                  src="/images/trash.png"
+                  alt=""
+                  @click="removeServer(server.name, server.uuid)"
+                />
+              </div>
+              <div
+                v-for="server in servers"
+                :key="server.uuid"
+                class="table items"
+              >
+                <p class="cursor-pointer" @click="serverClicked(server)">
+                  {{ server.name }}
+                </p>
+                <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
+                <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
+                <img
+                  class="cursor-pointer"
+                  src="/images/trash.png"
+                  alt=""
+                  @click="removeServer(server.name, server.uuid)"
+                />
+              </div>
+              <div
+                v-for="server in servers"
+                :key="server.uuid"
+                class="table items"
+              >
+                <p class="cursor-pointer" @click="serverClicked(server)">
+                  {{ server.name }}
+                </p>
+                <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
+                <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
+                <img
+                  class="cursor-pointer"
+                  src="/images/trash.png"
+                  alt=""
+                  @click="removeServer(server.name, server.uuid)"
+                />
+              </div></div
+          ></template>
+        </div>
       </div>
       <button
         class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"

@@ -1,8 +1,8 @@
 <template>
   <section class="h-full">
-    <Table>
-      <div class="h-full">
-        <div class="table static bg-mainbg_300 rounded-t-2xl">
+    <Table class="flex">
+      <div class="h-full overflow-scroll">
+        <div class="table bg-mainbg_300 rounded-t-2xl">
           <p>سرور</p>
           <p>تاریخ</p>
           <p>عمل</p>
@@ -25,27 +25,29 @@
             </div>
           </template>
           <template v-else>
-            <div v-for="backup in backups" :key="backup" class="table items">
-              <p class="font-semibold">{{ backup.tserver.name }}</p>
-              <p>{{ backup.createdAt }}</p>
-              <div class="flex gap-4">
-                <UTooltip text="اعمال بکاپ">
-                  <img
-                    class="cursor-pointer w-8 h-8"
-                    src="/images/arrow-up.png"
-                    alt=""
-                    @click="
-                      (deployBackupTab = true), (selecteduuid = backup.uuid)
-                    "
-                  />
-                </UTooltip>
-                <UTooltip text="حذف بکاپ">
-                  <img
-                    class="cursor-pointer w-8 h-8"
-                    src="/images/trash.png"
-                    @click="deleteBackup(backup.uuid)"
-                  />
-                </UTooltip>
+            <div class="h-1">
+              <div v-for="backup in backups" :key="backup" class="table items">
+                <p class="font-semibold">{{ backup.tserver.name }}</p>
+                <p>{{ backup.createdAt }}</p>
+                <div class="flex gap-4">
+                  <UTooltip text="اعمال بکاپ">
+                    <img
+                      class="cursor-pointer w-8 h-8"
+                      src="/images/arrow-up.png"
+                      alt=""
+                      @click="
+                        (deployBackupTab = true), (selecteduuid = backup.uuid)
+                      "
+                    />
+                  </UTooltip>
+                  <UTooltip text="حذف بکاپ">
+                    <img
+                      class="cursor-pointer w-8 h-8"
+                      src="/images/trash.png"
+                      @click="deleteBackup(backup.uuid)"
+                    />
+                  </UTooltip>
+                </div>
               </div>
             </div>
           </template>
