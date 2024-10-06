@@ -4,7 +4,7 @@
       class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
     >
       <div
-        class="flex-1 h-screen flex gap-4 flex-col items-stretch px-[15%] p-10"
+        class="flex-1 h-screen flex gap-4 flex-col items-stretch max-w-[85rem] mx-auto p-10"
       >
         <div class="">
           <header class="w-full flex justify-between flex-row-reverse">
