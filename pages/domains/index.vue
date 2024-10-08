@@ -1,6 +1,14 @@
 <template>
   <div class="flex-1">
-    <Table>
+    <div
+      v-if="status == 'error'"
+      class="w-full text-center p-5 bg-main_orange rounded-xl"
+    >
+      <p class="font-bold">
+        پنل از دسترس خارج شده و به زودی در دسترس قرار میگیرد
+      </p>
+    </div>
+    <Table v-else>
       <div class="h-full overflow-y-scroll">
         <div class="table bg-mainbg_300 rounded-t-2xl">
           <p>دامنه</p>
@@ -89,7 +97,7 @@ const selectedDomain = ref();
 
 const {
   data: domainList,
-  status,
+  status: status,
   execute: getDomain,
 } = await useLazyFetch(`${url.value}/api/v4/tdomains`, {
   headers: {

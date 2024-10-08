@@ -1,6 +1,14 @@
 <template>
   <div class="h-full">
-    <Table class="flex">
+    <div
+      v-if="status == 'error'"
+      class="w-full text-center p-5 bg-main_orange rounded-xl"
+    >
+      <p class="font-bold">
+        پنل از دسترس خارج شده و به زودی در دسترس قرار میگیرد
+      </p>
+    </div>
+    <Table v-else class="flex">
       <div class="h-full overflow-scroll">
         <div class="table bg-mainbg_300 rounded-t-2xl">
           <p>نام</p>
@@ -147,7 +155,7 @@ function convertEnglishNumberToPersian(number) {
 }
 
 const {
-  status,
+  status: status,
   data: servers,
   refresh: getServers,
 } = await useLazyFetch(`${url.value}/api/v4/tservers/`, {
