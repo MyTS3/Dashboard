@@ -56,41 +56,8 @@
                   @click="removeServer(server.name, server.uuid)"
                 />
               </div>
-              <div
-                v-for="server in servers"
-                :key="server.uuid"
-                class="table items"
-              >
-                <p class="cursor-pointer" @click="serverClicked(server)">
-                  {{ server.name }}
-                </p>
-                <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
-                <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
-                <img
-                  class="cursor-pointer"
-                  src="/images/trash.png"
-                  alt=""
-                  @click="removeServer(server.name, server.uuid)"
-                />
-              </div>
-              <div
-                v-for="server in servers"
-                :key="server.uuid"
-                class="table items"
-              >
-                <p class="cursor-pointer" @click="serverClicked(server)">
-                  {{ server.name }}
-                </p>
-                <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
-                <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
-                <img
-                  class="cursor-pointer"
-                  src="/images/trash.png"
-                  alt=""
-                  @click="removeServer(server.name, server.uuid)"
-                />
-              </div></div
-          ></template>
+            </div>
+          </template>
         </div>
       </div>
       <button

@@ -17,12 +17,14 @@
       </main>
     </div>
     <footer class="w-full grid gap-4">
-      <button
-        class="flex items-center py-3 justify-center btn-disable rounded-lg"
-      >
-        <p>ساخت موزیک بات جدید</p>
-        <img src="/images/addon.png" alt="" />
-      </button>
+      <UTooltip class="flex h-full w-full" text="در درست ساخت میباشد">
+        <button
+          class="flex w-full items-center py-3 justify-center btn-disable rounded-lg"
+        >
+          <p>ساخت موزیک بات جدید</p>
+          <img src="/images/addon.png" alt="" />
+        </button>
+      </UTooltip>
     </footer>
   </section>
   <MakeMusicbot class="hidden" />
