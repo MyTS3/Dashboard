@@ -64,11 +64,11 @@
         </template>
       </div>
       <button
-        class="flex w-full items-center justify-center btn rounded-xl py-3"
+        class="flex w-full items-center justify-center gap-1 btn rounded-xl py-3"
         @click="addDomainTab = true"
       >
-        افزودن دامنه
         <img src="/images/addon.png" alt="" />
+        افزودن دامنه
       </button>
     </Table>
     <AddDomain
