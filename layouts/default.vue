@@ -143,12 +143,7 @@
           </li> -->
         </nav>
         <div class="flex-1" />
-        <button
-          class="bg-main_red rounded-2xl py-3 text-center m-2"
-          @click="logoutTab = true"
-        >
-          <p>خروج از حساب کاربری</p>
-        </button>
+        <img class="object-contain p-3" src="/images/mtserver.png" alt="" />
       </div>
     </div>
     <logoutPopup v-if="logoutTab" @close="logoutTab = false" />
@@ -167,7 +162,6 @@ const name = ref();
 if (!token)
   navigateTo('https://my.mtserver.ir/index.php?rp=/login', { external: true });
 else {
-  console.log('mio');
   const bodyToken = JSON.parse(atob(token.split('.')[1]));
   name.value = bodyToken.name;
 }

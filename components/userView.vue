@@ -4,7 +4,7 @@
   >
     <div>
       <h1 class="font-medium">کاربر</h1>
-      <img class="my-6" src="/images/seprator-line.png" alt="" />
+      <img class="my-6 w-full" src="/images/seprator-line.png" alt="" />
       <header class="grid text-right user-grid">
         <p>{{ selectedRow.user.userNickname }}</p>
         <p>:نام</p>
@@ -22,7 +22,7 @@
         </p>
         <p v-if="selectedRow.user.clientLastconnected != 0">:اپتایم</p>
       </header>
-      <img class="my-6" src="/images/seprator-line.png" alt="" />
+      <img class="my-6 w-full" src="/images/seprator-line.png" alt="" />
       <main>
         <div class="text-left">
           <li v-for="servergroup in servergroups" :key="servergroup.sgid">
