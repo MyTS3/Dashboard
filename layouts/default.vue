@@ -143,7 +143,11 @@
           </li> -->
         </nav>
         <div class="flex-1" />
-        <img class="object-contain p-3" src="/images/mtserver.png" alt="" />
+        <img
+          class="object-contain p-3"
+          src="/images/mtserver-logo.png"
+          alt=""
+        />
       </div>
     </div>
     <logoutPopup v-if="logoutTab" @close="logoutTab = false" />
