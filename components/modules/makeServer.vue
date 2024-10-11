@@ -9,9 +9,9 @@
     >
       <button
         :disabled="disableInputs"
-        @click="$emit('close')"
         :class="{ 'bg-main_red/30': disableInputs }"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -24,8 +24,8 @@
       <div class="flex flex-col relative">
         <label class="text-right font-medium mb-4">نام سرور</label>
         <input
-          :disabled="disableInputs"
           v-model="serverName"
+          :disabled="disableInputs"
           class="bg-transparent border rounded-lg p-4"
           type="text"
         />
@@ -36,9 +36,9 @@
       >
       <from class="w-full my-4">
         <select
+          v-model="selectedConfig"
           :disabled="disableInputs"
           class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
-          v-model="selectedConfig"
           name="locations"
         >
           <option
@@ -63,8 +63,8 @@
           <p>1024</p>
         </div>
         <input
-          :disabled="disableInputs"
           v-model="slot"
+          :disabled="disableInputs"
           class="w-full"
           type="range"
           min="1"
@@ -100,8 +100,8 @@
       <button
         :class="{ 'btn-disable, opacity-55': disableInputs }"
         :disabled="disableInputs"
-        @click.prevent="makeServer()"
         class="flex w-full items-center justify-center make-server font-medium gap-2"
+        @click.prevent="makeServer()"
       >
         <div
           v-if="!disableInputs"
@@ -113,10 +113,10 @@
       </button>
     </main>
     <serverToken
-      :tsURL="tsURL"
+      v-if="serverTokenTab"
+      :ts-u-r-l="tsURL"
       :token="token"
       :tsuuid="tsuuid"
-      v-if="serverTokenTab"
       @close="(serverTokenTab = false), $emit('close')"
     />
   </section>
@@ -139,25 +139,36 @@ const availables = ref();
 let token = ref();
 let tsURL = ref();
 let tsuuid = ref();
-
+const toast = useToast();
 async function makeServer() {
   disableInputs.value = true;
   const slots = 2 ** (Number(slot.value) + 3);
-
-  const server = await $fetch(`${url.value}/api/v4/tservers/`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+  const { data: server, error } = await useFetch(
+    `${url.value}/api/v4/tservers/`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        name: `${serverName.value}.v4.myts3.ir`,
+        config: selectedConfig.value,
+        slots: slots,
+      }),
     },
-    body: JSON.stringify({
-      name: `${serverName.value}.v4.myts3.ir`,
-      config: selectedConfig.value,
-      slots: slots,
-    }),
-  });
-  token = ref(server.privilegeKey);
-  tsuuid = ref(server.uuid);
-  tsURL = ref(`ts3server://${server.name}`);
+  );
+  if (error.value) {
+    toast.add({
+      title: 'ساخت سرور با شکست مواجه شد',
+      timeout: 2000,
+      color: 'red',
+    });
+    disableInputs.value = false;
+    return;
+  }
+  token = ref(server.value.privilegeKey);
+  tsuuid = ref(server.value.uuid);
+  tsURL = ref(`ts3server://${server.value.name}`);
   serverTokenTab.value = true;
 }
 
@@ -170,6 +181,7 @@ async function getAvailble() {
       },
     },
   );
+  console.log(await respone);
   availables.value = await respone;
 }
 await getAvailble();
