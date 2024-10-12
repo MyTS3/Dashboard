@@ -138,7 +138,7 @@ const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
 const submitDisable = ref(true);
 const availables = ref();
-const disableReasson = ref(undefined);
+const disableReasson = ref('لطفا نام را وارد کنید');
 let token = ref();
 let tsURL = ref();
 let tsuuid = ref();
@@ -192,6 +192,10 @@ await getAvailble();
 watch(serverName, () => {
   submitDisable.value = false;
   disableReasson.value = 'نام انتخاب شده مناسب است';
+  if (serverName.value.length < 3) {
+    submitDisable.value = true;
+    disableReasson.value = 'لطفا نام را وارد کنید';
+  }
   if (serverName.value.length < 3) {
     submitDisable.value = true;
     disableReasson.value = 'نام سرور باید حداقل 3 کاراکتر داشته باشد';
