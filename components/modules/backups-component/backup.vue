@@ -44,7 +44,9 @@
                     <img
                       class="cursor-pointer w-8 h-8"
                       src="/images/trash.png"
-                      @click="deleteBackup(backup.uuid)"
+                      @click="
+                        (deleteBackupTab = true), (selecteduuid = backup.uuid)
+                      "
                     />
                   </UTooltip>
                 </div>
@@ -61,6 +63,11 @@
         <img src="/images/addon.png" alt="" />
       </button>
     </Table>
+    <DeleteBackups
+      :selecteduuid="selecteduuid"
+      @close="(deleteBackupTab = false), getBackups()"
+      v-if="deleteBackupTab"
+    />
     <restoreBackup
       v-if="deployBackupTab"
       :selecteduuid="selecteduuid"
@@ -69,24 +76,16 @@
   </section>
 </template>
 <script setup>
+import DeleteBackups from './deleteBackups.vue';
 import restoreBackup from './restoreBackup.vue';
 import Table from '~/components/reusable/table.vue';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
 
+const deleteBackupTab = ref(false);
 const selecteduuid = ref();
 const deployBackupTab = ref(false);
-
-async function deleteBackup(uuid) {
-  await $fetch(`${url.value}/api/v4/snapshots/${uuid}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  await getBackups();
-}
 
 const {
   data: backups,
