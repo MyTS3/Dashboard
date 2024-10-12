@@ -96,20 +96,22 @@
         </div>
       </div>
       <!-- //////////////////price eneded////////////// -->
-      <button
-        :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
-        :disabled="submitDisable"
-        class="flex w-full items-center justify-center bg-main_blue p-4 m-2 rounded-xl font-medium gap-2"
-        @click.prevent="makeServer()"
-      >
-        <div
-          v-if="!disableInputs"
-          class="flex w-full items-center justify-center font-medium gap-2"
+      <UTooltip :text="disableReasson">
+        <button
+          :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
+          :disabled="submitDisable"
+          class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2"
+          @click.prevent="makeServer()"
         >
-          <span><img src="/images/plus.png" alt="" /></span>ساخت
-        </div>
-        <loading v-if="disableInputs" />
-      </button>
+          <div
+            v-if="!disableInputs"
+            class="flex w-full items-center justify-center font-medium gap-2"
+          >
+            <span><img src="/images/plus.png" alt="" /></span>ساخت
+          </div>
+          <loading v-if="disableInputs" />
+        </button>
+      </UTooltip>
     </main>
     <serverToken
       v-if="serverTokenTab"
@@ -136,6 +138,7 @@ const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
 const submitDisable = ref(true);
 const availables = ref();
+const disableReasson = ref(undefined);
 let token = ref();
 let tsURL = ref();
 let tsuuid = ref();
@@ -187,13 +190,21 @@ async function getAvailble() {
 }
 await getAvailble();
 watch(serverName, () => {
-  if (
-    regex.test(serverName.value) &&
-    serverName.value.length >= 3 &&
-    serverName.value.length <= 128
-  ) {
-    submitDisable.value = false;
-  } else submitDisable.value = true;
+  submitDisable.value = false;
+  disableReasson.value = 'نام انتخاب شده مناسب است';
+  if (serverName.value.length < 3) {
+    submitDisable.value = true;
+    disableReasson.value = 'نام سرور باید حداقل 3 کاراکتر داشته باشد';
+  }
+  if (!regex.test(serverName.value)) {
+    submitDisable.value = true;
+    disableReasson.value = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
+  }
+
+  if (serverName.value.length >= 128) {
+    submitDisable.value = true;
+    disableReasson.value = 'نام سرور باید حدکثر 128 کاراکتر داشته باشد';
+  }
 });
 </script>
 <style scoped></style>

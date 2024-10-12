@@ -147,3 +147,10 @@ img {
 option {
   background-color: rgba(37, 40, 65, 1);
 }
+.make-server {
+  margin-block: 15px;
+  background-color: rgba(1, 107, 255, 1);
+  border: 1px solid rgba(40, 123, 255, 1);
+  padding: 1rem;
+  border-radius: 15px;
+}
