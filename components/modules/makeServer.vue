@@ -25,8 +25,9 @@
         <label class="text-right font-medium mb-4">نام سرور</label>
         <input
           v-model="serverName"
+          :class="submitDisable ? 'border-main_red' : ''"
           :disabled="disableInputs"
-          class="bg-transparent border rounded-lg p-4"
+          class="bg-transparent border rounded-lg p-4 outline-none"
           type="text"
         />
         <p class="absolute right-8 bottom-4 text-blue-300/60">.v4.myts3.ir</p>
