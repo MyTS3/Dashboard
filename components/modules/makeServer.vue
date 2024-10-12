@@ -99,12 +99,12 @@
       <button
         :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
         :disabled="submitDisable"
-        class="flex w-full items-center justify-center make-server font-medium gap-2"
+        class="flex w-full items-center justify-center bg-main_blue p-4 m-2 rounded-xl font-medium gap-2"
         @click.prevent="makeServer()"
       >
         <div
           v-if="!disableInputs"
-          class="flex w-full items-center bg-main_blue p-4 m-2 rounded-xl justify-center font-medium gap-2"
+          class="flex w-full items-center justify-center font-medium gap-2"
         >
           <span><img src="/images/plus.png" alt="" /></span>ساخت
         </div>
