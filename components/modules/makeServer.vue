@@ -96,16 +96,15 @@
         </div>
       </div>
       <!-- //////////////////price eneded////////////// -->
-
       <button
-        :class="{ 'btn-disable, opacity-55': disableInputs }"
-        :disabled="disableInputs"
+        :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
+        :disabled="submitDisable"
         class="flex w-full items-center justify-center make-server font-medium gap-2"
         @click.prevent="makeServer()"
       >
         <div
           v-if="!disableInputs"
-          class="flex w-full items-center justify-center font-medium gap-2"
+          class="flex w-full items-center bg-main_blue p-4 m-2 rounded-xl justify-center font-medium gap-2"
         >
           <span><img src="/images/plus.png" alt="" /></span>ساخت
         </div>
@@ -130,11 +129,12 @@ const serverTokenTab = ref(false);
 
 const store = apiStore();
 const { url } = storeToRefs(store);
-
+const regex = RegExp('^[a-zA-Z0-9]+$');
 const slot = ref(1);
 const serverName = ref();
 const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
+const submitDisable = ref(true);
 const availables = ref();
 let token = ref();
 let tsURL = ref();
@@ -142,6 +142,7 @@ let tsuuid = ref();
 const toast = useToast();
 async function makeServer() {
   disableInputs.value = true;
+  submitDisable.value = true;
   const slots = 2 ** (Number(slot.value) + 3);
   const { data: server, error } = await useFetch(
     `${url.value}/api/v4/tservers/`,
@@ -164,6 +165,7 @@ async function makeServer() {
       color: 'red',
     });
     disableInputs.value = false;
+    submitDisable.value = false;
     return;
   }
   token = ref(server.value.privilegeKey);
@@ -181,9 +183,17 @@ async function getAvailble() {
       },
     },
   );
-  console.log(await respone);
   availables.value = await respone;
 }
 await getAvailble();
+watch(serverName, () => {
+  if (
+    regex.test(serverName.value) &&
+    serverName.value.length >= 3 &&
+    serverName.value.length <= 128
+  ) {
+    submitDisable.value = false;
+  } else submitDisable.value = true;
+});
 </script>
 <style scoped></style>
