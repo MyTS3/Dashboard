@@ -36,7 +36,10 @@
                 <img
                   class="cursor-pointer w-8 h-8"
                   src="/images/trash.png"
-                  @click="deleteInterval(interval.uuid)"
+                  @click="
+                    (selectedInterval = interval.uuid),
+                      (delteIntervalTab = true)
+                  "
                 />
               </div>
             </div>
@@ -51,13 +54,21 @@
         <img src="/images/addon.png" alt="" />
       </button>
     </Table>
+    <DeleteInterval
+      :selectedInterval="selectedInterval"
+      @close="(delteIntervalTab = false), getIntervals()"
+      v-if="delteIntervalTab"
+    />
   </section>
 </template>
 <script setup>
 import Table from '~/components/reusable/table.vue';
+import DeleteInterval from './deleteInterval.vue';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
+const selectedInterval = ref();
+const delteIntervalTab = ref(false);
 
 const {
   status,
@@ -68,16 +79,6 @@ const {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
-
-async function deleteInterval(uuid) {
-  await $fetch(`${url.value}/api/v4/snapshots/intervals/${uuid}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  await getIntervals();
-}
 </script>
 <style scoped>
 .table {
