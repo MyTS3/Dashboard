@@ -4,7 +4,7 @@
   >
     <div>
       <h1 class="text-center">چنل</h1>
-      <img class="my-6 w-full" src="/images/seprator-line.png" alt=""/>
+      <img class="my-6 w-full" src="/images/seprator-line.png" alt="" />
       <main class="text-right flex flex-col gap-5">
         <li class="grid gridList">
           <p>{{ selectedChannel.channelName }}</p>
