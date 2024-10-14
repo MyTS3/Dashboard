@@ -17,7 +17,7 @@
       </main>
     </div>
     <footer class="w-full grid gap-4">
-      <UTooltip class="flex h-full w-full" text="در حال توسعه...">
+      <UTooltip class="flex h-full w-full" text="در حال توسعه">
         <button
           class="flex w-full items-center py-3 justify-center btn-disable rounded-lg"
         >
