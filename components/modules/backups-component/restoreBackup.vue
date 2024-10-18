@@ -6,6 +6,7 @@
       class="text-white max-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
+        :disabled="disable"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
         @click="$emit('close')"
       >
@@ -32,10 +33,12 @@
       </from>
       <div class="grid">
         <button
-          class="p-4 text-center rounded-xl bg-main_red module-btn"
+          :disabled="disable"
+          class="p-4 text-center rounded-xl flex justify-center bg-main_red module-btn"
           @click="deployBackup()"
         >
-          تایید
+          <p v-if="disable">تایید</p>
+          <TheLoading v-else />
         </button>
       </div>
     </main>
@@ -45,30 +48,54 @@
 const store = apiStore();
 const { url } = storeToRefs(store);
 
+const disable = ref(false);
 const props = defineProps(['selecteduuid']);
 const emit = defineEmits(['close']);
 const tserverUUid = ref();
 const servers = ref();
+const toast = useToast();
 async function getServers() {
-  const response = await $fetch(`${url.value}/api/v4/tservers/`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+  const { data: response, error } = await useFetch(
+    `${url.value}/api/v4/tservers/`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     },
-  });
-  servers.value = response;
+  );
+  servers.value = response.value;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
 }
 async function deployBackup() {
-  await $fetch(`${url.value}/api/v4/snapshots/${props.selecteduuid}/deploy`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+  disable.value = true;
+  const { error } = await useFetch(
+    `${url.value}/api/v4/snapshots/${props.selecteduuid}/deploy`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        tServerUUID: tserverUUid.value,
+      }),
     },
-    body: JSON.stringify({
-      tServerUUID: tserverUUid.value,
-    }),
-  });
+  );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   await getBackups();
+  disable.value = false;
   emit('close');
 }
 await getServers();

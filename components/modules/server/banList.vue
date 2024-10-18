@@ -6,8 +6,8 @@
       class="text-white bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium w-4/5"
     >
       <button
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -20,17 +20,17 @@
           <div class="flex flex-col text-right bg-mainbg_400">
             <p class="items text-lg p-4">دلیل</p>
             <div
-              class="items p-4 flex flex-row-reverse items-center"
               v-for="ban in banList"
               :key="ban.banid"
+              class="items p-4 flex flex-row-reverse items-center"
             >
               {{ ban.reason }}
               <p v-if="!ban.reason">بدون دلیل</p>
               <img
-                @click="openUnBanPopUp(ban)"
                 class="w-10 absolute left-8 cursor-pointer"
                 src="/images/x-symbpl.png"
                 alt=""
+                @click="openUnBanPopUp(ban)"
               />
             </div>
           </div>
@@ -53,10 +53,10 @@
     </main>
   </section>
   <unBan
-    @close="getBanList(), (unBanTab = false)"
-    :selectedServer="selectedServer"
-    :unBaning="unBaning"
     v-if="unBanTab"
+    :selected-server="selectedServer"
+    :un-baning="unBaning"
+    @close="getBanList(), (unBanTab = false)"
   />
 </template>
 <script setup>
@@ -70,9 +70,10 @@ const { url } = storeToRefs(store);
 const banList = ref();
 const unBaning = ref();
 const unBanTab = ref(false);
+const toast = useToast();
 
 async function getBanList() {
-  const respone = await $fetch(
+  const { data: respone, error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/bans`,
     {
       headers: {
@@ -80,7 +81,15 @@ async function getBanList() {
       },
     },
   );
-  banList.value = await respone;
+  banList.value = await respone.value;
+  disable.value = false;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
 }
 function openUnBanPopUp(ban) {
   unBaning.value = ban;

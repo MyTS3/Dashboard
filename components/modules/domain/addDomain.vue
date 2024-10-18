@@ -7,8 +7,9 @@
         class="text-white min-w-[28rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
       >
         <button
-          @click="$emit('close')"
+          :disabled="disable"
           class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+          @click="$emit('close')"
         >
           X
         </button>
@@ -25,10 +26,12 @@
         />
         <div class="grid gap-3">
           <button
+            :disabled="disable"
+            class="p-4 flex justify-center text-center rounded-xl bg-main_blue module-btn"
             @click="AddDomain()"
-            class="p-4 text-center rounded-xl bg-main_blue module-btn"
           >
-            تایید
+            <p v-if="!disable">تایید</p>
+            <TheLoading v-else />
           </button>
         </div>
       </main>
@@ -36,13 +39,18 @@
   </div>
 </template>
 <script setup>
+import TheLoading from '~/components/reusable/theLoading.vue';
+
 const store = apiStore();
 const { url } = storeToRefs(store);
 const emit = defineEmits(['close']);
+const toast = useToast();
+const disable = ref(false);
 const domainName = ref();
 
 async function AddDomain() {
-  await $fetch(`${url.value}/api/v4/tdomains`, {
+  disable.value = true;
+  const { error } = await useFetch(`${url.value}/api/v4/tdomains`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -51,6 +59,14 @@ async function AddDomain() {
       domain: domainName.value,
     }),
   });
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  disable.value = false;
   emit('close');
 }
 </script>
