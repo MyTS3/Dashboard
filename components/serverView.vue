@@ -198,7 +198,7 @@ async function turnServerOffOrOn() {
   if (selectedServer.value.mustRunning === true) {
     turnOffServerTab.value = true;
   } else {
-    const { data, error } = await useFetch(
+    const { error } = await useFetch(
       `${url.value}/api/v4/tservers/${selectedServer.value.uuid}/start`,
       {
         method: 'POST',

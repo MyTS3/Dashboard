@@ -46,7 +46,7 @@ const toast = useToast();
 const disable = ref(false);
 async function logOut() {
   disable.value = true;
-  const { data, error } = await useFetch(`${url.value}/api/v4/logout`, {
+  const { error } = await useFetch(`${url.value}/api/v4/logout`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
