@@ -6,8 +6,9 @@
       class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
-        @click="$emit('close')"
+        :disabled="disable"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -15,8 +16,9 @@
       <p class="font-bold max-w-80 text-center ml-auto">:لوکیشن مد نظر</p>
       <from class="w-full my-4">
         <select
-          class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
           v-model="selectedLocation"
+          :disabled="disable"
+          class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
           name="locations"
         >
           <option
@@ -31,18 +33,20 @@
       </from>
       <div class="grid grid-cols-2 gap-3">
         <button
-          @click="$emit('close')"
+          :disabled="disable"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
+          @click="$emit('close')"
         >
           لغو
         </button>
         <button
           :class="disable ? 'disable' : ''"
           :disabled="disable"
-          @click.prevent="moveServer()"
           class="p-4 text-center rounded-xl bg-main_blue module-btn"
+          @click.prevent="moveServer()"
         >
-          تایید
+          <p v-if="!disable">تایید</p>
+          <TheLoading v-else />
         </button>
       </div>
     </main>
@@ -51,16 +55,18 @@
 <script setup>
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
+import TheLoading from '~/components/reusable/theLoading.vue';
 const emit = defineEmits(['close']);
 const props = defineProps(['selectedServer']);
 const store = apiStore();
 const { url } = storeToRefs(store);
+const toast = useToast();
 const disable = ref(false);
 ////////
 const availables = ref({});
 const selectedLocation = ref();
 async function getAvailble() {
-  const respone = $fetch(
+  const { data: respone, error } = useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move/available`,
     {
       headers: {
@@ -68,11 +74,18 @@ async function getAvailble() {
       },
     },
   );
-  availables.value = await respone;
+  availables.value = await respone.value;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
 }
 async function moveServer() {
   disable.value = true;
-  await $fetch(
+  const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move`,
     {
       method: 'POST',
@@ -84,6 +97,13 @@ async function moveServer() {
       }),
     },
   );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   emit('close');
 }
 await getAvailble();

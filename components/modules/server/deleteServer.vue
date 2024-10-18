@@ -7,8 +7,9 @@
         class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
       >
         <button
-          @click="$emit('close')"
+          :disabled="disable"
           class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+          @click="$emit('close')"
         >
           X
         </button>
@@ -20,16 +21,19 @@
         </p>
         <div class="grid grid-cols-2 gap-3">
           <button
-            @click="$emit('close')"
+            :disabled="disable"
             class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
+            @click="$emit('close')"
           >
             لغو
           </button>
           <button
+            :disabled="disable"
+            class="p-4 flex justify-center text-center rounded-xl bg-main_red module-btn"
             @click.prevent="deleteTheServer()"
-            class="p-4 text-center rounded-xl bg-main_red module-btn"
           >
-            حذف سرور
+            <p v-if="disable">حذف سرور</p>
+            <TheLoading v-else />
           </button>
         </div>
       </main>
@@ -37,19 +41,35 @@
   </div>
 </template>
 <script setup>
+import TheLoading from '~/components/reusable/theLoading.vue';
+
 const emit = defineEmits(['close']);
 const props = defineProps(['selectedServer']);
 const route = useRoute();
+const toast = useToast();
+const disable = ref(false);
 const router = useRouter();
 const store = apiStore();
 const { url } = storeToRefs(store);
 async function deleteTheServer() {
-  await $fetch(`${url.value}/api/v4/tservers/${props.selectedServer.uuid}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+  disable.value = true;
+  const { error } = await useFetch(
+    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     },
-  });
+  );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  disable.value = true;
   emit('close');
   if (route.path != '/tservers') router.back();
 }

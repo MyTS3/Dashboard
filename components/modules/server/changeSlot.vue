@@ -8,8 +8,8 @@
       <button
         :class="{ 'bg-main_red/50': disable }"
         :disabled="disable"
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -31,8 +31,8 @@
           <p>1024</p>
         </div>
         <input
-          :disabled="disable"
           v-model="selectedSlot"
+          :disabled="disable"
           class="w-full"
           type="range"
           min="1"
@@ -65,18 +65,22 @@
       </div>
       <button
         :disabled="disable"
+        class="w-full p-4 flex justify-center bg-main_blue rounded-xl mt-8 mb-2"
         @click.prevent="chaneSlots()"
-        class="w-full p-4 bg-main_blue rounded-xl mt-8 mb-2"
       >
-        تایید و تغییر اسلات
+        <p v-if="!disable">تایید و تغییر اسلات</p>
+        <TheLoading v-else />
       </button>
     </main>
   </section>
   <!-- //////////////////price eneded////////////// -->
 </template>
 <script setup>
+import TheLoading from '~/components/reusable/theLoading.vue';
+
 const disable = ref(false);
 const props = defineProps(['selectedServer']);
+const toast = useToast();
 const emit = defineEmits(['close']);
 const selectedSlot = ref(16);
 const store = apiStore();
@@ -84,7 +88,7 @@ const { url } = storeToRefs(store);
 async function chaneSlots() {
   disable.value = true;
   const slots = 2 ** (Number(selectedSlot.value) + 3);
-  await $fetch(
+  const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/change-slots`,
     {
       method: 'POST',
@@ -96,6 +100,14 @@ async function chaneSlots() {
       }),
     },
   );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  disable.value = false;
   emit('close');
 }
 </script>
