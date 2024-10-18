@@ -179,7 +179,7 @@ async function makeServer() {
 }
 
 async function getAvailble() {
-  const respone = $fetch(
+  const { data: respone, error } = useFetch(
     `${url.value}/api/v4/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
     {
       headers: {
@@ -187,7 +187,14 @@ async function getAvailble() {
       },
     },
   );
-  availables.value = await respone;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  availables.value = await respone.value;
 }
 await getAvailble();
 watch(serverName, () => {

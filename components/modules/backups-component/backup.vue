@@ -64,9 +64,9 @@
       </button>
     </Table>
     <DeleteBackups
+      v-if="deleteBackupTab"
       :selecteduuid="selecteduuid"
       @close="(deleteBackupTab = false), getBackups()"
-      v-if="deleteBackupTab"
     />
     <restoreBackup
       v-if="deployBackupTab"

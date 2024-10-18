@@ -41,33 +41,46 @@
         <option :value="'weekly'">هفتگی</option>
       </select>
       <button
-        class="w-full p-4 bg-main_blue rounded-xl mt-8 mb-2"
+        :class="disable ? 'opacity-45' : ''"
+        class="w-full flex p-4 bg-main_blue rounded-xl mt-8 mb-2 justify-center"
         @click="create()"
       >
-        افزودن
+        <p v-if="!disable">افزودن</p>
+        <TheLoading v-else />
       </button>
     </main>
   </section>
 </template>
 <script setup>
+import TheLoading from '~/components/reusable/theLoading.vue';
+
+const disable = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const emit = defineEmits(['close']);
-
+const toast = useToast();
 const interval = ref();
 const serverUuid = ref();
 const servers = ref();
 async function getServers() {
-  const response = await $fetch(`${url.value}/api/v4/tservers/`, {
+  const { data, error } = useFetch(`${url.value}/api/v4/tservers/`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
-  servers.value = response;
+  servers.value = data.value;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
 }
 async function create() {
-  await $fetch(`${url.value}/api/v4/snapshots`, {
+  disable.value = true;
+  const { error } = await useFetch(`${url.value}/api/v4/snapshots`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -77,6 +90,14 @@ async function create() {
       interval: interval.value,
     }),
   });
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  disable.value = false;
   emit('close');
 }
 await getServers();
