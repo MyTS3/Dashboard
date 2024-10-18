@@ -44,8 +44,8 @@
             <img src="/images/edit.png" alt="" />
           </button>
         </li>
-        <li v-if="selectedServer.mustRunning" class="grid gridList relative">
-          <p class="w-2/3 text-nowrap overflow-hidden mx-auto">
+        <li v-if="selectedServer.mustRunning" class="grid gridList">
+          <p class="">
             {{ selectedServer.deployedOn }}
           </p>
           <p>:موقعیت مکانی</p>
@@ -181,7 +181,7 @@ const restartServerTab = ref(false);
 const resetConfigTab = ref(false);
 const yatqaExampleTab = ref(false);
 const subdomainTab = ref(false);
-
+const toast = useToast();
 const props = defineProps(['serverInfo', 'usersCount']);
 const emit = defineEmits(['getServerDeatails']);
 const store = apiStore();
@@ -198,7 +198,7 @@ async function turnServerOffOrOn() {
   if (selectedServer.value.mustRunning === true) {
     turnOffServerTab.value = true;
   } else {
-    await $fetch(
+    const { data, error } = await useFetch(
       `${url.value}/api/v4/tservers/${selectedServer.value.uuid}/start`,
       {
         method: 'POST',
@@ -207,6 +207,13 @@ async function turnServerOffOrOn() {
         },
       },
     );
+    if (error.value) {
+      toast.add({
+        title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+        timeout: 2000,
+        color: 'red',
+      });
+    }
     getServerDeatails();
   }
 }

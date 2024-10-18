@@ -28,26 +28,37 @@
           class="p-4 text-center rounded-xl bg-main_red module-btn"
           @click="logOut()"
         >
-          تایید
+          <p v-if="!disable">تایید</p>
+          <TheLoading v-else />
         </button>
       </div>
     </main>
   </section>
 </template>
 <script setup>
+import TheLoading from '../reusable/theLoading.vue';
+
 // const props = defineProps(['selectedServer']);
 const emit = defineEmits(['close']);
 const store = apiStore();
 const { url } = storeToRefs(store);
+const toast = useToast();
 const disable = ref(false);
 async function logOut() {
   disable.value = true;
-  await $fetch(`${url.value}/api/v4/logout`, {
+  const { data, error } = await useFetch(`${url.value}/api/v4/logout`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   navigateTo('/authorization');
   localStorage.removeItem('token');
   emit('close');
