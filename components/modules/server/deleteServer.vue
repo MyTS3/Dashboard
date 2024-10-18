@@ -32,7 +32,7 @@
             class="p-4 flex justify-center text-center rounded-xl bg-main_red module-btn"
             @click.prevent="deleteTheServer()"
           >
-            <p v-if="disable">حذف سرور</p>
+            <p v-if="!disable">حذف سرور</p>
             <TheLoading v-else />
           </button>
         </div>
