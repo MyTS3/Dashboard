@@ -73,7 +73,8 @@
         class="bg-main_blue w-full p-4 flex items-center justify-center gap-2 rounded-xl"
       >
         <img src="/images/arrow-left-icon.png" alt="" />
-        <p>ورود به پنل</p>
+        <p v-if="!disable">ورود به پنل</p>
+        <TheLoading v-else />
       </button>
       <img
         style="z-index: -1"
@@ -90,6 +91,7 @@
 </template>
 <script setup>
 import { apiStore, storeToRefs } from '#imports';
+import TheLoading from '~/components/reusable/theLoading.vue';
 
 definePageMeta({
   layout: false,
@@ -113,17 +115,28 @@ if (route.query.token) {
 }
 async function signIn() {
   disable.value = true;
-  const response = await $fetch(`${url.value}/api/v4/token`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+  const { data: response, error } = await useFetch(
+    `${url.value}/api/v4/token`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        grant_type: 'password',
+        username: `${inputGmail.value}`,
+        password: `${inputPass.value}`,
+      }),
     },
-    body: JSON.stringify({
-      grant_type: 'password',
-      username: `${inputGmail.value}`,
-      password: `${inputPass.value}`,
-    }),
-  });
+  );
+  disable.value = false;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   localStorage.setItem('token', response.access_token);
   navigateTo('/tservers');
 }

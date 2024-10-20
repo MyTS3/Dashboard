@@ -33,7 +33,7 @@
           :class="disable ? 'disable' : ''"
           :disabled="disable"
           @click.prevent="kickUser()"
-          class="p-4 text-center rounded-xl bg-main_red module-btn"
+          class="p-4 flex justify-center text-center rounded-xl bg-main_red module-btn"
         >
           <p v-if="!disable">نایید</p>
           <TheLoading v-else />
@@ -53,7 +53,7 @@ const reason = ref('');
 const disable = ref(false);
 async function kickUser() {
   disable.value = true;
-  await useFetch(
+  const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-channel`,
     {
       method: 'POST',
@@ -65,6 +65,13 @@ async function kickUser() {
       }),
     },
   );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   disable.value = false;
   emit('close');
 }
