@@ -6,6 +6,7 @@
       class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
+        :disabled="disable"
         @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
       >
@@ -23,16 +24,19 @@
       </p>
       <div class="grid grid-cols-2 gap-3">
         <button
+          :disabled="disable"
           @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
         >
           لغو
         </button>
         <button
+          :disabled="disable"
           @click.prevent="deleteBan()"
-          class="p-4 text-center rounded-xl bg-main_red module-btn"
+          class="p-4 text-center flex justify-center rounded-xl bg-main_red module-btn"
         >
-          حذف
+          <p v-if="disable">حذف</p>
+          <TheLoading v-else />
         </button>
       </div>
     </main>
@@ -41,13 +45,16 @@
 <script setup>
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
+import TheLoading from '~/components/reusable/theLoading.vue';
 //variables
 const store = apiStore();
 const { url } = storeToRefs(store);
 const props = defineProps(['unBaning', 'selectedServer']);
+const disable = ref(false);
 const emit = defineEmits(['close']);
 async function deleteBan() {
-  await $fetch(
+  disable.value = true;
+  const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/bans/${props.unBaning.banid}`,
     {
       method: 'DELETE',
@@ -56,6 +63,14 @@ async function deleteBan() {
       },
     },
   );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  disable.value = false;
   emit('close');
 }
 </script>

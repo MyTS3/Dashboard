@@ -29,16 +29,19 @@
         <button
           :class="disable ? 'disable' : ''"
           :disabled="disable"
-          class="p-4 text-center rounded-xl bg-main_red module-btn"
+          class="p-4 flex justify-center text-center rounded-xl bg-main_red module-btn"
           @click="changeYatqaPass()"
         >
-          تایید
+          <p v-if="!disable">تایید</p>
+          <TheLoading v-else />
         </button>
       </div>
     </main>
   </section>
 </template>
 <script setup>
+import TheLoading from '~/components/reusable/theLoading.vue';
+
 const props = defineProps(['selectedServer']);
 const emit = defineEmits(['close']);
 const store = apiStore();
@@ -46,7 +49,7 @@ const { url } = storeToRefs(store);
 const disable = ref(false);
 async function changeYatqaPass() {
   disable.value = true;
-  await $fetch(
+  await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-password`,
     {
       method: 'POST',
@@ -55,6 +58,14 @@ async function changeYatqaPass() {
       },
     },
   );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  disable.value = false;
   emit('close');
 }
 </script>
