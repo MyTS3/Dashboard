@@ -6,6 +6,7 @@
       class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
+        :disabled="disable"
         @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
       >
@@ -18,22 +19,26 @@
       </p>
       <h2 class="text-right mt-3 mb-1">:دلیل</h2>
       <input
+        :disabled="disable"
         v-model="reasson"
         class="my-4 bg-transparent border p-3 rounded-xl text-right"
         type="text"
       />
       <div class="grid grid-cols-2 gap-3">
         <button
+          :disabled="disable"
           @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
         >
           لغو
         </button>
         <button
+          :disabled="disable"
           @click="restartServer()"
-          class="p-4 text-center rounded-xl bg-main_red module-btn"
+          class="p-4 flex justify-center text-center rounded-xl bg-main_red module-btn"
         >
-          تایید
+          <p v-if="disable">تایید</p>
+          <TheLoading v-else />
         </button>
       </div>
     </main>
@@ -41,13 +46,16 @@
 </template>
 <script setup>
 import { apiStore, storeToRefs } from '#imports';
+import TheLoading from '~/components/reusable/theLoading.vue';
 const props = defineProps(['selectedServer']);
 const emit = defineEmits(['emit']);
 const store = apiStore();
 const { url } = storeToRefs(store);
+const disable = ref(false);
 const reasson = ref();
 async function restartServer() {
-  await $fetch(
+  disable.value = true;
+  const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/restart`,
     {
       method: 'POST',
@@ -59,6 +67,14 @@ async function restartServer() {
       }),
     },
   );
+  disable.value = false;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   emit('close');
 }
 </script>

@@ -6,6 +6,7 @@
       class="text-white min-w-[30rem] w-2/5 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
+        :disabled="disable"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
         @click="$emit('close')"
       >
@@ -39,11 +40,13 @@
         </div>
         <div class="table items items-center text-center rounded-lg">
           <input
+            :disabled="disable"
             v-model="subToAdd"
             class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
             type="text"
           />
           <select
+            :disabled="disable"
             v-model="domainToAdd"
             class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
           >
@@ -65,37 +68,51 @@
         </div>
       </div>
       <button
-        :class="submitDisable ? 'opacity-45' : ''"
-        :disabled="submitDisable"
+        :class="disable ? 'opacity-45' : ''"
+        :disabled="disable"
         class="w-full p-4 bg-main_blue rounded-xl my-2"
         @click="submitSubdomains()"
       >
-        <p>اعمال تغییرات</p>
+        <p v-if="disable">اعمال تغییرات</p>
+        <TheLoading v-else />
       </button>
     </main>
   </section>
 </template>
 <script setup>
+import TheLoading from '~/components/reusable/theLoading.vue';
+
 const store = apiStore();
 const { url } = storeToRefs(store);
 const emit = defineEmits(['close']);
 const domainList = ref();
 const domainToAdd = ref();
 const subToAdd = ref('');
+const disable = ref(false);
 
 async function getDomain() {
-  const response = await $fetch(`${url.value}/api/v4/tdomains`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+  const { data: response, error } = await useFetch(
+    `${url.value}/api/v4/tdomains`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     },
-  });
-  domainList.value = await response;
+  );
+  domainList.value = await response.value;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
 }
 
 const subDomainList = ref();
 const props = defineProps(['selectedServer']);
 async function subDomains() {
-  const respone = await $fetch(
+  const { data: respone, error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
     {
       method: 'GET',
@@ -104,6 +121,13 @@ async function subDomains() {
       },
     },
   );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   subDomainList.value = await respone;
 }
 function addToList() {
@@ -115,6 +139,7 @@ function addToList() {
   domainToAdd.value = undefined;
 }
 function deleteSubDomain(i) {
+  disable.value = true;
   const newList = [];
   let index = 0;
   subDomainList.value.forEach((subdomain) => {
@@ -126,7 +151,7 @@ function deleteSubDomain(i) {
   subDomainList.value = newList;
 }
 async function submitSubdomains() {
-  await $fetch(
+  await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
     {
       method: 'PUT',
@@ -138,6 +163,14 @@ async function submitSubdomains() {
       }),
     },
   );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  disable.value = false;
   emit('close');
 }
 await subDomains();

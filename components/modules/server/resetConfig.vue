@@ -6,6 +6,7 @@
       class="text-white min-w-[25rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
     >
       <button
+        :disabled="disable"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
         @click="$emit('close')"
       >
@@ -19,6 +20,7 @@
       <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
       <from class="w-full my-4">
         <select
+          :disabled="disable"
           v-model="selectedConfigue"
           class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
           name="locations"
@@ -37,10 +39,11 @@
         <button
           :class="disable ? 'disable' : ''"
           :disabled="disable"
-          class="p-4 text-center rounded-xl bg-main_red module-btn"
+          class="p-4 text-center flex justify-center rounded-xl bg-main_red module-btn"
           @click.prevent="changeConfigue()"
         >
-          تایید
+          <p v-if="!disable">تایید</p>
+          <TheLoading v-else />
         </button>
       </div>
     </main>
@@ -49,6 +52,7 @@
 <script setup>
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
+import TheLoading from '~/components/reusable/theLoading.vue';
 const emit = defineEmits(['close']);
 const props = defineProps(['selectedServer']);
 const store = apiStore();
@@ -59,7 +63,7 @@ const availables = ref({});
 const selectedConfigue = ref();
 
 async function getAvailble() {
-  const respone = $fetch(
+  const { data: respone, error } = useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config/available`,
     {
       headers: {
@@ -67,11 +71,18 @@ async function getAvailble() {
       },
     },
   );
-  availables.value = await respone;
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  availables.value = await respone.value;
 }
 async function changeConfigue() {
   disable.value = true;
-  await $fetch(
+  const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config`,
     {
       method: 'POST',
@@ -83,6 +94,14 @@ async function changeConfigue() {
       }),
     },
   );
+  if (error.value) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
+  disable.value = false;
   emit('close');
 }
 
