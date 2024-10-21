@@ -31,7 +31,7 @@
           class="p-4 flex justify-center text-center rounded-xl bg-main_red module-btn"
           @click.prevent="deleteDomain()"
         >
-          <p v-if="disable">حذف</p>
+          <p v-if="!disable">حذف</p>
           <TheLoading v-else />
         </button>
       </div>

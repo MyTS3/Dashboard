@@ -40,14 +40,14 @@
         </div>
         <div class="table items items-center text-center rounded-lg">
           <input
-            :disabled="disable"
             v-model="subToAdd"
+            :disabled="disable"
             class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
             type="text"
           />
           <select
-            :disabled="disable"
             v-model="domainToAdd"
+            :disabled="disable"
             class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
           >
             <option
@@ -73,7 +73,7 @@
         class="w-full p-4 bg-main_blue rounded-xl my-2"
         @click="submitSubdomains()"
       >
-        <p v-if="disable">اعمال تغییرات</p>
+        <p v-if="!disable">اعمال تغییرات</p>
         <TheLoading v-else />
       </button>
     </main>

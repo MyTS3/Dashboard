@@ -7,8 +7,8 @@
     >
       <button
         :disabled="disable"
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -19,25 +19,25 @@
       </p>
       <h2 class="text-right mt-3 mb-1">:دلیل</h2>
       <input
-        :disabled="disable"
         v-model="reasson"
+        :disabled="disable"
         class="my-4 bg-transparent border p-3 rounded-xl text-right"
         type="text"
       />
       <div class="grid grid-cols-2 gap-3">
         <button
           :disabled="disable"
-          @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
+          @click="$emit('close')"
         >
           لغو
         </button>
         <button
           :disabled="disable"
-          @click="restartServer()"
           class="p-4 flex justify-center text-center rounded-xl bg-main_red module-btn"
+          @click="restartServer()"
         >
-          <p v-if="disable">تایید</p>
+          <p v-if="!disable">تایید</p>
           <TheLoading v-else />
         </button>
       </div>

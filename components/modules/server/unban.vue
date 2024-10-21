@@ -7,8 +7,8 @@
     >
       <button
         :disabled="disable"
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -25,17 +25,17 @@
       <div class="grid grid-cols-2 gap-3">
         <button
           :disabled="disable"
-          @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
+          @click="$emit('close')"
         >
           لغو
         </button>
         <button
           :disabled="disable"
-          @click.prevent="deleteBan()"
           class="p-4 text-center flex justify-center rounded-xl bg-main_red module-btn"
+          @click.prevent="deleteBan()"
         >
-          <p v-if="disable">حذف</p>
+          <p v-if="!disable">حذف</p>
           <TheLoading v-else />
         </button>
       </div>
