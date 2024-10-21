@@ -151,7 +151,7 @@ function deleteSubDomain(i) {
   subDomainList.value = newList;
 }
 async function submitSubdomains() {
-  await useFetch(
+  const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
     {
       method: 'PUT',
