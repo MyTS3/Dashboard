@@ -140,7 +140,6 @@ function addToList() {
   domainToAdd.value = undefined;
 }
 function deleteSubDomain(i) {
-  disable.value = true;
   const newList = [];
   let index = 0;
   subDomainList.value.forEach((subdomain) => {
@@ -152,6 +151,7 @@ function deleteSubDomain(i) {
   subDomainList.value = newList;
 }
 async function submitSubdomains() {
+  disable.value = true;
   const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
     {
