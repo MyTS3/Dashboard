@@ -7,16 +7,16 @@
     >
       <button
         :disabled="disable"
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
       <h1 class="my-4">کیک از چنل</h1>
       <label class="text-right">:دلیل</label>
       <input
-        :disabled="disable"
         v-model="reason"
+        :disabled="disable"
         class="my-4 bg-transparent border p-3 rounded-xl text-right"
         type="text"
       />
@@ -24,16 +24,16 @@
         <button
           :class="disable ? 'disable' : ''"
           :disabled="disable"
-          @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
+          @click="$emit('close')"
         >
           لغو
         </button>
         <button
           :class="disable ? 'disable' : ''"
           :disabled="disable"
-          @click.prevent="kickUser()"
           class="p-4 flex justify-center text-center rounded-xl bg-main_red module-btn"
+          @click.prevent="kickUser()"
         >
           <p v-if="!disable">نایید</p>
           <TheLoading v-else />
@@ -51,6 +51,7 @@ const props = defineProps(['serverInfo', 'user']);
 const emit = defineEmits('close');
 const reason = ref('');
 const disable = ref(false);
+const toast = useToast();
 async function kickUser() {
   disable.value = true;
   const { error } = await useFetch(

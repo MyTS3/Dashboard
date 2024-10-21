@@ -52,6 +52,7 @@ const { url } = storeToRefs(store);
 const props = defineProps(['unBaning', 'selectedServer']);
 const disable = ref(false);
 const emit = defineEmits(['close']);
+const toast = useToast();
 async function deleteBan() {
   disable.value = true;
   const { error } = await useFetch(

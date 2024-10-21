@@ -47,6 +47,7 @@ const emit = defineEmits(['close']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
+const toast = useToast();
 async function changeYatqaPass() {
   disable.value = true;
   await useFetch(

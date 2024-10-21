@@ -53,6 +53,7 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
 const reasson = ref();
+const toast = useToast();
 async function restartServer() {
   disable.value = true;
   const { error } = await useFetch(

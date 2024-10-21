@@ -7,8 +7,8 @@
     >
       <button
         :disabled="disable"
-        @click="$emit('close')"
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+        @click="$emit('close')"
       >
         X
       </button>
@@ -20,15 +20,15 @@
       <div class="grid grid-cols-2 gap-3">
         <button
           :disabled="disable"
-          @click="$emit('close')"
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
+          @click="$emit('close')"
         >
           لغو
         </button>
         <button
           :disabled="disable"
-          @click.prevent="turnOffserver()"
           class="p-4 text-center rounded-xl bg-main_red module-btn"
+          @click.prevent="turnOffserver()"
         >
           <p v-if="!disable">خاموش</p>
           <TheLoading v-else />
@@ -46,6 +46,7 @@ const emit = defineEmits(['close']);
 const disable = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
+const toast = useToast();
 async function turnOffserver() {
   disable.value = true;
   const { error } = await useFetch(

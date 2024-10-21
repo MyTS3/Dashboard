@@ -20,8 +20,8 @@
       <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
       <from class="w-full my-4">
         <select
-          :disabled="disable"
           v-model="selectedConfigue"
+          :disabled="disable"
           class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
           name="locations"
         >
@@ -58,7 +58,7 @@ const props = defineProps(['selectedServer']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
-
+const toast = useToast();
 const availables = ref({});
 const selectedConfigue = ref();
 

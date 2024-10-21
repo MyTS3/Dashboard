@@ -9,7 +9,7 @@
     />
     <div
       class="absolute pointer-events-none blur-lg w-screen min-h-screen top-0 left-0 z-60"
-    ></div>
+    />
     <main
       style="width: 30rem"
       class="border-t isolate border-l border-r mx-auto rounded-2xl z-50 bg-mainbg_600 text-white p-4 relative"
@@ -56,9 +56,9 @@
               src="/images/Lock-icon.png"
             />
             <img
-              @click.prevent="showPass()"
               class="w-6 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
               src="/images/Eye.png"
+              @click.prevent="showPass()"
             />
           </div>
         </div>
@@ -69,8 +69,8 @@
       <button
         :class="disable ? 'disable' : ''"
         :disabled="disable"
-        @click="signIn()"
         class="bg-main_blue w-full p-4 flex items-center justify-center gap-2 rounded-xl"
+        @click="signIn()"
       >
         <img src="/images/arrow-left-icon.png" alt="" />
         <p v-if="!disable">ورود به پنل</p>
@@ -104,7 +104,7 @@ const inputGmail = ref();
 const inputPass = ref();
 const route = useRoute();
 const disable = ref(false);
-
+const toast = useToast();
 function showPass() {
   if (password.value == 'password') password.value = 'text';
   else password.value = 'password';

@@ -89,6 +89,7 @@ const domainList = ref();
 const domainToAdd = ref();
 const subToAdd = ref('');
 const disable = ref(false);
+const toast = useToast();
 
 async function getDomain() {
   const { data: response, error } = await useFetch(
