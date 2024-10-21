@@ -70,7 +70,7 @@
       <button
         :class="disable ? 'opacity-45' : ''"
         :disabled="disable"
-        class="w-full p-4 bg-main_blue rounded-xl my-2"
+        class="w-full flex justify-center p-4 bg-main_blue rounded-xl my-2"
         @click="submitSubdomains()"
       >
         <p v-if="!disable">اعمال تغییرات</p>
