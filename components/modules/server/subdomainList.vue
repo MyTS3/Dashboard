@@ -128,7 +128,7 @@ async function subDomains() {
       color: 'red',
     });
   }
-  subDomainList.value = await respone;
+  subDomainList.value = await respone.value;
 }
 function addToList() {
   subDomainList.value.push({
