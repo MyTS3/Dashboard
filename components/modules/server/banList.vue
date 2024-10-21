@@ -82,7 +82,7 @@ async function getBanList() {
     },
   );
   banList.value = await respone.value;
-  disable.value = false;
+
   if (error.value) {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
