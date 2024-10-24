@@ -40,14 +40,14 @@
           <div v-for="domain in domainList" :key="domain" class="table items">
             <p class="font-semibold">{{ domain.domain }}</p>
             <div
-              v-if="true"
+              v-if="domain.active"
               class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_green/15"
             >
               <img class="w-5" src="/images/check.png" alt="" />
               <p class="font-bold text-sm text-main_green">فعال</p>
             </div>
             <div
-              v-if="false"
+              v-else
               class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_orange/15"
             >
               <img class="w-5" src="/images/waiting.png" alt="" />
@@ -55,6 +55,7 @@
             </div>
             <p>{{ timeAgo.format(new Date(domain.createdAt)) }}</p>
             <img
+              v-if="!domain.public"
               class="cursor-pointer"
               src="/images/trash.png"
               alt=""
