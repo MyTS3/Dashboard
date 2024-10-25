@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div class="min-h-1 flex-1">
     <div
       v-if="status == 'error'"
       class="w-full text-center p-5 bg-main_orange rounded-xl"
@@ -8,15 +8,15 @@
         پنل از دسترس خارج شده و به زودی در دسترس قرار میگیرد
       </p>
     </div>
-    <Table v-else class="flex">
-      <div class="h-full overflow-scroll">
+    <Table v-else>
+      <div>
         <div class="table bg-mainbg_300 rounded-t-2xl">
           <p>نام</p>
           <p>تعداد اسلات</p>
           <p>تاریخ ساخت</p>
           <p>عمل</p>
         </div>
-        <div class="h-full overflow-scroll">
+        <div class="overflow-scroll">
           <template v-if="status !== 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
@@ -38,7 +38,7 @@
             </div>
           </template>
           <template v-else>
-            <div class="h-1 flex flex-col">
+            <div class="flex flex-col">
               <div
                 v-for="server in servers"
                 :key="server.uuid"
