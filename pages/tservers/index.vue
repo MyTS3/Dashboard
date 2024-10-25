@@ -57,19 +57,6 @@
                     @click="removeServer(server.name, server.uuid)"
                   />
                 </div>
-                <div v-for="server in 20" :key="server" class="table items">
-                  <p class="cursor-pointer" @click="serverClicked(server)">
-                    server.name
-                  </p>
-                  <p>12</p>
-                  <p>1</p>
-                  <img
-                    class="cursor-pointer"
-                    src="/images/trash.png"
-                    alt=""
-                    @click="removeServer(server.name, server.uuid)"
-                  />
-                </div>
               </div>
             </template>
           </div>
