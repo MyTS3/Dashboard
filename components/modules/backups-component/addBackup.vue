@@ -69,7 +69,7 @@ async function getServers() {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
-  servers.value = data.value;
+  servers.value = await data.value;
   if (error.value) {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
