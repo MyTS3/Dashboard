@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-1 flex-1">
+  <div class="min-h-0 flex-1 mb-28">
     <div
       v-if="status == 'error'"
       class="w-full text-center p-5 bg-main_orange rounded-xl"
@@ -8,66 +8,81 @@
         پنل از دسترس خارج شده و به زودی در دسترس قرار میگیرد
       </p>
     </div>
-    <Table v-else>
-      <div>
-        <div class="table bg-mainbg_300 rounded-t-2xl">
-          <p>نام</p>
-          <p>تعداد اسلات</p>
-          <p>تاریخ ساخت</p>
-          <p>عمل</p>
-        </div>
-        <div class="overflow-scroll">
-          <template v-if="status !== 'success'">
-            <div v-for="_ in 5" :key="_" class="table items">
-              <USkeleton
-                class="h-5 w-40"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-20"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-20"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-10"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <div class="flex flex-col">
-              <div
-                v-for="server in servers"
-                :key="server.uuid"
-                class="table items"
-              >
-                <p class="cursor-pointer" @click="serverClicked(server)">
-                  {{ server.name }}
-                </p>
-                <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
-                <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
-                <img
-                  class="cursor-pointer"
-                  src="/images/trash.png"
-                  alt=""
-                  @click="removeServer(server.name, server.uuid)"
+    <template v-else>
+      <div class="table bg-mainbg_300 rounded-t-2xl">
+        <p>نام</p>
+        <p>تعداد اسلات</p>
+        <p>تاریخ ساخت</p>
+        <p>عمل</p>
+      </div>
+      <Table>
+        <div>
+          <div>
+            <template v-if="status !== 'success'">
+              <div v-for="_ in 5" :key="_" class="table items">
+                <USkeleton
+                  class="h-5 w-40"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-20"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-20"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-10"
+                  :ui="{ background: 'dark:bg-gray-500' }"
                 />
               </div>
-            </div>
-          </template>
+            </template>
+            <template v-else>
+              <div class="flex flex-col">
+                <div
+                  v-for="server in servers"
+                  :key="server.uuid"
+                  class="table items"
+                >
+                  <p class="cursor-pointer" @click="serverClicked(server)">
+                    {{ server.name }}
+                  </p>
+                  <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
+                  <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
+                  <img
+                    class="cursor-pointer"
+                    src="/images/trash.png"
+                    alt=""
+                    @click="removeServer(server.name, server.uuid)"
+                  />
+                </div>
+                <div v-for="server in 20" :key="server" class="table items">
+                  <p class="cursor-pointer" @click="serverClicked(server)">
+                    server.name
+                  </p>
+                  <p>12</p>
+                  <p>1</p>
+                  <img
+                    class="cursor-pointer"
+                    src="/images/trash.png"
+                    alt=""
+                    @click="removeServer(server.name, server.uuid)"
+                  />
+                </div>
+              </div>
+            </template>
+          </div>
         </div>
-      </div>
-      <button
-        class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
-        @click.prevent="makeServerTab = true"
-      >
-        ساخت سرور
-        <img src="/images/addon.png" alt="" />
-      </button>
-    </Table>
+      </Table>
+    </template>
+    <button
+      class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      @click.prevent="makeServerTab = true"
+    >
+      ساخت سرور
+      <img src="/images/addon.png" alt="" />
+    </button>
     <makeServer
       v-if="makeServerTab"
       :selected-server="selectedServer"
