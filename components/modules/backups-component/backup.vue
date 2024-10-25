@@ -1,13 +1,13 @@
 <template>
-  <section class="h-full">
-    <Table class="flex">
-      <div class="h-full overflow-scroll">
-        <div class="table bg-mainbg_300 rounded-t-2xl">
-          <p>سرور</p>
-          <p>تاریخ</p>
-          <p>عمل</p>
-        </div>
-        <div class="h-full overflow-scroll">
+  <section class="min-h-0 flex-1 mb-28">
+    <div class="table bg-mainbg_300 rounded-t-2xl">
+      <p>سرور</p>
+      <p>تاریخ</p>
+      <p>عمل</p>
+    </div>
+    <Table>
+      <div>
+        <div>
           <template v-if="status !== 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
@@ -25,7 +25,7 @@
             </div>
           </template>
           <template v-else>
-            <div class="h-1">
+            <div>
               <div v-for="backup in backups" :key="backup" class="table items">
                 <p class="font-semibold">{{ backup.tserver.name }}</p>
                 <p>{{ backup.createdAt }}</p>
@@ -55,14 +55,14 @@
           </template>
         </div>
       </div>
-      <button
-        class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
-        @click="$emit('opentab')"
-      >
-        افزودن
-        <img src="/images/addon.png" alt="" />
-      </button>
     </Table>
+    <button
+      class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      @click="$emit('opentab')"
+    >
+      افزودن
+      <img src="/images/addon.png" alt="" />
+    </button>
     <DeleteBackups
       v-if="deleteBackupTab"
       :selecteduuid="selecteduuid"
