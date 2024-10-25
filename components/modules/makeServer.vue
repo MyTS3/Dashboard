@@ -21,6 +21,7 @@
           برای ساخت سرور اطلاعات زیر را کامل کنید
         </p>
       </header>
+
       <div class="flex flex-col relative">
         <label class="text-right font-medium mb-4">نام سرور</label>
         <input
@@ -30,8 +31,10 @@
           class="bg-transparent border rounded-lg p-4 outline-none"
           type="text"
         />
+
         <p class="absolute right-8 bottom-4 text-blue-300/60">.v4.myts3.ir</p>
       </div>
+      <p class="text-xs mt-2 ml-auto text-main_red">{{ disableReasson }}</p>
       <P class="text-right font-medium mt-3"
         >لطفا کانفیگ سرور خودرا انتخاب کنید</P
       >
@@ -97,22 +100,21 @@
         </div>
       </div>
       <!-- //////////////////price eneded////////////// -->
-      <UTooltip :text="disableReasson">
-        <button
-          :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
-          :disabled="submitDisable"
-          class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2"
-          @click.prevent="makeServer()"
+
+      <button
+        :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
+        :disabled="submitDisable"
+        class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2"
+        @click.prevent="makeServer()"
+      >
+        <div
+          v-if="!disableInputs"
+          class="flex w-full items-center justify-center font-medium gap-2"
         >
-          <div
-            v-if="!disableInputs"
-            class="flex w-full items-center justify-center font-medium gap-2"
-          >
-            <span><img src="/images/plus.png" alt="" /></span>ساخت
-          </div>
-          <loading v-if="disableInputs" />
-        </button>
-      </UTooltip>
+          <span><img src="/images/plus.png" alt="" /></span>ساخت
+        </div>
+        <loading v-if="disableInputs" />
+      </button>
     </main>
     <serverToken
       v-if="serverTokenTab"
@@ -137,9 +139,9 @@ const slot = ref(1);
 const serverName = ref();
 const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
-const submitDisable = ref(true);
+const submitDisable = ref();
 const availables = ref();
-const disableReasson = ref('لطفا نام را وارد کنید');
+const disableReasson = ref('');
 let token = ref();
 let tsURL = ref();
 let tsuuid = ref();
@@ -199,7 +201,7 @@ async function getAvailble() {
 await getAvailble();
 watch(serverName, () => {
   submitDisable.value = false;
-  disableReasson.value = 'نام انتخاب شده مناسب است';
+  disableReasson.value = '';
   if (serverName.value.length < 3) {
     submitDisable.value = true;
     disableReasson.value = 'لطفا نام را وارد کنید';
