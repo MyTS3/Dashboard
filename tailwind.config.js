@@ -10,6 +10,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        "yekan-bakh": ["yekan-bakh", "Arial", "sans-serif"]
+      },
       colors: {
         mainbg_300: 'rgba(56, 61, 99, 1)',
         mainbg_400: 'rgba(37, 41, 67, 1)',

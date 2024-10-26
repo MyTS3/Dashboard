@@ -1,0 +1,81 @@
+/* Yekan Bakh */
+
+/* Hairline - 100 */
+@font-face {
+    font-family: "yekan-bakh";
+    font-style: normal;
+    font-weight: 100;
+    src: url('WebFont/YekanBakhFA01Hairline.woff') format('woff'),
+    url('TrueType/YekanBakhFA01Hairline.ttf') format('truetype'),
+    url('OpenType/YekanBakhFA01Hairline.eot') format('embedded-opentype');
+}
+
+/* Thin - 200 */
+@font-face {
+    font-family: "yekan-bakh";
+    font-style: normal;
+    font-weight: 200;
+    src: url('WebFont/YekanBakhFA02Thin.woff') format('woff'),
+    url('TrueType/YekanBakhFA02Thin.ttf') format('truetype'),
+    url('OpenType/YekanBakhFA02Thin.eot') format('embedded-opentype');
+}
+
+/* Light - 300 */
+@font-face {
+    font-family: "yekan-bakh";
+    font-style: normal;
+    font-weight: 300;
+    src: url('WebFont/YekanBakhFA03Light.woff') format('woff'),
+    url('TrueType/YekanBakhFA03Light.ttf') format('truetype'),
+    url('OpenType/YekanBakhFA03Light.eot') format('embedded-opentype');
+}
+
+/* Regular - 400 */
+@font-face {
+    font-family: "yekan-bakh";
+    font-style: normal;
+    font-weight: 400;
+    src: url('WebFont/YekanBakhFA04Regular.woff') format('woff'),
+    url('TrueType/YekanBakhFA04Regular.ttf') format('truetype'),
+    url('OpenType/YekanBakhFA04Regular.eot') format('embedded-opentype');
+}
+
+/* Medium - 500 */
+@font-face {
+    font-family: "yekan-bakh";
+    font-style: normal;
+    font-weight: 500;
+    src: url('WebFont/YekanBakhFA05Medium.woff') format('woff'),
+    url('TrueType/YekanBakhFA05Medium.ttf') format('truetype'),
+    url('OpenType/YekanBakhFA05Medium.eot') format('embedded-opentype');
+}
+
+/* Bold - 700 */
+@font-face {
+    font-family: "yekan-bakh";
+    font-style: normal;
+    font-weight: 700;
+    src: url('WebFont/YekanBakhFA06Bold.woff') format('woff'),
+    url('TrueType/YekanBakhFA06Bold.ttf') format('truetype'),
+    url('OpenType/YekanBakhFA06Bold.eot') format('embedded-opentype');
+}
+
+/* Heavy - 900 */
+@font-face {
+    font-family: "yekan-bakh";
+    font-style: normal;
+    font-weight: 900;
+    src: url('WebFont/YekanBakhFA07Heavy.woff') format('woff'),
+    url('TrueType/YekanBakhFA07Heavy.ttf') format('truetype'),
+    url('OpenType/YekanBakhFA07Heavy.eot') format('embedded-opentype');
+}
+
+/* Fat - 950 */
+@font-face {
+    font-family: "yekan-bakh";
+    font-style: normal;
+    font-weight: 950;
+    src: url('WebFont/YekanBakhFA08Fat.woff') format('woff'),
+    url('TrueType/YekanBakhFA08Fat.ttf') format('truetype'),
+    url('OpenType/YekanBakhFA08Fat.eot') format('embedded-opentype');
+}
