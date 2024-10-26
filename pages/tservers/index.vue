@@ -61,11 +61,11 @@
         </div>
       </div>
       <button
-        class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+        class="flex w-full items-center gap-0.5 justify-center btn rounded-xl mt-auto py-3"
         @click.prevent="makeServerTab = true"
       >
-        ساخت سرور
         <img src="/images/addon.png" alt="" />
+        ساخت سرور
       </button>
     </Table>
     <makeServer

@@ -47,11 +47,11 @@
         </div>
       </div>
       <button
-        class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+        class="flex w-full items-center justify-center gap-0.5 btn rounded-xl mt-auto py-3"
         @click="$emit('opentab')"
       >
-        افزودن
         <img src="/images/addon.png" alt="" />
+        افزودن
       </button>
     </Table>
     <DeleteInterval
