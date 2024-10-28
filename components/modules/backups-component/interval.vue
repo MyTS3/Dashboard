@@ -1,6 +1,6 @@
 <template>
   <section class="min-h-0 flex-1 mb-28">
-    <div class="table bg-mainbg_300 rounded-t-2xl">
+    <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>سرور</p>
       <p>دوره</p>
       <p>عمل</p>

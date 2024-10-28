@@ -9,7 +9,7 @@
       </p>
     </div>
     <template v-else>
-      <div class="table bg-mainbg_300 rounded-t-2xl">
+      <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
         <p>دامنه</p>
         <p>وضغیت</p>
         <p>تاریخ ثبت</p>
