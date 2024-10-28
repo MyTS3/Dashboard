@@ -2,7 +2,7 @@
   <div class="min-h-1 flex-1">
     <div
       v-if="status == 'error'"
-      class="w-full text-center p-5 bg-main_orange rounded-xl"
+      class="w-full text-center p-5 bg-main_orange/50 rounded-xl"
     >
       <p class="font-bold">
         پنل از دسترس خارج شده و به زودی در دسترس قرار میگیرد

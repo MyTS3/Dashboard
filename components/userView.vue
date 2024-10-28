@@ -41,7 +41,7 @@
         <button
           :class="disable ? 'btn-disable' : 'btn'"
           :disabled="disable"
-          class="w-full h-full flex justify-center items-center rounded-tl-lg parent"
+          class="w-full h-20 flex justify-center items-center rounded-tl-xl parent"
           @click="banUserTab = true"
         >
           <p>بن از سرور</p>
@@ -50,7 +50,7 @@
       </UTooltip>
       <button
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        class="flex justify-center items-center gap-2 py-2 btn rounded-tr-lg"
+        class="flex h-20 justify-center items-center gap-2 py-2 btn rounded-tr-xl"
         @click="kickFromServerTab = true"
       >
         <p>کیک از سرور</p>
@@ -58,7 +58,7 @@
       </button>
       <button
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        class="flex justify-center items-center gap-2 py-2 btn rounded-bl-lg"
+        class="flex h-20 justify-center items-center gap-2 py-2 btn rounded-bl-xl"
         @click="servergroupsTab = true"
       >
         <p>رنک ها</p>
@@ -66,7 +66,7 @@
       </button>
       <button
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        class="flex justify-center items-center gap-2 py-2 btn rounded-br-lg"
+        class="flex h-20 justify-center items-center gap-2 py-2 btn rounded-br-xl"
         @click="kickFromChannelTab = true"
       >
         <p>کیک از چنل</p>

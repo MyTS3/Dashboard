@@ -1,4 +1,4 @@
-@import "../fonts/yekan_bakh.css";
+@import '../fonts/yekan_bakh.css';
 
 @tailwind base;
 @tailwind components;
@@ -20,18 +20,19 @@ img {
 * {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  color: #c0d6f0;
 }
 
 @layer base {
-  * {
+  body {
     @apply font-yekan-bakh duration-[0.2s];
   }
 }
 
 /* //////////////////////////////////////////// */
 .btn {
-  border: 1px solid white;
-  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid #c0d6f0;
+  background: rgba(37, 41, 67, 1);
 }
 .btn-disable {
   border: 2px solid rgba(255, 255, 255, 0.342);
@@ -40,7 +41,11 @@ img {
 }
 .btn:hover {
   border-color: rgba(255, 158, 11, 1);
+  color: rgba(255, 158, 11, 1);
   background-color: rgba(255, 158, 11, 0.1);
+}
+.btn:hover > img {
+  opacity: 0.6;
 }
 .activePanel {
   background-image: linear-gradient(to left, #141931, rgba(0, 149, 255, 0));
@@ -48,8 +53,13 @@ img {
   border-top-right-radius: 1rem;
 }
 .btn-active {
-  background-color: rgba(255, 158, 11, 1);
-  border-color: rgba(255, 158, 11, 1);
+  background-color: #ec6600;
+  border-color: #ec6600;
+  color: black;
+}
+
+.btn-active > * {
+  color: black;
 }
 
 .teamspeak img {

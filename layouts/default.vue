@@ -9,13 +9,13 @@
         <div class="">
           <header class="w-full flex justify-between flex-row-reverse">
             <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
-              داشبورد
+              سرور ها
             </h1>
             <h1 v-if="$route.name == 'domains'" class="font-medium text-xl">
-              دامین ها
+              دامنه ها
             </h1>
             <h1 v-if="$route.name == 'backups'" class="font-medium text-xl">
-              بک اپ ها
+              بکاپ ها
             </h1>
             <button
               v-if="
@@ -23,35 +23,34 @@
                 $route.name != 'domains' &&
                 $route.name != 'backups'
               "
-              class="btn h-12 p-3 flex items-center rounded-lg"
+              class="btn h-12 p-3 flex items-center rounded-xl"
               @click="$router.back()"
             >
               <img class="" src="/images/Arrow-Right.png" alt="" />
             </button>
             <div class="flex gap-4">
               <button
-                class="flex items-center flex-row-reverse gap-1 p-3 rounded-lg btn"
+                class="flex items-center flex-row-reverse gap-1 p-3 rounded-xl btn text-xs"
               >
-                <img src="/images/User.png" alt="user" />
-                <p class="text-xs">{{ name }}</p>
+                <img class="h-6 w-6" src="/images/group_500.svg" alt="user" />
+                {{ name }}
               </button>
-              <button class="flex gap-1 btn p-3 px-4 rounded-lg">
-                <p>تومان</p>
-                <p>۴۴,۰۰۰</p>
-                <img src="/images/Wallet.png" alt="bell" />
+              <button class="flex gap-1 btn p-3 px-4 rounded-xl">
+                تومان ۴۴,۰۰۰
+                <img
+                  src="/images/bookmark_duplicate.svg"
+                  class="h-6 w-6"
+                  alt="bell"
+                />
               </button>
             </div>
           </header>
         </div>
         <div
           v-if="panelAlert"
-          class="flex w-full relative flex-row-reverse bg-main_red p-5 gap-4 rounded-xl items-center"
+          class="flex w-full relative flex-row-reverse bg-main_red/50 p-5 gap-4 rounded-xl items-center"
         >
-          <img
-            class="bg-white p-1.5 rounded-lg"
-            src="/images/bell-alarm.png"
-            alt="bell-alarm"
-          />
+          <img class="w-10" src="/images/send_complaint.svg" alt="bell-alarm" />
           <p class="font-medium text-sm">
             پنل جدید در دست ساخت است، این یک نسخه رایگان برای تست میباشد و هیچ
             گونه مسئولیتی در نگهداری داده های شما ندارد
@@ -72,24 +71,22 @@
             alt="logo"
           />
         </header>
-        <nav class="list-none flex flex-col gap-4 m-5">
+        <nav class="list-none flex flex-col pt-4 gap-3 m-5">
           <li
             :class="$route.name == 'tservers' ? 'activePanel' : ''"
-            class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+            class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
             @click="navigateTo('/tservers')"
           >
-            <img
-              v-if="$route.name != 'tservers'"
-              class="mr-auto"
-              src="/images/Arrow - Left.png"
-              alt=""
-            />
             <p>سرور ها</p>
-            <img src="/images/dash.png" alt="dashboard" />
+            <img
+              src="/images/server_green.svg"
+              class="w-6 h-6"
+              alt="dashboard"
+            />
           </li>
           <!-- <li
             :class="$route.name == 'playlist' ? 'activePanel' : ''"
-            class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+            class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
           >
             <img
               v-if="$route.name != 'playlist'"
@@ -102,35 +99,23 @@
           </li> -->
           <li
             :class="$route.name == 'backups' ? 'activePanel' : ''"
-            class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+            class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
             @click="navigateTo('/backups')"
           >
-            <img
-              v-if="$route.name != 'backups'"
-              class="mr-auto"
-              src="/images/Arrow - Left.png"
-              alt=""
-            />
             <p>بکاپ ها</p>
-            <img src="/images/backups.png" alt="" />
+            <img src="/images/sync-icon.svg" class="w-6 h-6" alt="" />
           </li>
           <li
             :class="$route.name == 'domains' ? 'activePanel' : ''"
-            class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+            class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
             @click="navigateTo('/domains')"
           >
-            <img
-              v-if="$route.name != 'domains'"
-              class="mr-auto"
-              src="/images/Arrow - Left.png"
-              alt=""
-            />
-            <p>دامین ها</p>
-            <img src="/images/domain.png" alt="" />
+            <p>دامنه ها</p>
+            <img src="/images/browse-addon-online.svg" class="w-6 h-6" alt="" />
           </li>
           <!-- <li
             :class="$route.name == 'poshtibani' ? 'activePanel' : ''"
-            class="flex gap-3 w-full justify-end p-3 ml-auto cursor-pointer"
+            class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
           >
             <img
               v-if="$route.name != 'poshtibani'"

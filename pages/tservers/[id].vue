@@ -3,20 +3,18 @@
     class="flex-1 w-full mx-auto flex flex-row items-stretch text-white text-center gap-2 min-h-0"
   >
     <div
-      class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl"
+      class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl font-sans"
     >
       <header class="relative my-4 px-4">
-        <h1
+        <span
           v-if="serverInfoStatus === 'success' && serverInfo"
           :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
           class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center"
           @click="selectedRow = { rowType: 'server', level: 0 }"
           @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
-          <div>
-            {{ serverInfo.name }}
-          </div>
-        </h1>
+          {{ serverInfo.name }}
+        </span>
         <div v-else>
           <USkeleton
             :ui="{ background: 'dark:bg-gray-500' }"
@@ -35,7 +33,9 @@
             dropzone="true"
             class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-fit"
             :class="
-              selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
+              selectedRow == row
+                ? 'bg-main_orange/70'
+                : 'hover:bg-main_orange/10'
             "
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
             @drop="dragended(row.channel)"
@@ -61,7 +61,9 @@
             draggable="true"
             class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit"
             :class="
-              selectedRow == row ? 'btn-active' : 'hover:bg-main_orange/20'
+              selectedRow == row
+                ? 'bg-main_orange/70'
+                : 'hover:bg-main_orange/10'
             "
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
             @dragstart="draged(row.user)"

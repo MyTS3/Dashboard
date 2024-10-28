@@ -27,8 +27,8 @@
           <p>:نام</p>
           <a class="absolute left-0" :href="tsUrl">
             <img
-              class="cursor-pointer w-8"
-              src="/images/User info.png"
+              class="cursor-pointer h-6 w-6"
+              src="/images/connect.svg"
               alt=""
             />
           </a>
@@ -41,7 +41,11 @@
           </div>
           <p>:تعداد اسلات</p>
           <button class="absolute left-0" @click="changeSlotTab = true">
-            <img src="/images/edit.png" alt="" />
+            <img
+              src="/images/change_nickname.svg"
+              class="cursor-pointer h-6 w-6"
+              alt=""
+            />
           </button>
         </li>
         <li v-if="selectedServer.mustRunning" class="grid gridList">
@@ -53,7 +57,11 @@
             class="absolute left-0"
             @click.prevent="serverLocationTab = true"
           >
-            <img src="/images/location.png" alt="" />
+            <img
+              src="/images/change_nickname.svg"
+              class="cursor-pointer h-6 w-6"
+              alt=""
+            />
           </button>
         </li>
         <li class="grid gridList relative">
@@ -81,32 +89,32 @@
     </span>
     <footer class="grid grid-cols-2 w-full gap-3">
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-tl-lg btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-tl-xl btn"
         @click="restartServerTab = true"
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-tr-lg btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-tr-xl btn"
         @click="bansListTab = true"
       >
         <p>لیست بن ها</p>
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-bl-lg btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-bl-xl btn"
         @click="resetConfigTab = true"
       >
-        <p>ریسیت کانفگ</p>
-        <img src="/images/ban_list.png" alt="" />
+        <p>ریست کانفیگ</p>
+        <img class="h-12" src="/images/theme.svg" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-br-lg btn"
+        class="flex border w-full gap-3 justify-center h-20 items-center rounded-br-xl btn"
         @click="subdomainTab = true"
       >
         <p>ساب دامنه ها</p>
-        <img src="/images/ban_list.png" alt="" />
+        <img src="/images/weblist.svg" class="h-12" alt="" />
       </button>
     </footer>
   </section>
