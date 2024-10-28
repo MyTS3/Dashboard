@@ -1,13 +1,13 @@
 <template>
-  <section class="h-full">
+  <section class="min-h-0 flex-1 mb-28">
+    <div class="table bg-mainbg_300 rounded-t-2xl">
+      <p>سرور</p>
+      <p>دوره</p>
+      <p>عمل</p>
+    </div>
     <Table>
-      <div class="h-full">
-        <div class="table bg-mainbg_300 rounded-t-2xl">
-          <p>سرور</p>
-          <p>دوره</p>
-          <p>عمل</p>
-        </div>
-        <div class="h-full overflow-scroll">
+      <div>
+        <div>
           <template v-if="status !== 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
@@ -46,18 +46,18 @@
           </template>
         </div>
       </div>
-      <button
-        class="flex w-full items-center justify-center gap-0.5 btn rounded-xl mt-auto py-3"
-        @click="$emit('opentab')"
-      >
-        <img src="/images/addon.png" alt="" />
-        افزودن
-      </button>
     </Table>
+    <button
+      class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      @click="$emit('opentab')"
+    >
+      افزودن
+      <img src="/images/addon.png" alt="" />
+    </button>
     <DeleteInterval
-      :selectedInterval="selectedInterval"
-      @close="(delteIntervalTab = false), getIntervals()"
       v-if="delteIntervalTab"
+      :selected-interval="selectedInterval"
+      @close="(delteIntervalTab = false), getIntervals()"
     />
   </section>
 </template>
