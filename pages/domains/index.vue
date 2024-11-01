@@ -74,6 +74,16 @@
         <img src="/images/addon.png" alt="" />
         افزودن دامنه
       </button>
+      <div
+        v-if="domainList.length < 1"
+        class="w-full absolute top-1/4 flex flex-col justify-center gap-4 items-center"
+      >
+        <img src="/images/new/no-domain.png" alt="" />
+        <div class="grid text-center">
+          <p class="font-bold text-white">هیچ دامینی وجود ندارد</p>
+          <p>با کلیک برروی دکمه زیر اولین دامین خودرا بسازید</p>
+        </div>
+      </div>
     </template>
     <AddDomain
       v-if="addDomainTab"
