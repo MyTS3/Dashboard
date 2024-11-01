@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-0 flex-1 mb-28">
+  <div class="min-h-0 flex-1 mb-28 relative">
     <div
       v-if="status == 'error'"
       class="w-full text-center p-5 bg-main_orange rounded-xl"
@@ -40,6 +40,17 @@
               </div>
             </template>
             <template v-else>
+              <div
+                v-if="servers.length < 1"
+                class="w-full absolute top-1/4 flex flex-col justify-center gap-4 items-center"
+              >
+                <img v-if="servers" src="/images/new/no-server.png" alt="" />
+                <div class="grid text-center">
+                  <p class="font-bold text-white">هیچ سروری وجود ندارد</p>
+                  <p>با کلیک برروی دکمه زیر اولین سرور خودرا بسازید</p>
+                </div>
+              </div>
+
               <div class="flex flex-col">
                 <div
                   v-for="server in servers"

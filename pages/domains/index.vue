@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-0 flex-1 mb-28">
+  <div class="min-h-0 flex-1 mb-28 relative">
     <div
       v-if="status == 'error'"
       class="w-full text-center p-5 bg-main_orange rounded-xl"
@@ -8,16 +8,16 @@
         پنل از دسترس خارج شده و به زودی در دسترس قرار میگیرد
       </p>
     </div>
-    <template v-else>
+    <template v-if="status == 'success'">
       <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
         <p>دامنه</p>
-        <p>وضغیت</p>
+        <p>وضعیت</p>
         <p>تاریخ ثبت</p>
         <p>عمل</p>
       </div>
       <Table>
         <div>
-          <template v-if="status !== 'success'">
+          <template v-if="status != 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
                 class="h-5 w-40"
@@ -37,7 +37,7 @@
               />
             </div>
           </template>
-          <template v-else>
+          <template v-if="status == 'success'">
             <div v-for="domain in domainList" :key="domain" class="table items">
               <p class="font-semibold">{{ domain.domain }}</p>
               <div

@@ -1,130 +1,130 @@
 <template>
-  <!-- <Teleport to=""> -->
-  <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
-  >
-    <main
-      :class="{ hidden: serverTokenTab }"
-      class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl"
+  <Teleport to="body">
+    <section
+      class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
-      <button
-        :disabled="disableInputs"
-        :class="{ 'bg-main_red/30': disableInputs }"
-        class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
-        @click="$emit('close')"
+      <main
+        :class="{ hidden: serverTokenTab }"
+        class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl"
       >
-        X
-      </button>
-      <header class="my-5">
-        <h1 class="text-xl font-bold">ساخت سرور تیم اسپیک</h1>
-        <p class="text-xs text-white/65 mt-4 mx-40">
-          برای ساخت سرور اطلاعات زیر را کامل کنید
-        </p>
-      </header>
-
-      <div class="flex flex-col relative">
-        <label class="text-right font-medium mb-4">نام سرور</label>
-        <input
-          v-model="serverName"
-          :class="submitDisable ? 'border-main_red' : ''"
+        <button
           :disabled="disableInputs"
-          class="bg-transparent border rounded-lg p-4 outline-none"
-          type="text"
-        />
-
-        <p class="absolute right-8 bottom-4 text-blue-300/60">.v4.myts3.ir</p>
-      </div>
-      <p class="text-xs mt-2 ml-auto text-main_red">{{ disableReasson }}</p>
-      <P class="text-right font-medium mt-3"
-        >لطفا کانفیگ سرور خودرا انتخاب کنید</P
-      >
-      <from class="w-full my-4">
-        <select
-          v-model="selectedConfig"
-          :disabled="disableInputs"
-          class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
-          name="locations"
+          :class="{ 'bg-main_red/30': disableInputs }"
+          class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+          @click="$emit('close')"
         >
-          <option
-            v-for="available in availables"
-            :key="available"
-            :value="available"
-            class="dropdown"
+          X
+        </button>
+        <header class="my-5">
+          <h1 class="text-xl font-bold">ساخت سرور تیم اسپیک</h1>
+          <p class="text-xs text-white/65 mt-4 mx-40">
+            برای ساخت سرور اطلاعات زیر را کامل کنید
+          </p>
+        </header>
+
+        <div class="flex flex-col relative">
+          <label class="text-right font-medium mb-4">نام سرور</label>
+          <input
+            v-model="serverName"
+            :class="submitDisable ? 'border-main_red' : ''"
+            :disabled="disableInputs"
+            class="bg-transparent border rounded-lg p-4 outline-none"
+            type="text"
+          />
+
+          <p class="absolute right-8 bottom-4 text-blue-300/60">.v4.myts3.ir</p>
+        </div>
+        <p class="text-xs mt-2 ml-auto text-main_red">{{ disableReasson }}</p>
+        <P class="text-right font-medium mt-3"
+          >لطفا کانفیگ سرور خودرا انتخاب کنید</P
+        >
+        <from class="w-full my-4">
+          <select
+            v-model="selectedConfig"
+            :disabled="disableInputs"
+            class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
+            name="locations"
           >
-            {{ available }}
-          </option>
-        </select>
-      </from>
-      <div>
-        <p class="my-4 text-right font-medium">تعداد اسلات</p>
-        <div class="flex justify-between">
-          <p>16</p>
-          <p>32</p>
-          <p>64</p>
-          <p>128</p>
-          <p>256</p>
-          <p>512</p>
-          <p>1024</p>
+            <option
+              v-for="available in availables"
+              :key="available"
+              :value="available"
+              class="dropdown"
+            >
+              {{ available }}
+            </option>
+          </select>
+        </from>
+        <div>
+          <p class="my-4 text-right font-medium">تعداد اسلات</p>
+          <div class="flex justify-between">
+            <p>16</p>
+            <p>32</p>
+            <p>64</p>
+            <p>128</p>
+            <p>256</p>
+            <p>512</p>
+            <p>1024</p>
+          </div>
+          <input
+            v-model="slot"
+            :disabled="disableInputs"
+            class="w-full"
+            type="range"
+            min="1"
+            max="7"
+          />
         </div>
-        <input
-          v-model="slot"
-          :disabled="disableInputs"
-          class="w-full"
-          type="range"
-          min="1"
-          max="7"
-        />
-      </div>
-      <!-- /////////////////price started//////// -->
-      <div id="price" class="w-full">
-        <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
-          <h1>:قیمت ساعتی</h1>
-          <div class="flex flex-row-reverse gap-1 text-white/40">
-            <span>54</span>
-            <p>تومان</p>
+        <!-- /////////////////price started//////// -->
+        <div id="price" class="w-full">
+          <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
+            <h1>:قیمت ساعتی</h1>
+            <div class="flex flex-row-reverse gap-1 text-white/40">
+              <span>54</span>
+              <p>تومان</p>
+            </div>
+          </div>
+          <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
+            <h1>:قیمت روزانه</h1>
+            <div class="flex flex-row-reverse gap-1 text-white/40">
+              <span>1،300</span>
+              <p>تومان</p>
+            </div>
+          </div>
+          <div class="flex justify-between flex-row-reverse mt-3">
+            <h1>:قیمت ماهانه</h1>
+            <div class="flex flex-row-reverse gap-1">
+              <span>39،000</span>
+              <p>تومان</p>
+            </div>
           </div>
         </div>
-        <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
-          <h1>:قیمت روزانه</h1>
-          <div class="flex flex-row-reverse gap-1 text-white/40">
-            <span>1،300</span>
-            <p>تومان</p>
-          </div>
-        </div>
-        <div class="flex justify-between flex-row-reverse mt-3">
-          <h1>:قیمت ماهانه</h1>
-          <div class="flex flex-row-reverse gap-1">
-            <span>39،000</span>
-            <p>تومان</p>
-          </div>
-        </div>
-      </div>
-      <!-- //////////////////price eneded////////////// -->
+        <!-- //////////////////price eneded////////////// -->
 
-      <button
-        :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
-        :disabled="submitDisable"
-        class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2"
-        @click.prevent="makeServer()"
-      >
-        <div
-          v-if="!disableInputs"
-          class="flex w-full items-center justify-center font-medium gap-2"
+        <button
+          :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
+          :disabled="submitDisable"
+          class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2"
+          @click.prevent="makeServer()"
         >
-          <span><img src="/images/plus.png" alt="" /></span>ساخت
-        </div>
-        <loading v-if="disableInputs" />
-      </button>
-    </main>
-    <serverToken
-      v-if="serverTokenTab"
-      :ts-u-r-l="tsURL"
-      :token="token"
-      :tsuuid="tsuuid"
-      @close="(serverTokenTab = false), $emit('close')"
-    />
-  </section>
-  <!-- </Teleport> -->
+          <div
+            v-if="!disableInputs"
+            class="flex w-full items-center justify-center font-medium gap-2"
+          >
+            <span><img src="/images/plus.png" alt="" /></span>ساخت
+          </div>
+          <loading v-if="disableInputs" />
+        </button>
+      </main>
+      <serverToken
+        v-if="serverTokenTab"
+        :ts-u-r-l="tsURL"
+        :token="token"
+        :tsuuid="tsuuid"
+        @close="(serverTokenTab = false), $emit('close')"
+      />
+    </section>
+  </Teleport>
 </template>
 <script setup>
 import serverToken from './serverToken.vue';
