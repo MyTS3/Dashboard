@@ -1,5 +1,5 @@
 <template>
-  <section class="min-h-0 flex-1 mb-28">
+  <section class="min-h-0 flex-1 mb-28 relative">
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>سرور</p>
       <p>دوره</p>
@@ -59,6 +59,16 @@
       :selected-interval="selectedInterval"
       @close="(delteIntervalTab = false), getIntervals()"
     />
+    <div
+      v-if="intervals.length < 1"
+      class="w-full absolute top-1/4 flex flex-col justify-center gap-4 items-center"
+    >
+      <img src="/images/new/no-backup.png" alt="" />
+      <div class="grid text-center">
+        <p class="font-bold text-white">هیچ دوره ای وجود ندارد</p>
+        <p>با کلیک برروی دکمه زیر اولین دوره خودرا بسازید</p>
+      </div>
+    </div>
   </section>
 </template>
 <script setup>
