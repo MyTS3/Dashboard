@@ -63,6 +63,16 @@
       افزودن
       <img src="/images/addon.png" alt="" />
     </button>
+    <div
+      v-if="backups.length < 1"
+      class="w-full absolute top-1/4 flex flex-col justify-center gap-4 items-center"
+    >
+      <img src="/images/new/no-backup.png" alt="" />
+      <div class="grid text-center">
+        <p class="font-bold text-white">هیچ بکاپی وجود ندارد</p>
+        <p>با کلیک برروی دکمه زیر اولین بکاپی خودرا بسازید</p>
+      </div>
+    </div>
     <DeleteBackups
       v-if="deleteBackupTab"
       :selecteduuid="selecteduuid"
