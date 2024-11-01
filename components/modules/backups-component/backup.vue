@@ -6,8 +6,8 @@
       <p>عمل</p>
     </div>
     <Table>
-      <div>
-        <div>
+      <div class="h-full">
+        <div class="h-full">
           <template v-if="status !== 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
@@ -25,6 +25,20 @@
             </div>
           </template>
           <template v-else>
+            <div
+              v-if="backups.length < 1"
+              class="flex flex-col w-full h-full justify-center gap-4 items-center"
+            >
+              <img
+                class="min-w-[15rem] w-[10vw]"
+                src="/images/new/no-server.png"
+                alt=""
+              />
+              <div class="grid text-center text-[1vw]">
+                <p class="font-bold text-white">هیچ بکاپی وجود ندارد</p>
+                <p>با کلیک برروی دکمه زیر اولین بکاپ خودرا بسازید</p>
+              </div>
+            </div>
             <div>
               <div v-for="backup in backups" :key="backup" class="table items">
                 <p class="font-semibold">{{ backup.tserver.name }}</p>
@@ -63,16 +77,7 @@
       افزودن
       <img src="/images/addon.png" alt="" />
     </button>
-    <div
-      v-if="backups.length < 1"
-      class="w-full absolute top-1/4 flex flex-col justify-center gap-4 items-center"
-    >
-      <img src="/images/new/no-backup.png" alt="" />
-      <div class="grid text-center">
-        <p class="font-bold text-white">هیچ بکاپی وجود ندارد</p>
-        <p>با کلیک برروی دکمه زیر اولین بکاپی خودرا بسازید</p>
-      </div>
-    </div>
+
     <DeleteBackups
       v-if="deleteBackupTab"
       :selecteduuid="selecteduuid"

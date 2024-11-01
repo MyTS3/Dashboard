@@ -16,7 +16,7 @@
         <p>عمل</p>
       </div>
       <Table>
-        <div>
+        <div class="h-full">
           <template v-if="status != 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
@@ -38,6 +38,20 @@
             </div>
           </template>
           <template v-if="status == 'success'">
+            <div
+              v-if="domainList.length < 1"
+              class="flex flex-col w-full h-full justify-center gap-4 items-center"
+            >
+              <img
+                class="min-w-[15rem] w-[10vw]"
+                src="/images/new/no-domain.png"
+                alt=""
+              />
+              <div class="grid text-center text-[1vw]">
+                <p class="font-bold text-white">هیچ دوره وجود ندارد</p>
+                <p>با کلیک برروی دکمه زیر اولین دوره خودرا بسازید</p>
+              </div>
+            </div>
             <div v-for="domain in domainList" :key="domain" class="table items">
               <p class="font-semibold">{{ domain.domain }}</p>
               <div
