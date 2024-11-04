@@ -148,11 +148,12 @@ import logoutPopup from '@/components/modules/logoutPopup.vue';
 const logoutTab = ref(false);
 const panelAlert = ref(true);
 const token = localStorage.getItem('token');
-
 const name = ref();
-if (!token)
-  navigateTo('https://my.mtserver.ir/index.php?rp=/login', { external: true });
-else {
+if (!token) {
+  navigateTo('https://my.mtserver.ir/index.php?rp=/login', {
+    external: true,
+  });
+} else {
   const bodyToken = JSON.parse(atob(token.split('.')[1]));
   name.value = bodyToken.name;
 }

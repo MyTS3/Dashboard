@@ -107,7 +107,7 @@ import makeServer from '/components/modules/makeServer.vue';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import DeleteServer from '~/components/modules/server/deleteServer.vue';
-
+const handleError = errorHandle();
 const store = apiStore();
 const { url } = storeToRefs(store);
 const makeServerTab = ref(false);
@@ -143,6 +143,7 @@ function convertEnglishNumberToPersian(number) {
 const {
   status: status,
   data: servers,
+  error,
   refresh: getServers,
 } = await useLazyFetch(`${url.value}/api/v4/tservers/`, {
   method: 'GET',
@@ -150,6 +151,10 @@ const {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
+if (error.value) {
+  // console.log(error.value.data.code);
+  handleError.HandleTheErrors(error.value.data.code);
+}
 
 function removeServer(name, uuid) {
   ServerDeleteTab.value = true;
