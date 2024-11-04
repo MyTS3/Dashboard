@@ -3,7 +3,7 @@ const toast = useToast();
 export const errorHandle = defineStore({
   id: 'errorHandle',
   actions: {
-    HandleTheErrors(msg: string) {
+    handle(msg: string) {
       if (msg === 'FST_JWT_AUTHORIZATION_TOKEN_INVALID') {
         toast.add({
           title: 'لطفا مجددا لاگین کنید',

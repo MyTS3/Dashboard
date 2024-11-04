@@ -107,7 +107,7 @@ import makeServer from '/components/modules/makeServer.vue';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import DeleteServer from '~/components/modules/server/deleteServer.vue';
-const handleError = errorHandle();
+const errors = errorHandle();
 const store = apiStore();
 const { url } = storeToRefs(store);
 const makeServerTab = ref(false);
@@ -153,7 +153,7 @@ const {
 });
 if (error.value) {
   // console.log(error.value.data.code);
-  handleError.HandleTheErrors(error.value.data.code);
+  errors.handle(error.value.data.code);
 }
 
 function removeServer(name, uuid) {
