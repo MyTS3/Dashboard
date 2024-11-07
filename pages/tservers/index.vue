@@ -152,7 +152,6 @@ const {
   },
 });
 if (error.value) {
-  // console.log(error.value.data.code);
   errors.handle(error.value.data.code);
 }
 
