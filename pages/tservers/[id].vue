@@ -147,6 +147,7 @@ type channel = {
   align: alignType;
   cid: string;
   channelType: channelType;
+  isDeafault: boolean;
 };
 type user = {
   userNickname: string;
@@ -274,6 +275,7 @@ const {
       channelName: string;
       cid: string;
       pid: string;
+      channelFlagDefault: boolean;
     }[]
   > = $fetch(`${url.value}/api/v4/tservers/${serverUuid}/channels`, {
     headers: {
@@ -301,7 +303,15 @@ const {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
-
+  function isDeafaultChannel(channel: {
+    channelName: string;
+    cid: string;
+    pid: string;
+    channelFlagDefault: boolean;
+  }): boolean {
+    if (channel.channelFlagDefault) return true;
+    else return false;
+  }
   const rows: row[] = [];
   const channels = await channelsReq;
   channels.forEach((channel) => {
@@ -312,7 +322,7 @@ const {
     const channelName = channelTypeAndName.name;
     const align = channelTypeAndName.align;
     const channelFullName = channelTypeAndName.channelFullName;
-
+    const isDeafault = isDeafaultChannel(channel);
     let level = 0;
     let parentChannel:
       | { cid: string; pid: string; channelName: string }
@@ -332,6 +342,7 @@ const {
         cid: channel.cid,
         channelType,
         align,
+        isDeafault,
       },
       level,
     });

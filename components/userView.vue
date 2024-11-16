@@ -107,6 +107,7 @@ import changeServerGroups from './modules/user/changeServerGroups.vue';
 
 const disable = ref(false);
 const props = defineProps(['selectedRow', 'serverInfo']);
+
 const serverInfo = props.serverInfo;
 const kickFromChannelTab = ref(false);
 const kickFromServerTab = ref(false);
