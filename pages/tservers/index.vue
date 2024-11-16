@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-0 flex-1 mb-28">
+  <div class="min-h-0 flex-1 mb-10 relative">
     <div
       v-if="status == 'error'"
       class="w-full text-center p-5 bg-main_orange rounded-xl"
@@ -55,7 +55,7 @@
                   <p>با کلیک برروی دکمه زیر اولین سرور خودرا بسازید</p>
                 </div>
               </div>
-              <div class="flex flex-col">
+              <div class="flex flex-col pb-20">
                 <div
                   v-for="server in servers"
                   :key="server.uuid"
@@ -79,7 +79,7 @@
         </div>
       </Table>
       <button
-        class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+        class="flex absolute -bottom-14 w-full items-center justify-center btn rounded-xl mt-auto py-3"
         @click.prevent="makeServerTab = true"
       >
         ساخت سرور

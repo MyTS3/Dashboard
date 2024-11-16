@@ -1,5 +1,5 @@
 <template>
-  <section class="min-h-0 flex-1 mb-28">
+  <section class="min-h-0 flex-1 mb-10 relative">
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>سرور</p>
       <p>تاریخ</p>
@@ -39,7 +39,7 @@
                 <p>با کلیک برروی دکمه زیر اولین بکاپ خودرا بسازید</p>
               </div>
             </div>
-            <div>
+            <div class="pb-20">
               <div v-for="backup in backups" :key="backup" class="table items">
                 <p class="font-semibold">{{ backup.tserver.name }}</p>
                 <p>{{ backup.createdAt }}</p>
@@ -71,7 +71,7 @@
       </div>
     </Table>
     <button
-      class="flex w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      class="flex absolute -bottom-14 w-full items-center justify-center btn rounded-xl mt-auto py-3"
       @click="$emit('opentab')"
     >
       افزودن

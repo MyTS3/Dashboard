@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-0 flex-1 mb-28 relative">
+  <div class="min-h-0 flex-1 mb-10 relative">
     <div
       v-if="status == 'error'"
       class="w-full text-center p-5 bg-main_orange rounded-xl"
@@ -16,7 +16,7 @@
         <p>عمل</p>
       </div>
       <Table>
-        <div class="h-full">
+        <div class="h-full pb-20">
           <template v-if="status != 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
@@ -82,7 +82,7 @@
       </Table>
       <button
         v-if="status != 'error'"
-        class="flex w-full items-center justify-center gap-1 btn rounded-xl py-3"
+        class="flex absolute -bottom-14 w-full items-center justify-center btn rounded-xl mt-auto py-3"
         @click="addDomainTab = true"
       >
         <img src="/images/addon.png" alt="" />
