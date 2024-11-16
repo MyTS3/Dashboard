@@ -189,6 +189,7 @@ async function getAvailble() {
       },
     },
   );
+  watch(respone, () => (availables.value = respone.value));
   if (error.value) {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
@@ -196,7 +197,6 @@ async function getAvailble() {
       color: 'red',
     });
   }
-  availables.value = await respone.value;
 }
 await getAvailble();
 watch(serverName, () => {
