@@ -98,19 +98,14 @@ const interval = ref();
 const serverUuid = ref();
 const servers = ref();
 
-const {
-  data: response,
-  error,
-  status,
-} = useFetch(`${url.value}/api/v4/tservers/`, {
-  lazy: true,
+const { data: response, error } = useFetch(`${url.value}/api/v4/tservers/`, {
   method: 'GET',
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
-servers.value = response.value;
-console.log(status);
+watch(response, () => (servers.value = response.value));
+
 if (error.value) {
   toast.add({
     title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
