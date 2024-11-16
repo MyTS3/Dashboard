@@ -9,7 +9,7 @@
         <span
           v-if="serverInfoStatus === 'success' && serverInfo"
           :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
-          class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center"
+          class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center cursor-pointer"
           @click="selectedRow = { rowType: 'server', level: 0 }"
           @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
@@ -51,7 +51,7 @@
             />
             <p
               :style="{ 'text-align': row.channel.align }"
-              class="w-full text-left"
+              class="w-full text-left cursor-pointer"
             >
               {{ row.channel.channelName }}
             </p>
@@ -59,7 +59,7 @@
           <div
             v-if="row.rowType == 'user'"
             draggable="true"
-            class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit"
+            class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
             :class="
               selectedRow == row
                 ? 'bg-main_orange/70'
