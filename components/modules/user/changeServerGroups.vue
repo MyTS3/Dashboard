@@ -72,7 +72,7 @@
       <button
         :class="submitDisable ? 'opacity-45' : ''"
         :disabled="submitDisable"
-        class="w-full p-4 bg-main_blue rounded-xl my-2"
+        class="w-full mt-auto p-4 bg-main_blue rounded-xl my-2"
         @click="applyServerGroups()"
       >
         <p>اعمال تغییرات</p>
