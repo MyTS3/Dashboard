@@ -274,29 +274,27 @@ async function makeServer() {
   serverTokenTab.value = true;
 }
 
-async function getAvailble() {
-  const {
-    data: respone,
-    pending,
-    error,
-  } = useFetch(
-    `${url.value}/api/v4/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+const {
+  data: respone,
+  pending,
+  error,
+} = useFetch(
+  `${url.value}/api/v4/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  );
-  watch(respone, () => (availables.value = respone.value));
-  if (error.value) {
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
-    });
-  }
+  },
+);
+watch(respone, () => (availables.value = respone.value));
+if (error.value) {
+  toast.add({
+    title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+    timeout: 2000,
+    color: 'red',
+  });
 }
-await getAvailble();
+
 watch(serverName, () => {
   submitDisable.value = false;
   disableReasson.value = '';
