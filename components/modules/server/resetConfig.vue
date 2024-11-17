@@ -78,7 +78,7 @@ async function getAvailble() {
       color: 'red',
     });
   }
-  availables.value = await respone.value;
+  watch(respone, () => (availables.value = respone.value));
 }
 async function changeConfigue() {
   disable.value = true;
