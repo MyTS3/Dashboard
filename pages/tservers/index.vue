@@ -9,7 +9,7 @@
       </p>
     </div>
     <template v-else>
-      <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
+      <div dir="rtl" class="table bg-mainbg_300 text-nowrap rounded-t-2xl">
         <p>نام</p>
         <p>تعداد اسلات</p>
         <p>تاریخ ساخت</p>
