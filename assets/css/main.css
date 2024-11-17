@@ -43,6 +43,7 @@ img {
   border-color: rgba(255, 158, 11, 1);
   color: rgba(255, 158, 11, 1);
   background-color: rgba(255, 158, 11, 0.1);
+  backdrop-filter: blur(100px);
 }
 .btn:hover p {
   color: rgba(255, 158, 11, 1);
