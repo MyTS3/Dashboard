@@ -3,7 +3,7 @@
     class="flex-1 w-full mx-auto flex flex-row items-stretch text-white text-center gap-2 min-h-0"
   >
     <div
-      class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl font-sans"
+      class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto"
     >
       <header class="relative my-4 px-4">
         <span
