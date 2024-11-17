@@ -24,7 +24,7 @@
         <img class="mt-3 w-full" src="/images/seprator-line.png" alt="" />
       </header>
       <main
-        v-if="teamspeakserverStatus === 'success'"
+        v-if="teamspeakserverStatus === 'success' && serverInfo?.mustRunning"
         class="flex items-stretch flex-col teamspeak text-xs px-4 flex-1 overflow-y-auto"
       >
         <template v-for="row in teamspeakserver" :key="objectHash(row)">
@@ -96,7 +96,12 @@
           </div>
         </template>
       </main>
-      <main v-else class="h-full px-4 overflow-y-hidden">
+      <main
+        v-if="
+          serverInfo?.mustRunning == true && teamspeakserverStatus == 'pending'
+        "
+        class="h-full px-4 overflow-y-hidden"
+      >
         <USkeleton
           v-for="_ in 20"
           :key="_"
@@ -104,7 +109,27 @@
           class="h-6 my-2 px-3 rounded-lg w-full"
         />
       </main>
+      <main
+        v-if="!serverInfo?.mustRunning && teamspeakserverStatus != 'pending'"
+        class="h-full"
+      >
+        <div
+          class="w-full h-full flex flex-col justify-center items-end gap-10"
+        >
+          <div>
+            <img src="/images/server-is-off.png" alt="" />
+          </div>
+          <div class="self-center">
+            <p class="font-bold text-xl text-white my-2">سرور خاموشه</p>
+            <p>
+              برای روشن کردن سرور در پنجره بغل بر روی سوییچ روشن و خاموش کلیک
+              کنید
+            </p>
+          </div>
+        </div>
+      </main>
     </div>
+
     <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto p-4">
       <template v-if="selectedRow?.rowType == 'server'">
         <ServerView
