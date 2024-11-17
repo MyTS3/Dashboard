@@ -15,6 +15,7 @@
       <h1 class="my-4">بن از سرور</h1>
       <label class="text-right">:دلیل</label>
       <input
+        v-model="reason"
         :disabled="disable"
         class="my-4 bg-transparent border p-3 rounded-xl text-right"
         type="text"
