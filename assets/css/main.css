@@ -20,6 +20,8 @@ img {
 * {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+body {
   color: #c0d6f0;
 }
 
