@@ -50,7 +50,7 @@
               v-for="available in availables"
               :key="available"
               :value="available"
-              class="dropdown"
+              class="dropdown p-5"
             >
               {{ available }}
             </option>
@@ -108,8 +108,10 @@
         <!-- //////////////////price eneded////////////// -->
 
         <button
-          :class="{ 'cursor-not-allowed opacity-55': submitDisable }"
-          :disabled="submitDisable"
+          :class="{
+            'cursor-not-allowed opacity-55': submitDisable || pending,
+          }"
+          :disabled="submitDisable || pending"
           class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2"
           @click.prevent="makeServer()"
         >
