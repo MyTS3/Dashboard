@@ -16,10 +16,9 @@
           </button>
           <h1 class="text-xl my-4 font-bolder">حذف سرور</h1>
           <p class="font-thin max-w-80 text-center mx-auto mb-4 mx-10">
-            این عمل قابل بازگردانی نیست و تمامی اطلاعات سرور را حذف میکند،
-            اطمینان
-            <span class="font-bold">{{ selectedServer.name }}</span>
+            این عمل قابل بازگردانی نیست و تمامی اطلاعات سرور حذف میکند، اطمینان
             دارید؟
+            <span class="font-bold">{{ selectedServer.name }}</span>
           </p>
           <div class="grid grid-cols-2 gap-3">
             <button
