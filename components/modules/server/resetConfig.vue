@@ -59,27 +59,25 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
 const toast = useToast();
-const availables = ref({});
+// const availables = ref({});
 const selectedConfigue = ref();
 
-async function getAvailble() {
-  const { data: respone, error } = useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config/available`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+const { data: availables, error } = useFetch(
+  `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config/available`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  );
-  if (error.value) {
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
-    });
-  }
-  watch(respone, () => (availables.value = respone.value));
+  },
+);
+if (error.value) {
+  toast.add({
+    title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+    timeout: 2000,
+    color: 'red',
+  });
 }
+
 async function changeConfigue() {
   disable.value = true;
   const { error } = await useFetch(
@@ -104,6 +102,4 @@ async function changeConfigue() {
   disable.value = false;
   emit('close');
 }
-
-await getAvailble();
 </script>

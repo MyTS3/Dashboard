@@ -148,7 +148,7 @@ const serverName = ref();
 const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
 const submitDisable = ref();
-const availables = ref();
+// const availables = ref();
 const disableReasson = ref('');
 let token = ref();
 let tsURL = ref();
@@ -189,7 +189,7 @@ async function makeServer() {
 }
 
 const {
-  data: respone,
+  data: availables,
   pending,
   error,
 } = useFetch(
@@ -200,7 +200,7 @@ const {
     },
   },
 );
-watch(respone, () => (availables.value = respone.value));
+
 if (error.value) {
   toast.add({
     title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
