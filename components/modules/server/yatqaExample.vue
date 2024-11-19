@@ -18,7 +18,7 @@
       >
         <p class="text-black">{{ selectedServer.name }}</p>
         <button>
-          <img class="w-4 child" src="/images/Copy.svg" alt="" />
+          <img class="w-4 child" src="/images/copy.svg" alt="" />
         </button>
       </div>
       <div
@@ -27,7 +27,7 @@
       >
         <p>{{ selectedServer.queryPort }}</p>
         <button>
-          <img class="w-4 child" src="/images/Copy.svg" alt="" />
+          <img class="w-4 child" src="/images/copy.svg" alt="" />
         </button>
       </div>
       <div
@@ -36,7 +36,7 @@
       >
         <p>{{ selectedServer.queryPort }}</p>
         <button>
-          <img class="w-4 child" src="/images/Copy.svg" alt="" />
+          <img class="w-4 child" src="/images/copy.svg" alt="" />
         </button>
       </div>
       <div
@@ -45,7 +45,7 @@
       >
         <p>serveradmin</p>
         <button>
-          <img class="w-4 child" src="/images/Copy.svg" alt="" />
+          <img class="w-4 child" src="/images/copy.svg" alt="" />
         </button>
       </div>
       <div
@@ -59,7 +59,7 @@
           {{ selectedServer.queryPassword }}
         </p>
         <button @click="copyToClipboard(selectedServer.queryPassword)">
-          <img class="w-4 child" src="/images/Copy.svg" alt="" />
+          <img class="w-4 child" src="/images/copy.svg" alt="" />
         </button>
         <button @click.prevent="yatqaPassReset = true">
           <img
