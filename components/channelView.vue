@@ -11,7 +11,7 @@
           <p>: نام</p>
         </li>
         <li class="grid gridList">
-          <p>1</p>
+          <p>{{ selectedChannel.numberOfUsers }}</p>
           <p>:تعدادکاربران</p>
         </li>
       </main>

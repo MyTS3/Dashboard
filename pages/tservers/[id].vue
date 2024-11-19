@@ -173,6 +173,7 @@ type channel = {
   cid: string;
   channelType: channelType;
   isDeafault: boolean;
+  numberOfUsers: number;
 };
 type user = {
   userNickname: string;
@@ -328,6 +329,7 @@ const {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
+  const users = await usersReq;
   function isDeafaultChannel(channel: {
     channelName: string;
     cid: string;
@@ -343,6 +345,10 @@ const {
     const channelTypeAndName = findChannelTypeAndNameByFullName(
       channel.channelName,
     );
+    let userNumber = 0;
+    users.forEach((u) => {
+      if (u.cid == channel.cid) userNumber += 1;
+    });
     const channelType = channelTypeAndName.type;
     const channelName = channelTypeAndName.name;
     const align = channelTypeAndName.align;
@@ -368,18 +374,19 @@ const {
         channelType,
         align,
         isDeafault,
+        numberOfUsers: userNumber,
       },
       level,
     });
   });
 
-  const users = await usersReq;
   usersCount.value = users.length;
   users.forEach((user) => {
     const channelIndex = rows.findIndex((row) => {
       if (row.rowType != 'channel') return false;
       return row.channel.cid == user.cid;
     });
+
     let status: statusType = 'openMic';
     if (user.clientInputMuted || !user.clientInputHardware) status = 'micMute';
     if (user.clientOutputMuted || !user.clientOutputHardware)
