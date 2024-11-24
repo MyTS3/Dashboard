@@ -159,7 +159,6 @@ import { ref } from 'vue';
 import { useRoute } from '#app';
 import { apiStore, storeToRefs } from '#imports';
 import objectHash from 'object-hash';
-import EditMusicBot from '~/components/modules/musicbot/editMusicBot.vue';
 
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
