@@ -32,7 +32,7 @@
           />
         </div>
       </div>
-      <button
+      <!-- <button
         :class="{
           'cursor-not-allowed opacity-55': submitDisable || pending,
         }"
@@ -46,8 +46,8 @@
         >
           <span><img src="/images/plus.png" alt="" /></span>ساخت
         </div>
-        <!-- <loading v-if="disableInputs" /> -->
-      </button>
+        <loading v-if="disableInputs" />
+      </button> -->
     </main>
   </section>
 </template>
