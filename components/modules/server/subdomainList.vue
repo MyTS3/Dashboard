@@ -40,7 +40,7 @@
             </div>
           </div>
           <div
-            v-if="subPend && domPend"
+            v-if="!subPend && !domPend"
             class="table items items-center text-center rounded-lg"
           >
             <input
@@ -70,7 +70,7 @@
               @click="addToList()"
             />
           </div>
-          <div v-if="!subPend && !domPend" class="table my-2">
+          <div v-if="subPend && domPend" class="table my-2">
             <USkeleton
               class="h-10 w-2/3 mx-auto rounded-lg"
               :ui="{ background: 'dark:bg-gray-500' }"
