@@ -39,7 +39,10 @@
               />
             </div>
           </div>
-          <div class="table items items-center text-center rounded-lg">
+          <div
+            v-if="subPend && domPend"
+            class="table items items-center text-center rounded-lg"
+          >
             <input
               v-model="subToAdd"
               :disabled="disable"
@@ -67,89 +70,30 @@
               @click="addToList()"
             />
           </div>
+          <div v-if="!subPend && !domPend" class="table my-2">
+            <USkeleton
+              class="h-10 w-2/3 mx-auto rounded-lg"
+              :ui="{ background: 'dark:bg-gray-500' }"
+            />
+            <USkeleton
+              class="h-10 w-2/3 mx-auto rounded-lg"
+              :ui="{ background: 'dark:bg-gray-500' }"
+            />
+            <USkeleton
+              class="h-5 w-5 m-auto rounded-lg"
+              :ui="{ background: 'dark:bg-gray-500' }"
+            />
+          </div>
         </div>
         <button
           :class="disable ? 'opacity-45' : ''"
           :disabled="disable"
-          class="w-full flex justify-center p-4 bg-main_blue rounded-xl my-2"
+          class="w-full flex justify-center p-4 bg-main_blue rounded-xl"
           @click="submitSubdomains()"
         >
           <p v-if="!disable">اعمال تغییرات</p>
           <TheLoading v-else />
         </button>
-      </main>
-    </template>
-    <template v-else>
-      <main
-        class="text-white min-w-[30rem] w-2/5 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
-      >
-        <button
-          :disabled="disable"
-          class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
-          @click="$emit('close')"
-        >
-          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
-        </button>
-        <header class="my-2">
-          <USkeleton
-            class="h-10 w-44 mx-auto"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-        </header>
-        <main class="grid gap-1 bg-mainbg_400 pb-4 rounded-lg">
-          <div
-            class="flex h-12 items-center justify-center bg-mainbg_300 rounded-lg"
-          >
-            <USkeleton
-              class="h-4 w-14 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-4 w-14 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-4 w-14 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-          </div>
-          <div class="flex h-12 items-center justify-center rounded-lg">
-            <USkeleton
-              class="h-4 w-14 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-4 w-14 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-4 w-14 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-          </div>
-          <div
-            class="grid grid-cols-3 h-12 items-center justify-center rounded-lg"
-          >
-            <USkeleton
-              class="h-10 w-2/3 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-10 w-2/3 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-            <USkeleton
-              class="h-4 w-14 mx-auto"
-              :ui="{ background: 'dark:bg-gray-500' }"
-            />
-          </div>
-        </main>
-        <footer>
-          <USkeleton
-            class="h-4 w-full p-6 mt-5 mx-auto"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-        </footer>
       </main>
     </template>
   </section>
