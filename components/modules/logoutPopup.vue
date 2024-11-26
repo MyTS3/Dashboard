@@ -9,7 +9,7 @@
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
         @click="$emit('close')"
       >
-        X
+        <img class="w-3" src="/images/X-9.png" alt="" />
       </button>
       <h1 class="text-xl my-4 font-bolder">خروج از حساب کاربری</h1>
       <p class="font-thin max-w-80 text-center mx-auto mb-4">

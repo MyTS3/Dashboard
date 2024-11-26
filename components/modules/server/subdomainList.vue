@@ -11,7 +11,7 @@
           class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
           @click="$emit('close')"
         >
-          X
+          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" >
         </button>
         <h1 class="my-4 text-3xl font-extrabold">لیست ساب دامنه ها</h1>
         <div class="bg-mainbg_500 rounded-2xl">
@@ -36,7 +36,7 @@
                 src="/images/trash.png"
                 alt=""
                 @click="deleteSubDomain(i)"
-              />
+              >
             </div>
           </div>
           <div class="table items items-center text-center rounded-lg">
@@ -45,7 +45,7 @@
               :disabled="disable"
               class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
               type="text"
-            />
+            >
             <select
               v-model="domainToAdd"
               :disabled="disable"
@@ -65,7 +65,7 @@
               src="/images/add-square.png"
               alt=""
               @click="addToList()"
-            />
+            >
           </div>
         </div>
         <button
@@ -88,7 +88,7 @@
           class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
           @click="$emit('close')"
         >
-          X
+        <img class="w-3 mx-auto" src="/images/X-9.png" alt="" >
         </button>
         <header class="my-2">
           <USkeleton

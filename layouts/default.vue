@@ -56,7 +56,7 @@
             گونه مسئولیتی در نگهداری داده های شما ندارد
           </p>
           <button class="absolute left-4" @click.prevent="panelAlert = false">
-            x
+            <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
           </button>
         </div>
         <slot />

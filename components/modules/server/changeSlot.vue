@@ -11,7 +11,7 @@
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
         @click="$emit('close')"
       >
-        X
+        <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
       </button>
       <div>
         <h1 class="text-3xl font-extrabold">تغییر اسلات</h1>
