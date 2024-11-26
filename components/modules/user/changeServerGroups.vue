@@ -11,7 +11,7 @@
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
         @click="$emit('close')"
       >
-      <img class="w-3 mx-auto" src="/images/X-9.png" alt="" >
+        <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
       </button>
       <h1 class="my-4 mx-24">
         <span>( {{ props.user }} )</span> تغییر رنک سرور گروه های
