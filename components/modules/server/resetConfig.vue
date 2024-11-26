@@ -20,6 +20,7 @@
       <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
       <from class="w-full my-4">
         <select
+          v-if="!pending"
           v-model="selectedConfigue"
           :disabled="disable"
           class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
@@ -34,11 +35,16 @@
             {{ available }}
           </option>
         </select>
+        <USkeleton
+          v-if="pending"
+          class="h-11 w-full rounded-lg"
+          :ui="{ background: 'dark:bg-gray-500' }"
+        />
       </from>
       <div class="grid">
         <button
-          :class="disable ? 'disable' : ''"
-          :disabled="disable"
+          :class="disable || pending ? 'disable' : ''"
+          :disabled="disable || pending"
           class="p-4 text-center flex justify-center rounded-xl bg-main_red module-btn"
           @click.prevent="changeConfigue()"
         >
@@ -62,7 +68,11 @@ const toast = useToast();
 // const availables = ref({});
 const selectedConfigue = ref();
 
-const { data: availables, error } = useFetch(
+const {
+  data: availables,
+  error,
+  pending,
+} = useFetch(
   `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config/available`,
   {
     headers: {
