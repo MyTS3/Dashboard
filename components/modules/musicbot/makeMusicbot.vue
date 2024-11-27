@@ -83,7 +83,7 @@ const props = defineProps(['selectedChannel']);
 async function makeMusicBot() {
   disableInputs.value = true;
   const { error } = await useFetch(
-    `${url.value}/api/v4/tservers/${selectedServer}/start`,
+    `${url.value}/api/v4/tservers/${selectedServer}/bots`,
     {
       method: 'POST',
       headers: {
