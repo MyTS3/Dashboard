@@ -76,15 +76,13 @@ const emit = defineEmits(['close']);
 const toast = useToast();
 const interval = ref();
 const serverUuid = ref();
-const servers = ref();
 
-const { data: response, error } = useFetch(`${url.value}/api/v4/tservers/`, {
+const { data: servers, error } = useFetch(`${url.value}/api/v4/tservers/`, {
   method: 'GET',
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
-watch(response, () => (servers.value = response.value));
 
 if (error.value) {
   toast.add({
