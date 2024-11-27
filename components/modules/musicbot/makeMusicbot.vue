@@ -76,7 +76,7 @@
 import TheLoading from '~/components/reusable/theLoading.vue';
 
 const store = apiStore();
-const url = storeToRefs(store);
+const { url } = storeToRefs(store);
 const selectedServer = useRoute().params.id;
 const disableInputs = ref(false);
 const props = defineProps(['selectedChannel']);
