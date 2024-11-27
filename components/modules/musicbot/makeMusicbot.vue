@@ -80,6 +80,7 @@ const { url } = storeToRefs(store);
 const selectedServer = useRoute().params.id;
 const disableInputs = ref(false);
 const props = defineProps(['selectedChannel']);
+const emit = defineEmits(['close']);
 async function makeMusicBot() {
   disableInputs.value = true;
   const { error } = await useFetch(
@@ -102,5 +103,6 @@ async function makeMusicBot() {
       color: 'red',
     });
   }
+  emit('close');
 }
 </script>
