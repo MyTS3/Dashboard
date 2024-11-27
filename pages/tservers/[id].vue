@@ -97,9 +97,7 @@
         </template>
       </main>
       <main
-        v-if="
-          serverInfo?.mustRunning == true && teamspeakserverStatus == 'pending'
-        "
+        v-if="teamspeakserverStatus == 'pending'"
         class="h-full px-4 overflow-y-hidden"
       >
         <USkeleton
@@ -109,10 +107,7 @@
           class="h-6 my-2 px-3 rounded-lg w-full"
         />
       </main>
-      <main
-        v-if="!serverInfo?.mustRunning && teamspeakserverStatus != 'pending'"
-        class="h-full"
-      >
+      <main v-if="serverInfo && !serverInfo.mustRunning" class="h-full">
         <div
           class="w-full h-full flex flex-col justify-center items-end gap-10"
         >
