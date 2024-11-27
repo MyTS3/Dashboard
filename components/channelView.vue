@@ -17,19 +17,23 @@
       </main>
     </div>
     <footer class="w-full grid gap-4">
-      <UTooltip class="flex h-full w-full" text="در حال توسعه">
-        <button
-          class="flex w-full items-center py-3 justify-center btn-disable rounded-lg"
-        >
-          <p>ساخت موزیک بات جدید</p>
-          <img src="/images/addon.png" alt="" />
-        </button>
-      </UTooltip>
+      <button
+        class="flex w-full items-center py-3 justify-center btn rounded-lg"
+        @click="makeMusicBotTab = true"
+      >
+        <p>ساخت موزیک بات جدید</p>
+        <img src="/images/addon.png" alt="" />
+      </button>
     </footer>
   </section>
-  <MakeMusicbot class="hidden" />
+  <MakeMusicbot
+    v-if="makeMusicBotTab"
+    :selected-channel="selectedChannel"
+    @close="makeMusicBotTab = false"
+  />
 </template>
 <script setup>
 import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';
 const { selectedChannel } = defineProps(['selectedChannel']);
+const makeMusicBotTab = ref(false);
 </script>

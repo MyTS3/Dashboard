@@ -53,10 +53,47 @@
         <!-- ////////////////////////////////// -->
       </div>
       <button
+        :class="{
+          'cursor-not-allowed opacity-55': load,
+        }"
         class="flex w-full items-center justify-center make-server font-medium gap-2"
       >
-        <span><img src="/images/plus.png" alt="" /></span>ساخت
+        <div
+          v-if="!pending"
+          class="w-full flex justify-center gap-2 items-center"
+        >
+          <span><img src="/images/plus.png" alt="" /></span>
+          <p>ساخت</p>
+        </div>
+        <TheLoading v-if="load" />
       </button>
     </main>
   </section>
 </template>
+<script setup>
+import TheLoading from '~/components/reusable/theLoading.vue';
+
+const store = apiStore();
+const url = storeToRefs(store);
+const selectedServer = useRoute().params.id;
+const props = defineProps(['selectedChannel']);
+const { error, pending: load } = await useFetch(
+  `${url.value}/api/v4/tservers/${selectedServer}/start`,
+  {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({
+      channelName: props.selectedChannel.channelName,
+    }),
+  },
+);
+if (error.value) {
+  toast.add({
+    title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+    timeout: 2000,
+    color: 'red',
+  });
+}
+</script>
