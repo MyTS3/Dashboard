@@ -38,29 +38,20 @@
         <P class="text-right font-medium mt-3"
           >لطفا کانفیگ سرور خودرا انتخاب کنید</P
         >
-        <from class="w-full my-4">
-          <select
-            v-if="!pending"
+        <from v-if="!pending" class="w-full my-4">
+          <USelectMenu
             v-model="selectedConfig"
+            size="xl"
+            color="indigo"
+            :options="availables"
             :disabled="disableInputs"
-            class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
-            name="locations"
-          >
-            <option
-              v-for="available in availables"
-              :key="available"
-              :value="available"
-              class="dropdown p-5"
-            >
-              {{ available }}
-            </option>
-          </select>
-          <USkeleton
-            v-else
-            :ui="{ background: 'dark:bg-gray-500' }"
-            class="w-full p-6 rounded-xl"
           />
         </from>
+        <USkeleton
+          v-else
+          :ui="{ background: 'dark:bg-gray-500' }"
+          class="w-full p-6 rounded-xl"
+        />
         <div>
           <p class="my-4 text-right font-medium">تعداد اسلات</p>
           <div class="flex justify-between">
