@@ -21,6 +21,7 @@
         </header>
         <p class="text-right my-3">سرور</p>
         <select
+          v-if="!pending"
           v-model="serverUuid"
           class="p-2 appearance-none rounded-xl bg-transparent border text-right"
         >
@@ -32,8 +33,14 @@
             {{ server.name }}
           </option>
         </select>
+        <USkeleton
+          v-if="pending"
+          class="h-10 w-full rounded-xl mx-auto"
+          :ui="{ background: 'dark:bg-gray-500' }"
+        />
         <p class="text-right my-3">دوره</p>
         <select
+          v-if="!pending"
           v-model="interval"
           class="p-2 appearance-none rounded-xl bg-transparent border text-right"
         >
@@ -42,46 +49,19 @@
           <option :value="'daily'">روزانه</option>
           <option :value="'weekly'">هفتگی</option>
         </select>
+        <USkeleton
+          v-if="pending"
+          class="h-10 w-full rounded-xl mx-auto"
+          :ui="{ background: 'dark:bg-gray-500' }"
+        />
         <button
-          :class="disable ? 'opacity-45' : ''"
+          :class="disable || pending ? 'opacity-45' : ''"
           class="w-full flex p-4 bg-main_blue rounded-xl mt-8 mb-2 justify-center"
           @click="create()"
         >
           <p v-if="!disable">افزودن</p>
           <TheLoading v-else />
         </button>
-      </template>
-      <template v-else>
-        <div class="flex flex-col gap-2 py-2">
-          <USkeleton
-            class="h-5 w-1/5 mx-auto"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-          <USkeleton
-            class="h-5 w-1/2 mx-auto"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-          <USkeleton
-            class="h-5 w-20 ml-auto"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-          <USkeleton
-            class="h-10 w-full mx-auto"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-          <USkeleton
-            class="h-5 w-20 ml-auto"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-          <USkeleton
-            class="h-10 w-full mx-auto"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-          <USkeleton
-            class="w-full p-8 mt-4"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-        </div>
       </template>
     </main>
   </section>
