@@ -49,18 +49,23 @@
         </button>
       </div>
       <div
-        class="absolute parent items-center border-black border-[1px] cursor-pointer left-[590px] top-[146px] bg-white text-black w-[8.8rem] h-5 flex justify-around text-xs"
+        class="absolute items-center border-black border-[1px] cursor-pointer left-[590px] top-[146px] bg-white text-black w-[8.8rem] h-5 flex justify-around text-xs"
       >
-        <p
-          class=""
-          :style="{ '-webkit-text-security': showYatqaPass }"
-          @click="copyToClipboard(selectedServer.queryPassword)"
-        >
-          {{ selectedServer.queryPassword }}
-        </p>
-        <button @click="copyToClipboard(selectedServer.queryPassword)">
-          <img class="w-4 child" src="/images/copy.svg" alt="" />
-        </button>
+        <div class="flex gap-1 parent">
+          <p
+            :style="{ '-webkit-text-security': showYatqaPass }"
+            @click="copyToClipboard(selectedServer.queryPassword)"
+          >
+            {{ selectedServer.queryPassword }}
+          </p>
+          <button
+            class="w"
+            @click="copyToClipboard(selectedServer.queryPassword)"
+          >
+            <img class="w-4 child" src="/images/copy.svg" alt="" />
+          </button>
+        </div>
+
         <button @click.prevent="yatqaPassReset = true">
           <img
             class="w-4 hover:opacity-50"
