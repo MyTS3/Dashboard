@@ -57,6 +57,22 @@
             </p>
           </div>
           <div
+            v-if="row.rowType == 'musicBot'"
+            class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
+            :class="
+              selectedRow == row
+                ? 'bg-main_orange/70'
+                : 'hover:bg-main_orange/10'
+            "
+            :style="{ 'padding-left': row.level * 1 + 'rem' }"
+            @click="selectedRow = row"
+          >
+            <img src="/images/bot-icon.png" alt="" />
+            <p class="w-full text-left">
+              {{ row.bot.connected.name }}
+            </p>
+          </div>
+          <div
             v-if="row.rowType == 'user'"
             draggable="true"
             class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
@@ -145,7 +161,7 @@
         v-if="selectedRow?.rowType == 'channel'"
         :selected-channel="selectedRow.channel"
       />
-      <!-- <musicbot v-if="selectedRow?.rowType=='musicbot' " /> -->
+      <MusicbotView v-if="selectedRow?.rowType == 'musicBot'" />
     </div>
   </section>
 </template>
@@ -154,13 +170,15 @@ import { ref } from 'vue';
 import { useRoute } from '#app';
 import { apiStore, storeToRefs } from '#imports';
 import objectHash from 'object-hash';
+import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
 
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
 type row =
   | { rowType: 'channel'; channel: channel; level: number }
   | { rowType: 'user'; user: user; level: number }
-  | { rowType: 'server'; level: 0 };
+  | { rowType: 'server'; level: 0 }
+  | { rowType: 'musicBot'; bot: bot; level: number };
 type channel = {
   channelFullName: string;
   channelName: string;
@@ -177,6 +195,16 @@ type user = {
   clientVersion: string;
   clientPlatform: string;
   clientUniqueIdentifier: string;
+};
+type bot = {
+  uuid: string;
+  cid: string;
+  name: string;
+  connected: {
+    uid: string;
+    cid: number;
+    name: string;
+  };
 };
 const route = useRoute();
 const serverUuid = route.params.id;
@@ -285,123 +313,148 @@ function findChannelTypeAndNameByFullName(fullName: string): {
     channelFullName: fullName,
   };
 }
-
-const {
-  data: teamspeakserver,
-  execute: getUsersAndChannels,
-  status: teamspeakserverStatus,
-} = useLazyAsyncData<row[]>(async () => {
-  const channelsReq: Promise<
-    {
+const teamspeakserver = ref();
+const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
+  useLazyAsyncData(async () => {
+    const channelsReq: Promise<
+      {
+        channelName: string;
+        cid: string;
+        pid: string;
+        channelFlagDefault: boolean;
+      }[]
+    > = $fetch(`${url.value}/api/v4/tservers/${serverUuid}/channels`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    const botReq: Promise<bot[]> = $fetch(
+      `${url.value}/api/v4/tservers/${serverUuid}/bots`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      },
+    );
+    const usersReq: Promise<
+      {
+        cid: string;
+        clid: string;
+        clientInputMuted: boolean;
+        clientInputHardware: boolean;
+        clientOutputMuted: boolean;
+        clientOutputHardware: boolean;
+        clientNickname: string;
+        clientAway: boolean;
+        clientLastconnected: number;
+        clientVersion: string;
+        clientPlatform: string;
+        clientUniqueIdentifier: string;
+      }[]
+    > = $fetch(`${url.value}/api/v4/tservers/${serverUuid}/users`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    const users = await usersReq;
+    const bots = await botReq;
+    function isDeafaultChannel(channel: {
       channelName: string;
       cid: string;
       pid: string;
       channelFlagDefault: boolean;
-    }[]
-  > = $fetch(`${url.value}/api/v4/tservers/${serverUuid}/channels`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-
-  const usersReq: Promise<
-    {
-      cid: string;
-      clid: string;
-      clientInputMuted: boolean;
-      clientInputHardware: boolean;
-      clientOutputMuted: boolean;
-      clientOutputHardware: boolean;
-      clientNickname: string;
-      clientAway: boolean;
-      clientLastconnected: number;
-      clientVersion: string;
-      clientPlatform: string;
-      clientUniqueIdentifier: string;
-    }[]
-  > = $fetch(`${url.value}/api/v4/tservers/${serverUuid}/users`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  const users = await usersReq;
-  function isDeafaultChannel(channel: {
-    channelName: string;
-    cid: string;
-    pid: string;
-    channelFlagDefault: boolean;
-  }): boolean {
-    if (channel.channelFlagDefault) return true;
-    else return false;
-  }
-  const rows: row[] = [];
-  const channels = await channelsReq;
-  channels.forEach((channel) => {
-    const channelTypeAndName = findChannelTypeAndNameByFullName(
-      channel.channelName,
-    );
-    let userNumber = 0;
-    users.forEach((u) => {
-      if (u.cid == channel.cid) userNumber += 1;
-    });
-    const channelType = channelTypeAndName.type;
-    const channelName = channelTypeAndName.name;
-    const align = channelTypeAndName.align;
-    const channelFullName = channelTypeAndName.channelFullName;
-    const isDeafault = isDeafaultChannel(channel);
-    let level = 0;
-    let parentChannel:
-      | { cid: string; pid: string; channelName: string }
-      | undefined = channel;
-    while (parentChannel) {
-      level += 1;
-      parentChannel = channels.find((c) => {
-        if (!parentChannel) return false;
-        return c.cid == parentChannel.pid;
-      });
+    }): boolean {
+      if (channel.channelFlagDefault) return true;
+      else return false;
     }
-    rows.push({
-      rowType: 'channel',
-      channel: {
-        channelFullName,
-        channelName,
-        cid: channel.cid,
-        channelType,
-        align,
-        isDeafault,
-        numberOfUsers: userNumber,
-      },
-      level,
+    const rows: row[] = [];
+    const channels = await channelsReq;
+    channels.forEach((channel) => {
+      const channelTypeAndName = findChannelTypeAndNameByFullName(
+        channel.channelName,
+      );
+      let userNumber = 0;
+      users.forEach((u) => {
+        if (u.cid == channel.cid) userNumber += 1;
+      });
+      const channelType = channelTypeAndName.type;
+      const channelName = channelTypeAndName.name;
+      const align = channelTypeAndName.align;
+      const channelFullName = channelTypeAndName.channelFullName;
+      const isDeafault = isDeafaultChannel(channel);
+      let level = 0;
+      let parentChannel:
+        | { cid: string; pid: string; channelName: string }
+        | undefined = channel;
+      while (parentChannel) {
+        level += 1;
+        parentChannel = channels.find((c) => {
+          if (!parentChannel) return false;
+          return c.cid == parentChannel.pid;
+        });
+      }
+      rows.push({
+        rowType: 'channel',
+        channel: {
+          channelFullName,
+          channelName,
+          cid: channel.cid,
+          channelType,
+          align,
+          isDeafault,
+          numberOfUsers: userNumber,
+        },
+        level,
+      });
+    });
+
+    usersCount.value = users.length;
+    users.forEach((user) => {
+      const channelIndex = rows.findIndex((row) => {
+        if (row.rowType != 'channel') return false;
+        return row.channel.cid == user.cid;
+      });
+      bots.forEach((bot) => {
+        if (user.clientNickname == bot.connected.name) {
+          rows.splice(channelIndex + 1, 0, {
+            rowType: 'musicBot',
+            bot: {
+              cid: bot.cid,
+              name: bot.name,
+              uuid: bot.uuid,
+              connected: {
+                cid: bot.connected.cid,
+                uid: bot.connected.uid,
+                name: bot.connected.name,
+              },
+            },
+            level: rows[channelIndex].level + 1,
+          });
+        } else {
+          let status: statusType = 'openMic';
+          if (user.clientInputMuted || !user.clientInputHardware)
+            status = 'micMute';
+          if (user.clientOutputMuted || !user.clientOutputHardware)
+            status = 'soundMute';
+          if (user.clientAway) status = 'away';
+          rows.splice(channelIndex + 1, 0, {
+            rowType: 'user',
+            user: {
+              userNickname: user.clientNickname,
+              status,
+              clientLastconnected: user.clientLastconnected,
+              clientVersion: user.clientVersion,
+              clientPlatform: user.clientPlatform,
+              clientUniqueIdentifier: user.clientUniqueIdentifier,
+            },
+            level: rows[channelIndex].level + 1,
+          });
+        }
+      });
+      console.log(rows);
+      teamspeakserver.value = rows;
     });
   });
-
-  usersCount.value = users.length;
-  users.forEach((user) => {
-    const channelIndex = rows.findIndex((row) => {
-      if (row.rowType != 'channel') return false;
-      return row.channel.cid == user.cid;
-    });
-
-    let status: statusType = 'openMic';
-    if (user.clientInputMuted || !user.clientInputHardware) status = 'micMute';
-    if (user.clientOutputMuted || !user.clientOutputHardware)
-      status = 'soundMute';
-    if (user.clientAway) status = 'away';
-    rows.splice(channelIndex + 1, 0, {
-      rowType: 'user',
-      user: {
-        userNickname: user.clientNickname,
-        status,
-        clientLastconnected: user.clientLastconnected,
-        clientVersion: user.clientVersion,
-        clientPlatform: user.clientPlatform,
-        clientUniqueIdentifier: user.clientUniqueIdentifier,
-      },
-      level: rows[channelIndex].level + 1,
-    });
-  });
-  return rows;
-});
 
 function longpoll(time = 1) {
   fetch(
