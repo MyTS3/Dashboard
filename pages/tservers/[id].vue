@@ -25,6 +25,7 @@
       </header>
       <main
         v-if="teamspeakserverStatus === 'success' && serverInfo?.mustRunning"
+        id="scrollbale"
         class="flex items-stretch flex-col teamspeak text-xs px-4 flex-1 overflow-y-auto"
       >
         <template v-for="row in teamspeakserver" :key="objectHash(row)">
@@ -65,7 +66,7 @@
                 : 'hover:bg-main_orange/10'
             "
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
-            @click="selectedRow = row"
+            @click="(selectedRow = row), (selectedBot = row)"
           >
             <img src="/images/bot-icon.png" alt="" />
             <p class="w-full text-left">
@@ -161,7 +162,10 @@
         v-if="selectedRow?.rowType == 'channel'"
         :selected-channel="selectedRow.channel"
       />
-      <MusicbotView v-if="selectedRow?.rowType == 'musicBot'" />
+      <MusicbotView
+        v-if="selectedRow?.rowType == 'musicBot'"
+        :selected-bot="selectedBot"
+      />
     </div>
   </section>
 </template>
@@ -213,6 +217,7 @@ const { url } = storeToRefs(store);
 const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
+const selectedBot = ref<row>();
 //function
 function draged(user: user) {
   movingUser.value = user.userNickname;
@@ -430,28 +435,26 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
             },
             level: rows[channelIndex].level + 1,
           });
-        } else {
-          let status: statusType = 'openMic';
-          if (user.clientInputMuted || !user.clientInputHardware)
-            status = 'micMute';
-          if (user.clientOutputMuted || !user.clientOutputHardware)
-            status = 'soundMute';
-          if (user.clientAway) status = 'away';
-          rows.splice(channelIndex + 1, 0, {
-            rowType: 'user',
-            user: {
-              userNickname: user.clientNickname,
-              status,
-              clientLastconnected: user.clientLastconnected,
-              clientVersion: user.clientVersion,
-              clientPlatform: user.clientPlatform,
-              clientUniqueIdentifier: user.clientUniqueIdentifier,
-            },
-            level: rows[channelIndex].level + 1,
-          });
         }
       });
-      console.log(rows);
+      let status: statusType = 'openMic';
+      if (user.clientInputMuted || !user.clientInputHardware)
+        status = 'micMute';
+      if (user.clientOutputMuted || !user.clientOutputHardware)
+        status = 'soundMute';
+      if (user.clientAway) status = 'away';
+      rows.splice(channelIndex + 1, 0, {
+        rowType: 'user',
+        user: {
+          userNickname: user.clientNickname,
+          status,
+          clientLastconnected: user.clientLastconnected,
+          clientVersion: user.clientVersion,
+          clientPlatform: user.clientPlatform,
+          clientUniqueIdentifier: user.clientUniqueIdentifier,
+        },
+        level: rows[channelIndex].level + 1,
+      });
       teamspeakserver.value = rows;
     });
   });
