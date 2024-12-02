@@ -419,24 +419,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         if (row.rowType != 'channel') return false;
         return row.channel.cid == user.cid;
       });
-      bots.forEach((bot) => {
-        if (user.clientNickname == bot.connected.name) {
-          rows.splice(channelIndex + 1, 0, {
-            rowType: 'musicBot',
-            bot: {
-              cid: bot.cid,
-              name: bot.name,
-              uuid: bot.uuid,
-              connected: {
-                cid: bot.connected.cid,
-                uid: bot.connected.uid,
-                name: bot.connected.name,
-              },
-            },
-            level: rows[channelIndex].level + 1,
-          });
-        }
-      });
+
       let status: statusType = 'openMic';
       if (user.clientInputMuted || !user.clientInputHardware)
         status = 'micMute';
@@ -455,6 +438,26 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         },
         level: rows[channelIndex].level + 1,
       });
+
+      bots.forEach((bot) => {
+        if (user.clientNickname == bot.connected.name) {
+          rows.splice(channelIndex + 1, 1, {
+            rowType: 'musicBot',
+            bot: {
+              cid: bot.cid,
+              name: bot.name,
+              uuid: bot.uuid,
+              connected: {
+                cid: bot.connected.cid,
+                uid: bot.connected.uid,
+                name: bot.connected.name,
+              },
+            },
+            level: rows[channelIndex].level + 1,
+          });
+        }
+      });
+
       teamspeakserver.value = rows;
     });
   });
