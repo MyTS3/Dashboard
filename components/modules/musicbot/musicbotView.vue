@@ -15,7 +15,7 @@
     <img class="mx-auto" src="/images/seprator-line.png" alt="" />
     <div class="h-full flex flex-col gap-5">
       <main
-        class="w-4/5 h-full min-h-24 bg-white/10 mx-auto rounded-lg p-2 overflow-y-scroll"
+        class="w-4/5 min-h-24 grow row-span-2 bg-white/10 mx-auto rounded-lg p-2 overflow-y-scroll"
       >
         <!-- //////////////////////////////////playlist -->
         <li class="list-none my-1 p-3 rounded-xl relative btn-active">
@@ -63,7 +63,9 @@
           </button>
         </li>
       </main>
-      <footer class="mx-auto pb-[4rem] w-full gap-2 flex flex-col">
+      <footer
+        class="mx-auto basis-52 grow-0 shrink-0 w-full gap-2 flex flex-col"
+      >
         <div class="flex flex-col text-center">
           <h2 class="font-bold">Khabam Nemibare</h2>
           <p class="text-sm text-white/50">Amir Tataloo</p>
