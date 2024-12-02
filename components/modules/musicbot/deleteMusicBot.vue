@@ -12,8 +12,10 @@
         >
           <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
-        <h1 class="my-4">حذف دوره</h1>
-        <p class="mb-4">شما در حال پاک کردن دوره هستید ایا اطمینان دارید؟</p>
+        <h1 class="my-4">حذف موزیک بات</h1>
+        <p class="mb-4">
+          شما در حال پاک کردن موزیک بات هستید ایا اطمینان دارید؟
+        </p>
         <div class="grid grid-cols-2 gap-3">
           <button
             :class="disable ? 'disable' : ''"
@@ -27,7 +29,7 @@
             :class="disable ? 'disable' : ''"
             :disabled="disable"
             class="p-4 flex justify-center items-center text-center rounded-xl bg-main_red module-btn"
-            @click.prevent="removeInterval()"
+            @click.prevent="removeMusicBot()"
           >
             <p v-if="!disable">تایید</p>
             <ReusableTheLoading v-else />
@@ -40,13 +42,13 @@
 <script setup>
 const store = apiStore();
 const { url } = storeToRefs(store);
-const disable = ref(false);
+const props = defineProps(['selectedBot']);
+const route = useRoute();
 const toast = useToast();
-const props = defineProps(['selectedInterval']);
-const emit = defineEmits('close');
-async function removeInterval() {
+const emit = defineEmits(['close']);
+async function removeMusicBot() {
   const { error } = await useFetch(
-    `${url.value}/api/v4/snapshots/intervals/${props.selectedInterval}`,
+    `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedBot.bot.uuid}`,
     {
       method: 'DELETE',
       headers: {

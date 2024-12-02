@@ -1,6 +1,12 @@
 <template>
   <section class="h-full relative overflow-clip flex flex-col gap-2">
     <header class="flex w-full">
+      <img
+        class="cursor-pointer"
+        src="/images/trash.png"
+        alt=""
+        @click="deleteMusicBotTab = true"
+      />
       <h1 class="mx-auto font-bold my-auto">موزیک بات</h1>
       <button class="my-auto">
         <img src="/images/edit.png" alt="" />
@@ -88,8 +94,19 @@
         </div>
       </footer>
     </div>
+    <DeleteMusicBot
+      v-if="deleteMusicBotTab"
+      :selected-bot="selectedBot"
+      @close="deleteMusicBotTab = false"
+    />
   </section>
 </template>
+<script setup lang="ts">
+import DeleteMusicBot from './deleteMusicBot.vue';
+const deleteMusicBotTab = ref(false);
+const props = defineProps(['selectedBot']);
+console.log(props);
+</script>
 <style scoped>
 .audio-progress {
   position: relative;
