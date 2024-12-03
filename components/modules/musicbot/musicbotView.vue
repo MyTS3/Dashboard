@@ -1,16 +1,16 @@
 <template>
   <section class="h-full relative overflow-clip flex flex-col gap-2">
     <header class="flex w-full">
+      <button class="my-auto">
+        <img src="/images/edit.png" alt="" />
+      </button>
+      <h1 class="mx-auto font-bold my-auto">موزیک بات</h1>
       <img
         class="cursor-pointer"
         src="/images/trash.png"
         alt=""
         @click="deleteMusicBotTab = true"
       />
-      <h1 class="mx-auto font-bold my-auto">موزیک بات</h1>
-      <button class="my-auto">
-        <img src="/images/edit.png" alt="" />
-      </button>
     </header>
     <img class="mx-auto" src="/images/seprator-line.png" alt="" />
     <div class="h-full flex flex-col gap-5">
