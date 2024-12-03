@@ -60,12 +60,15 @@
           <div
             v-if="row.rowType == 'musicBot'"
             class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
+            draggable="true"
             :class="
               selectedRow == row
                 ? 'bg-main_orange/70'
                 : 'hover:bg-main_orange/10'
             "
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
+            @dragstart="draged(row.bot)"
+            @contextmenu.prevent="selectedRow = row"
             @click="(selectedRow = row), (selectedBot = row)"
           >
             <img src="/images/bot-icon.png" alt="" />
@@ -219,8 +222,10 @@ const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
 const selectedBot = ref<row>();
 //function
-function draged(user: user) {
-  movingUser.value = user.userNickname;
+function draged(user: user | bot) {
+  if ('userNickname' in user) movingUser.value = user.userNickname;
+  if ('connected' in user) movingUser.value = user.connected.name;
+  console.log(user);
 }
 async function dragended(channel: channel) {
   $fetch(
