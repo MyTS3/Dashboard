@@ -22,5 +22,10 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@pinia/nuxt', '@nuxt/eslint', '@nuxt/ui'],
+  modules: [
+    '@pinia/nuxt',
+    '@nuxt/eslint',
+    '@nuxt/ui',
+    '@vueuse/nuxt',
+  ],
 });
