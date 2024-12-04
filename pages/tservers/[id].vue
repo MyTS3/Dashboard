@@ -227,17 +227,10 @@ const usersCount = ref<number | undefined>();
 const selectedBot = ref<row>();
 const { y } = useScroll(el);
 //function
-<<<<<<< HEAD
-
-function draged(user: user | bot) {
-  if ('userNickname' in user) movingUser.value = user.userNickname;
-  if ('connected' in user) movingUser.value = user.connected.name;
-=======
 function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
   if ('connected' in entity && entity.connected && 'name' in entity.connected)
     movingUser.value = entity.connected.name;
->>>>>>> 03c75f1afec11a2846124b934b1b18064fd49835
 }
 async function dragended(channel: channel) {
   $fetch(
