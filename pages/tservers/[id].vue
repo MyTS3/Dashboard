@@ -185,7 +185,7 @@ type row =
   | { rowType: 'channel'; channel: channel; level: number }
   | { rowType: 'user'; user: user; level: number }
   | { rowType: 'server'; level: 0 }
-  | { rowType: 'musicBot'; bot: bot; level: number };
+  | { rowType: 'musicBot'; musicBot: musicBot; level: number };
 type channel = {
   channelFullName: string;
   channelName: string;
@@ -203,11 +203,11 @@ type user = {
   clientPlatform: string;
   clientUniqueIdentifier: string;
 };
-type bot = {
+type musicBot = {
   uuid: string;
   cid: string;
   name: string;
-  connected: {
+  connected?: {
     uid: string;
     cid: number;
     name: string;
@@ -222,10 +222,10 @@ const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
 const selectedBot = ref<row>();
 //function
-function draged(user: user | bot) {
-  if ('userNickname' in user) movingUser.value = user.userNickname;
-  if ('connected' in user) movingUser.value = user.connected.name;
-  console.log(user);
+function draged(entity: user | musicBot) {
+  if ('userNickname' in entity) movingUser.value = entity.userNickname;
+  if ('connected' in entity && entity.connected && 'name' in entity.connected)
+    movingUser.value = entity.connected.name;
 }
 async function dragended(channel: channel) {
   $fetch(
@@ -338,7 +338,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
-    const botReq: Promise<bot[]> = $fetch(
+    const botReq: Promise<musicBot[]> = $fetch(
       `${url.value}/api/v4/tservers/${serverUuid}/bots`,
       {
         headers: {
@@ -367,7 +367,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
       },
     });
     const users = await usersReq;
-    const bots = await botReq;
+    const musicBots = await botReq;
     function isDeafaultChannel(channel: {
       channelName: string;
       cid: string;
@@ -431,37 +431,30 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
       if (user.clientOutputMuted || !user.clientOutputHardware)
         status = 'soundMute';
       if (user.clientAway) status = 'away';
-      rows.splice(channelIndex + 1, 0, {
-        rowType: 'user',
-        user: {
-          userNickname: user.clientNickname,
-          status,
-          clientLastconnected: user.clientLastconnected,
-          clientVersion: user.clientVersion,
-          clientPlatform: user.clientPlatform,
-          clientUniqueIdentifier: user.clientUniqueIdentifier,
-        },
-        level: rows[channelIndex].level + 1,
-      });
 
-      bots.forEach((bot) => {
-        if (user.clientNickname == bot.connected.name) {
-          rows.splice(channelIndex + 1, 1, {
-            rowType: 'musicBot',
-            bot: {
-              cid: bot.cid,
-              name: bot.name,
-              uuid: bot.uuid,
-              connected: {
-                cid: bot.connected.cid,
-                uid: bot.connected.uid,
-                name: bot.connected.name,
-              },
-            },
-            level: rows[channelIndex].level + 1,
-          });
-        }
-      });
+      const musicBot = musicBots.find(
+        (b) => b.connected && b.connected.name == user.clientNickname,
+      );
+      if (musicBot) {
+        rows.splice(channelIndex + 1, 0, {
+          rowType: 'musicBot',
+          musicBot,
+          level: rows[channelIndex].level + 1,
+        });
+      } else {
+        rows.splice(channelIndex + 1, 0, {
+          rowType: 'user',
+          user: {
+            userNickname: user.clientNickname,
+            status,
+            clientLastconnected: user.clientLastconnected,
+            clientVersion: user.clientVersion,
+            clientPlatform: user.clientPlatform,
+            clientUniqueIdentifier: user.clientUniqueIdentifier,
+          },
+          level: rows[channelIndex].level + 1,
+        });
+      }
 
       teamspeakserver.value = rows;
     });
