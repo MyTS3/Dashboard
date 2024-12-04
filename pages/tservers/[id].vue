@@ -204,6 +204,7 @@ type user = {
   clientLastconnected: number;
   clientVersion: string;
   clientPlatform: string;
+  inDefaultChannel: boolean;
   clientUniqueIdentifier: string;
 };
 type musicBot = {
@@ -373,6 +374,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
     });
     const users = await usersReq;
     const musicBots = await botReq;
+    let defaultPid: string;
     function isDeafaultChannel(channel: {
       channelName: string;
       cid: string;
@@ -381,6 +383,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
     }): boolean {
       if (channel.channelFlagDefault) {
         mainInformation.defaultChannel = channel.channelName;
+        defaultPid = channel.cid;
         return true;
       } else return false;
     }
@@ -431,7 +434,8 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         if (row.rowType != 'channel') return false;
         return row.channel.cid == user.cid;
       });
-
+      let inDefaultChannel = false;
+      if (user.cid == defaultPid) inDefaultChannel = true;
       let status: statusType = 'openMic';
       if (user.clientInputMuted || !user.clientInputHardware)
         status = 'micMute';
@@ -454,6 +458,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
           user: {
             userNickname: user.clientNickname,
             status,
+            inDefaultChannel: inDefaultChannel,
             clientLastconnected: user.clientLastconnected,
             clientVersion: user.clientVersion,
             clientPlatform: user.clientPlatform,

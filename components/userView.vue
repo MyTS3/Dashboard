@@ -36,11 +36,13 @@
       <UTooltip
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex justify-center items-center gap-2 rounded-tl-lg"
-        :text="disable ? 'نمیتوانید شخصی یا رنک سرور کوئری را بن کنید' : 'ban'"
+        :text="
+          banDisable ? 'نمیتوانید شخصی یا رنک سرور کوئری را بن کنید' : 'ban'
+        "
       >
         <button
-          :class="disable ? 'btn-disable' : 'btn'"
-          :disabled="disable"
+          :class="banDisable ? 'btn-disable' : 'btn'"
+          :disabled="banDisable"
           class="w-full h-20 flex justify-center items-center rounded-tl-xl parent"
           @click="banUserTab = true"
         >
@@ -64,14 +66,21 @@
         <p>رنک ها</p>
         <img src="/images/ranks.png" alt="" />
       </button>
-      <button
-        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        class="flex h-20 justify-center items-center gap-2 py-2 btn rounded-br-xl"
-        @click="kickFromChannelTab = true"
+      <UTooltip
+        class="flex justify-center items-center gap-2 rounded-tl-lg"
+        :text="banDisable ? 'نمیتوانید شخصی را از چنل دیفالت کیک کنید' : 'کیک'"
       >
-        <p>کیک از چنل</p>
-        <img src="/images/kick_channel.png" alt="" />
-      </button>
+        <button
+          v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
+          :class="selectedRow.user.inDefaultChannel ? 'btn-disable' : 'btn'"
+          :disabled="selectedRow.user.inDefaultChannel"
+          class="w-full h-20 flex justify-center items-center rounded-br-xl parent"
+          @click="kickFromChannelTab = true"
+        >
+          <p>کیک از چنل</p>
+          <img src="/images/kick_channel.png" alt="" />
+        </button>
+      </UTooltip>
     </footer>
   </section>
   <banFromServer
@@ -105,9 +114,8 @@ import kickFromChannel from './modules/user/kickFromChannel.vue';
 import kickFromServer from './modules/user/kickFromServer.vue';
 import changeServerGroups from './modules/user/changeServerGroups.vue';
 
-const disable = ref(false);
+const banDisable = ref(false);
 const props = defineProps(['selectedRow', 'serverInfo']);
-
 const serverInfo = props.serverInfo;
 const kickFromChannelTab = ref(false);
 const kickFromServerTab = ref(false);
@@ -178,9 +186,9 @@ async function getServerGroups() {
     },
   );
   servergroups.value = response;
-  disable.value = false;
+  banDisable.value = false;
   response.forEach((re) => {
-    if (re.name.includes('Admin Server Query')) disable.value = true;
+    if (re.name.includes('Admin Server Query')) banDisable.value = true;
   });
 }
 await getServerGroups();
