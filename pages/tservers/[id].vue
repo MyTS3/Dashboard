@@ -26,6 +26,7 @@
       <main
         v-if="teamspeakserverStatus === 'success' && serverInfo?.mustRunning"
         id="scrollbale"
+        ref="el"
         class="flex items-stretch flex-col teamspeak text-xs px-4 flex-1 overflow-y-auto"
       >
         <template v-for="row in teamspeakserver" :key="objectHash(row)">
@@ -178,6 +179,8 @@ import { useRoute } from '#app';
 import { apiStore, storeToRefs } from '#imports';
 import objectHash from 'object-hash';
 import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
+import { useScroll } from '@vueuse/core';
+import { mainInformation } from '~/stores/mainChannelInfo';
 
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
@@ -214,6 +217,7 @@ type bot = {
   };
 };
 const route = useRoute();
+const el = ref<HTMLElement | null>(null);
 const serverUuid = route.params.id;
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -221,11 +225,12 @@ const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
 const selectedBot = ref<row>();
+const { y } = useScroll(el);
 //function
+
 function draged(user: user | bot) {
   if ('userNickname' in user) movingUser.value = user.userNickname;
   if ('connected' in user) movingUser.value = user.connected.name;
-  console.log(user);
 }
 async function dragended(channel: channel) {
   $fetch(
@@ -374,8 +379,10 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
       pid: string;
       channelFlagDefault: boolean;
     }): boolean {
-      if (channel.channelFlagDefault) return true;
-      else return false;
+      if (channel.channelFlagDefault) {
+        mainInformation.defaultChannel = channel.channelName;
+        return true;
+      } else return false;
     }
     const rows: row[] = [];
     const channels = await channelsReq;
@@ -481,6 +488,11 @@ function longpoll(time = 1) {
       getUsersAndChannels().then(() => longpoll(data.at));
     }
   });
+  y.value = mainInformation.lastScrollPosition;
 }
 longpoll();
+
+watch(y, () => {
+  mainInformation.lastScrollPosition = y.value;
+});
 </script>
