@@ -53,7 +53,7 @@
             />
             <p
               :style="{ 'text-align': row.channel.align }"
-              class="w-full text-left cursor-pointer"
+              class="w-full h-4 text-left cursor-pointer"
             >
               {{ row.channel.channelName }}
             </p>
