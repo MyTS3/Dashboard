@@ -73,7 +73,7 @@
           >
             <img src="/images/bot-icon.png" alt="" />
             <p class="w-full text-left">
-              {{ row.bot.connected.name }}
+              {{ row.musicBot.connected.name }}
             </p>
           </div>
           <div
