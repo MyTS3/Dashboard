@@ -59,19 +59,46 @@
                 <div
                   v-for="server in servers"
                   :key="server.uuid"
-                  class="table items"
+                  class="table items hover:bg-main_orange/30 cursor-pointer"
                 >
-                  <p class="cursor-pointer" @click="serverClicked(server)">
-                    {{ server.name }}
-                  </p>
-                  <p>{{ convertEnglishNumberToPersian(server.slots) }}</p>
-                  <p>{{ timeAgo.format(new Date(server.createdAt)) }}</p>
-                  <img
-                    class="cursor-pointer"
-                    src="/images/trash.png"
-                    alt=""
-                    @click="removeServer(server.name, server.uuid)"
-                  />
+                  <div
+                    class="h-full w-full flex justify-center items-center"
+                    @click="serverClicked(server)"
+                  >
+                    <p>
+                      {{ server.name }}
+                    </p>
+                  </div>
+                  <div
+                    class="h-full w-full flex justify-center items-center"
+                    @click="serverClicked(server)"
+                  >
+                    <p>
+                      {{ convertEnglishNumberToPersian(server.slots) }}
+                    </p>
+                  </div>
+                  <div
+                    class="h-full w-full flex justify-center items-center"
+                    @click="serverClicked(server)"
+                  >
+                    <p>
+                      {{ timeAgo.format(new Date(server.createdAt)) }}
+                    </p>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-5">
+                    <img
+                      class="cursor-pointer w-6"
+                      src="/images/trash.png"
+                      alt=""
+                      @click="removeServer(server.name, server.uuid)"
+                    />
+                    <a
+                      class="cursor-pointer w-6"
+                      :href="`ts3server://${server.name}`"
+                      ><img src="/images/connect.svg" alt=""
+                    /></a>
+                  </div>
                 </div>
               </div>
             </template>
@@ -170,6 +197,8 @@ function serverClicked(server) {
   grid-template-columns: 3fr 1fr 1fr 1fr;
   text-align: center;
   justify-items: center;
-  padding: 1rem;
+  height: 4rem;
+  justify-content: center;
+  align-items: center;
 }
 </style>
