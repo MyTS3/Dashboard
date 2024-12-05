@@ -62,11 +62,12 @@
             v-if="row.rowType == 'musicBot'"
             class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
             draggable="true"
-            :class="
+            :class="[
               selectedRow == row
                 ? 'bg-main_orange/70'
-                : 'hover:bg-main_orange/10'
-            "
+                : 'hover:bg-main_orange/10',
+              !('connected' in row.musicBot) ? 'opacity-50' : '',
+            ]"
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
             @dragstart="draged(row.bot)"
             @contextmenu.prevent="selectedRow = row"
@@ -74,7 +75,11 @@
           >
             <img src="/images/bot-icon.png" alt="" />
             <p class="w-full text-left">
-              {{ row.musicBot.connected.name }}
+              {{
+                row.musicBot.connected
+                  ? row.musicBot.connected.name
+                  : row.musicBot.name
+              }}
             </p>
           </div>
           <div
@@ -217,6 +222,7 @@ type musicBot = {
     name: string;
   };
 };
+
 const route = useRoute();
 const el = ref<HTMLElement | null>(null);
 const serverUuid = route.params.id;
@@ -427,7 +433,24 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         level,
       });
     });
-
+    musicBots.forEach((musicBot) => {
+      if (!('connected' in musicBot)) {
+        let channelIndex = rows.findIndex((row) => {
+          if (row.rowType != 'channel') return false;
+          return row.channel.cid == musicBot.cid;
+        });
+        if (channelIndex == -1) {
+          channelIndex = channels.findIndex(
+            (channel) => channel.channelFlagDefault,
+          );
+        }
+        rows.splice(channelIndex + 1, 0, {
+          rowType: 'musicBot',
+          musicBot,
+          level: rows[channelIndex].level + 1,
+        });
+      }
+    });
     usersCount.value = users.length;
     users.forEach((user) => {
       const channelIndex = rows.findIndex((row) => {
