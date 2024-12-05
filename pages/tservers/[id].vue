@@ -491,8 +491,8 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         });
       }
 
-      teamspeakserver.value = rows;
     });
+    teamspeakserver.value = rows;
   });
 
 function longpoll(time = 1) {
