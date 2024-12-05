@@ -34,6 +34,7 @@
 </template>
 <script setup>
 import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';
-const { selectedChannel } = defineProps(['selectedChannel']);
+const props = defineProps(['selectedChannel']);
+console.log(props);
 const makeMusicBotTab = ref(false);
 </script>
