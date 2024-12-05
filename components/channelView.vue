@@ -7,7 +7,7 @@
       <img class="my-6 w-full" src="/images/seprator-line.png" alt="" />
       <main class="text-right flex flex-col gap-5">
         <li class="grid gridList">
-          <p>{{ selectedChannel.channelName }}</p>
+          <p>{{ selectedChannel.channelFullName }}</p>
           <p>: نام</p>
         </li>
         <li class="grid gridList">
