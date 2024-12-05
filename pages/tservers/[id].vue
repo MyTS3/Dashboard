@@ -260,7 +260,7 @@ function sameRow(r1: row, r2: row) {
     if (r1.rowType == 'server' && r2.rowType == 'server') {
       return true;
     } else if (r1.rowType == 'channel' && r2.rowType == 'channel') {
-      return r1.channel.channelName == r2.channel.channelName;
+      return r1.channel.cid == r2.channel.cid;
     } else if (r1.rowType == 'user' && r2.rowType == 'user') {
       return r1.user.userNickname == r2.user.userNickname;
     } else if (r1.rowType == 'musicBot' && r2.rowType == 'musicBot') {
