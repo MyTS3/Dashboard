@@ -35,7 +35,7 @@
             dropzone="true"
             class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-fit"
             :class="
-              selectedRow == row
+              sameRow(selectedRow, row)
                 ? 'bg-main_orange/70'
                 : 'hover:bg-main_orange/10'
             "
@@ -63,7 +63,7 @@
             class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
             draggable="true"
             :class="[
-              selectedRow == row
+              sameRow(selectedRow, row)
                 ? 'bg-main_orange/70'
                 : 'hover:bg-main_orange/10',
               !('connected' in row.musicBot) ? 'opacity-50' : '',
@@ -71,7 +71,7 @@
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
             @dragstart="draged(row.bot)"
             @contextmenu.prevent="selectedRow = row"
-            @click="(selectedRow = row), (selectedBot = row)"
+            @click="selectedRow = row"
           >
             <img src="/images/bot-icon.png" alt="" />
             <p class="w-full text-left">
@@ -87,7 +87,7 @@
             draggable="true"
             class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
             :class="
-              selectedRow == row
+              sameRow(selectedRow, row)
                 ? 'bg-main_orange/70'
                 : 'hover:bg-main_orange/10'
             "
@@ -170,10 +170,11 @@
       <ChannelView
         v-if="selectedRow?.rowType == 'channel'"
         :selected-channel="selectedRow.channel"
+        @refresh="getUsersAndChannels"
       />
       <MusicbotView
         v-if="selectedRow?.rowType == 'musicBot'"
-        :selected-bot="selectedBot"
+        :selected-row="selectedRow"
       />
     </div>
   </section>
@@ -186,7 +187,6 @@ import objectHash from 'object-hash';
 import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
 import { useScroll } from '@vueuse/core';
 import { mainInformation } from '~/stores/mainChannelInfo';
-import _ from 'lodash';
 
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
@@ -232,7 +232,6 @@ const { url } = storeToRefs(store);
 const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
-const selectedBot = ref<row>();
 const { y } = useScroll(el);
 //function
 function draged(entity: user | musicBot) {
@@ -256,7 +255,20 @@ async function dragended(channel: channel) {
     throw e;
   });
 }
-
+function sameRow(r1: row, r2: row) {
+  if (r1.rowType == r2.rowType) {
+    if (r1.rowType == 'server' && r2.rowType == 'server') {
+      return true;
+    } else if (r1.rowType == 'channel' && r2.rowType == 'channel') {
+      return r1.channel.channelName == r2.channel.channelName;
+    } else if (r1.rowType == 'user' && r2.rowType == 'user') {
+      return r1.user.userNickname == r2.user.userNickname;
+    } else if (r1.rowType == 'musicBot' && r2.rowType == 'musicBot') {
+      return r1.musicBot.uuid == r2.musicBot.uuid;
+    }
+  }
+  return false;
+}
 type serverInfoType = {
   deployedOn: string;
   mustRunning: boolean;
@@ -492,11 +504,10 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         });
       }
     });
-    const foundedSelectedRow = rows.find((r) =>
-      _.isEqual(r, selectedRow.value),
-    );
+    const foundedSelectedRow = rows.find((r) => sameRow(r, selectedRow.value));
     if (!foundedSelectedRow)
       selectedRow.value = { rowType: 'server', level: 0 };
+    else selectedRow.value = foundedSelectedRow;
     teamspeakserver.value = rows;
   });
 
