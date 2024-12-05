@@ -82,7 +82,7 @@
       </Table>
       <button
         v-if="status != 'error'"
-        class="flex absolute -bottom-14 w-full items-center justify-center btn rounded-xl mt-auto py-3"
+        class="flex absolute -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
         @click="addDomainTab = true"
       >
         <img src="/images/addon.png" alt="" />
