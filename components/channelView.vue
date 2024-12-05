@@ -30,11 +30,12 @@
     v-if="makeMusicBotTab"
     :selected-channel="selectedChannel"
     @close="makeMusicBotTab = false"
+    @refresh="$emit('refresh'), (makeMusicBotTab = false)"
   />
 </template>
 <script setup>
 import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';
-const props = defineProps(['selectedChannel']);
-console.log(props);
+defineProps(['selectedChannel']);
+defineEmits(['refresh']);
 const makeMusicBotTab = ref(false);
 </script>

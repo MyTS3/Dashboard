@@ -90,9 +90,9 @@
 <script setup>
 import yatqaPassChange from '@/components/modules/server/yatqaPassChange.vue';
 const toast = useToast();
-const props = defineProps(['selectedServer']);
+defineProps(['selectedServer']);
 const yatqaPassReset = ref(false);
-console.log(props);
+
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
   toast.add({
