@@ -91,7 +91,7 @@ async function makeMusicBot() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
-        channelName: props.selectedChannel.channelFullName,
+        cid: props.selectedChannel.cid,
       }),
     },
   );
