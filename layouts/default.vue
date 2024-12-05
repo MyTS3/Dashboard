@@ -1,7 +1,7 @@
 <template>
   <span>
     <div
-      class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
+      class="flex flex-row items-start relative justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
     >
       <div
         class="flex-1 h-screen flex gap-4 flex-col items-stretch max-w-[85rem] mx-auto p-10"
@@ -43,6 +43,10 @@
                   alt="bell"
                 />
               </button>
+              <div class="flex opacity-40 gap-1 items-center left-1/4">
+                <p>API-VERSION:</p>
+                <p>{{ version.version }}</p>
+              </div>
             </div>
           </header>
         </div>
@@ -144,6 +148,22 @@
 import TimeAgo from 'javascript-time-ago';
 import fa from 'javascript-time-ago/locale/fa';
 import logoutPopup from '@/components/modules/logoutPopup.vue';
+
+const store = apiStore();
+const { url } = storeToRefs(store);
+
+const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+if (error.value) {
+  toast.add({
+    title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+    timeout: 2000,
+    color: 'red',
+  });
+}
 
 const logoutTab = ref(false);
 const panelAlert = ref(true);
