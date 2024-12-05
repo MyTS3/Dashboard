@@ -186,6 +186,7 @@ import objectHash from 'object-hash';
 import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
 import { useScroll } from '@vueuse/core';
 import { mainInformation } from '~/stores/mainChannelInfo';
+import _ from 'lodash';
 
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
@@ -490,8 +491,12 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
           level: rows[channelIndex].level + 1,
         });
       }
-
     });
+    const foundedSelectedRow = rows.find((r) =>
+      _.isEqual(r, selectedRow.value),
+    );
+    if (!foundedSelectedRow)
+      selectedRow.value = { rowType: 'server', level: 0 };
     teamspeakserver.value = rows;
   });
 
