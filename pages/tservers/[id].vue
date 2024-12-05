@@ -248,7 +248,7 @@ async function dragended(channel: channel) {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
-        channel: channel.channelFullName,
+        cid: channel.cid,
       }),
     },
   ).catch((e) => {
