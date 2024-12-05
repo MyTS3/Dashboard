@@ -48,7 +48,7 @@ const toast = useToast();
 const emit = defineEmits(['close']);
 async function removeMusicBot() {
   const { error } = await useFetch(
-    `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedBot.bot.uuid}`,
+    `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedBot.musicBot.uuid}`,
     {
       method: 'DELETE',
       headers: {
