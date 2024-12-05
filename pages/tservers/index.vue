@@ -59,7 +59,7 @@
                 <div
                   v-for="server in servers"
                   :key="server.uuid"
-                  class="table items hover:bg-main_orange/30 cursor-pointer"
+                  class="table items parent hover:bg-main_orange/30 cursor-pointer"
                 >
                   <div
                     class="h-full w-full flex justify-center items-center"
@@ -86,7 +86,7 @@
                     </p>
                   </div>
 
-                  <div class="grid grid-cols-2 gap-5">
+                  <div class="grid grid-cols-3 gap-5">
                     <img
                       class="cursor-pointer w-6"
                       src="/images/trash.png"
@@ -98,6 +98,12 @@
                       :href="`ts3server://${server.name}`"
                       ><img src="/images/connect.svg" alt=""
                     /></a>
+                    <img
+                      class="cursor-pointer opacity-35 w-6 child"
+                      src="/images/cam.svg"
+                      alt=""
+                      @click="serverClicked(server)"
+                    />
                   </div>
                 </div>
               </div>
@@ -200,5 +206,8 @@ function serverClicked(server) {
   height: 4rem;
   justify-content: center;
   align-items: center;
+}
+.parent:hover .child {
+  opacity: 1;
 }
 </style>
