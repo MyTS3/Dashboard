@@ -32,9 +32,11 @@
       </main>
     </div>
     <div />
-    <footer class="grid grid-cols-2 w-full gap-3">
+    <footer
+      v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
+      class="grid grid-cols-2 w-full gap-3"
+    >
       <UTooltip
-        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex justify-center items-center gap-2 rounded-tl-lg"
         :text="
           banDisable ? 'نمیتوانید شخصی یا رنک سرور کوئری را بن کنید' : 'ban'
