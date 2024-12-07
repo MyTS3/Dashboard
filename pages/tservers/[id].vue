@@ -238,7 +238,6 @@ function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
   if ('connected' in entity && entity.connected && 'name' in entity.connected)
     movingUser.value = entity.connected.name;
-  console.log(movingUser);
 }
 async function dragended(channel: channel) {
   $fetch(
