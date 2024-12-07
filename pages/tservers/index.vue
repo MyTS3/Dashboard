@@ -1,14 +1,6 @@
 <template>
   <div class="min-h-0 flex-1 mb-10 relative">
-    <div
-      v-if="status == 'error'"
-      class="w-full text-center p-5 bg-main_orange rounded-xl"
-    >
-      <p class="font-bold">
-        پنل از دسترس خارج شده و به زودی در دسترس قرار میگیرد
-      </p>
-    </div>
-    <template v-else>
+    <template>
       <div dir="rtl" class="table bg-mainbg_300 text-nowrap rounded-t-2xl">
         <p>نام</p>
         <p>تعداد اسلات</p>

@@ -1,13 +1,5 @@
 <template>
   <div class="min-h-0 flex-1 mb-10 relative">
-    <div
-      v-if="status == 'error'"
-      class="w-full text-center p-5 bg-main_orange rounded-xl"
-    >
-      <p class="font-bold">
-        پنل از دسترس خارج شده و به زودی در دسترس قرار میگیرد
-      </p>
-    </div>
     <template v-if="status == 'success'">
       <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
         <p>دامنه</p>
