@@ -31,7 +31,7 @@
             >
               <img
                 class="min-w-[15rem] w-[10vw]"
-                src="/images/new/no-server.png"
+                src="/images/new/no-backup.png"
                 alt=""
               />
               <div class="grid text-center text-[1vw]">
