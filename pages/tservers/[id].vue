@@ -69,7 +69,7 @@
               !('connected' in row.musicBot) ? 'opacity-50' : '',
             ]"
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
-            @dragstart="draged(row.bot)"
+            @dragstart="draged(row.musicBot)"
             @contextmenu.prevent="selectedRow = row"
             @click="selectedRow = row"
           >
@@ -238,6 +238,7 @@ function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
   if ('connected' in entity && entity.connected && 'name' in entity.connected)
     movingUser.value = entity.connected.name;
+  console.log(movingUser);
 }
 async function dragended(channel: channel) {
   $fetch(
