@@ -151,6 +151,7 @@ import logoutPopup from '@/components/modules/logoutPopup.vue';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
+const toast = useToast();
 
 const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
   headers: {
