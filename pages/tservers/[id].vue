@@ -170,7 +170,7 @@
       <ChannelView
         v-if="selectedRow?.rowType == 'channel'"
         :selected-channel="selectedRow.channel"
-        @refresh="getUsersAndChannels"
+        @refresh="getUsersAndChannels, (y = lastScrollesPosition.value)"
       />
       <MusicbotView
         v-if="selectedRow?.rowType == 'musicBot'"
@@ -186,7 +186,6 @@ import { apiStore, storeToRefs } from '#imports';
 import objectHash from 'object-hash';
 import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
 import { useScroll } from '@vueuse/core';
-import { mainInformation } from '~/stores/mainChannelInfo';
 
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
@@ -232,6 +231,7 @@ const { url } = storeToRefs(store);
 const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
+const lastScrollesPosition = ref();
 const { y } = useScroll(el);
 //function
 function draged(entity: user | musicBot) {
@@ -401,7 +401,6 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
       channelFlagDefault: boolean;
     }): boolean {
       if (channel.channelFlagDefault) {
-        mainInformation.defaultChannel = channel.channelName;
         defaultPid = channel.cid;
         return true;
       } else return false;
@@ -525,11 +524,11 @@ function longpoll(time = 1) {
       getUsersAndChannels().then(() => longpoll(data.at));
     }
   });
-  y.value = mainInformation.lastScrollPosition;
+  y.value = lastScrollesPosition.value;
 }
 longpoll();
 
 watch(y, () => {
-  mainInformation.lastScrollPosition = y.value;
+  lastScrollesPosition.value = y.value;
 });
 </script>
