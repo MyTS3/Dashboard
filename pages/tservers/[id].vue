@@ -315,6 +315,22 @@ function findChannelTypeAndNameByFullName(fullName: string): {
           align: 'center',
           channelFullName: fullName,
         };
+
+      if (splitedName[0].includes('rspacer'))
+        return {
+          type: 'rspacer',
+          name: splitedName[1],
+          align: 'end',
+          channelFullName: fullName,
+        };
+      if (splitedName[0].includes('*spacer')) {
+        return {
+          type: '*spacer',
+          name: splitedName[1].repeat(50),
+          align: 'center',
+          channelFullName: fullName,
+        };
+      }
       if (
         splitedName[0].includes('lspacer') ||
         splitedName[0].includes('spacer')
@@ -323,20 +339,6 @@ function findChannelTypeAndNameByFullName(fullName: string): {
           type: 'lspacer',
           name: splitedName[1],
           align: 'start',
-          channelFullName: fullName,
-        };
-      if (splitedName[0].includes('rspacer'))
-        return {
-          type: 'rspacer',
-          name: splitedName[1],
-          align: 'end',
-          channelFullName: fullName,
-        };
-      if (splitedName[0].includes('*spacer'))
-        return {
-          type: '*spacer',
-          name: splitedName[1].repeat(25),
-          align: 'center',
           channelFullName: fullName,
         };
     }
