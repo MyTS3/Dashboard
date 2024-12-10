@@ -78,13 +78,11 @@
                 </div>
 
                 <div class="grid grid-cols-3 gap-5">
-                  <a
+                  <img
                     class="cursor-pointer w-6 trashcan hover:opacity-50"
-                    href=""
-                    ><img
-                      src="/images/trash.png"
-                      @click="removeServer(server.name, server.uuid)"
-                  /></a>
+                    src="/images/trash.png"
+                    @click="removeServer(server.name, server.uuid)"
+                  />
                   <a
                     class="cursor-pointer w-6 connect hover:opacity-50"
                     :href="`ts3server://${server.name}`"
