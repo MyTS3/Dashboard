@@ -405,7 +405,8 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
       if (channel.channelFlagDefault) {
         defaultPid = channel.cid;
         return true;
-      } else return false;
+      }
+      return false;
     }
     const rows: row[] = [];
     const channels = await channelsReq;

@@ -78,21 +78,21 @@
                 </div>
 
                 <div class="grid grid-cols-3 gap-5">
-                  <img
-                    class="cursor-pointer w-6"
-                    src="/images/trash.png"
-                    alt=""
-                    @click="removeServer(server.name, server.uuid)"
-                  />
                   <a
-                    class="cursor-pointer w-6"
-                    :href="`ts3server://${server.name}`"
-                    ><img src="/images/connect.svg" alt=""
+                    class="cursor-pointer w-6 trashcan hover:opacity-50"
+                    href=""
+                    ><img
+                      src="/images/trash.png"
+                      @click="removeServer(server.name, server.uuid)"
                   /></a>
+                  <a
+                    class="cursor-pointer w-6 connect hover:opacity-50"
+                    :href="`ts3server://${server.name}`"
+                    ><img src="/images/connect.svg" />
+                  </a>
                   <img
-                    class="cursor-pointer opacity-35 w-6 child"
+                    class="cursor-pointer w-6 cam"
                     src="/images/cam.svg"
-                    alt=""
                     @click="serverClicked(server)"
                   />
                 </div>
@@ -197,7 +197,14 @@ function serverClicked(server) {
   justify-content: center;
   align-items: center;
 }
-.parent:hover .child {
+
+.parent:hover .cam {
+  opacity: 0.5;
+}
+.trashcan:hover ~ .cam {
+  opacity: 1;
+}
+.connect:hover ~ .cam {
   opacity: 1;
 }
 </style>
