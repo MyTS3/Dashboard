@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-0 flex-1 mb-10 relative">
+  <div class="min-h-0 flex-1 mb-16 relative">
     <template v-if="status == 'success'">
       <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
         <p>دامنه</p>

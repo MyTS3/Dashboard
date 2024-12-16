@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-0 flex-1 mb-10 relative">
+  <div class="min-h-0 flex-1 mb-16 relative">
     <div dir="rtl" class="table bg-mainbg_300 text-nowrap rounded-t-2xl">
       <p>نام</p>
       <p>تعداد اسلات</p>
