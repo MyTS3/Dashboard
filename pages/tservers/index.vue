@@ -77,19 +77,19 @@
                   </p>
                 </div>
 
-                <div class="grid grid-cols-3 gap-5">
+                <div class="flex flex-row-reverse">
                   <img
-                    class="cursor-pointer w-6 trashcan hover:opacity-50"
+                    class="cursor-pointer w-10 trashcan px-2 hover:opacity-50"
                     src="/images/trash.png"
                     @click="removeServer(server.name, server.uuid)"
                   />
                   <a
-                    class="cursor-pointer w-6 connect hover:opacity-50"
+                    class="cursor-pointer w-10 connect px-2 hover:opacity-50"
                     :href="`ts3server://${server.name}`"
                     ><img src="/images/connect.svg" />
                   </a>
                   <img
-                    class="cursor-pointer w-6 cam"
+                    class="cursor-pointe w-10 px-2 cam"
                     src="/images/cam.svg"
                     @click="serverClicked(server)"
                   />
