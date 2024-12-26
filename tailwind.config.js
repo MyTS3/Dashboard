@@ -24,6 +24,10 @@ export default {
         main_blue: 'rgba(1, 107, 255, 1)',
         bermudaGray: 'rgba(108, 135, 168, 1)',
       },
+      gap: {
+        layout: '15px',
+        btn: '5px',
+      },
     },
   },
   plugins: [],
