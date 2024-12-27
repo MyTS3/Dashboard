@@ -16,7 +16,7 @@
         </li>
       </main>
     </div>
-    <footer class="w-full grid gap-4">
+    <footer class="w-full grid gap-layout">
       <button
         class="flex w-full items-center py-3 justify-center btn rounded-lg"
         @click="makeMusicBotTab = true"

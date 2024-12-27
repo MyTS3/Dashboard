@@ -4,7 +4,7 @@
       <h1 class="text-center">سرور</h1>
       <img class="w-full mx-auto my-6" src="/images/seprator-line.png" alt="" />
     </header>
-    <main class="list-none flex flex-col gap-5">
+    <main class="list-none flex flex-col gap-layout">
       <li class="grid gridList">
         <USkeleton class="h-5 w-20" :ui="{ background: 'dark:bg-gray-500' }" />
         <p>:نام</p>

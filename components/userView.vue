@@ -54,7 +54,7 @@
       </UTooltip>
       <button
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        class="flex h-20 justify-center items-center gap-2 py-2 btn rounded-tr-xl"
+        class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-tr-xl"
         @click="kickFromServerTab = true"
       >
         <p>کیک از سرور</p>
@@ -62,14 +62,14 @@
       </button>
       <button
         v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
-        class="flex h-20 justify-center items-center gap-2 py-2 btn rounded-bl-xl"
+        class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-bl-xl"
         @click="servergroupsTab = true"
       >
         <p>رنک ها</p>
         <img src="/images/ranks.png" alt="" />
       </button>
       <UTooltip
-        class="flex justify-center items-center gap-2 rounded-tl-lg"
+        class="flex justify-center items-center gap-btn rounded-tl-lg"
         :text="banDisable ? 'نمیتوانید شخصی را از چنل دیفالت کیک کنید' : 'کیک'"
       >
         <button

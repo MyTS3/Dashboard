@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-0 flex-1 mb-10 relative">
+  <div class="min-h-0 flex-1 mb-16 relative">
     <template v-if="status == 'success'">
       <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
         <p>دامنه</p>
@@ -40,8 +40,8 @@
                 alt=""
               />
               <div class="grid text-center text-[1vw]">
-                <p class="font-bold text-white">هیچ دوره وجود ندارد</p>
-                <p>با کلیک برروی دکمه زیر اولین دوره خودرا بسازید</p>
+                <p class="font-bold text-white">هیچ دامنه ای وجود ندارد</p>
+                <p>با کلیک برروی دکمه زیر اولین دامنه خودرا بسازید</p>
               </div>
             </div>
             <div v-for="domain in domainList" :key="domain" class="table items">
@@ -74,11 +74,11 @@
       </Table>
       <button
         v-if="status != 'error'"
-        class="flex absolute -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
+        class="flex gap-btn absolute -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
         @click="addDomainTab = true"
       >
-        <img src="/images/addon.png" alt="" />
         افزودن دامنه
+        <img src="/images/addon.png" alt="" />
       </button>
       <!-- <div
         v-if="domainList.length < 1"

@@ -21,7 +21,7 @@
           alt=""
         />
       </header>
-      <main class="list-none flex flex-col gap-5">
+      <main class="list-none flex flex-col gap-layout">
         <li class="grid gridList">
           <p>{{ selectedServer.name }}</p>
           <p>:نام</p>
@@ -87,30 +87,30 @@
         </p>
       </main>
     </span>
-    <footer class="grid grid-cols-2 w-full gap-3">
+    <footer class="grid grid-cols-2 w-full gap-layout">
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-tl-xl btn"
+        class="flex border w-full gap-btn justify-center h-20 items-center rounded-tl-xl btn"
         @click="restartServerTab = true"
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-tr-xl btn"
+        class="flex border w-full gap-btn justify-center h-20 items-center rounded-tr-xl btn"
         @click="bansListTab = true"
       >
         <p>لیست بن ها</p>
         <img src="/images/ban_list.png" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-bl-xl btn"
+        class="flex border w-full gap-btn justify-center h-20 items-center rounded-bl-xl btn"
         @click="resetConfigTab = true"
       >
         <p>ریست کانفیگ</p>
         <img class="h-12" src="/images/theme.svg" alt="" />
       </button>
       <button
-        class="flex border w-full gap-3 justify-center h-20 items-center rounded-br-xl btn"
+        class="flex border w-full gap-btn justify-center h-20 items-center rounded-br-xl btn"
         @click="subdomainTab = true"
       >
         <p>ساب دامنه ها</p>

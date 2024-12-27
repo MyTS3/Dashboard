@@ -5,7 +5,7 @@
     >
       <template v-if="!error">
         <div
-          class="flex-1 h-screen relative flex gap-4 flex-col items-stretch max-w-[85rem] mx-auto p-10"
+          class="flex-1 h-screen relative flex gap-layout flex-col items-stretch max-w-[85rem] mx-auto p-10"
         >
           <div class="">
             <header class="w-full flex justify-between flex-row-reverse">
@@ -29,7 +29,7 @@
               >
                 <img class="" src="/images/Arrow-Right.png" alt="" />
               </button>
-              <div class="flex gap-4">
+              <div class="flex gap-layout">
                 <button
                   class="flex items-center flex-row-reverse gap-1 p-3 rounded-xl btn text-xs"
                 >
@@ -49,7 +49,7 @@
           </div>
           <div
             v-if="panelAlert"
-            class="flex w-full relative flex-row-reverse bg-main_red/50 p-5 gap-4 rounded-xl items-center"
+            class="flex w-full relative flex-row-reverse bg-main_red/50 p-5 gap-layout rounded-xl items-center"
           >
             <img
               class="w-10"
@@ -66,7 +66,7 @@
           </div>
           <slot />
           <div
-            class="flex font-sans opacity-40 gap-1 items-center absolute bottom-0 left-1/2 -translate-x-1/2 text-xs"
+            class="flex font-sans opacity-40 gap-1 items-center absolute bottom-3 left-1/2 -translate-x-1/2 text-xs"
           >
             <p>{{ version.version }}</p>
           </div>

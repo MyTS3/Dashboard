@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-0 flex-1 mb-10 relative">
+  <div class="min-h-0 flex-1 mb-16 relative">
     <div dir="rtl" class="table bg-mainbg_300 text-nowrap rounded-t-2xl">
       <p>نام</p>
       <p>تعداد اسلات</p>
@@ -77,19 +77,19 @@
                   </p>
                 </div>
 
-                <div class="grid grid-cols-3 gap-5">
+                <div class="flex flex-row-reverse">
                   <img
-                    class="cursor-pointer w-6 trashcan hover:opacity-50"
+                    class="cursor-pointer w-10 trashcan px-2 hover:opacity-50"
                     src="/images/trash.png"
                     @click="removeServer(server.name, server.uuid)"
                   />
                   <a
-                    class="cursor-pointer w-6 connect hover:opacity-50"
+                    class="cursor-pointer w-10 connect px-2 hover:opacity-50"
                     :href="`ts3server://${server.name}`"
                     ><img src="/images/connect.svg" />
                   </a>
                   <img
-                    class="cursor-pointer w-6 cam"
+                    class="cursor-pointe w-10 px-2 cam"
                     src="/images/cam.svg"
                     @click="serverClicked(server)"
                   />
@@ -101,7 +101,7 @@
       </div>
     </Table>
     <button
-      class="flex absolute -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      class="flex absolute gap-btn -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
       @click.prevent="makeServerTab = true"
     >
       ساخت سرور

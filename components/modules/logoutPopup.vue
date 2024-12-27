@@ -15,7 +15,7 @@
       <p class="font-thin max-w-80 text-center mx-auto mb-4">
         آیا از این عمل مطمئن هستید؟
       </p>
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-2 gap-btn">
         <button
           class="p-4 text-center rounded-xl border-2 border-blue-700/80 bg-blue-600/20 module-btn"
           @click="$emit('close')"

@@ -1,5 +1,5 @@
 <template>
-  <section class="min-h-0 flex-1 mb-10 relative">
+  <section class="min-h-0 flex-1 mb-16 relative">
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>سرور</p>
       <p>تاریخ</p>
@@ -27,7 +27,7 @@
           <template v-else>
             <div
               v-if="backups.length < 1"
-              class="flex flex-col w-full h-full justify-center gap-4 items-center"
+              class="flex flex-col w-full h-full justify-center gap-layout items-center"
             >
               <img
                 class="min-w-[15rem] w-[10vw]"
@@ -43,7 +43,7 @@
               <div v-for="backup in backups" :key="backup" class="table items">
                 <p class="font-semibold">{{ backup.tserver.name }}</p>
                 <p>{{ backup.createdAt }}</p>
-                <div class="flex gap-4">
+                <div class="flex gap-layout">
                   <UTooltip text="اعمال بکاپ">
                     <img
                       class="cursor-pointer w-8 h-8"
@@ -71,7 +71,7 @@
       </div>
     </Table>
     <button
-      class="flex absolute -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      class="flex absolute -bottom-16 w-full gap-btn items-center justify-center btn rounded-xl mt-auto py-3"
       @click="$emit('opentab')"
     >
       افزودن

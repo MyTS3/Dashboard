@@ -1,5 +1,5 @@
 <template>
-  <section class="min-h-0 flex-1 mb-10 relative">
+  <section class="min-h-0 flex-1 mb-16 relative">
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>سرور</p>
       <p>دوره</p>
@@ -47,7 +47,7 @@
               >
                 <p class="font-semibold">{{ interval.tserver.name }}</p>
                 <p>{{ interval.interval }}</p>
-                <div class="flex gap-4">
+                <div class="flex">
                   <img
                     class="cursor-pointer w-8 h-8"
                     src="/images/trash.png"
@@ -64,7 +64,7 @@
       </div>
     </Table>
     <button
-      class="flex absolute -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      class="flex absolute gap-btn -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
       @click="$emit('opentab')"
     >
       افزودن
