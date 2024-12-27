@@ -82,16 +82,9 @@
         alt=""
       />
     </main>
-    <yatqaPassChange
-      v-if="yatqaPassReset"
-      :selected-server="selectedServer"
-      @close="yatqaPassReset = false"
-    />
   </section>
 </template>
 <script setup>
-import yatqaPassChange from '@/components/modules/server/yatqaPassChange.vue';
-
 const newPass = ref(undefined);
 const toast = useToast();
 const store = apiStore();
