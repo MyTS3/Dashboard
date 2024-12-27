@@ -68,7 +68,6 @@
           <div
             class="flex font-sans opacity-40 gap-1 items-center absolute bottom-0 left-1/2 -translate-x-1/2 text-xs"
           >
-            <p>API-VERSION:</p>
             <p>{{ version.version }}</p>
           </div>
         </div>
