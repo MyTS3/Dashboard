@@ -512,7 +512,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
     else selectedRow.value = foundedSelectedRow;
     teamspeakserver.value = rows;
   });
-
+let lastTimeReccived = 1;
 function longpoll(time = 1) {
   fetch(
     `${url.value}/api/v4/tservers/${serverUuid}/last-server-event-after/${time}`,
@@ -521,14 +521,17 @@ function longpoll(time = 1) {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     },
-  ).then(async (re) => {
-    if (re.status == 200) {
-      const data = await re.json();
-      getUsersAndChannels().then(() => longpoll(data.at));
-    } else {
-      setTimeout(() => longpoll(), 1000);
-    }
-  });
+  )
+    .then(async (re) => {
+      if (re.status == 200) {
+        const data = await re.json();
+        lastTimeReccived = data.at;
+        getUsersAndChannels().then(() => longpoll(lastTimeReccived));
+      }
+    })
+    .catch(() => {
+      setTimeout(() => longpoll(lastTimeReccived), 1000);
+    });
   y.value = lastScrollesPosition.value;
 }
 
