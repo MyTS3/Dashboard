@@ -525,14 +525,13 @@ function longpoll(time = 1) {
     if (re.status == 200) {
       const data = await re.json();
       getUsersAndChannels().then(() => longpoll(data.at));
-    }
-    if (re.status !== 200) {
-      const data = await re.json();
-      setTimeout(() => longpoll(data.at), 1000);
+    } else {
+      setTimeout(() => longpoll(), 1000);
     }
   });
   y.value = lastScrollesPosition.value;
 }
+
 longpoll();
 
 watch(y, () => {
