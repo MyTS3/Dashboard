@@ -70,7 +70,11 @@
       </button>
       <UTooltip
         class="flex justify-center items-center gap-btn rounded-tl-lg"
-        :text="banDisable ? 'نمیتوانید شخصی را از چنل دیفالت کیک کنید' : 'کیک'"
+        :text="
+          selectedRow.user.inDefaultChannel
+            ? 'نمیتوانید شخصی را از چنل دیفالت کیک کنید'
+            : 'کیک'
+        "
       >
         <button
           v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
