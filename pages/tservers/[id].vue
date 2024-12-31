@@ -32,6 +32,7 @@
         <template v-for="row in teamspeakserver" :key="objectHash(row)">
           <div
             v-if="row.rowType == 'channel'"
+            ref="therow"
             dropzone="true"
             class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-fit"
             :class="
@@ -225,6 +226,7 @@ type musicBot = {
 
 const route = useRoute();
 const el = ref<HTMLElement | null>(null);
+const therow = ref<HTMLElement | null>(null);
 const serverUuid = route.params.id;
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -233,6 +235,7 @@ const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
 const lastScrollesPosition = ref();
 const { y } = useScroll(el);
+
 //function
 function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
@@ -350,7 +353,7 @@ function findChannelTypeAndNameByFullName(fullName: string): {
     channelFullName: fullName,
   };
 }
-const teamspeakserver = ref();
+const teamspeakserver = ref<row[]>();
 const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
   useLazyAsyncData(async () => {
     const channelsReq: Promise<
@@ -512,6 +515,8 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
     else selectedRow.value = foundedSelectedRow;
     teamspeakserver.value = rows;
   });
+
+y.value = lastScrollesPosition.value;
 let lastTimeReccived = 1;
 function longpoll(time = 1) {
   fetch(
@@ -532,11 +537,20 @@ function longpoll(time = 1) {
     .catch(() => {
       setTimeout(() => longpoll(lastTimeReccived), 1000);
     });
-  y.value = lastScrollesPosition.value;
 }
 
 longpoll();
+const theInterval = setInterval(() => {
+  if (el.value != null && el.value.children.length > 0) {
+    const defaultChannelIndex =
+      teamspeakserver.value?.findIndex(
+        (r) => 'channel' in r && r.channel.isDeafault,
+      ) ?? 0;
 
+    y.value = defaultChannelIndex * 16;
+    clearInterval(theInterval);
+  }
+}, 500);
 watch(y, () => {
   lastScrollesPosition.value = y.value;
 });
