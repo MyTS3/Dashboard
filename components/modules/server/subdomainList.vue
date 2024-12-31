@@ -27,9 +27,10 @@
             <div
               v-for="(subdomain, i) in subDomainList"
               :key="subdomain"
-              class="table items items-center text-center rounded-lg"
+              class="table2 items items-center text-center rounded-lg"
             >
               <p>{{ subdomain.sub }}</p>
+              <p>.</p>
               <p>{{ subdomain.domain.domain }}</p>
               <img
                 class="mx-auto cursor-pointer"
@@ -41,7 +42,7 @@
           </div>
           <div
             v-if="!subPend && !domPend"
-            class="table items items-center text-center rounded-lg"
+            class="table2 items relative items-center text-center rounded-lg"
           >
             <input
               v-model="subToAdd"
@@ -49,6 +50,7 @@
               class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
               type="text"
             />
+            <p>.</p>
             <select
               v-model="domainToAdd"
               :disabled="disable"
@@ -202,5 +204,9 @@ async function submitSubdomains() {
 .table {
   display: grid;
   grid-template-columns: 5fr 5fr 2fr;
+}
+.table2 {
+  display: grid;
+  grid-template-columns: 5fr 1fr 5fr 2fr;
 }
 </style>
