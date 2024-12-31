@@ -47,11 +47,11 @@
             <input
               v-model="subToAdd"
               :disabled="disable"
-              class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
+              class="w-2/3 mx-auto p-2 rounded-lg bg-transparent border border-indigo-400 text-right"
               type="text"
             />
             <p>.</p>
-            <select
+            <!-- <select
               v-model="domainToAdd"
               :disabled="disable"
               class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
@@ -64,7 +64,20 @@
               >
                 {{ domain.domain }}
               </option>
-            </select>
+            </select> -->
+            <from
+              v-if="!pending"
+              class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
+            >
+              <USelectMenu
+                v-model="domainToAdd"
+                size="xl"
+                color="indigo"
+                :options="domainList"
+                option-attribute="domain"
+                :disabled="disableInputs"
+              />
+            </from>
             <img
               class="mx-auto cursor-pointer"
               src="/images/add-square.png"
