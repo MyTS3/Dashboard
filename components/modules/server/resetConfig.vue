@@ -18,8 +18,17 @@
         دارید؟
       </p>
       <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
+
       <from class="w-full my-4">
-        <select
+        <USelectMenu
+          v-model="selectedConfigue"
+          class="w-full"
+          size="xl"
+          color="indigo"
+          :options="availables"
+          option-attribute="domain"
+        />
+        <!-- <select
           v-if="!pending"
           v-model="selectedConfigue"
           :disabled="disable"
@@ -34,7 +43,7 @@
           >
             {{ available }}
           </option>
-        </select>
+        </select> -->
         <USkeleton
           v-if="pending"
           class="h-11 w-full rounded-lg"
