@@ -25,7 +25,7 @@
           </div>
           <div class="overflow-scroll max-h-[16.5rem]">
             <div
-              v-for="(subdomain, i) in subDomainList"
+              v-for="(subdomain, i) in subs"
               :key="subdomain"
               class="table2 items items-center text-center rounded-lg"
             >
