@@ -92,6 +92,7 @@ async function makeMusicBot() {
       },
       body: JSON.stringify({
         cid: props.selectedChannel.cid,
+        name: props.selectedChannel.channelName,
       }),
     },
   );
