@@ -30,7 +30,6 @@
     v-if="makeMusicBotTab"
     :selected-channel="selectedChannel"
     @close="makeMusicBotTab = false"
-    @refresh="$emit('refresh'), (makeMusicBotTab = false)"
   />
 </template>
 <script setup>

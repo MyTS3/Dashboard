@@ -104,7 +104,6 @@ async function makeMusicBot() {
       color: 'red',
     });
   }
-  emit('refresh');
-  // emit('close');
+  emit('close');
 }
 </script>
