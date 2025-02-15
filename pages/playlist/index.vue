@@ -1,3 +1,27 @@
+<script setup lang="ts">
+const store = apiStore();
+const { url } = storeToRefs(store);
+const selectedPlaylistUuid = ref();
+
+const { data: playlists, status: playlistsStatus } = await useFetch<
+  { uuid: string; name: string }[]
+>(`${url.value}/api/v4/playlists`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+
+const { data: musics, status: musicsStatus } = await useFetch<
+  { uuid: string; name: string }[]
+>(() => `${url.value}/api/v4/playlists/${selectedPlaylistUuid.value}/musics`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+</script>
+
 <template>
   <section
     class="flex-1 w-full mx-auto flex flex-row items-stretch text-white text-center gap-layout min-h-0"
@@ -9,13 +33,15 @@
       </header>
       <div class="bg-white/10 h-full mt-4 px-1 rounded-lg overflow-scroll">
         <li
-          v-for="_ in 3"
-          :key="_"
+          v-for="playlist in playlists"
+          :key="playlist.uuid"
+          @click="selectedPlaylistUuid = playlist.uuid"
+          :class="selectedPlaylistUuid == playlist.uuid ? 'btn-active' : ''"
           class="list-none flex my-1 p-3 hover:hover:bg-main_orange/20 rounded-xl relative"
         >
           <div class="flex gap-layout">
             <img class="w-5" src="/images/Folder.png" alt="" />
-            <h2 class="text-lg font-bold">playlist</h2>
+            <h2 class="text-lg font-bold">{{ playlist.name }}</h2>
           </div>
           <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
             <p class="font-sans text-xs my-auto font-bold">2GB</p>
@@ -37,13 +63,13 @@
       </header>
       <div class="bg-white/10 h-full mt-4 px-1 rounded-lg overflow-scroll">
         <li
-          v-for="_ in 15"
-          :key="_"
+          v-for="music in musics"
+          :key="music.uuid"
           class="list-none flex my-1 p-3 hover:hover:bg-main_orange/20 rounded-xl relative"
         >
           <div class="flex gap-layout">
             <img class="w-5" src="/images/music.png" alt="" />
-            <h2 class="text-lg font-bold">Khabam Nemibare</h2>
+            <h2 class="text-lg font-bold">{{ music.name }}</h2>
           </div>
           <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
             <p class="font-sans text-xs my-auto font-bold">20MB</p>
@@ -60,3 +86,5 @@
     </main>
   </section>
 </template>
+
+<script setup></script>
