@@ -3,23 +3,25 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const selectedPlaylistUuid = ref();
 
-const { data: playlists, status: playlistsStatus } = await useFetch<
-  { uuid: string; name: string }[]
->(`${url.value}/api/v4/playlists`, {
-  method: 'GET',
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const { data: playlists } = await useFetch<{ uuid: string; name: string }[]>(
+  `${url.value}/api/v4/playlists`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
-});
+);
 
-const { data: musics, status: musicsStatus } = await useFetch<
-  { uuid: string; name: string }[]
->(() => `${url.value}/api/v4/playlists/${selectedPlaylistUuid.value}/musics`, {
-  method: 'GET',
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const { data: musics } = await useFetch<{ uuid: string; name: string }[]>(
+  () => `${url.value}/api/v4/playlists/${selectedPlaylistUuid.value}/musics`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
-});
+);
 </script>
 
 <template>
