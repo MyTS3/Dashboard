@@ -24,8 +24,11 @@
         <select
           class="text-white bg-transparent my-4 border w-full text-right min-h-16 rounded-2xl"
           name="music"
+          v-model="selectedPlaylist"
         >
-          <option value="none">هیچکدام</option>
+          <option v-for="playlist in playlists" :value="playlist">
+            {{ playlist.name }}
+          </option>
         </select>
         <!-- ///////////////////price///////////// -->
         <div id="price" class="w-full">
@@ -81,6 +84,15 @@ const selectedServer = useRoute().params.id;
 const disableInputs = ref(false);
 const props = defineProps(['selectedChannel']);
 const emit = defineEmits(['close', 'refresh']);
+const selectedPlaylist = ref();
+
+const { data: playlists } = await useFetch(`${url.value}/api/v4/playlists`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+
 async function makeMusicBot() {
   disableInputs.value = true;
   const { error } = await useFetch(
@@ -92,7 +104,8 @@ async function makeMusicBot() {
       },
       body: JSON.stringify({
         cid: props.selectedChannel.cid,
-        name: props.selectedChannel.channelName,
+        name: selectedPlaylist.value.name,
+        playlist: selectedPlaylist.value.uuid,
       }),
     },
   );
