@@ -26,7 +26,11 @@
           name="music"
           v-model="selectedPlaylist"
         >
-          <option v-for="playlist in playlists" :value="playlist">
+          <option
+            v-for="playlist in playlists"
+            :key="playlist.uuid"
+            :value="playlist"
+          >
             {{ playlist.name }}
           </option>
         </select>
