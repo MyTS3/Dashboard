@@ -47,6 +47,9 @@
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
       </header>
       <div class="bg-white/10 h-full mt-4 px-1 rounded-lg overflow-scroll">
+        <p v-if="selectedPlaylistUuid == undefined" class="mt-5">
+          لطفا یک پلی لیست را انتخاب کنید
+        </p>
         <li
           v-for="music in musics"
           :key="music.uuid"
@@ -67,10 +70,12 @@
       </div>
       <button
         :disabled="selectedPlaylistUuid == undefined"
+        :class="selectedPlaylistUuid == undefined && 'cursor-not-allowed'"
         class="flex gap-btn w-full items-center justify-center btn rounded-xl py-3"
         @click="addMusicTab = true"
       >
         افزودن موزیک
+
         <img src="/images/addon.png" alt="" />
       </button>
     </main>
@@ -105,7 +110,7 @@ import deleteMusic from '~/components/modules/playlist/deleteMusic.vue';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
-const selectedPlaylistUuid = ref(undefined);
+const selectedPlaylistUuid = ref<undefined | string>(undefined);
 const DeletePlaylistTab = ref(false);
 const deleteMusicTab = ref(false);
 const makePlaylistTab = ref(false);
