@@ -22,7 +22,7 @@
           </div>
           <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
             <p class="font-sans text-xs my-auto font-bold">2GB</p>
-            <img src="/images/trash.png" >
+            <img class="cursor-pointer" src="/images/trash.png" @click="removingPlaylist=playlist,DeletePlaylistTab=true" >
           </div>
         </li>
       </div>
@@ -63,17 +63,20 @@
       </button>
     </main>
     <MakePlaylist v-if="makePlaylistTab"  @close="makePlaylistTab=false,getPlaylist()" />
+    <DeletePlaylist v-if="DeletePlaylistTab" :removing-playlist="removingPlaylist" @close="DeletePlaylistTab=false,getPlaylist()" />
   </section>
 </template>
 
 <script setup lang="ts">
+import DeletePlaylist from '~/components/modules/playlist/deletePlaylist.vue';
 import MakePlaylist from '~/components/modules/playlist/makePlaylist.vue';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
 const selectedPlaylistUuid = ref();
+const DeletePlaylistTab = ref(false)
 const makePlaylistTab = ref(false);
-
+const removingPlaylist = ref()
 const { data: playlists,execute:getPlaylist } = await useFetch<{ uuid: string; name: string }[]>(
   `${url.value}/api/v4/playlists`,
   {
@@ -93,4 +96,5 @@ const { data: musics } = await useFetch<{ uuid: string; name: string }[]>(
     },
   },
 );
+
 </script>
