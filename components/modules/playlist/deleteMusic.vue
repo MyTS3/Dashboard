@@ -11,14 +11,13 @@
           class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
           @click="$emit('close')"
         >
-          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" >
+          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
         <h1 class="text-xl my-2 font-bolder">
           {{ removingMusic.name }} حذف موزیک
         </h1>
         <p>
-          این عمل قابل بازگردانی نیست و موزیک را حذف میکند، ایا
-          اطمینان دارید؟
+          این عمل قابل بازگردانی نیست و موزیک را حذف میکند، ایا اطمینان دارید؟
         </p>
         <div class="grid grid-cols-2 my-3 gap-3">
           <button
@@ -48,7 +47,7 @@ import TheLoading from '~/components/reusable/theLoading.vue';
 //variables
 const store = apiStore();
 const { url } = storeToRefs(store);
-const props = defineProps(['removingMusic','selectedPlaylistUuid']);
+const props = defineProps(['removingMusic', 'selectedPlaylistUuid']);
 const disable = ref(false);
 const emit = defineEmits(['close']);
 const toast = useToast();
@@ -56,7 +55,7 @@ async function removePlaylist() {
   disable.value = true;
   const { error } = await useFetch(
     `${url.value}/api/v4/playlists/${props.selectedPlaylistUuid}/musics/${props.removingMusic.uuid}`,
-    
+
     {
       method: 'DELETE',
       headers: {
