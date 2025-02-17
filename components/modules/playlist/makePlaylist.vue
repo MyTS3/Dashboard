@@ -11,7 +11,7 @@
           class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
           @click="$emit('close')"
         >
-          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" >
+          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
         <h1 class="text-2xl my-4 font-extrabold">ساخت پلی لیست</h1>
         <p class="text-sm text-white/80 mb-1">نام پلی لیست را وارد کنید</p>
@@ -23,7 +23,7 @@
             :disabled="disable"
             type="text"
             class="p-3 w-full bg-transparent border-white flex justify-center rounded-xl border"
-          >
+          />
           <USkeleton
             v-if="pending"
             class="h-11 w-full rounded-lg"

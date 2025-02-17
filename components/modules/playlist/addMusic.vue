@@ -11,15 +11,23 @@
           class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
           @click="$emit('close')"
         >
-          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" >
+          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
         <h1 class="text-2xl my-4 font-extrabold">افزودن موزیک</h1>
-        <p class="text-sm text-white/80 mb-1">روش افزودن موزیک خود را انتخاب کنید</p>
+        <p class="text-sm text-white/80 mb-1">
+          روش افزودن موزیک خود را انتخاب کنید
+        </p>
         <div class="flex w-full justify-center my-3">
-          <button class="w-1/3 p-3 bg-mainbg_400 rounded-l-xl cursor-not-allowed">آپلود فایل</button>
-          <button class="w-1/3 p-3 bg-main_orange rounded-r-xl">دانلود با لینک</button>
+          <button
+            class="w-1/3 p-3 bg-mainbg_400 rounded-l-xl cursor-not-allowed"
+          >
+            آپلود فایل
+          </button>
+          <button class="w-1/3 p-3 bg-main_orange rounded-r-xl">
+            دانلود با لینک
+          </button>
         </div>
-        
+
         <p class="font-bold max-w-80 text-center ml-auto">: دریافت لینک</p>
         <from class="w-full my-4">
           <input
@@ -28,7 +36,7 @@
             :disabled="disable"
             type="text"
             class="p-3 w-full bg-transparent border-white flex justify-center rounded-xl border text-right text-sm"
-          >
+          />
           <USkeleton
             v-if="pending"
             class="h-11 w-full rounded-lg"
@@ -61,7 +69,7 @@ const { url } = storeToRefs(store);
 const props = defineProps(['selectedPlaylist']);
 const disable = ref(false);
 const emit = defineEmits(['close']);
-const musicURL = ref()
+const musicURL = ref();
 const toast = useToast();
 async function addMusic() {
   disable.value = true;
@@ -72,9 +80,9 @@ async function addMusic() {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      body:JSON.stringify({
-        url: musicURL.value
-      })
+      body: JSON.stringify({
+        url: musicURL.value,
+      }),
     },
   );
   disable.value = false;
