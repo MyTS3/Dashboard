@@ -58,7 +58,7 @@
           </div>
           <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
             <p class="font-sans text-xs my-auto font-bold">20MB</p>
-            <img src="/images/trash.png" >
+            <img src="/images/trash.png" @click="removingMusic=music,deleteMusicTab=true" >
           </div>
         </li>
       </div>
@@ -85,6 +85,7 @@
       :selected-playlist="selectedPlaylistUuid"
       @close="(addMusicTab = false), getMusic()"
     />
+    <deleteMusic v-if="deleteMusicTab" :removing-music="removingMusic" :selected-playlist-uuid="selectedPlaylistUuid" @close="deleteMusicTab=false,getMusic()" />
   </section>
 </template>
 
@@ -92,15 +93,17 @@
 import DeletePlaylist from '~/components/modules/playlist/deletePlaylist.vue';
 import MakePlaylist from '~/components/modules/playlist/makePlaylist.vue';
 import AddMusic from '~/components/modules/playlist/addMusic.vue';
+import deleteMusic from '~/components/modules/playlist/deleteMusic.vue';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
 const selectedPlaylistUuid = ref(undefined);
 const DeletePlaylistTab = ref(false);
+const deleteMusicTab= ref(false)
 const makePlaylistTab = ref(false);
 const addMusicTab = ref(false);
 const removingPlaylist = ref();
-
+const removingMusic = ref()
 const { data: playlists, execute: getPlaylist } = await useFetch<
   { uuid: string; name: string }[]
 >(`${url.value}/api/v4/playlists`, {
