@@ -17,6 +17,7 @@
         >
           <li
             v-for="music in musics?.musics"
+            :key="music.Link"
             class="list-none my-1 p-3 rounded-xl relative"
             :class="
               music.Link === playingMusic?.Link
