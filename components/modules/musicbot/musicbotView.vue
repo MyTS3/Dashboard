@@ -3,49 +3,60 @@
     <header class="flex w-full">
       <h1 class="mx-auto font-bold my-auto">موزیک بات</h1>
       <img
-          class="cursor-pointer"
-          src="/images/trash.png"
-          alt=""
-          @click="deleteMusicBotTab = true"
+        class="cursor-pointer"
+        src="/images/trash.png"
+        alt=""
+        @click="deleteMusicBotTab = true"
       />
     </header>
-    <img class="mx-auto" src="/images/seprator-line.png" alt=""/>
+    <img class="mx-auto" src="/images/seprator-line.png" alt="" />
     <template v-if="'connected' in selectedRow.musicBot">
       <div class="h-full flex justify-between flex-col gap-5">
         <main
-            class="w-4/5 h-full grow row-span-2 bg-white/10 mx-auto rounded-lg p-2 overflow-y-auto"
+          class="w-4/5 h-full grow row-span-2 bg-white/10 mx-auto rounded-lg p-2 overflow-y-auto"
         >
-          <li class="list-none my-1 p-3 rounded-xl relative btn-active">
-            <h2 class="text-lg font-bold">Khabam Nemibare</h2>
-          </li>
           <li
-              v-for="_ in 110"
-              class="list-none my-1 p-3 hover:hover:bg-main_orange/20 rounded-xl relative"
+            v-for="music in musics?.musics"
+            class="list-none my-1 p-3 rounded-xl relative"
+            :class="
+              music.Link === playingMusic?.Link
+                ? 'btn-active'
+                : 'hover:hover:bg-main_orange/20'
+            "
           >
-            <h2 class="text-lg ">khabidim</h2>
+            <h2 class="text-lg">{{ music.Title }}</h2>
           </li>
         </main>
-        <footer
-            class="mx-auto py-4 grow-0 shrink-0 w-full gap-2 flex flex-col"
-        >
+        <footer class="mx-auto py-4 grow-0 shrink-0 w-full gap-2 flex flex-col">
           <div class="flex flex-col text-center">
-            <h2 class="font-bold">Khabam Nemibare</h2>
+            <h2 class="font-bold">{{ playingMusic?.Title }}</h2>
           </div>
-          <div class="flex items-center w-full justify-around">
-            <p>02:36</p>
-            <div class="audio-progress"/>
-            <p>3:56</p>
+          <div
+            class="flex items-center w-full justify-around"
+            v-if="playingMusic?.Length && playingMusic?.Position"
+          >
+            <p>
+              {{ Math.trunc(playingMusic.Position / 60) }}:{{
+                Math.trunc(playingMusic.Position % 60)
+              }}
+            </p>
+            <div class="audio-progress" />
+            <p>
+              {{ Math.trunc(playingMusic.Length / 60) }}:{{
+                Math.trunc(playingMusic.Length % 60)
+              }}
+            </p>
           </div>
           <div class="flex w-full justify-center px-4">
             <div class="flex w-2/4 justify-around">
               <button>
-                <img src="/images/previous.png" alt=""/>
+                <img src="/images/previous.png" alt="" />
               </button>
               <button class="bg-main_orange rounded-full p-4">
-                <img src="/images/pause.png" alt=""/>
+                <img src="/images/pause.png" alt="" />
               </button>
               <button>
-                <img src="/images/next.png" alt=""/>
+                <img src="/images/next.png" alt="" />
               </button>
             </div>
           </div>
@@ -55,25 +66,25 @@
     <template v-else>
       <div class="h-full flex flex-col justify-between">
         <div class="my-auto grid gap-5">
-          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt=""/>
+          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" />
           <p>موزیک بات قطع شده است</p>
         </div>
 
         <button
-            :disabled="disableRestart"
-            :class="disableRestart ? 'btn-disable' : 'btn'"
-            class="flex gap-3 w-full items-center py-3 justify-center rounded-lg"
-            @click="restartBot()"
+          :disabled="disableRestart"
+          :class="disableRestart ? 'btn-disable' : 'btn'"
+          class="flex gap-3 w-full items-center py-3 justify-center rounded-lg"
+          @click="restartBot()"
         >
           <p>راه اندازی مجدد</p>
-          <img src="/images/restart.png" alt=""/>
+          <img src="/images/restart.png" alt="" />
         </button>
       </div>
     </template>
     <DeleteMusicBot
-        v-if="deleteMusicBotTab"
-        :selected-bot="selectedRow"
-        @close="deleteMusicBotTab = false"
+      v-if="deleteMusicBotTab"
+      :selected-bot="selectedRow"
+      @close="deleteMusicBotTab = false"
     />
   </section>
 </template>
@@ -82,23 +93,51 @@ import DeleteMusicBot from './deleteMusicBot.vue';
 
 const deleteMusicBotTab = ref(false);
 const store = apiStore();
-const {url} = storeToRefs(store);
+const { url } = storeToRefs(store);
 const toast = useToast();
 const route = useRoute();
 const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 
+const { data: musics } = await useFetch<{
+  musics: { Link: string; Title: string }[];
+}>(
+  `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/musics`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  },
+);
+
+const { data: playingMusic } = await useFetch<{
+  Link: string;
+  Title: string;
+  Paused: boolean;
+  Position: number;
+  Length: number;
+}>(
+  `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/music`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  },
+);
+
 async function restartBot() {
   disableRestart.value = true;
   setTimeout(() => (disableRestart.value = false), 10000);
-  const {error} = await useFetch(
-      `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/restart`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+  const { error } = await useFetch(
+    `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/restart`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
+    },
   );
   if (error.value) {
     toast.add({
