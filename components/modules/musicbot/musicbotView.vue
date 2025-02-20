@@ -36,13 +36,13 @@
             v-if="playingMusic?.Length && playingMusic?.Position"
             class="flex items-center w-full justify-around"
           >
-            <p>
+            <p class="w-2">
               {{ Math.trunc(playingMusic.Position / 60) }}:{{
                 Math.trunc(playingMusic.Position % 60)
               }}
             </p>
             <div class="audio-progress" />
-            <p>
+            <p class="w-2">
               {{ Math.trunc(playingMusic.Length / 60) }}:{{
                 Math.trunc(playingMusic.Length % 60)
               }}
@@ -227,7 +227,6 @@ async function restartBot() {
     });
   }
 }
-console.log(route)
 
 </script>
 <style scoped>
