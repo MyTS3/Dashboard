@@ -153,33 +153,28 @@ async function getMusicsAndPlayingMusic() {
   return Promise.all([getMusics(), getPlayingMusic()]);
 }
 
-callOnce(() => {
-  setInterval(async () => {
-    if (
-      playingMusic.value &&
-      playingMusic.value.Position &&
-      !playingMusic.value.Paused
-    ) {
-      playingMusic.value.Position += 1;
+const mainInterval = setInterval(async () => {
+  if (
+    playingMusic.value &&
+    playingMusic.value.Position &&
+    !playingMusic.value.Paused
+  ) {
+    playingMusic.value.Position += 1;
+    if (element) {
       const percent =
         (playingMusic.value.Position / playingMusic.value.Length) * 100;
-      if (element) {
-        element.style.setProperty('--before-left', `${percent}%`);
-        element.style.setProperty('--after-width', `${percent}%`);
-      }
-      if (playingMusic.value.Position > playingMusic.value.Length) {
-        await getMusicsAndPlayingMusic();
-      }
+      element.style.setProperty('--before-left', `${percent}%`);
+      element.style.setProperty('--after-width', `${percent}%`);
     }
-  }, 1000);
-});
+    if (playingMusic.value.Position > playingMusic.value.Length) {
+      await getMusicsAndPlayingMusic();
+    }
+  }
+}, 1000);
 
-callOnce(() => {
-  setInterval(() => {
-    getMusicsAndPlayingMusic();
-    console.log();
-  }, 5000);
-});
+const chekingInterval = setInterval(() => {
+  getMusicsAndPlayingMusic();
+}, 5000);
 
 async function next() {
   disable.value = true;
@@ -264,6 +259,11 @@ onMounted(() => {
     element.style.setProperty('--before-left', '0%');
     element.style.setProperty('--after-width', '0%');
   }
+  onUnmounted(() => {
+    element = null;
+    clearInterval(mainInterval);
+    clearInterval(chekingInterval);
+  });
 });
 </script>
 <style scoped>
