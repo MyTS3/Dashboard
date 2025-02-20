@@ -53,7 +53,10 @@
               <button @click="previous()">
                 <img src="/images/previous.png" alt="" />
               </button>
-              <button class="bg-main_orange rounded-full p-4">
+              <button
+                class="bg-main_orange rounded-full p-4"
+                @click="playpause()"
+              >
                 <img src="/images/pause.png" alt="" />
               </button>
               <button @click="next()">
@@ -163,6 +166,31 @@ async function next() {
       },
     },
   );
+  await getMusicsAndPlayingMusic();
+}
+
+async function playpause() {
+  if (!playingMusic.value || playingMusic.value.Paused)
+    await useFetch(
+      `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/play`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      },
+    );
+  else
+    await useFetch(
+      `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/pause`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      },
+    );
+
   await getMusicsAndPlayingMusic();
 }
 
