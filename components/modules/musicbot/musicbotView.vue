@@ -100,7 +100,7 @@ const route = useRoute();
 const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 
-const { data: musics } = await useFetch<{
+const { data: musics, execute: getMusics } = await useFetch<{
   musics: { Link: string; Title: string }[];
 }>(
   `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/musics`,
@@ -112,7 +112,7 @@ const { data: musics } = await useFetch<{
   },
 );
 
-const { data: playingMusic } = await useFetch<{
+const { data: playingMusic, execute: getPlayingMusic } = await useFetch<{
   Link: string;
   Title: string;
   Paused: boolean;
@@ -128,6 +128,31 @@ const { data: playingMusic } = await useFetch<{
   },
 );
 
+async function getMusicsAndPlayingMusic() {
+  return Promise.all([getMusics(), getPlayingMusic()]);
+}
+
+callOnce(() => {
+  setInterval(async () => {
+    if (
+      playingMusic.value &&
+      playingMusic.value.Position &&
+      !playingMusic.value.Paused
+    ) {
+      playingMusic.value.Position += 1;
+      if (playingMusic.value.Position > playingMusic.value.Length) {
+        await getMusicsAndPlayingMusic();
+      }
+    }
+  }, 1000);
+});
+
+callOnce(() => {
+  setInterval(() => {
+    getMusicsAndPlayingMusic();
+  }, 5000);
+});
+
 async function next() {
   await useFetch(
     `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/next`,
@@ -138,6 +163,7 @@ async function next() {
       },
     },
   );
+  await getMusicsAndPlayingMusic();
 }
 
 async function previous() {
@@ -150,6 +176,7 @@ async function previous() {
       },
     },
   );
+  await getMusicsAndPlayingMusic();
 }
 
 async function restartBot() {
