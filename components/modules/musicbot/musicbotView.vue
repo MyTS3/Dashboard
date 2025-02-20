@@ -50,13 +50,13 @@
           </div>
           <div class="flex w-full justify-center px-4">
             <div class="flex w-2/4 justify-around">
-              <button>
+              <button @click="previous()">
                 <img src="/images/previous.png" alt="" />
               </button>
               <button class="bg-main_orange rounded-full p-4">
                 <img src="/images/pause.png" alt="" />
               </button>
-              <button>
+              <button @click="next()">
                 <img src="/images/next.png" alt="" />
               </button>
             </div>
@@ -127,6 +127,30 @@ const { data: playingMusic } = await useFetch<{
     },
   },
 );
+
+async function next() {
+  await useFetch(
+    `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/next`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    },
+  );
+}
+
+async function previous() {
+  await useFetch(
+    `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/previous`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    },
+  );
+}
 
 async function restartBot() {
   disableRestart.value = true;
