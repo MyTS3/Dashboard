@@ -7,9 +7,9 @@
         src="/images/trash.png"
         alt=""
         @click="deleteMusicBotTab = true"
-      >
+      />
     </header>
-    <img class="mx-auto" src="/images/seprator-line.png" alt="" >
+    <img class="mx-auto" src="/images/seprator-line.png" alt="" />
     <template v-if="'connected' in selectedRow.musicBot">
       <div class="h-full flex justify-between flex-col gap-5">
         <main
@@ -50,19 +50,32 @@
           </div>
           <div class="flex w-full justify-center px-4">
             <div class="flex w-2/4 justify-around">
-              <button @click="previous()">
-                <img src="/images/previous.png" alt="" >
+              <button
+                :disabled="disable"
+                :class="disable && 'opacity-70'"
+                @click="previous()"
+              >
+                <img src="/images/previous.png" alt="" />
               </button>
               <button
+                :disabled="disable"
+                :class="disable && 'opacity-70'"
                 class="bg-main_orange rounded-full p-4"
                 @click="playpause()"
               >
-                <img v-if="playingMusic && !playingMusic.Paused" src="/images/pause.png" alt="" >
-                <img v-else src="/images/play.png" alt="" >
-                
+                <img
+                  v-if="playingMusic && !playingMusic.Paused"
+                  src="/images/pause.png"
+                  alt=""
+                />
+                <img v-else src="/images/play.png" alt="" />
               </button>
-              <button @click="next()">
-                <img src="/images/next.png" alt="" >
+              <button
+                :disabled="disable"
+                :class="disable && 'opacity-70'"
+                @click="next()"
+              >
+                <img src="/images/next.png" alt="" />
               </button>
             </div>
           </div>
@@ -72,7 +85,7 @@
     <template v-else>
       <div class="h-full flex flex-col justify-between">
         <div class="my-auto grid gap-5">
-          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" >
+          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" />
           <p>موزیک بات قطع شده است</p>
         </div>
 
@@ -83,7 +96,7 @@
           @click="restartBot()"
         >
           <p>راه اندازی مجدد</p>
-          <img src="/images/restart.png" alt="" >
+          <img src="/images/restart.png" alt="" />
         </button>
       </div>
     </template>
@@ -104,6 +117,7 @@ const toast = useToast();
 const route = useRoute();
 const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
+const disable = ref(false);
 
 const { data: musics, execute: getMusics } = await useFetch<{
   musics: { Link: string; Title: string }[];
@@ -146,7 +160,6 @@ callOnce(() => {
     ) {
       playingMusic.value.Position += 1;
       if (playingMusic.value.Position > playingMusic.value.Length) {
-        
         await getMusicsAndPlayingMusic();
       }
     }
@@ -160,6 +173,7 @@ callOnce(() => {
 });
 
 async function next() {
+  disable.value = true;
   await useFetch(
     `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/next`,
     {
@@ -170,9 +184,11 @@ async function next() {
     },
   );
   await getMusicsAndPlayingMusic();
+  disable.value = false;
 }
 
 async function playpause() {
+  disable.value = true;
   if (!playingMusic.value || playingMusic.value.Paused)
     await useFetch(
       `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/play`,
@@ -195,9 +211,11 @@ async function playpause() {
     );
 
   await getMusicsAndPlayingMusic();
+  disable.value = false;
 }
 
 async function previous() {
+  disable.value = true;
   await useFetch(
     `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/previous`,
     {
@@ -208,6 +226,7 @@ async function previous() {
     },
   );
   await getMusicsAndPlayingMusic();
+  disable.value = false;
 }
 
 async function restartBot() {
@@ -230,7 +249,6 @@ async function restartBot() {
     });
   }
 }
-
 </script>
 <style scoped>
 .audio-progress {
