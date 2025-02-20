@@ -7,9 +7,9 @@
         src="/images/trash.png"
         alt=""
         @click="deleteMusicBotTab = true"
-      />
+      >
     </header>
-    <img class="mx-auto" src="/images/seprator-line.png" alt="" />
+    <img class="mx-auto" src="/images/seprator-line.png" alt="" >
     <template v-if="'connected' in selectedRow.musicBot">
       <div class="h-full flex justify-between flex-col gap-5">
         <main
@@ -33,20 +33,22 @@
             <h2 class="font-bold">{{ playingMusic?.Title }}</h2>
           </div>
           <div
-            v-if="playingMusic?.Length && playingMusic?.Position"
+            v-if="playingMusic"
             class="flex items-center w-full justify-around"
           >
-            <p class="w-2">
+            <p v-if="playingMusic.Length" class="w-2">
               {{ Math.trunc(playingMusic.Position / 60) }}:{{
                 Math.trunc(playingMusic.Position % 60)
               }}
             </p>
+            <p v-else>0:0</p>
             <div class="audio-progress" />
-            <p class="w-2">
+            <p v-if="playingMusic.Length" class="w-2">
               {{ Math.trunc(playingMusic.Length / 60) }}:{{
                 Math.trunc(playingMusic.Length % 60)
               }}
             </p>
+            <p v-else>0:0</p>
           </div>
           <div class="flex w-full justify-center px-4">
             <div class="flex w-2/4 justify-around">
@@ -55,7 +57,7 @@
                 :class="disable && 'opacity-70'"
                 @click="previous()"
               >
-                <img src="/images/previous.png" alt="" />
+                <img src="/images/previous.png" alt="" >
               </button>
               <button
                 :disabled="disable"
@@ -67,15 +69,15 @@
                   v-if="playingMusic && !playingMusic.Paused"
                   src="/images/pause.png"
                   alt=""
-                />
-                <img v-else src="/images/play.png" alt="" />
+                >
+                <img v-else src="/images/play.png" alt="" >
               </button>
               <button
                 :disabled="disable"
                 :class="disable && 'opacity-70'"
                 @click="next()"
               >
-                <img src="/images/next.png" alt="" />
+                <img src="/images/next.png" alt="" >
               </button>
             </div>
           </div>
@@ -85,7 +87,7 @@
     <template v-else>
       <div class="h-full flex flex-col justify-between">
         <div class="my-auto grid gap-5">
-          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" />
+          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" >
           <p>موزیک بات قطع شده است</p>
         </div>
 
@@ -96,7 +98,7 @@
           @click="restartBot()"
         >
           <p>راه اندازی مجدد</p>
-          <img src="/images/restart.png" alt="" />
+          <img src="/images/restart.png" alt="" >
         </button>
       </div>
     </template>
@@ -258,7 +260,11 @@ async function restartBot() {
 }
 onMounted(() => {
   element = document.querySelector('.audio-progress');
-});
+  if (element) {
+        element.style.setProperty('--before-left', '0%');
+        element.style.setProperty('--after-width', '0%');
+      }
+  })
 </script>
 <style scoped>
 .audio-progress {
