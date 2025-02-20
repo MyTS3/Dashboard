@@ -28,7 +28,7 @@
             <h2 class="text-lg">{{ music.Title }}</h2>
           </li>
         </main>
-        <footer class="mx-auto py-4 grow-0 shrink-0 w-full gap-2 flex flex-col">
+        <footer class="mx-auto py-4 mb-10 w-full gap-2 flex flex-col">
           <div class="flex flex-col text-center">
             <h2 class="font-bold">{{ playingMusic?.Title }}</h2>
           </div>
