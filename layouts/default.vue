@@ -31,13 +31,13 @@
                 class="btn h-12 p-3 flex items-center rounded-xl"
                 @click="$router.back()"
               >
-                <img class="" src="/images/Arrow-Right.png" alt="" >
+                <img class="" src="/images/Arrow-Right.png" alt="" />
               </button>
               <div class="flex gap-layout">
                 <button
                   class="flex items-center flex-row-reverse gap-1 p-3 rounded-xl btn text-xs"
                 >
-                  <img class="h-6 w-6" src="/images/group_500.svg" alt="user" >
+                  <img class="h-6 w-6" src="/images/group_500.svg" alt="user" />
                   {{ name }}
                 </button>
                 <button class="flex gap-1 btn p-3 px-4 rounded-xl">
@@ -46,7 +46,7 @@
                     src="/images/bookmark_duplicate.svg"
                     class="h-6 w-6"
                     alt="bell"
-                  >
+                  />
                 </button>
               </div>
             </header>
@@ -59,13 +59,13 @@
               class="w-10"
               src="/images/send_complaint.svg"
               alt="bell-alarm"
-            >
+            />
             <p class="font-medium text-sm">
               پنل جدید در دست ساخت است، این یک نسخه رایگان برای تست میباشد و هیچ
               گونه مسئولیتی در نگهداری داده های شما ندارد
             </p>
             <button class="absolute left-4" @click.prevent="panelAlert = false">
-              <img class="w-3 mx-auto" src="/images/X-9.png" alt="" >
+              <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
             </button>
           </div>
           <slot />
@@ -83,7 +83,7 @@
               class="mx-auto mt-5 max-w-80"
               src="/images/User info.png"
               alt="logo"
-            >
+            />
           </header>
           <nav class="list-none flex flex-col pt-4 gap-3 m-5">
             <li
@@ -96,7 +96,7 @@
                 src="/images/server_green.svg"
                 class="w-6 h-6"
                 alt="dashboard"
-              >
+              />
             </li>
             <li
               :class="$route.name == 'playlist' ? 'activePanel' : ''"
@@ -104,7 +104,7 @@
               @click="navigateTo('/playlist')"
             >
               <p>پلی لیست</p>
-              <img class="w-6 h-6" src="/images/changelog.svg" alt="" >
+              <img class="w-6 h-6" src="/images/changelog.svg" alt="" />
             </li>
             <li
               :class="$route.name == 'backups' ? 'activePanel' : ''"
@@ -112,7 +112,7 @@
               @click="navigateTo('/backups')"
             >
               <p>بکاپ ها</p>
-              <img src="/images/sync-icon.svg" class="w-6 h-6" alt="" >
+              <img src="/images/sync-icon.svg" class="w-6 h-6" alt="" />
             </li>
             <li
               :class="$route.name == 'domains' ? 'activePanel' : ''"
@@ -124,7 +124,7 @@
                 src="/images/browse-addon-online.svg"
                 class="w-6 h-6"
                 alt=""
-              >
+              />
             </li>
             <!-- <li
             :class="$route.name == 'poshtibani' ? 'activePanel' : ''"
@@ -146,7 +146,7 @@
               class="object-contain p-3"
               src="/images/mtserver-logo.png"
               alt=""
-            >
+            />
           </a>
         </div>
       </template>
@@ -154,7 +154,7 @@
         <main
           class="flex flex-col justify-center gap-5 items-center w-full h-full"
         >
-          <img src="/images/new/no-server.png" alt="" >
+          <img src="/images/new/no-server.png" alt="" />
           <div>
             <p class="text-3xl text-center font-bold">پنل در دسترس نیست</p>
             <p>
