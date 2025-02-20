@@ -57,7 +57,9 @@
                 class="bg-main_orange rounded-full p-4"
                 @click="playpause()"
               >
-                <img src="/images/pause.png" alt="" >
+                <img v-if="playingMusic && !playingMusic.Paused" src="/images/pause.png" alt="" >
+                <img v-else src="/images/play.png" alt="" >
+                
               </button>
               <button @click="next()">
                 <img src="/images/next.png" alt="" >
@@ -144,6 +146,7 @@ callOnce(() => {
     ) {
       playingMusic.value.Position += 1;
       if (playingMusic.value.Position > playingMusic.value.Length) {
+        
         await getMusicsAndPlayingMusic();
       }
     }
