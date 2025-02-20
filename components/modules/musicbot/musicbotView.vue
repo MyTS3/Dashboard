@@ -7,9 +7,9 @@
         src="/images/trash.png"
         alt=""
         @click="deleteMusicBotTab = true"
-      />
+      >
     </header>
-    <img class="mx-auto" src="/images/seprator-line.png" alt="" />
+    <img class="mx-auto" src="/images/seprator-line.png" alt="" >
     <template v-if="'connected' in selectedRow.musicBot">
       <div class="h-full flex justify-between flex-col gap-5">
         <main
@@ -33,8 +33,8 @@
             <h2 class="font-bold">{{ playingMusic?.Title }}</h2>
           </div>
           <div
-            class="flex items-center w-full justify-around"
             v-if="playingMusic?.Length && playingMusic?.Position"
+            class="flex items-center w-full justify-around"
           >
             <p>
               {{ Math.trunc(playingMusic.Position / 60) }}:{{
@@ -51,16 +51,16 @@
           <div class="flex w-full justify-center px-4">
             <div class="flex w-2/4 justify-around">
               <button @click="previous()">
-                <img src="/images/previous.png" alt="" />
+                <img src="/images/previous.png" alt="" >
               </button>
               <button
                 class="bg-main_orange rounded-full p-4"
                 @click="playpause()"
               >
-                <img src="/images/pause.png" alt="" />
+                <img src="/images/pause.png" alt="" >
               </button>
               <button @click="next()">
-                <img src="/images/next.png" alt="" />
+                <img src="/images/next.png" alt="" >
               </button>
             </div>
           </div>
@@ -70,7 +70,7 @@
     <template v-else>
       <div class="h-full flex flex-col justify-between">
         <div class="my-auto grid gap-5">
-          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" />
+          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" >
           <p>موزیک بات قطع شده است</p>
         </div>
 
@@ -81,7 +81,7 @@
           @click="restartBot()"
         >
           <p>راه اندازی مجدد</p>
-          <img src="/images/restart.png" alt="" />
+          <img src="/images/restart.png" alt="" >
         </button>
       </div>
     </template>
@@ -227,6 +227,8 @@ async function restartBot() {
     });
   }
 }
+console.log(route)
+
 </script>
 <style scoped>
 .audio-progress {
