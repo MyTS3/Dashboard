@@ -118,7 +118,7 @@ const route = useRoute();
 const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 const disable = ref(false);
-
+let element: HTMLElement | null;
 const { data: musics, execute: getMusics } = await useFetch<{
   musics: { Link: string; Title: string }[];
 }>(
@@ -159,6 +159,12 @@ callOnce(() => {
       !playingMusic.value.Paused
     ) {
       playingMusic.value.Position += 1;
+      const percent =
+        (playingMusic.value.Position / playingMusic.value.Length) * 100;
+      if (element) {
+        element.style.setProperty('--before-left', `${percent}%`);
+        element.style.setProperty('--after-width', `${percent}%`);
+      }
       if (playingMusic.value.Position > playingMusic.value.Length) {
         await getMusicsAndPlayingMusic();
       }
@@ -169,6 +175,7 @@ callOnce(() => {
 callOnce(() => {
   setInterval(() => {
     getMusicsAndPlayingMusic();
+    console.log();
   }, 5000);
 });
 
@@ -249,6 +256,9 @@ async function restartBot() {
     });
   }
 }
+onMounted(() => {
+  element = document.querySelector('.audio-progress');
+});
 </script>
 <style scoped>
 .audio-progress {
@@ -267,14 +277,14 @@ async function restartBot() {
   background-color: rgba(255, 158, 11, 1);
   top: 50%;
   transform: translateY(-50%);
-  left: 30%;
+  left: var(--before-left);
 }
 
 .audio-progress::after {
   content: '';
   position: absolute;
   background-color: rgba(255, 158, 11, 1);
-  width: 30%;
+  width: var(--after-width, 50px);
   left: 0;
   height: 2px;
 }
