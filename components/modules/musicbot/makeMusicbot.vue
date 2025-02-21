@@ -10,7 +10,7 @@
         class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
         @click="$emit('close')"
       >
-        <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
+        <img class="w-3 mx-auto" src="/images/X-9.png" alt="" >
       </button>
       <header>
         <h1 class="text-lg font-bold">ساخت موزیک بات</h1>
@@ -22,9 +22,9 @@
         <p class="font-bold w-full text-right">پلی لیست</p>
 
         <select
+          v-model="selectedPlaylist"
           class="text-white bg-transparent my-4 border w-full text-right min-h-16 rounded-2xl"
           name="music"
-          v-model="selectedPlaylist"
         >
           <option
             v-for="playlist in playlists"
@@ -61,6 +61,7 @@
         <!-- ////////////////////////////////// -->
       </div>
       <button
+        :disabled="!selectedPlaylist"
         :class="{
           'cursor-not-allowed opacity-55': disableInputs,
         }"
@@ -69,9 +70,10 @@
       >
         <div
           v-if="!disableInputs"
+          
           class="w-full flex justify-center gap-2 items-center"
         >
-          <span><img src="/images/plus.png" alt="" /></span>
+          <span><img src="/images/plus.png" alt="" ></span>
           <p>ساخت</p>
         </div>
         <TheLoading v-if="disableInputs" />
