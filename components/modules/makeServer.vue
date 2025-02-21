@@ -26,7 +26,7 @@
           <label class="text-right font-medium mb-4">نام سرور</label>
           <input
             v-model="serverName"
-            :class="submitDisable ? 'border-main_red' : ''"
+            :class="!disableReasson == '' ? 'border-main_red' : ''"
             :disabled="disableInputs"
             class="bg-transparent border rounded-lg p-4 outline-none"
             type="text"
