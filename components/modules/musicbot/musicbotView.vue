@@ -1,19 +1,19 @@
 <template>
   <section class="h-full relative overflow-y-hidden flex flex-col gap-2">
-    <header class="flex w-full my-2 ">
+    <header class="flex w-full my-2">
       <h1 class="mx-auto font-bold my-auto">موزیک بات</h1>
       <img
         class="cursor-pointer"
         src="/images/trash.png"
         alt=""
         @click="deleteMusicBotTab = true"
-      >
+      />
     </header>
-    <img class="mx-auto" src="/images/seprator-line.png" alt="" >
+    <img class="mx-auto" src="/images/seprator-line.png" alt="" />
     <template v-if="'connected' in selectedRow.musicBot">
-      <div class="h-full  flex flex-col">
+      <div class="h-full flex flex-col">
         <main
-          class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 grow-0 overflow-y-scroll "
+          class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 grow-0 overflow-y-scroll"
         >
           <li
             v-for="music in musics?.musics"
@@ -27,9 +27,8 @@
           >
             <h2 class="text-lg">{{ music.Title }}</h2>
           </li>
-
         </main>
-        <footer class="mx-auto py-4 w-full gap-2 flex flex-col mb-14 ">
+        <footer class="mx-auto py-4 w-full gap-2 flex flex-col mb-14">
           <div class="flex flex-col text-center">
             <h2 class="font-bold">{{ playingMusic?.Title }}</h2>
           </div>
@@ -58,7 +57,7 @@
                 :class="disable && 'opacity-70'"
                 @click="previous()"
               >
-                <img src="/images/previous.png" alt="" >
+                <img src="/images/previous.png" alt="" />
               </button>
               <button
                 :disabled="disable"
@@ -70,15 +69,15 @@
                   v-if="playingMusic && !playingMusic.Paused"
                   src="/images/pause.png"
                   alt=""
-                >
-                <img v-else src="/images/play.png" alt="" >
+                />
+                <img v-else src="/images/play.png" alt="" />
               </button>
               <button
                 :disabled="disable"
                 :class="disable && 'opacity-70'"
                 @click="next()"
               >
-                <img src="/images/next.png" alt="" >
+                <img src="/images/next.png" alt="" />
               </button>
             </div>
           </div>
@@ -88,7 +87,7 @@
     <template v-else>
       <div class="h-full flex flex-col justify-between">
         <div class="my-auto grid gap-5">
-          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" >
+          <img src="/images/server-is-off.png" class="scale-x-[-1]" alt="" />
           <p>موزیک بات قطع شده است</p>
         </div>
 
@@ -99,7 +98,7 @@
           @click="restartBot()"
         >
           <p>راه اندازی مجدد</p>
-          <img src="/images/restart.png" alt="" >
+          <img src="/images/restart.png" alt="" />
         </button>
       </div>
     </template>
