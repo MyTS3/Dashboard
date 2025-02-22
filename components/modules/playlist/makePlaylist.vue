@@ -20,6 +20,7 @@
         <from class="w-full my-4">
           <input
             v-model="playlistName"
+            maxlength="20"
             :disabled="disable"
             type="text"
             class="p-3 w-full bg-transparent border-white flex justify-center rounded-xl border"

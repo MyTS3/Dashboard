@@ -21,7 +21,9 @@
         >
           <div class="flex gap-layout">
             <img class="w-5" src="/images/Folder.png" alt="" />
-            <h2 class="text-lg font-bold">{{ playlist.name }}</h2>
+            <h2 class="text-lg font-bold text-nowrap w-32">
+              {{ playlist.name }}
+            </h2>
           </div>
           <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
             <p class="font-sans text-xs my-auto font-bold">2GB</p>
@@ -55,9 +57,9 @@
           :key="music.uuid"
           class="list-none flex my-1 p-3 hover:hover:bg-main_orange/20 rounded-xl relative h-14"
         >
-          <div class="flex gap-layout">
+          <div class="flex gap-layout w-full">
             <img class="w-5" src="/images/music.png" alt="" />
-            <h2 class="text-lg font-bold w-2/3 overflow-clip">
+            <h2 class="text-lg font-bold text-nowrap w-2/3 overflow-hidden">
               {{ music.name }}
             </h2>
           </div>
