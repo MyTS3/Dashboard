@@ -115,6 +115,7 @@ async function makeMusicBot() {
     },
   );
   disableInputs.value = false;
+  emit('close');
   if (error.value) {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
@@ -122,6 +123,5 @@ async function makeMusicBot() {
       color: 'red',
     });
   }
-  emit('close');
 }
 </script>

@@ -16,7 +16,7 @@
               ? 'btn-active'
               : 'hover:hover:bg-main_orange/20'
           "
-          class="list-none flex my-1 p-3 rounded-xl relative"
+          class="list-none flex my-1 p-3 rounded-xl relative h-14"
           @click="selectedPlaylistUuid = playlist.uuid"
         >
           <div class="flex gap-layout">
@@ -53,7 +53,7 @@
         <li
           v-for="music in musics"
           :key="music.uuid"
-          class="list-none flex my-1 p-3 hover:hover:bg-main_orange/20 rounded-xl relative"
+          class="list-none flex my-1 p-3 hover:hover:bg-main_orange/20 rounded-xl relative h-14"
         >
           <div class="flex gap-layout">
             <img class="w-5" src="/images/music.png" alt="" />
