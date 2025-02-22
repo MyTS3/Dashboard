@@ -514,9 +514,15 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
       selectedRow.value = { rowType: 'server', level: 0 };
     else selectedRow.value = foundedSelectedRow;
     teamspeakserver.value = rows;
+
+    const theInterval = setInterval(() => {
+      if (el.value != null && el.value.children.length > 0) {
+        y.value = lastScrollesPosition.value;
+        clearInterval(theInterval);
+      }
+    }, 100);
   });
 
-y.value = lastScrollesPosition.value;
 let lastTimeReccived = 1;
 function longpoll(time = 1) {
   fetch(
