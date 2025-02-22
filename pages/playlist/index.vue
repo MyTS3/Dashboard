@@ -1,8 +1,8 @@
 <template>
   <section
-    class="flex-1 w-full mx-auto flex flex-row items-stretch text-white text-center gap-layout min-h-0"
+    class="flex-1 grid grid-cols-2 w-full mx-auto items-stretch text-white text-center gap-layout min-h-0"
   >
-    <main class="w-1/2 bg-mainbg_500 p-5 rounded-xl flex flex-col">
+    <main class="bg-mainbg_500 p-5 rounded-xl flex flex-col">
       <header>
         <p>پلی لیست ها</p>
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
@@ -41,7 +41,7 @@
         <img src="/images/addon.png" alt="" />
       </button>
     </main>
-    <main class="w-1/2 bg-mainbg_500 p-5 rounded-xl flex flex-col">
+    <main class="bg-mainbg_500 p-5 rounded-xl flex flex-col">
       <header>
         <p>آهنگ های پلی لیست</p>
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
@@ -57,7 +57,9 @@
         >
           <div class="flex gap-layout">
             <img class="w-5" src="/images/music.png" alt="" />
-            <h2 class="text-lg font-bold">{{ music.name }}</h2>
+            <h2 class="text-lg font-bold w-2/3 overflow-clip">
+              {{ music.name }}
+            </h2>
           </div>
           <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
             <p class="font-sans text-xs my-auto font-bold">20MB</p>
