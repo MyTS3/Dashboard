@@ -1,7 +1,7 @@
 <template>
   <section class="h-full relative overflow-y-hidden flex flex-col gap-2">
-    <header class="flex w-full my-2">
-      <h1 class="mx-auto font-bold my-auto">موزیک بات</h1>
+    <header class="flex w-full">
+      <h1 class="mx-auto font-bold p-2 my-auto">موزیک بات</h1>
       <img
         class="cursor-pointer"
         src="/images/trash.png"
@@ -9,11 +9,11 @@
         @click="deleteMusicBotTab = true"
       />
     </header>
-    <img class="mx-auto" src="/images/seprator-line.png" alt="" />
+    <img class="mx-auto w-full" src="/images/seprator-line.png" alt="" />
     <template v-if="'connected' in selectedRow.musicBot">
-      <div class="h-full flex flex-col">
+      <div class="flex grow flex-col overflow-hidden">
         <main
-          class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 grow-0 overflow-y-scroll"
+          class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 overflow-y-scroll"
         >
           <li
             v-for="music in musics?.musics"
@@ -28,7 +28,9 @@
             <h2 class="text-lg">{{ music.Title }}</h2>
           </li>
         </main>
-        <footer class="mx-auto py-4 w-full gap-2 flex flex-col mb-14">
+        <footer
+          class="mx-auto py-4 flex-shrink-0 flex-grow-0 basis-32 w-full gap-2 flex flex-col"
+        >
           <div class="flex flex-col text-center">
             <h2 class="font-bold">{{ playingMusic?.Title }}</h2>
           </div>
@@ -36,14 +38,14 @@
             v-if="playingMusic"
             class="flex items-center w-full justify-around"
           >
-            <p v-if="playingMusic.Length" class="w-2">
+            <p v-if="playingMusic.Length" class="w-10">
               {{ Math.trunc(playingMusic.Position / 60) }}:{{
                 Math.trunc(playingMusic.Position % 60)
               }}
             </p>
             <p v-else>0:0</p>
             <div class="audio-progress" />
-            <p v-if="playingMusic.Length" class="w-2">
+            <p v-if="playingMusic.Length" class="w-10">
               {{ Math.trunc(playingMusic.Length / 60) }}:{{
                 Math.trunc(playingMusic.Length % 60)
               }}
@@ -51,7 +53,7 @@
             <p v-else>0:0</p>
           </div>
           <div class="flex w-full justify-center px-4">
-            <div class="flex w-2/4 justify-around">
+            <div class="flex w-full max-w-52 justify-around">
               <button
                 :disabled="disable"
                 :class="disable && 'opacity-70'"
