@@ -1,34 +1,35 @@
 <template>
-  <section
-    class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
-  >
-    <main
-      class="text-white min-w-[25rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+  <Teleport to="body">
+    <section
+      class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
-      <button
-        :disabled="disable"
-        class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
-        @click="$emit('close')"
+      <main
+        class="text-white min-w-[25rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
       >
-        <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
-      </button>
-      <h1 class="text-2xl my-4 font-extrabold">ریسیت/کانفیگ</h1>
-      <p class="text-sm text-main_red mb-2">
-        این عمل باعث پاک شدن تمامی اطلاعات فعلی سرور شما میشود، آیا اطمینان
-        دارید؟
-      </p>
-      <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
+        <button
+          :disabled="disable"
+          class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+          @click="$emit('close')"
+        >
+          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
+        </button>
+        <h1 class="text-2xl my-4 font-extrabold">ریسیت/کانفیگ</h1>
+        <p class="text-sm text-main_red mb-2">
+          این عمل باعث پاک شدن تمامی اطلاعات فعلی سرور شما میشود، آیا اطمینان
+          دارید؟
+        </p>
+        <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
 
-      <from class="w-full my-4">
-        <USelectMenu
-          v-model="selectedConfigue"
-          class="w-full"
-          size="xl"
-          color="indigo"
-          :options="availables"
-          option-attribute="domain"
-        />
-        <!-- <select
+        <from class="w-full my-4">
+          <USelectMenu
+            v-model="selectedConfigue"
+            class="w-full"
+            size="xl"
+            color="indigo"
+            :options="availables"
+            option-attribute="domain"
+          />
+          <!-- <select
           v-if="!pending"
           v-model="selectedConfigue"
           :disabled="disable"
@@ -44,25 +45,26 @@
             {{ available }}
           </option>
         </select> -->
-        <USkeleton
-          v-if="pending"
-          class="h-11 w-full rounded-lg"
-          :ui="{ background: 'dark:bg-gray-500' }"
-        />
-      </from>
-      <div class="grid">
-        <button
-          :class="disable || pending ? 'disable' : ''"
-          :disabled="disable || pending"
-          class="p-4 text-center flex justify-center rounded-xl bg-main_red module-btn"
-          @click.prevent="changeConfigue()"
-        >
-          <p v-if="!disable">تایید</p>
-          <TheLoading v-else />
-        </button>
-      </div>
-    </main>
-  </section>
+          <USkeleton
+            v-if="pending"
+            class="h-11 w-full rounded-lg"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+        </from>
+        <div class="grid">
+          <button
+            :class="disable || pending ? 'disable' : ''"
+            :disabled="disable || pending"
+            class="p-4 text-center flex justify-center rounded-xl bg-main_red module-btn"
+            @click.prevent="changeConfigue()"
+          >
+            <p v-if="!disable">تایید</p>
+            <TheLoading v-else />
+          </button>
+        </div>
+      </main>
+    </section>
+  </Teleport>
 </template>
 <script setup>
 import { apiStore } from '~/stores/apistore';
