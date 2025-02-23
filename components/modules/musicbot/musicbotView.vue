@@ -123,31 +123,44 @@ const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 const disable = ref(false);
 let element: HTMLElement | null;
-const { data: musics, execute: getMusics } = await useFetch<{
+const { data: musics, execute: getMusics } = useFetch<{
   musics: { Link: string; Title: string }[];
 }>(
-  `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/musics`,
+  () =>
+    `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/musics`,
   {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
+    watch: [() => props.selectedRow],
+    default: () => ({
+      musics: [],
+    }),
   },
 );
-
-const { data: playingMusic, execute: getPlayingMusic } = await useFetch<{
+const { data: playingMusic, execute: getPlayingMusic } = useFetch<{
   Link: string;
   Title: string;
   Paused: boolean;
   Position: number;
   Length: number;
 }>(
-  `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/music`,
+  () =>
+    `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/music`,
   {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
+    watch: [() => props.selectedRow],
+    default: () => ({
+      Link: '',
+      Title: '',
+      Paused: true,
+      Position: 0,
+      Length: 0,
+    }),
   },
 );
 
