@@ -40,7 +40,10 @@
                   <img class="h-6 w-6" src="/images/group_500.svg" alt="user" />
                   {{ name }}
                 </button>
-                <button class="flex gap-1 btn p-3 px-4 rounded-xl">
+                <button
+                  class="flex gap-1 btn p-3 px-4 rounded-xl"
+                  @click="navigateTo('/wallet')"
+                >
                   تومان ۴۴,۰۰۰
                   <img
                     src="/images/bookmark_duplicate.svg"
