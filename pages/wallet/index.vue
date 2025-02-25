@@ -55,14 +55,18 @@
     </Table>
     <button
       class="flex absolute gap-btn -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      @click="changeWalletTab = true"
     >
       شارژ کیف پول
       <img src="/images/addon.png" alt="" />
     </button>
+    <ChargeWallet v-if="changeWalletTab" @close="changeWalletTab = false" />
   </div>
 </template>
 <script setup lang="ts">
+import ChargeWallet from '~/components/modules/wallet/chargeWallet.vue';
 import Table from '~/components/reusable/table.vue';
+const changeWalletTab = ref(false);
 </script>
 <style scoped>
 .table {
