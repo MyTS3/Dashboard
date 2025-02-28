@@ -30,13 +30,15 @@
           </template>
           <template v-else>
             <div class="w-full h-full justify-center gap-4 items-center">
-              <li class="table">
-                <p class="text-main_orange">5.000</p>
+              <li v-for="log in logs" :key="log.uuid" class="table">
+                <p :class="handleAmountColor(log)">
+                  {{ handleAmountText(log.amount) }}
+                </p>
                 <p>15 Jan. 2023</p>
                 <p>.............</p>
                 <p>در حال کم شدن</p>
               </li>
-              <li class="table">
+              <!-- <li class="table">
                 <p class="text-main_green">10.000</p>
                 <p>15 Jan. 2023</p>
                 <p>.............</p>
@@ -47,7 +49,7 @@
                 <p>15 Jan. 2023</p>
                 <p>.............</p>
                 <p>کم شد</p>
-              </li>
+              </li> -->
             </div>
           </template>
         </div>
@@ -66,7 +68,55 @@
 <script setup lang="ts">
 import ChargeWallet from '~/components/modules/wallet/chargeWallet.vue';
 import Table from '~/components/reusable/table.vue';
+//
+type walletRows =
+  | {
+      uuid: string;
+      reason: string;
+      userid: number;
+      amount: string;
+      start: null;
+      end: null;
+      price: null;
+      seconds_for_price: null;
+      created_at: string;
+    }
+  | {
+      uuid: string;
+      reason: string;
+      userid: number;
+      amount: string;
+      start: string;
+      end: string | null;
+      price: number;
+      seconds_for_price: number;
+      created_at: null;
+    };
+//
 const changeWalletTab = ref(false);
+//
+const store = apiStore();
+const { url } = storeToRefs(store);
+const errors = errorHandle();
+//
+function handleAmountColor(log: walletRows) {
+  if (log.amount.startsWith('-')) return 'text-main_red';
+}
+function handleAmountText(amount: string) {
+  if (!amount.startsWith('-')) return Math.trunc(Number(amount));
+  else return Math.trunc(Number(amount.substring(1)));
+}
+const { data: logs, error } = await useFetch<walletRows[]>(
+  `${url.value}/api/v4/wallet`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  },
+);
+if (error.value) {
+  errors.handle(error.value.data.code);
+}
 </script>
 <style scoped>
 .table {
