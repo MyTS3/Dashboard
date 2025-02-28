@@ -44,7 +44,7 @@
                   class="flex gap-1 btn p-3 px-4 rounded-xl"
                   @click="navigateTo('/wallet')"
                 >
-                  تومان ۴۴,۰۰۰
+                  تومان {{ balance.balance }}
                   <img
                     src="/images/bookmark_duplicate.svg"
                     class="h-6 w-6"
@@ -180,6 +180,11 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 
 const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+const { data: balance } = await useFetch(`${url.value}/api/v4/balance`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
