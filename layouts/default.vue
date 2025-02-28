@@ -19,14 +19,18 @@
                 بکاپ ها
               </h1>
               <h1 v-if="$route.name == 'playlist'" class="font-medium text-xl">
-                پلی لیست
+                پلی لیست ها
+              </h1>
+              <h1 v-if="$route.name == 'wallet'" class="font-medium text-xl">
+                ترا کنش ها
               </h1>
               <button
                 v-if="
                   $route.name != 'tservers' &&
                   $route.name != 'domains' &&
                   $route.name != 'backups' &&
-                  $route.name != 'playlist'
+                  $route.name != 'playlist' &&
+                  $route.name != 'wallet'
                 "
                 class="btn h-12 p-3 flex items-center rounded-xl"
                 @click="$router.back()"
@@ -42,7 +46,7 @@
                 </button>
                 <button
                   class="flex gap-1 btn p-3 px-4 rounded-xl"
-                  @click="navigateTo('/wallet')"
+                  @click="chargeWalletTab = true"
                 >
                   تومان {{ Math.trunc(Number(balance.balance)) }}
                   <img
@@ -102,14 +106,6 @@
               />
             </li>
             <li
-              :class="$route.name == 'playlist' ? 'activePanel' : ''"
-              class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/playlist')"
-            >
-              <p>پلی لیست</p>
-              <img class="w-6 h-6" src="/images/changelog.svg" alt="" />
-            </li>
-            <li
               :class="$route.name == 'backups' ? 'activePanel' : ''"
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
               @click="navigateTo('/backups')"
@@ -128,6 +124,22 @@
                 class="w-6 h-6"
                 alt=""
               />
+            </li>
+            <li
+              :class="$route.name == 'playlist' ? 'activePanel' : ''"
+              class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
+              @click="navigateTo('/playlist')"
+            >
+              <p>پلی لیست ها</p>
+              <img class="w-6 h-6" src="/images/changelog.svg" alt="" />
+            </li>
+            <li
+              :class="$route.name == 'wallet' ? 'activePanel' : ''"
+              class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
+              @click="navigateTo('/wallet')"
+            >
+              <p>تراکنش ها</p>
+              <img class="w-6 h-6" src="/images/bookmark_manager.svg" alt="" />
             </li>
             <!-- <li
             :class="$route.name == 'poshtibani' ? 'activePanel' : ''"
@@ -169,15 +181,19 @@
       </template>
     </div>
     <logoutPopup v-if="logoutTab" @close="logoutTab = false" />
+    <chargeWallet v-if="chargeWalletTab" @close="chargeWalletTab = false" />
   </span>
 </template>
 <script setup>
 import TimeAgo from 'javascript-time-ago';
 import fa from 'javascript-time-ago/locale/fa';
 import logoutPopup from '@/components/modules/logoutPopup.vue';
+import chargeWallet from '~/components/modules/wallet/chargeWallet.vue';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
+
+const chargeWalletTab = ref(false);
 
 const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
   headers: {
