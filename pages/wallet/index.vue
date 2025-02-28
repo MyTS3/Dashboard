@@ -36,20 +36,30 @@
                 </p>
                 <p>{{ (log.created_at || log.start)?.split('T')[0] }}</p>
                 <p>{{ log.end?.split('T')[0] || '.......' }}</p>
-                <p>در حال کم شدن</p>
+                <div class="flex gap-1" :class="handleStatusColor(log)">
+                  <p>
+                    {{ handleTheStatus(log) }}
+                  </p>
+                  <img
+                    v-if="handleStatusColor(log) == 'charge-status'"
+                    class="w-5"
+                    src="/images/add-square.png"
+                    alt=""
+                  />
+                  <img
+                    v-if="handleStatusColor(log) == 'loading-status'"
+                    class="w-5"
+                    src="/images/waiting.png"
+                    alt=""
+                  />
+                  <img
+                    v-if="handleStatusColor(log) == 'reduce-status'"
+                    class="w-3"
+                    src="/images/minus.png"
+                    alt=""
+                  />
+                </div>
               </li>
-              <!-- <li class="table">
-                <p class="text-main_green">10.000</p>
-                <p>15 Jan. 2023</p>
-                <p>.............</p>
-                <p>شارژ</p>
-              </li>
-              <li class="table">
-                <p class="text-main_red">10.000</p>
-                <p>15 Jan. 2023</p>
-                <p>.............</p>
-                <p>کم شد</p>
-              </li> -->
             </div>
           </template>
         </div>
@@ -100,15 +110,29 @@ const { url } = storeToRefs(store);
 const errors = errorHandle();
 //
 function handleAmountColor(log: walletRows) {
-  if (!log.created_at && !log.end) return 'text-main_orange';
+  if (!log.created_at && !log.end) return 'orange-text';
   else {
-    if (log.amount.startsWith('-')) return 'text-main_red';
-    else return 'text-main_green';
+    if (log.amount.startsWith('-')) return 'red-text';
+    else return 'green-text';
   }
 }
 function handleAmountText(amount: string) {
   if (!amount.startsWith('-')) return Math.trunc(Number(amount));
   else return Math.trunc(Number(amount.substring(1)));
+}
+function handleTheStatus(log: walletRows) {
+  if (!log.created_at && !log.end) return 'درحال پردازش';
+  else {
+    if (log.amount.startsWith('-')) return 'کم شد';
+    else return 'شارژ شد';
+  }
+}
+function handleStatusColor(log: walletRows) {
+  if (!log.created_at && !log.end) return 'loading-status';
+  else {
+    if (log.amount.startsWith('-')) return 'reduce-status';
+    else return 'charge-status';
+  }
 }
 const { data: logs, error } = await useFetch<walletRows[]>(
   `${url.value}/api/v4/wallet`,
@@ -137,5 +161,28 @@ if (error.value) {
   padding-block: 5px;
   padding-inline: 8px;
   border-radius: 25px;
+}
+.reduce-status {
+  background-color: rgba(58, 43, 65, 1);
+  color: rgba(255, 69, 58, 1);
+  padding-block: 5px;
+  padding-inline: 15px;
+  border-radius: 25px;
+}
+.charge-status {
+  background-color: rgba(198, 255, 144, 0.12);
+  color: rgba(145, 197, 97, 1);
+  padding-block: 5px;
+  padding-inline: 15px;
+  border-radius: 25px;
+}
+.orange-text {
+  color: rgba(214, 162, 67, 1);
+}
+.green-text {
+  color: rgba(145, 197, 97, 1);
+}
+.red-text {
+  color: rgba(255, 69, 58, 1);
 }
 </style>
