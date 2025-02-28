@@ -44,7 +44,7 @@
                   class="flex gap-1 btn p-3 px-4 rounded-xl"
                   @click="navigateTo('/wallet')"
                 >
-                  تومان {{ balance.balance }}
+                  تومان {{ Math.trunc(Number(balance.balance)) }}
                   <img
                     src="/images/bookmark_duplicate.svg"
                     class="h-6 w-6"
