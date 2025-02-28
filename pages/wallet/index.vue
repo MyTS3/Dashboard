@@ -5,7 +5,11 @@
       <p>تاریخ ثبت</p>
       <p>تاریخ پایان</p>
     </div>
-    <Table>
+    <div
+      ref="el"
+      dir="rtl"
+      class="w-full overflow-y-scroll flex flex-col bg-mainbg_500 rounded-2xl rounded-t-none h-full"
+    >
       <div class="h-full relative">
         <div class="h-full">
           <template v-if="false">
@@ -64,7 +68,7 @@
           </template>
         </div>
       </div>
-    </Table>
+    </div>
     <button
       class="flex absolute gap-btn -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
       @click="changeWalletTab = true"
@@ -77,7 +81,8 @@
 </template>
 <script setup lang="ts">
 import ChargeWallet from '~/components/modules/wallet/chargeWallet.vue';
-import Table from '~/components/reusable/table.vue';
+import { useInfiniteScroll } from '@vueuse/core';
+import { useTemplateRef } from 'vue';
 //
 type walletRows =
   | {
@@ -108,6 +113,9 @@ const changeWalletTab = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const errors = errorHandle();
+let page = 0;
+const lastRowsCount = ref();
+const logs = ref<walletRows[]>([]);
 //
 function handleAmountColor(log: walletRows) {
   if (!log.created_at && !log.end) return 'orange-text';
@@ -134,17 +142,34 @@ function handleStatusColor(log: walletRows) {
     else return 'charge-status';
   }
 }
-const { data: logs, error } = await useFetch<walletRows[]>(
-  `${url.value}/api/v4/wallet`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+async function getPages() {
+  const data = await $fetch<walletRows[]>(
+    `${url.value}/api/v4/wallet?page=${page}&pageSize=${20}`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     },
+  );
+  data?.forEach((row) => logs.value.push(row));
+  lastRowsCount.value = data?.length;
+  page += 1;
+}
+
+const el = useTemplateRef<HTMLElement>('el');
+useInfiniteScroll(
+  el,
+  async () => {
+    // load more
+    await getPages();
+  },
+  {
+    distance: 10,
+
+    canLoadMore: () => lastRowsCount.value == 20,
   },
 );
-if (error.value) {
-  errors.handle(error.value.data.code);
-}
+getPages();
 </script>
 <style scoped>
 .table {
