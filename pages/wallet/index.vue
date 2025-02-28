@@ -34,8 +34,8 @@
                 <p :class="handleAmountColor(log)">
                   {{ handleAmountText(log.amount) }}
                 </p>
-                <p>15 Jan. 2023</p>
-                <p>.............</p>
+                <p>{{ (log.created_at || log.start)?.split('T')[0] }}</p>
+                <p>{{ log.end?.split('T')[0] || '.......' }}</p>
                 <p>در حال کم شدن</p>
               </li>
               <!-- <li class="table">
@@ -100,7 +100,11 @@ const { url } = storeToRefs(store);
 const errors = errorHandle();
 //
 function handleAmountColor(log: walletRows) {
-  if (log.amount.startsWith('-')) return 'text-main_red';
+  if (!log.created_at && !log.end) return 'text-main_orange';
+  else {
+    if (log.amount.startsWith('-')) return 'text-main_red';
+    else return 'text-main_green';
+  }
 }
 function handleAmountText(amount: string) {
   if (!amount.startsWith('-')) return Math.trunc(Number(amount));
