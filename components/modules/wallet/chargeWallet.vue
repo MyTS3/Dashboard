@@ -15,18 +15,19 @@
         </button>
         <h1 class="my-4 font-bold text-xl">شارژ کیف پول</h1>
         <p class="text-center text-white/80 max-w-96 text-md mx-auto mx-6">
-          مبلغ مورد نظر باید بین 50،000 تا 2،000،000 تومان باشد
+          مبلغ مورد نظر باید بین 20،000 تا 2،000،000 تومان باشد
         </p>
         <h2 class="text-right w-full mt-3 mb-1">مبلغ</h2>
         <input
+          v-model="chargeAmount"
           class="bg-transparent my-4 p-3 w-full border rounded-xl text-left relative placeholder:text-right"
-          type="text"
+          type="number"
           placeholder="تومان"
         />
         <div class="grid gap-3">
           <button
-            :disabled="disable"
             class="p-4 flex justify-center text-center rounded-xl bg-main_blue module-btn"
+            @click="chargeWallet()"
           >
             <p v-if="!disable">شارژ</p>
             <TheLoading v-else />
@@ -36,6 +37,35 @@
     </section>
   </teleport>
 </template>
-<script setup>
+<script setup lang="ts">
 const disable = ref(false);
+const store = apiStore();
+const toast = useToast();
+const chargeAmount = ref();
+const { url } = storeToRefs(store);
+async function chargeWallet() {
+  const { data, error } = await useFetch<{ url: string }>(
+    `${url.value}/api/v4/charge`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        amount: chargeAmount.value,
+      }),
+    },
+  );
+  if (error.value) {
+    toast.add({
+      title: 'خطا در درخواست شارژ',
+      timeout: 2000,
+      color: 'red',
+    });
+  } else {
+    navigateTo(data.value?.url, {
+      external: true,
+    });
+  }
+}
 </script>
