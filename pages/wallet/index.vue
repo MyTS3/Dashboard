@@ -112,7 +112,6 @@ const changeWalletTab = ref(false);
 //
 const store = apiStore();
 const { url } = storeToRefs(store);
-const errors = errorHandle();
 let page = 0;
 const lastRowsCount = ref();
 const logs = ref<walletRows[]>([]);
