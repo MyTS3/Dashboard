@@ -2,8 +2,9 @@
   <div class="min-h-0 flex-1 mb-16 relative">
     <div dir="rtl" class="table bg-mainbg_300 text-nowrap rounded-t-2xl">
       <p>مبلغ</p>
-      <p>تاریخ ثبت</p>
-      <p>تاریخ پایان</p>
+      <p>تاریخ</p>
+      <p />
+      <p>توضیحات</p>
     </div>
     <div
       ref="el"
@@ -38,8 +39,10 @@
                 <p :class="handleAmountColor(log)">
                   {{ handleAmountText(log.amount) }}
                 </p>
-                <p>{{ (log.created_at || log.start)?.split('T')[0] }}</p>
-                <p>{{ log.end?.split('T')[0] || '.......' }}</p>
+                <p>
+                  {{ (log.created_at || log.start)?.split('T')[0] }}
+                  {{ log.end ? ' ... ' + log.end.split('T')[0] : '' }}
+                </p>
                 <div class="flex gap-1" :class="handleStatusColor(log)">
                   <p>
                     {{ handleTheStatus(log) }}
@@ -63,19 +66,14 @@
                     alt=""
                   />
                 </div>
+                <p>{{ log.reason }}</p>
               </li>
             </div>
           </template>
         </div>
       </div>
     </div>
-    <button
-      class="flex absolute gap-btn -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
-      @click="changeWalletTab = true"
-    >
-      شارژ کیف پول
-      <img src="/images/addon.png" alt="" />
-    </button>
+
     <ChargeWallet v-if="changeWalletTab" @close="changeWalletTab = false" />
   </div>
 </template>
