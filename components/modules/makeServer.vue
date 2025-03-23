@@ -77,21 +77,29 @@
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
             <h1>:قیمت ساعتی</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
-              <span>54</span>
+              <span>{{
+                (tserverPrices[2 ** (Number(slot) + 3)].price /
+                  tserverPrices[2 ** (Number(slot) + 3)].secondsForPrice) *
+                3600
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
             <h1>:قیمت روزانه</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
-              <span>1،300</span>
+              <span>{{
+                (tserverPrices[2 ** (Number(slot) + 3)].price /
+                  tserverPrices[2 ** (Number(slot) + 3)].secondsForPrice) *
+                86400
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3">
             <h1>:قیمت ماهانه</h1>
             <div class="flex flex-row-reverse gap-1">
-              <span>39،000</span>
+              <span>{{ tserverPrices[2 ** (Number(slot) + 3)].price }}</span>
               <p>تومان</p>
             </div>
           </div>
@@ -135,6 +143,36 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
 const slot = ref(1);
+const tserverPrices = {
+  16: {
+    price: -19000,
+    secondsForPrice: 2629800,
+  },
+  32: {
+    price: -32000,
+    secondsForPrice: 2629800,
+  },
+  64: {
+    price: -49000,
+    secondsForPrice: 2629800,
+  },
+  128: {
+    price: -65000,
+    secondsForPrice: 2629800,
+  },
+  256: {
+    price: -75000,
+    secondsForPrice: 2629800,
+  },
+  512: {
+    price: -85000,
+    secondsForPrice: 2629800,
+  },
+  1024: {
+    price: -95000,
+    secondsForPrice: 2629800,
+  },
+};
 const serverName = ref();
 const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
