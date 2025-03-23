@@ -39,21 +39,21 @@
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
             <h1>:قیمت ساعتی</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
-              <span>14</span>
+              <span>-27.37850787132101</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
             <h1>:قیمت روزانه</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
-              <span>333</span>
+              <span>-657.0841889117043</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3">
             <h1>:قیمت ماهانه</h1>
             <div class="flex flex-row-reverse gap-1">
-              <span>10,000</span>
+              <span>-20000</span>
               <p>تومان</p>
             </div>
           </div>
