@@ -199,6 +199,7 @@ const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
+  retry: false,
 });
 const { data: balance } = await useFetch(`${url.value}/api/v4/balance`, {
   headers: {
