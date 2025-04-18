@@ -52,7 +52,7 @@ async function chargeWallet() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
-        amount: chargeAmount.value,
+        amount: chargeAmount.value * 10,
       }),
     },
   );
