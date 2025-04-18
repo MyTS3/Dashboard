@@ -43,7 +43,7 @@
           <button
             :class="disable ? 'disable' : ''"
             :disabled="disable"
-            class="p-4 text-center rounded-xl bg-main_blue module-btn"
+            class="p-4 text-center rounded-xl bg-main_blue module-btn flex justify-center"
             @click.prevent="moveServer()"
           >
             <p v-if="!disable">تایید</p>
