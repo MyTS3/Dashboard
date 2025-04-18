@@ -22,7 +22,7 @@
               <p>با کلیک برروی دکمه زیر اولین بکاپ خودرا بسازید</p>
             </div>
           </div>
-          <div class="">
+          <div class="pb-20">
             <div v-for="backup in backups" :key="backup" class="table items">
               <p class="font-semibold">{{ backup.tserver.name }}</p>
               <p>{{ backup.createdAt }}</p>
@@ -79,7 +79,7 @@
     <DeleteBackups
       v-if="deleteBackupTab"
       :selecteduuid="selecteduuid"
-      @close="(deleteBackupTab = false), getBackups()"
+      @close="(backups = []), (deleteBackupTab = false), getPages()"
     />
     <restoreBackup
       v-if="deployBackupTab"
