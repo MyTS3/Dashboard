@@ -13,7 +13,7 @@ import { ref, onMounted } from 'vue';
 import { useInfiniteScroll } from '@vueuse/core';
 const table = ref(null);
 const emits = defineEmits(['nextPage']);
-const props = defineProps(['backups']);
+const props = defineProps(['items']);
 onMounted(() => {
   if (!table.value) return;
 
@@ -25,7 +25,7 @@ onMounted(() => {
     },
     {
       distance: 10,
-      canLoadMore: () => props.backups.length == 10,
+      canLoadMore: () => props.items?.length == 20,
     },
   );
 });

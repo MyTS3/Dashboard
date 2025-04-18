@@ -5,11 +5,52 @@
       <p>تاریخ</p>
       <p>عمل</p>
     </div>
-    <Table>
+    <Table :items="backups" @next-page="end()">
       <div class="h-full">
         <div class="h-full">
-          <template v-if="status !== 'success'">
-            <div v-for="_ in 5" :key="_" class="table items">
+          <div
+            v-if="!isLoading && backups.length < 1"
+            class="flex flex-col w-full h-full justify-center gap-layout items-center"
+          >
+            <img
+              class="min-w-[15rem] w-[10vw]"
+              src="/images/new/no-backup.png"
+              alt=""
+            />
+            <div class="grid text-center text-[1vw]">
+              <p class="font-bold text-white">هیچ بکاپی وجود ندارد</p>
+              <p>با کلیک برروی دکمه زیر اولین بکاپ خودرا بسازید</p>
+            </div>
+          </div>
+          <div class="">
+            <div v-for="backup in backups" :key="backup" class="table items">
+              <p class="font-semibold">{{ backup.tserver.name }}</p>
+              <p>{{ backup.createdAt }}</p>
+              <div class="flex gap-layout">
+                <UTooltip text="اعمال بکاپ">
+                  <img
+                    class="cursor-pointer w-8 h-8"
+                    src="/images/arrow-up.png"
+                    alt=""
+                    @click="
+                      (deployBackupTab = true), (selecteduuid = backup.uuid)
+                    "
+                  />
+                </UTooltip>
+                <UTooltip text="حذف بکاپ">
+                  <img
+                    class="cursor-pointer w-8 h-8"
+                    src="/images/trash.png"
+                    @click="
+                      (deleteBackupTab = true), (selecteduuid = backup.uuid)
+                    "
+                  />
+                </UTooltip>
+              </div>
+            </div>
+          </div>
+          <template v-if="isLoading">
+            <div v-for="_ in 20" :key="_" class="table items">
               <USkeleton
                 class="h-5 w-40"
                 :ui="{ background: 'dark:bg-gray-500' }"
@@ -22,49 +63,6 @@
                 class="h-5 w-10"
                 :ui="{ background: 'dark:bg-gray-500' }"
               />
-            </div>
-          </template>
-          <template v-else>
-            <div
-              v-if="backups.length < 1"
-              class="flex flex-col w-full h-full justify-center gap-layout items-center"
-            >
-              <img
-                class="min-w-[15rem] w-[10vw]"
-                src="/images/new/no-backup.png"
-                alt=""
-              />
-              <div class="grid text-center text-[1vw]">
-                <p class="font-bold text-white">هیچ بکاپی وجود ندارد</p>
-                <p>با کلیک برروی دکمه زیر اولین بکاپ خودرا بسازید</p>
-              </div>
-            </div>
-            <div class="pb-20">
-              <div v-for="backup in backups" :key="backup" class="table items">
-                <p class="font-semibold">{{ backup.tserver.name }}</p>
-                <p>{{ backup.createdAt }}</p>
-                <div class="flex gap-layout">
-                  <UTooltip text="اعمال بکاپ">
-                    <img
-                      class="cursor-pointer w-8 h-8"
-                      src="/images/arrow-up.png"
-                      alt=""
-                      @click="
-                        (deployBackupTab = true), (selecteduuid = backup.uuid)
-                      "
-                    />
-                  </UTooltip>
-                  <UTooltip text="حذف بکاپ">
-                    <img
-                      class="cursor-pointer w-8 h-8"
-                      src="/images/trash.png"
-                      @click="
-                        (deleteBackupTab = true), (selecteduuid = backup.uuid)
-                      "
-                    />
-                  </UTooltip>
-                </div>
-              </div>
             </div>
           </template>
         </div>
@@ -101,16 +99,27 @@ const { url } = storeToRefs(store);
 const deleteBackupTab = ref(false);
 const selecteduuid = ref();
 const deployBackupTab = ref(false);
-
-const {
-  data: backups,
-  status,
-  execute: getBackups,
-} = await useLazyFetch(`${url.value}/api/v4/snapshots`, {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-  },
-});
+const backups = ref([]);
+const isLoading = ref(false);
+let page = 0;
+function end() {
+  if (!isLoading.value) getPages();
+}
+async function getPages() {
+  isLoading.value = true;
+  const data = await $fetch(
+    `${url.value}/api/v4/snapshots?page=${page}&pageSize=20`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    },
+  );
+  data.forEach((d) => backups.value.push(d));
+  page += 1;
+  isLoading.value = false;
+}
+getPages();
 </script>
 <style scoped>
 .table {
