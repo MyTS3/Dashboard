@@ -45,9 +45,9 @@
           class="p-2 appearance-none rounded-xl bg-transparent border text-right"
         >
           <option :value="undefined">یک بار</option>
-          <option :value="'hourly'">ساعتی</option>
           <option :value="'daily'">روزانه</option>
           <option :value="'weekly'">هفتگی</option>
+          <option :value="'monthly'">ماهیانه</option>
         </select>
         <USkeleton
           v-if="pending"

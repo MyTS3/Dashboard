@@ -16,9 +16,25 @@
         بکاپ ها
       </button>
     </div>
-    <interval v-if="activeTab == 'interval'" @opentab="addBackupTab = true" />
-    <backup v-if="activeTab == 'backup'" @opentab="addBackupTab = true" />
-    <addBackup v-if="addBackupTab" @close="addBackupTab = false" />
+    <interval
+      v-if="activeTab == 'interval'"
+      :key="componentKey"
+      :component-key="0"
+      @opentab="addBackupTab = true"
+    />
+    <backup
+      v-if="activeTab == 'backup'"
+      :key="componentKey"
+      :component-key="0"
+      @opentab="addBackupTab = true"
+    />
+    <addBackup
+      v-if="addBackupTab"
+      @close="
+        addBackupTab = false;
+        componentKey += 1;
+      "
+    />
   </section>
 </template>
 <script setup>
@@ -27,4 +43,5 @@ import backup from '~/components/modules/backups-component/backup.vue';
 import addBackup from '~/components/modules/backups-component/addBackup.vue';
 const activeTab = ref('interval');
 const addBackupTab = ref(false);
+const componentKey = ref(0);
 </script>
