@@ -20,7 +20,7 @@
         </p>
         <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
 
-        <from class="w-full my-4">
+        <from v-if="status == 'success'" class="w-full my-4">
           <USelectMenu
             v-model="selectedConfigue"
             class="w-full"
@@ -45,12 +45,12 @@
             {{ available }}
           </option>
         </select> -->
-          <USkeleton
-            v-if="pending"
-            class="h-11 w-full rounded-lg"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
         </from>
+        <USkeleton
+          v-else
+          class="h-11 w-full rounded-lg my-4"
+          :ui="{ background: 'dark:bg-gray-500' }"
+        />
         <div class="grid">
           <button
             :class="disable || pending ? 'disable' : ''"
@@ -82,7 +82,7 @@ const selectedConfigue = ref();
 const {
   data: availables,
   error,
-  pending,
+  status,
 } = useFetch(
   `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config/available`,
   {
