@@ -1,12 +1,12 @@
 <template>
-  <section class="min-h-0 flex-1 mb-16 relative">
+  <section class="h-full flex flex-col min-h-0 relative">
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>سرور</p>
       <p>دوره</p>
       <p>عمل</p>
     </div>
-    <Table>
-      <div class="h-full">
+    <div class="overflow-y-auto bg-mainbg_400">
+      <Table class="flex-1 min-h-0 overflow-y-auto">
         <div class="h-full">
           <template v-if="status !== 'success'">
             <div v-for="_ in 5" :key="_" class="table items">
@@ -39,7 +39,7 @@
                 <p>با کلیک برروی دکمه زیر اولین دوره خودرا بسازید</p>
               </div>
             </div>
-            <div class="pb-20">
+            <div>
               <div
                 v-for="interval in intervals"
                 :key="interval"
@@ -61,10 +61,10 @@
             </div>
           </template>
         </div>
-      </div>
-    </Table>
+      </Table>
+    </div>
     <button
-      class="flex absolute gap-btn -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      class="flex w-full gap-btn items-center justify-center btn rounded-xl mt-auto py-3"
       @click="$emit('opentab')"
     >
       افزودن
