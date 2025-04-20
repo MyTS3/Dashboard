@@ -192,9 +192,9 @@ function serverClicked(server) {
   grid-template-columns: 3fr 1fr 1fr 1fr;
   text-align: center;
   justify-items: center;
-  height: 4rem;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }
 
 .parent:hover .cam {
