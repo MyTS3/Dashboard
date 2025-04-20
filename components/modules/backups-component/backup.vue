@@ -7,6 +7,7 @@
     </div>
     <div class="overflow-y-auto bg-mainbg_400">
       <Table
+        ref="table"
         class="flex-1 min-h-0 overflow-y-auto"
         :items="backups"
         @next-page="end()"
@@ -96,6 +97,9 @@
 import DeleteBackups from './deleteBackups.vue';
 import restoreBackup from './restoreBackup.vue';
 import Table from '~/components/reusable/table.vue';
+import { ref, onMounted } from 'vue';
+import { useInfiniteScroll } from '@vueuse/core';
+const table = ref(null);
 
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -123,6 +127,20 @@ async function getPages() {
   page += 1;
   isLoading.value = false;
 }
+onMounted(() => {
+  if (!table.value) return;
+
+  useInfiniteScroll(
+    table,
+    async () => {
+      await getPages();
+    },
+    {
+      distance: 10,
+      canLoadMore: () => backups.value?.length == 20,
+    },
+  );
+});
 getPages();
 </script>
 <style scoped>
