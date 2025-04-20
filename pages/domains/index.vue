@@ -80,7 +80,7 @@
       </div>
       <button
         v-if="status != 'error'"
-        class="flex w-full gap-btn items-center justify-center btn rounded-xl mt-auto py-3"
+        class="flex w-full gap-btn items-center justify-center btn rounded-xl py-3"
         @click="addDomainTab = true"
       >
         افزودن دامنه

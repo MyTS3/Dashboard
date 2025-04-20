@@ -102,7 +102,7 @@
       </Table>
     </div>
     <button
-      class="flex w-full gap-btn items-center justify-center btn rounded-xl mt-auto py-3"
+      class="flex w-full gap-btn items-center justify-center btn rounded-xl py-3"
       @click.prevent="makeServerTab = true"
     >
       ساخت سرور
