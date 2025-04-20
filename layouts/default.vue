@@ -75,7 +75,9 @@
               <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
             </button>
           </div>
-          <slot />
+          <div class="min-h-0 overflow-hidden flex flex-col">
+            <slot />
+          </div>
           <div
             class="flex font-sans opacity-40 gap-1 items-center absolute bottom-3 left-1/2 -translate-x-1/2 text-xs"
           >

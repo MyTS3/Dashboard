@@ -1,12 +1,16 @@
 <template>
-  <section class="min-h-0 flex-1 mb-16 relative">
+  <section class="h-full flex flex-col min-h-0 relative">
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>سرور</p>
       <p>تاریخ</p>
       <p>عمل</p>
     </div>
-    <Table :items="backups" @next-page="end()">
-      <div class="h-full">
+    <div class="overflow-y-auto bg-mainbg_400">
+      <Table
+        class="flex-1 min-h-0 overflow-y-auto"
+        :items="backups"
+        @next-page="end()"
+      >
         <div class="h-full">
           <div
             v-if="!isLoading && backups.length < 1"
@@ -22,7 +26,7 @@
               <p>با کلیک برروی دکمه زیر اولین بکاپ خودرا بسازید</p>
             </div>
           </div>
-          <div class="pb-20">
+          <div>
             <div v-for="backup in backups" :key="backup" class="table items">
               <p class="font-semibold">{{ backup.tserver.name }}</p>
               <p>{{ backup.createdAt }}</p>
@@ -66,10 +70,10 @@
             </div>
           </template>
         </div>
-      </div>
-    </Table>
+      </Table>
+    </div>
     <button
-      class="flex absolute -bottom-16 w-full gap-btn items-center justify-center btn rounded-xl mt-auto py-3"
+      class="flex w-full gap-btn items-center justify-center btn rounded-xl mt-auto py-3"
       @click="$emit('opentab')"
     >
       افزودن
