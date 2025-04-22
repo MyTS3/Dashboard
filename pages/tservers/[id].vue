@@ -1,6 +1,6 @@
 <template>
   <section
-    class="flex-1 w-full mx-auto flex flex-row items-stretch text-white text-center gap-layout min-h-0"
+    class="flex-1 w-full h-full mx-auto flex flex-row items-stretch text-white text-center gap-layout min-h-0"
   >
     <div
       class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto"
@@ -124,7 +124,7 @@
         </template>
       </main>
       <main
-        v-if="teamspeakserverStatus == 'pending'"
+        v-if="teamspeakserverStatus == 'pending' && !alrreadyVisited"
         class="h-full px-4 overflow-y-hidden"
       >
         <USkeleton
@@ -235,7 +235,7 @@ const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
 const lastScrollesPosition = ref();
 const { y } = useScroll(el);
-
+const alrreadyVisited = ref(false);
 //function
 function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
@@ -514,7 +514,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
       selectedRow.value = { rowType: 'server', level: 0 };
     else selectedRow.value = foundedSelectedRow;
     teamspeakserver.value = rows;
-
+    alrreadyVisited.value = true;
     const theInterval = setInterval(() => {
       if (el.value != null && el.value.children.length > 0) {
         y.value = lastScrollesPosition.value;

@@ -1,9 +1,11 @@
 <template>
-  <section dir="rtl" class="w-full grid h-full mx-auto text-white">
+  <section dir="rtl" class="w-full h-full flex flex-col">
     <main
-      class="w-full overflow-y-scroll flex flex-col bg-mainbg_500 rounded-2xl rounded-t-none"
+      ref="table"
+      class="w-full h-full flex flex-col bg-mainbg_500 rounded-2xl rounded-t-none"
     >
       <slot />
     </main>
   </section>
 </template>
+<script setup></script>

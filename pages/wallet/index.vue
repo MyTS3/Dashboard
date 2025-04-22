@@ -37,7 +37,7 @@
             <div class="w-full h-full justify-center gap-4 items-center">
               <li v-for="log in logs" :key="log.uuid" class="table">
                 <p :class="handleAmountColor(log)">
-                  {{ handleAmountText(log.amount) }}
+                  {{ Math.trunc(Number(log.amount)) }}
                 </p>
                 <p>
                   {{ (log.created_at || log.start)?.split('T')[0] }}
@@ -121,10 +121,10 @@ function handleAmountColor(log: walletRows) {
     else return 'green-text';
   }
 }
-function handleAmountText(amount: string) {
-  if (!amount.startsWith('-')) return Math.trunc(Number(amount));
-  else return Math.trunc(Number(amount.substring(1)));
-}
+// function handleAmountText(amount: string) {
+//   if (!amount.startsWith('-')) return Math.trunc(Number(amount));
+//   else return Math.trunc(Number(amount.substring(1)));
+// }
 function handleTheStatus(log: walletRows) {
   if (!log.created_at && !log.end) return 'درحال پردازش';
   else {

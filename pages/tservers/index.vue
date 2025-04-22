@@ -1,107 +1,108 @@
 <template>
-  <div class="min-h-0 flex-1 mb-16 relative">
+  <div class="h-full flex flex-col min-h-0 relative">
     <div dir="rtl" class="table bg-mainbg_300 text-nowrap rounded-t-2xl">
       <p>نام</p>
       <p>تعداد اسلات</p>
       <p>تاریخ ساخت</p>
       <p>عمل</p>
     </div>
-
-    <Table>
-      <div class="h-full relative">
-        <div class="h-full">
-          <template v-if="status !== 'success'">
-            <div v-for="_ in 5" :key="_" class="table items">
-              <USkeleton
-                class="h-5 w-40"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-20"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-20"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-10"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <div
-              v-if="servers.length < 1"
-              class="flex flex-col w-full h-full justify-center gap-4 items-center"
-            >
-              <img
-                v-if="servers"
-                class="min-w-[15rem] w-[10vw]"
-                src="/images/new/no-server.png"
-                alt=""
-              />
-              <div class="grid text-center text-[1vw]">
-                <p class="font-bold text-white">هیچ سروری وجود ندارد</p>
-                <p>با کلیک برروی دکمه زیر اولین سرور خودرا بسازید</p>
+    <div class="overflow-y-auto bg-mainbg_400">
+      <Table class="flex-1 min-h-0 overflow-y-auto">
+        <div class="h-full relative">
+          <div class="h-full">
+            <template v-if="status !== 'success'">
+              <div v-for="_ in 5" :key="_" class="table items">
+                <USkeleton
+                  class="h-5 w-40"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-20"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-20"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-10"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
               </div>
-            </div>
-            <div class="flex flex-col pb-20">
+            </template>
+            <template v-else>
               <div
-                v-for="server in servers"
-                :key="server.uuid"
-                class="table items parent hover:bg-main_orange/30 cursor-pointer"
+                v-if="servers.length < 1"
+                class="flex flex-col w-full h-full justify-center gap-4 items-center"
               >
-                <div
-                  class="h-full w-full flex justify-center items-center"
-                  @click="serverClicked(server)"
-                >
-                  <p>
-                    {{ server.name }}
-                  </p>
-                </div>
-                <div
-                  class="h-full w-full flex justify-center items-center"
-                  @click="serverClicked(server)"
-                >
-                  <p>
-                    {{ convertEnglishNumberToPersian(server.slots) }}
-                  </p>
-                </div>
-                <div
-                  class="h-full w-full flex justify-center items-center"
-                  @click="serverClicked(server)"
-                >
-                  <p>
-                    {{ timeAgo.format(new Date(server.createdAt)) }}
-                  </p>
-                </div>
-
-                <div class="flex flex-row-reverse">
-                  <img
-                    class="cursor-pointer w-10 trashcan px-2 hover:opacity-50"
-                    src="/images/trash.png"
-                    @click="removeServer(server.name, server.uuid)"
-                  />
-                  <a
-                    class="cursor-pointer w-10 connect px-2 hover:opacity-50"
-                    :href="`ts3server://${server.name}`"
-                    ><img src="/images/connect.svg" />
-                  </a>
-                  <img
-                    class="cursor-pointe w-10 px-2 cam"
-                    src="/images/cam.svg"
-                    @click="serverClicked(server)"
-                  />
+                <img
+                  v-if="servers"
+                  class="min-w-[15rem] w-[10vw]"
+                  src="/images/new/no-server.png"
+                  alt=""
+                />
+                <div class="grid text-center text-[1vw]">
+                  <p class="font-bold text-white">هیچ سروری وجود ندارد</p>
+                  <p>با کلیک برروی دکمه زیر اولین سرور خودرا بسازید</p>
                 </div>
               </div>
-            </div>
-          </template>
+              <div class="flex flex-col">
+                <div
+                  v-for="server in servers"
+                  :key="server.uuid"
+                  class="table items parent hover:bg-main_orange/30 cursor-pointer"
+                >
+                  <div
+                    class="h-full w-full flex justify-center items-center"
+                    @click="serverClicked(server)"
+                  >
+                    <p>
+                      {{ server.name }}
+                    </p>
+                  </div>
+                  <div
+                    class="h-full w-full flex justify-center items-center"
+                    @click="serverClicked(server)"
+                  >
+                    <p>
+                      {{ convertEnglishNumberToPersian(server.slots) }}
+                    </p>
+                  </div>
+                  <div
+                    class="h-full w-full flex justify-center items-center"
+                    @click="serverClicked(server)"
+                  >
+                    <p>
+                      {{ timeAgo.format(new Date(server.createdAt)) }}
+                    </p>
+                  </div>
+
+                  <div class="flex flex-row-reverse">
+                    <img
+                      class="cursor-pointer w-10 trashcan px-2 hover:opacity-50"
+                      src="/images/trash.png"
+                      @click="removeServer(server.name, server.uuid)"
+                    />
+                    <a
+                      class="cursor-pointer w-10 connect px-2 hover:opacity-50"
+                      :href="`ts3server://${server.name}`"
+                      ><img src="/images/connect.svg" />
+                    </a>
+                    <img
+                      class="cursor-pointe w-10 px-2 cam"
+                      src="/images/cam.svg"
+                      @click="serverClicked(server)"
+                    />
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
         </div>
-      </div>
-    </Table>
+      </Table>
+    </div>
     <button
-      class="flex absolute gap-btn -bottom-16 w-full items-center justify-center btn rounded-xl mt-auto py-3"
+      class="flex w-full gap-btn items-center justify-center btn rounded-xl py-3"
       @click.prevent="makeServerTab = true"
     >
       ساخت سرور
@@ -191,9 +192,9 @@ function serverClicked(server) {
   grid-template-columns: 3fr 1fr 1fr 1fr;
   text-align: center;
   justify-items: center;
-  height: 4rem;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }
 
 .parent:hover .cam {

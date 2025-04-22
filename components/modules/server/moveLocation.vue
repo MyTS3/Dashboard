@@ -15,7 +15,12 @@
         </button>
         <h1 class="text-xl my-4 font-bolder">انتقال سرور به مکانی دیگر</h1>
         <p class="font-bold max-w-80 text-center ml-auto">:لوکیشن مد نظر</p>
-        <from class="w-full my-4">
+        <USkeleton
+          v-if="status != 'success'"
+          class="h-12 w-full my-4 rounded-lg"
+          :ui="{ background: 'dark:bg-gray-500' }"
+        />
+        <from v-else class="w-full my-4">
           <select
             v-model="selectedLocation"
             :disabled="disable"
@@ -43,7 +48,7 @@
           <button
             :class="disable ? 'disable' : ''"
             :disabled="disable"
-            class="p-4 text-center rounded-xl bg-main_blue module-btn"
+            class="p-4 text-center rounded-xl bg-main_blue module-btn flex justify-center"
             @click.prevent="moveServer()"
           >
             <p v-if="!disable">تایید</p>
@@ -65,32 +70,35 @@ const { url } = storeToRefs(store);
 const toast = useToast();
 const disable = ref(false);
 ////////
-const availables = ref({});
 const selectedLocation = ref();
-async function getAvailble() {
-  const { data: respone, error } = useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move/available`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+
+const {
+  data: availables,
+  error,
+  status,
+} = useFetch(
+  `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move/available`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  );
-  watch(respone, () => (availables.value = respone.value));
-  if (error.value) {
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
-    });
-  }
+  },
+);
+if (error.value) {
+  toast.add({
+    title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+    timeout: 2000,
+    color: 'red',
+  });
 }
+
 async function moveServer() {
   disable.value = true;
   const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move`,
     {
       method: 'POST',
+      lazy: true,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
@@ -108,5 +116,4 @@ async function moveServer() {
   }
   emit('close');
 }
-await getAvailble();
 </script>
