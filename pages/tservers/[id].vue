@@ -538,6 +538,8 @@ function longpoll(time = 1) {
         const data = await re.json();
         lastTimeReccived = data.at;
         getUsersAndChannels().then(() => longpoll(lastTimeReccived));
+      } else {
+        throw new Error('not 200, try again after one second');
       }
     })
     .catch(() => {
