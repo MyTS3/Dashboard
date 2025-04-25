@@ -94,20 +94,20 @@ if (error.value) {
 
 async function moveServer() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move`,
-    {
-      method: 'POST',
-      lazy: true,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+  try {
+    await $fetch(
+      `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          node: `${selectedLocation.value}`,
+        }),
       },
-      body: JSON.stringify({
-        node: `${selectedLocation.value}`,
-      }),
-    },
-  );
-  if (error.value) {
+    );
+  } catch (e) {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
