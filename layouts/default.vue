@@ -53,11 +53,15 @@
                   </div>
                 </button>
                 <button
+                  v-if="status != 'pending'"
                   class="flex gap-1 btn p-3 px-4 rounded-xl"
                   @click="chargeWalletTab = true"
                 >
-                  <div class="w-full" v-if="balance">
-                    <p>تومان {{ Math.trunc(Number(balance.balance)) }}</p>
+                  <div class="w-full">
+                    <p v-if="balance">
+                      تومان {{ Math.trunc(Number(balance.balance)) }}
+                    </p>
+                    <p v-else>خطا</p>
                   </div>
                   <div class="ml-auto">
                     <img
@@ -68,9 +72,9 @@
                   </div>
                 </button>
                 <USkeleton
-                  v-if="status == 'pending'"
+                  v-else
                   :ui="{ background: 'dark:bg-gray-500' }"
-                  class="p-3 px-4 rounded-xl w-"
+                  class="p-3 px-4 rounded-xl"
                 />
               </div>
             </header>
@@ -226,7 +230,6 @@ const { data: balance, status } = await useFetch(
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    retry: false,
     lazy: true,
   },
 );
