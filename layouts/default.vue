@@ -37,24 +37,41 @@
               >
                 <img class="" src="/images/Arrow-Right.png" alt="" />
               </button>
-              <div class="flex gap-layout">
+              <div class="grid grid-cols-2 gap-layout">
                 <button
-                  class="flex items-center flex-row-reverse gap-1 p-3 rounded-xl btn text-xs"
+                  class="flex items-center justify-center flex-row-reverse gap-1 p-3 rounded-xl btn text-xs"
                 >
-                  <img class="h-6 w-6" src="/images/group_500.svg" alt="user" />
-                  {{ name }}
+                  <div class="ml-auto">
+                    <img
+                      class="h-6 w-6"
+                      src="/images/group_500.svg"
+                      alt="user"
+                    />
+                  </div>
+                  <div class="w-full">
+                    {{ name }}
+                  </div>
                 </button>
                 <button
                   class="flex gap-1 btn p-3 px-4 rounded-xl"
                   @click="chargeWalletTab = true"
                 >
-                  تومان {{ Math.trunc(Number(balance.balance)) }}
-                  <img
-                    src="/images/bookmark_duplicate.svg"
-                    class="h-6 w-6"
-                    alt="bell"
-                  />
+                  <div class="w-full" v-if="balance">
+                    <p>تومان {{ Math.trunc(Number(balance.balance)) }}</p>
+                  </div>
+                  <div class="ml-auto">
+                    <img
+                      src="/images/bookmark_duplicate.svg"
+                      class="h-6 w-6"
+                      alt="bell"
+                    />
+                  </div>
                 </button>
+                <USkeleton
+                  v-if="status == 'pending'"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                  class="p-3 px-4 rounded-xl w-"
+                />
               </div>
             </header>
           </div>
@@ -203,11 +220,16 @@ const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
   },
   retry: false,
 });
-const { data: balance } = await useFetch(`${url.value}/api/v4/balance`, {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const { data: balance, status } = await useFetch(
+  `${url.value}/api/v4/balance`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    retry: false,
+    lazy: true,
   },
-});
+);
 
 const logoutTab = ref(false);
 const panelAlert = ref(true);
