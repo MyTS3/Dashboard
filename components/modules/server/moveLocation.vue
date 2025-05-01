@@ -107,7 +107,7 @@ async function moveServer() {
         }),
       },
     );
-  } catch (e) {
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
