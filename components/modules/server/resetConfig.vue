@@ -70,6 +70,8 @@
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import TheLoading from '~/components/reusable/theLoading.vue';
+import { pauseRequests } from '~/stores/globalVaribles';
+
 const emit = defineEmits(['close']);
 const props = defineProps(['selectedServer']);
 const store = apiStore();
@@ -101,6 +103,7 @@ if (error.value) {
 
 async function changeConfigue() {
   disable.value = true;
+  pauseRequests.value = true;
   const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config`,
     {
@@ -121,6 +124,7 @@ async function changeConfigue() {
     });
   }
   disable.value = false;
+  pauseRequests.value = false;
   emit('close');
 }
 </script>

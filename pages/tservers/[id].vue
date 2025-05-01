@@ -187,6 +187,7 @@ import { apiStore, storeToRefs } from '#imports';
 import objectHash from 'object-hash';
 import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
 import { useScroll } from '@vueuse/core';
+import { pauseRequests } from '~/stores/globalVaribles';
 
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
@@ -525,6 +526,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
 
 let lastTimeReccived = 1;
 function longpoll(time = 1) {
+  if (pauseRequests.value) return setTimeout(() => longpoll(time), 1000);
   fetch(
     `${url.value}/api/v4/tservers/${serverUuid}/last-server-event-after/${time}`,
     {
@@ -537,7 +539,11 @@ function longpoll(time = 1) {
       if (re.status == 200) {
         const data = await re.json();
         lastTimeReccived = data.at;
-        getUsersAndChannels().then(() => longpoll(lastTimeReccived));
+        const continue_ = () => {
+          if (pauseRequests.value) return setTimeout(continue_, 1000);
+          getUsersAndChannels().then(() => longpoll(lastTimeReccived));
+        };
+        continue_();
       } else {
         throw new Error('not 200, try again after one second');
       }
