@@ -6,7 +6,7 @@
       <p>تاریخ ساخت</p>
       <p>عمل</p>
     </div>
-    <div class="overflow-y-auto bg-mainbg_400">
+    <div class="overflow-y-auto h-full bg-mainbg_400">
       <Table class="flex-1 min-h-0 overflow-y-auto">
         <div class="h-full relative">
           <div class="h-full">
