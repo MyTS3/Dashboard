@@ -28,7 +28,7 @@
           </button>
           <button
             :disabled="disable"
-            class="p-4 text-center rounded-xl bg-main_red module-btn"
+            class="p-4 text-center rounded-xl flex justify-center bg-main_red module-btn"
             @click.prevent="turnOffserver()"
           >
             <p v-if="!disable">خاموش</p>
@@ -43,6 +43,7 @@
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import TheLoading from '~/components/reusable/theLoading.vue';
+import { pauseRequests } from '#imports';
 const props = defineProps(['selectedServer']);
 const emit = defineEmits(['close']);
 const disable = ref(false);
@@ -66,7 +67,7 @@ async function turnOffserver() {
       timeout: 2000,
       color: 'red',
     });
-  }
+  } else pauseRequests.value = true;
   disable.value = false;
   emit('close');
 }

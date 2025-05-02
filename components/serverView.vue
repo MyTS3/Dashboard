@@ -178,6 +178,7 @@ import yatqaExample from './modules/server/yatqaExample.vue';
 
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
+import { pauseRequests } from '#imports';
 
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
@@ -221,7 +222,7 @@ async function turnServerOffOrOn() {
         timeout: 2000,
         color: 'red',
       });
-    }
+    } else pauseRequests.value = false;
     getServerDeatails();
   }
 }
