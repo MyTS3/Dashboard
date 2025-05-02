@@ -25,7 +25,11 @@
         <li class="grid gridList">
           <p>{{ selectedServer.name }}</p>
           <p>:نام</p>
-          <a class="absolute left-0" :href="tsUrl">
+          <a
+            v-show="selectedServer.mustRunning"
+            class="absolute left-0"
+            :href="tsUrl"
+          >
             <img
               class="cursor-pointer h-6 w-6"
               src="/images/connect.svg"
@@ -40,7 +44,11 @@
             <p>{{ selectedServer.slots }}</p>
           </div>
           <p>:تعداد اسلات</p>
-          <button class="absolute left-0" @click="changeSlotTab = true">
+          <button
+            v-show="selectedServer.mustRunning"
+            class="absolute left-0"
+            @click="changeSlotTab = true"
+          >
             <img
               src="/images/change_nickname.svg"
               class="cursor-pointer h-6 w-6"
@@ -80,6 +88,7 @@
           </div>
         </li>
         <p
+          v-show="selectedServer.mustRunning"
           class="m-3 text-main_orange text-right cursor-pointer font-bold"
           @click="yatqaExampleTab = true"
         >
@@ -87,7 +96,10 @@
         </p>
       </main>
     </span>
-    <footer class="grid grid-cols-2 w-full gap-layout">
+    <footer
+      v-show="selectedServer.mustRunning"
+      class="grid grid-cols-2 w-full gap-layout"
+    >
       <button
         class="flex border w-full gap-btn justify-center h-20 items-center rounded-tl-xl btn"
         @click="restartServerTab = true"
@@ -197,6 +209,7 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 
 const selectedServer = ref(props.serverInfo);
+pauseRequests.value = !selectedServer.value.mustRunning;
 const tsUrl = ref(`ts3server://${props.serverInfo.name}`);
 
 function getServerDeatails() {
