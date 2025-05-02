@@ -21,7 +21,15 @@
           :ui="{ background: 'dark:bg-gray-500' }"
         />
         <from v-else class="w-full my-4">
-          <select
+          <USelectMenu
+            v-model="selectedLocation"
+            class="w-full"
+            size="xl"
+            color="indigo"
+            :options="availableLocations"
+            option-attribute="domain"
+          />
+          <!-- <select
             v-model="selectedLocation"
             :disabled="disable"
             class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
@@ -35,7 +43,7 @@
             >
               {{ available.node }}
             </option>
-          </select>
+          </select> -->
         </from>
         <div class="grid grid-cols-2 gap-3">
           <button
@@ -71,12 +79,12 @@ const toast = useToast();
 const disable = ref(false);
 ////////
 const selectedLocation = ref();
-
+const availableLocations = ref([]);
 const {
   data: availables,
   error,
   status,
-} = useFetch(
+} = await useFetch(
   `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/move/available`,
   {
     headers: {
@@ -90,7 +98,10 @@ if (error.value) {
     timeout: 2000,
     color: 'red',
   });
-}
+} else
+  availables.value.map((loc) => {
+    availableLocations.value.push(loc.node);
+  });
 
 async function moveServer() {
   disable.value = true;
