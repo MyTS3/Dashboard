@@ -26,7 +26,7 @@
             </div>
             <div class="overflow-scroll max-h-[16.5rem]">
               <div
-                v-for="(subdomain, i) in subs"
+                v-for="(subdomain, i) in subDomainList"
                 :key="subdomain"
                 class="table2 items items-center text-center rounded-lg"
               >
@@ -145,7 +145,7 @@ if (domErr.value) {
   });
 }
 
-const subDomainList = ref();
+const subDomainList = ref([]);
 const props = defineProps(['selectedServer']);
 const {
   data: subs,
