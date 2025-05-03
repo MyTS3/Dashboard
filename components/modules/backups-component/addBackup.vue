@@ -20,7 +20,7 @@
           </p>
         </header>
         <p class="text-right my-3">سرور</p>
-        <select
+        <!-- <select
           v-if="!pending"
           v-model="serverUuid"
           class="p-2 appearance-none rounded-xl bg-transparent border text-right"
@@ -32,14 +32,21 @@
           >
             {{ server.name }}
           </option>
-        </select>
+        </select> -->
+        <USelectMenu
+          v-model="serverUuid"
+          class="w-full"
+          size="xl"
+          color="indigo"
+          :options="serverDropdown"
+        />
         <USkeleton
           v-if="pending"
           class="h-10 w-full rounded-xl mx-auto"
           :ui="{ background: 'dark:bg-gray-500' }"
         />
         <p class="text-right my-3">دوره</p>
-        <select
+        <!-- <select
           v-if="!pending"
           v-model="interval"
           class="p-2 appearance-none rounded-xl bg-transparent border text-right"
@@ -48,7 +55,14 @@
           <option :value="'daily'">روزانه</option>
           <option :value="'weekly'">هفتگی</option>
           <option :value="'monthly'">ماهیانه</option>
-        </select>
+        </select> -->
+        <USelectMenu
+          v-model="interval"
+          class="w-full"
+          size="xl"
+          color="indigo"
+          :options="intervals"
+        />
         <USkeleton
           v-if="pending"
           class="h-10 w-full rounded-xl mx-auto"
@@ -69,6 +83,24 @@
 <script setup>
 import TheLoading from '~/components/reusable/theLoading.vue';
 
+const intervals = [
+  {
+    label: 'یک بار',
+    value: 'undefined',
+  },
+  {
+    label: 'روزانه',
+    value: 'daily',
+  },
+  {
+    label: 'هفتگی',
+    value: 'weekly',
+  },
+  {
+    label: 'ماهیانه',
+    value: 'monthly',
+  },
+];
 const disable = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -76,19 +108,29 @@ const emit = defineEmits(['close']);
 const toast = useToast();
 const interval = ref();
 const serverUuid = ref();
-
-const { data: servers, error } = useFetch(`${url.value}/api/v4/tservers/`, {
-  method: 'GET',
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const serverDropdown = ref([]);
+const { data: servers, error } = await useFetch(
+  `${url.value}/api/v4/tservers/`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
-});
+);
 
 if (error.value) {
   toast.add({
     title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
     timeout: 2000,
     color: 'red',
+  });
+} else {
+  servers.value.map((server) => {
+    serverDropdown.value.push({
+      label: server.name,
+      value: server.uuid,
+    });
   });
 }
 
@@ -100,8 +142,8 @@ async function create() {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({
-      tServerUUID: serverUuid.value,
-      interval: interval.value,
+      tServerUUID: serverUuid.value.value,
+      interval: interval.value.value,
     }),
   });
   if (error.value) {

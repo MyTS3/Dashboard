@@ -21,7 +21,7 @@
       <div>
         <p class="font-bold w-full text-right">پلی لیست</p>
 
-        <select
+        <!-- <select
           v-model="selectedPlaylist"
           class="text-white bg-transparent my-4 border w-full text-right min-h-16 rounded-2xl"
           name="music"
@@ -33,7 +33,14 @@
           >
             {{ playlist.name }}
           </option>
-        </select>
+        </select> -->
+        <USelectMenu
+          v-model="selectedPlaylist"
+          class="w-full"
+          size="xl"
+          color="indigo"
+          :options="playlists"
+        />
         <!-- ///////////////////price///////////// -->
         <div id="price" class="w-full">
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
@@ -90,17 +97,24 @@ const disableInputs = ref(false);
 const props = defineProps(['selectedChannel']);
 const emit = defineEmits(['close', 'refresh']);
 const selectedPlaylist = ref();
+const playlists = ref([]);
 
-const { data: playlists } = await useFetch(`${url.value}/api/v4/playlists`, {
+const { data } = await useFetch(`${url.value}/api/v4/playlists`, {
   method: 'GET',
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
+data.value.map((d) => {
+  playlists.value.push({
+    label: d.name,
+    value: d.uuid,
+  });
+});
 
 async function makeMusicBot() {
   disableInputs.value = true;
-  const { error } = await useFetch(
+  const { error } = await $fetch(
     `${url.value}/api/v4/tservers/${selectedServer}/bots`,
     {
       method: 'POST',
@@ -109,8 +123,8 @@ async function makeMusicBot() {
       },
       body: JSON.stringify({
         cid: props.selectedChannel.cid,
-        name: selectedPlaylist.value.name,
-        playlist: selectedPlaylist.value.uuid,
+        name: selectedPlaylist.value.label,
+        playlist: selectedPlaylist.value.value,
       }),
     },
   );

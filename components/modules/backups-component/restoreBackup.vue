@@ -21,7 +21,7 @@
         <p class="font-bold max-w-80 text-center ml-auto">
           سرور خود را انتخاب کنید
         </p>
-        <from class="w-full my-4">
+        <!-- <from class="w-full my-4">
           <select
             v-model="tserverUUid"
             class="w-full bg-transparent text-right appearance-none border rounded-xl p-3"
@@ -35,7 +35,14 @@
               {{ server.name }}
             </option>
           </select>
-        </from>
+        </from> -->
+        <USelectMenu
+          v-model="tserverUUid"
+          class="w-full my-4"
+          size="xl"
+          color="indigo"
+          :options="servers"
+        />
         <div class="grid">
           <button
             :disabled="disable"
@@ -43,7 +50,7 @@
             @click="deployBackup()"
           >
             <p v-if="!disable">تایید</p>
-            <TheLoading v-else />
+            <theLoading v-else />
           </button>
         </div>
       </main>
@@ -51,6 +58,7 @@
   </Teleport>
 </template>
 <script setup>
+import theLoading from '~/components/reusable/theLoading.vue';
 const store = apiStore();
 const { url } = storeToRefs(store);
 
@@ -58,7 +66,7 @@ const disable = ref(false);
 const props = defineProps(['selecteduuid']);
 const emit = defineEmits(['close']);
 const tserverUUid = ref();
-const servers = ref();
+const servers = ref([]);
 const toast = useToast();
 async function getServers() {
   const { data: response, error } = await useFetch(
@@ -70,12 +78,18 @@ async function getServers() {
       },
     },
   );
-  servers.value = response.value;
   if (error.value) {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
+    });
+  } else {
+    response.value.map((server) => {
+      servers.value.push({
+        label: server.name,
+        value: server.uuid,
+      });
     });
   }
 }
@@ -89,7 +103,7 @@ async function deployBackup() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
-        tServerUUID: tserverUUid.value,
+        tServerUUID: tserverUUid.value.value,
       }),
     },
   );
@@ -100,7 +114,6 @@ async function deployBackup() {
       color: 'red',
     });
   }
-  await getBackups();
   disable.value = false;
   emit('close');
 }
