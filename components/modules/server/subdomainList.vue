@@ -5,7 +5,7 @@
     >
       <template v-if="!subPend && !domPend">
         <main
-          class="text-white min-w-[30rem] w-2/5 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+          class="text-white min-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
         >
           <button
             :disabled="disable"
@@ -28,11 +28,26 @@
               <div
                 v-for="(subdomain, i) in subDomainList"
                 :key="subdomain"
-                class="table2 items items-center text-center rounded-lg"
+                class="table2 items relative items-center text-center rounded-lg"
               >
-                <p>{{ subdomain.sub }}</p>
+                <input
+                  :disabled="disable"
+                  class="w-2/3 mx-auto p-2 rounded-lg bg-transparent border border-indigo-400 text-center"
+                  type="text"
+                  v-model="subDomainList[i].sub"
+                />
                 <p>.</p>
-                <p>{{ subdomain.domain.domain }}</p>
+                <from
+                  class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
+                >
+                  <USelectMenu
+                    size="xl"
+                    color="indigo"
+                    :options="domainList"
+                    :disabled="disableInputs"
+                    v-model="subDomainList[i].domain.domain"
+                  />
+                </from>
                 <img
                   class="mx-auto cursor-pointer"
                   src="/images/trash.png"
@@ -52,20 +67,6 @@
                 type="text"
               />
               <p>.</p>
-              <!-- <select
-              v-model="domainToAdd"
-              :disabled="disable"
-              class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent border text-right"
-            >
-              <option
-                v-for="domain in domainList"
-                :key="domain.uuid"
-                class="bg-mainbg_500"
-                :value="domain"
-              >
-                {{ domain.domain }}
-              </option>
-            </select> -->
               <from
                 v-if="!pending"
                 class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
@@ -185,6 +186,7 @@ async function submitSubdomains() {
       domain: domainToAdd.value,
     });
   }
+  console.log(subDomainList.value);
   disable.value = true;
   const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
