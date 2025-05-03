@@ -45,7 +45,7 @@
         <button
           :class="banDisable ? 'btn-disable' : 'btn'"
           :disabled="banDisable"
-          class="w-full h-20 flex justify-center items-center rounded-tl-xl parent"
+          class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-tl-xl parent"
           @click="banUserTab = true"
         >
           <p>بن از سرور</p>
@@ -69,7 +69,7 @@
         <img src="/images/ranks.png" alt="" />
       </button>
       <UTooltip
-        class="flex justify-center items-center gap-btn rounded-tl-lg"
+        class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-tl-lg"
         :text="
           selectedRow.user.inDefaultChannel
             ? 'نمیتوانید شخصی را از چنل دیفالت کیک کنید'
