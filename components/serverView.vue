@@ -39,8 +39,10 @@
         </li>
         <li class="grid gridList relative">
           <div class="flex gap-1">
-            <p v-if="usersCount">{{ usersCount }}</p>
-            <p v-if="usersCount">/</p>
+            <p v-if="usersCount && selectedServer.mustRunning">
+              {{ usersCount }}
+            </p>
+            <p v-if="usersCount && selectedServer.mustRunning">/</p>
             <p>{{ selectedServer.slots }}</p>
           </div>
           <p>:تعداد اسلات</p>
