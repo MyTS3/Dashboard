@@ -79,12 +79,13 @@
                   :disabled="disableInputs"
                 />
               </from>
-              <img
+              <!-- <img
                 class="mx-auto cursor-pointer"
                 src="/images/add-square.png"
                 alt=""
                 @click="addToList()"
-              />
+              /> -->
+              <div></div>
             </div>
             <div v-if="subPend && domPend" class="table my-2">
               <USkeleton
@@ -126,7 +127,7 @@ const domainToAdd = ref();
 const subToAdd = ref('');
 const disable = ref(false);
 const toast = useToast();
-
+const subDomainList = ref([]);
 const {
   data: domains,
   error: domErr,
@@ -145,13 +146,8 @@ if (domErr.value) {
   });
 }
 
-const subDomainList = ref([]);
 const props = defineProps(['selectedServer']);
-const {
-  data: subs,
-  error: subErr,
-  pending: domPend,
-} = await useFetch(
+const subs = await $fetch(
   `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
   {
     method: 'GET',
@@ -161,14 +157,7 @@ const {
     },
   },
 );
-if (subErr.value) {
-  toast.add({
-    title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-    timeout: 2000,
-    color: 'red',
-  });
-}
-subDomainList.value = await subs.value;
+subs.map((sub) => subDomainList.value.push(sub));
 
 function addToList() {
   subDomainList.value.push({
@@ -190,6 +179,12 @@ function deleteSubDomain(i) {
   subDomainList.value = newList;
 }
 async function submitSubdomains() {
+  if (subToAdd.value && domainToAdd.value) {
+    subDomainList.value.push({
+      sub: subToAdd.value,
+      domain: domainToAdd.value,
+    });
+  }
   disable.value = true;
   const { error } = await useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
@@ -214,6 +209,7 @@ async function submitSubdomains() {
   disable.value = false;
   emit('close');
 }
+onUnmounted(() => (subDomainList.value = []));
 </script>
 <style scoped>
 .table {
