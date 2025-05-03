@@ -117,7 +117,9 @@
           </header>
           <nav class="list-none flex flex-col pt-4 gap-3 m-5">
             <li
-              :class="$route.name == 'tservers' ? 'activePanel' : ''"
+              :class="
+                $route.name == 'tservers' ? 'activePanel' : 'noActivePanel'
+              "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
               @click="navigateTo('/tservers')"
             >
@@ -129,7 +131,9 @@
               />
             </li>
             <li
-              :class="$route.name == 'backups' ? 'activePanel' : ''"
+              :class="
+                $route.name == 'backups' ? 'activePanel' : 'noActivePanel'
+              "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
               @click="navigateTo('/backups')"
             >
@@ -137,7 +141,9 @@
               <img src="/images/sync-icon.svg" class="w-6 h-6" alt="" />
             </li>
             <li
-              :class="$route.name == 'domains' ? 'activePanel' : ''"
+              :class="
+                $route.name == 'domains' ? 'activePanel' : 'noActivePanel'
+              "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
               @click="navigateTo('/domains')"
             >
@@ -149,7 +155,9 @@
               />
             </li>
             <li
-              :class="$route.name == 'playlist' ? 'activePanel' : ''"
+              :class="
+                $route.name == 'playlist' ? 'activePanel' : 'noActivePanel'
+              "
               class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
               @click="navigateTo('/playlist')"
             >
@@ -157,7 +165,7 @@
               <img class="w-6 h-6" src="/images/changelog.svg" alt="" />
             </li>
             <li
-              :class="$route.name == 'wallet' ? 'activePanel' : ''"
+              :class="$route.name == 'wallet' ? 'activePanel' : 'noActivePanel'"
               class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
               @click="navigateTo('/wallet')"
             >

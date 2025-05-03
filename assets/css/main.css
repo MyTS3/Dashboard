@@ -65,11 +65,15 @@ body {
 }
 
 .activePanel {
-  background-image: linear-gradient(to left, #141931, rgba(0, 149, 255, 0));
+  background-image: linear-gradient(to left, #141931, rgba(0, 0, 0, 0));
   border-bottom-right-radius: 1rem;
   border-top-right-radius: 1rem;
 }
-
+.noActivePanel:hover {
+  background-image: linear-gradient(to left, #0c153f85, rgba(0, 0, 0, 0));
+  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
 .btn-active {
   background-color: #ec6600;
   border-color: #ec6600;
