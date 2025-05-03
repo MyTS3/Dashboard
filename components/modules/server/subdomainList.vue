@@ -80,13 +80,15 @@
                   :disabled="disableInputs"
                 />
               </from>
-              <!-- <img
-                class="mx-auto cursor-pointer"
+              <div></div>
+            </div>
+            <div class="w-full py-3">
+              <img
+                class="ml-auto cursor-pointer mr-6"
                 src="/images/add-square.png"
                 alt=""
                 @click="addToList()"
-              /> -->
-              <div></div>
+              />
             </div>
             <div v-if="subPend && domPend" class="table my-2">
               <USkeleton
@@ -161,12 +163,14 @@ const subs = await $fetch(
 subs.map((sub) => subDomainList.value.push(sub));
 
 function addToList() {
-  subDomainList.value.push({
-    sub: subToAdd.value,
-    domain: domainToAdd.value,
-  });
-  subToAdd.value = '';
-  domainToAdd.value = undefined;
+  if (subToAdd.value && domainToAdd.value) {
+    subDomainList.value.push({
+      sub: subToAdd.value,
+      domain: domainToAdd.value,
+    });
+    subToAdd.value = '';
+    domainToAdd.value = undefined;
+  }
 }
 function deleteSubDomain(i) {
   const newList = [];
