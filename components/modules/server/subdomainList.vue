@@ -24,11 +24,11 @@
               <p>دامنه</p>
               <p>اکشن</p>
             </div>
-            <div>
+            <div class="max-h-96 overflow-scroll">
               <div
                 v-for="(subdomain, i) in subDomainList"
                 :key="subdomain"
-                class="table2 items relative items-center text-center rounded-lg"
+                class="flex gap-1 items relative items-center text-center rounded-lg px-4 text-center"
               >
                 <input
                   :disabled="disable"
@@ -38,9 +38,12 @@
                 />
                 <p>.</p>
                 <from
-                  class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
+                  class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-center"
                 >
                   <USelectMenu
+                    :content="{
+                      align: 'center',
+                    }"
                     size="xl"
                     color="indigo"
                     :options="domainListForDropDown"
@@ -56,7 +59,7 @@
                 />
               </div>
             </div>
-            <div class="w-full py-3">
+            <div class="w-full items grid items-center">
               <img
                 class="ml-auto cursor-pointer mr-6"
                 src="/images/add-square.png"
@@ -82,7 +85,7 @@
           <button
             :class="disable ? 'opacity-45' : ''"
             :disabled="disable"
-            class="w-full flex justify-center p-4 bg-main_blue rounded-xl"
+            class="w-full flex justify-center p-4 bg-main_blue rounded-xl my-4"
             @click="submitSubdomains()"
           >
             <p v-if="!disable">اعمال تغییرات</p>
