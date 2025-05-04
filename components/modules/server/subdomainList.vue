@@ -3,93 +3,102 @@
     <section
       class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
-      <template v-if="listStatus === 'success'">
-        <main
-          class="text-white min-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+      <main
+        class="text-white min-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium gap-3"
+      >
+        <button
+          :disabled="disable"
+          class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+          @click="$emit('close')"
         >
-          <button
-            :disabled="disable"
-            class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
-            @click="$emit('close')"
+          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
+        </button>
+        <h1 class="my-4 text-3xl font-extrabold">لیست ساب دامنه ها</h1>
+        <div class="bg-mainbg_500 rounded-2xl">
+          <div
+            style="background-color: rgba(39, 43, 77, 1)"
+            class="table items items-center text-center rounded-2xl"
           >
-            <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
-          </button>
-          <h1 class="my-4 text-3xl font-extrabold">لیست ساب دامنه ها</h1>
-          <div class="bg-mainbg_500 rounded-2xl">
+            <p>ساب</p>
+            <p>دامنه</p>
+            <p>اکشن</p>
+          </div>
+          <div>
             <div
-              style="background-color: rgba(39, 43, 77, 1)"
-              class="table items items-center text-center rounded-2xl"
+              v-if="listStatus === 'pending' || domainStatus === 'pending'"
+              v-for="_ in 4"
+              class="table my-4"
             >
-              <p>ساب</p>
-              <p>دامنه</p>
-              <p>اکشن</p>
+              <USkeleton
+                class="h-8 w-2/3 mx-auto rounded-lg"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+              <USkeleton
+                class="h-8 w-2/3 mx-auto rounded-lg"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+              <USkeleton
+                class="h-8 w-8 m-auto rounded-lg"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
             </div>
-            <div>
-              <div
-                v-for="(subdomain, i) in subDomainList"
-                :key="subdomain"
-                class="table2 items relative items-center text-center rounded-lg"
-              >
-                <input
-                  :disabled="disable"
-                  class="w-2/3 mx-auto p-2 rounded-lg bg-transparent border border-indigo-400 text-center"
-                  type="text"
-                  v-model="subDomainList[i].sub"
-                />
-                <p>.</p>
-                <from
-                  class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
-                >
-                  <USelectMenu
-                    size="xl"
-                    color="indigo"
-                    :options="domainListForDropDown"
-                    :disabled="disable || domStatus !== 'success'"
-                    v-model="subDomainList[i].domain"
-                  />
-                </from>
-                <img
-                  class="mx-auto cursor-pointer"
-                  src="/images/trash.png"
-                  alt=""
-                  @click="deleteSubDomain(i)"
-                />
-              </div>
-            </div>
-            <div class="w-full py-3">
+            <div
+              v-if="listStatus === 'success' && domainStatus === 'success'"
+              class="table2 items relative items-center text-center rounded-lg"
+            >
+              <p>test</p>
+              <p>.</p>
+              <p>v4.myts3.ir</p>
               <img
-                class="ml-auto cursor-pointer mr-6"
+                class="mx-auto cursor-pointer"
                 src="/images/add-square.png"
                 alt=""
                 @click="addToList()"
               />
             </div>
-            <div v-if="listStatus === 'pending'" class="table my-2">
-              <USkeleton
-                class="h-10 w-2/3 mx-auto rounded-lg"
-                :ui="{ background: 'dark:bg-gray-500' }"
+            <div
+              v-for="(subdomain, i) in subDomainList"
+              v-if="listStatus === 'success' && domainStatus === 'success'"
+              :key="subdomain"
+              class="table2 items relative items-center text-center rounded-lg"
+            >
+              <input
+                :disabled="disable"
+                class="w-2/3 mx-auto p-2 rounded-lg bg-transparent border border-indigo-400 text-center"
+                type="text"
+                v-model="subDomainList[i].sub"
               />
-              <USkeleton
-                class="h-10 w-2/3 mx-auto rounded-lg"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-5 m-auto rounded-lg"
-                :ui="{ background: 'dark:bg-gray-500' }"
+              <p>.</p>
+              <from
+                class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
+              >
+                <USelectMenu
+                  size="xl"
+                  color="indigo"
+                  :options="domainListForDropDown"
+                  :disabled="disable || domainStatus !== 'success'"
+                  v-model="subDomainList[i].domain"
+                />
+              </from>
+              <img
+                class="mx-auto cursor-pointer"
+                src="/images/trash.png"
+                alt=""
+                @click="deleteSubDomain(i)"
               />
             </div>
           </div>
-          <button
-            :class="disable ? 'opacity-45' : ''"
-            :disabled="disable"
-            class="w-full flex justify-center p-4 bg-main_blue rounded-xl"
-            @click="submitSubdomains()"
-          >
-            <p v-if="!disable">اعمال تغییرات</p>
-            <TheLoading v-else />
-          </button>
-        </main>
-      </template>
+        </div>
+        <button
+          :class="disable ? 'opacity-45' : ''"
+          :disabled="disable"
+          class="w-full flex justify-center p-4 bg-main_blue rounded-xl"
+          @click="submitSubdomains()"
+        >
+          <p v-if="!disable">اعمال تغییرات</p>
+          <TheLoading v-else />
+        </button>
+      </main>
     </section>
   </Teleport>
 </template>
@@ -102,7 +111,7 @@ const emit = defineEmits(['close']);
 const domainListForDropDown = ref([]);
 const disable = ref(false);
 const toast = useToast();
-const { data: domainList, status: domStatus } = await useFetch(
+const { data: domainList, status: domainStatus } = await useFetch(
   `${url.value}/api/v4/tdomains`,
   {
     method: 'GET',
