@@ -18,12 +18,16 @@
           مبلغ مورد نظر باید بین 20،000 تا 2،000،000 تومان باشد
         </p>
         <h2 class="text-right w-full mt-3 mb-1">مبلغ</h2>
-        <input
-          v-model="chargeAmount"
-          class="bg-transparent my-4 p-3 w-full border rounded-xl text-left relative placeholder:text-right"
-          type="number"
-          placeholder="تومان"
-        />
+        <div class="relative">
+          <input
+            v-model="chargeAmount"
+            class="bg-transparent my-4 p-3 w-full border rounded-xl text-left relative placeholder:text-right wallet-input"
+            type="number"
+          />
+          <p class="absolute top-1/2 -translate-y-1/2 right-5 opacity-65">
+            تومان
+          </p>
+        </div>
         <div class="grid gap-3">
           <button
             class="p-4 flex justify-center text-center rounded-xl bg-main_blue module-btn"
@@ -52,7 +56,7 @@ async function chargeWallet() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
-        amount: chargeAmount.value * 10,
+        amount: chargeAmount.value,
       }),
     },
   );
