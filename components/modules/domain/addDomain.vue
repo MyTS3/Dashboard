@@ -21,7 +21,7 @@
           <h2 class="text-right w-full mt-3 mb-1">دامنه</h2>
           <input
             v-model="domainName"
-            class="bg-transparent my-4 p-3 w-full border rounded-xl text-left relative placeholder:text-right"
+            class="bg-transparent my-4 p-3 w-full border rounded-xl text-left relative placeholder:text-left"
             type="text"
             placeholder="vipts.ir"
           />
