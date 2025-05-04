@@ -3,7 +3,7 @@
     <section
       class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
-      <template v-if="!subPend && !domPend">
+      <template v-if="listStatus === 'success'">
         <main
           class="text-white min-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
         >
@@ -24,7 +24,7 @@
               <p>دامنه</p>
               <p>اکشن</p>
             </div>
-            <div class="overflow-scroll max-h-[16.5rem]">
+            <div>
               <div
                 v-for="(subdomain, i) in subDomainList"
                 :key="subdomain"
@@ -43,9 +43,9 @@
                   <USelectMenu
                     size="xl"
                     color="indigo"
-                    :options="domainList"
-                    :disabled="disableInputs"
-                    v-model="subDomainList[i].domain.domain"
+                    :options="domainListForDropDown"
+                    :disabled="disable || domStatus !== 'success'"
+                    v-model="subDomainList[i].domain"
                   />
                 </from>
                 <img
@@ -56,32 +56,6 @@
                 />
               </div>
             </div>
-            <div
-              v-if="!subPend && !domPend"
-              class="table2 items relative items-center text-center rounded-lg"
-            >
-              <input
-                v-model="subToAdd"
-                :disabled="disable"
-                class="w-2/3 mx-auto p-2 rounded-lg bg-transparent border border-indigo-400 text-right"
-                type="text"
-              />
-              <p>.</p>
-              <from
-                v-if="!pending"
-                class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
-              >
-                <USelectMenu
-                  v-model="domainToAdd"
-                  size="xl"
-                  color="indigo"
-                  :options="domainList"
-                  option-attribute="domain"
-                  :disabled="disableInputs"
-                />
-              </from>
-              <div></div>
-            </div>
             <div class="w-full py-3">
               <img
                 class="ml-auto cursor-pointer mr-6"
@@ -90,7 +64,7 @@
                 @click="addToList()"
               />
             </div>
-            <div v-if="subPend && domPend" class="table my-2">
+            <div v-if="listStatus === 'pending'" class="table my-2">
               <USkeleton
                 class="h-10 w-2/3 mx-auto rounded-lg"
                 :ui="{ background: 'dark:bg-gray-500' }"
@@ -125,32 +99,25 @@ import TheLoading from '~/components/reusable/theLoading.vue';
 const store = apiStore();
 const { url } = storeToRefs(store);
 const emit = defineEmits(['close']);
-const domainList = ref();
-const domainToAdd = ref();
-const subToAdd = ref('');
+const domainListForDropDown = ref([]);
 const disable = ref(false);
 const toast = useToast();
-const subDomainList = ref([]);
-const {
-  data: domains,
-  error: domErr,
-  pending: subPend,
-} = await useFetch(`${url.value}/api/v4/tdomains`, {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const { data: domainList, status: domStatus } = await useFetch(
+  `${url.value}/api/v4/tdomains`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
+);
+
+domainList.value.forEach((domain) => {
+  domainListForDropDown.value.push({ uuid: domain.uuid, label: domain.domain });
 });
-domainList.value = await domains.value;
-if (domErr.value) {
-  toast.add({
-    title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-    timeout: 2000,
-    color: 'red',
-  });
-}
 
 const props = defineProps(['selectedServer']);
-const subs = await $fetch(
+const { data: subDomainList, status: listStatus } = await useFetch(
   `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
   {
     method: 'GET',
@@ -160,18 +127,17 @@ const subs = await $fetch(
     },
   },
 );
-subs.map((sub) => subDomainList.value.push(sub));
 
 function addToList() {
-  if (subToAdd.value && domainToAdd.value) {
-    subDomainList.value.push({
-      sub: subToAdd.value,
-      domain: domainToAdd.value,
-    });
-    subToAdd.value = '';
-    domainToAdd.value = undefined;
-  }
+  subDomainList.value.push({
+    sub: '',
+    domain: {
+      uuid: '',
+      label: '',
+    },
+  });
 }
+
 function deleteSubDomain(i) {
   const newList = [];
   let index = 0;
@@ -183,29 +149,23 @@ function deleteSubDomain(i) {
   });
   subDomainList.value = newList;
 }
+
 async function submitSubdomains() {
-  if (subToAdd.value && domainToAdd.value) {
-    subDomainList.value.push({
-      sub: subToAdd.value,
-      domain: domainToAdd.value,
-    });
-  }
-  console.log(subDomainList.value);
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
-    {
-      method: 'PUT',
-      lazy: true,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+  try {
+    await $fetch(
+      `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          subdomains: subDomainList.value,
+        }),
       },
-      body: JSON.stringify({
-        subdomains: subDomainList.value,
-      }),
-    },
-  );
-  if (error.value) {
+    );
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
@@ -215,13 +175,13 @@ async function submitSubdomains() {
   disable.value = false;
   emit('close');
 }
-onUnmounted(() => (subDomainList.value = []));
 </script>
 <style scoped>
 .table {
   display: grid;
   grid-template-columns: 5fr 5fr 2fr;
 }
+
 .table2 {
   display: grid;
   grid-template-columns: 5fr 1fr 5fr 2fr;
