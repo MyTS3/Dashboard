@@ -24,24 +24,24 @@
             <p>اکشن</p>
           </div>
           <div>
-            <div
+            <template
               v-if="listStatus === 'pending' || domainStatus === 'pending'"
-              v-for="_ in 4"
-              class="table my-4"
             >
-              <USkeleton
-                class="h-8 w-2/3 mx-auto rounded-lg"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-8 w-2/3 mx-auto rounded-lg"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-8 w-8 m-auto rounded-lg"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-            </div>
+              <div v-for="_ in 4" :key="_" class="table my-4">
+                <USkeleton
+                  class="h-8 w-2/3 mx-auto rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-8 w-2/3 mx-auto rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-8 w-8 m-auto rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+              </div>
+            </template>
             <div
               v-if="listStatus === 'success' && domainStatus === 'success'"
               class="table2 items relative items-center text-center rounded-lg"
@@ -56,37 +56,40 @@
                 @click="addToList()"
               />
             </div>
-            <div
-              v-for="(subdomain, i) in subDomainList"
+            <template
               v-if="listStatus === 'success' && domainStatus === 'success'"
-              :key="subdomain"
-              class="table2 items relative items-center text-center rounded-lg"
             >
-              <input
-                :disabled="disable"
-                class="w-2/3 mx-auto p-2 rounded-lg bg-transparent border border-indigo-400 text-center"
-                type="text"
-                v-model="subDomainList[i].sub"
-              />
-              <p>.</p>
-              <from
-                class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
+              <div
+                v-for="(subdomain, i) in subDomainList"
+                :key="subdomain"
+                class="table2 items relative items-center text-center rounded-lg"
               >
-                <USelectMenu
-                  size="xl"
-                  color="indigo"
-                  :options="domainListForDropDown"
-                  :disabled="disable || domainStatus !== 'success'"
-                  v-model="subDomainList[i].domain"
+                <input
+                  :disabled="disable"
+                  class="w-2/3 mx-auto p-2 rounded-lg bg-transparent border border-indigo-400 text-center"
+                  type="text"
+                  v-model="subDomainList[i].sub"
                 />
-              </from>
-              <img
-                class="mx-auto cursor-pointer"
-                src="/images/trash.png"
-                alt=""
-                @click="deleteSubDomain(i)"
-              />
-            </div>
+                <p>.</p>
+                <from
+                  class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
+                >
+                  <USelectMenu
+                    size="xl"
+                    color="indigo"
+                    :options="domainListForDropDown"
+                    :disabled="disable || domainStatus !== 'success'"
+                    v-model="subDomainList[i].domain"
+                  />
+                </from>
+                <img
+                  class="mx-auto cursor-pointer"
+                  src="/images/trash.png"
+                  alt=""
+                  @click="deleteSubDomain(i)"
+                />
+              </div>
+            </template>
           </div>
         </div>
         <button
