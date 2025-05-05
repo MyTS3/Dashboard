@@ -44,13 +44,16 @@
             </template>
             <div
               v-if="listStatus === 'success' && domainStatus === 'success'"
-              class="table2 items relative items-center text-center rounded-lg"
+              class="flex justify-between ml-12 px-5 items relative items-center text-right rounded-lg"
             >
-              <p>test</p>
-              <p>.</p>
-              <p>v4.myts3.ir</p>
+              <div></div>
+              <div class="flex justify-center gap-2">
+                <p>test</p>
+                <p>.</p>
+                <p>v4.myts3.ir</p>
+              </div>
               <img
-                class="mx-auto cursor-pointer"
+                class="cursor-pointer"
                 src="/images/add-square.png"
                 alt=""
                 @click="addToList()"
@@ -62,17 +65,17 @@
               <div
                 v-for="(subdomain, i) in subDomainList"
                 :key="subdomain"
-                class="table2 items relative items-center text-center rounded-lg"
+                class="flex px-5 items relative items-center text-right rounded-lg"
               >
                 <input
                   :disabled="disable"
-                  class="w-2/3 mx-auto p-2 rounded-lg bg-transparent border border-indigo-400 text-center"
+                  class="w-2/3 mx-auto h-[2.8rem] rounded-lg bg-transparent border border-indigo-400 text-right px-2"
                   type="text"
                   v-model="subDomainList[i].sub"
                 />
-                <p>.</p>
+                <p class="text-center">.</p>
                 <from
-                  class="w-2/3 mx-auto p-1.5 rounded-lg bg-transparent text-right"
+                  class="w-2/3 mx-auto rounded-lg bg-transparent text-right"
                 >
                   <USelectMenu
                     size="xl"
@@ -83,7 +86,7 @@
                   />
                 </from>
                 <img
-                  class="mx-auto cursor-pointer"
+                  class="cursor-pointer ml-2"
                   src="/images/trash.png"
                   alt=""
                   @click="deleteSubDomain(i)"
