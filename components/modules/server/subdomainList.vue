@@ -159,6 +159,9 @@ function deleteSubDomain(i) {
 
 async function submitSubdomains() {
   disable.value = true;
+  subDomainList.value = subDomainList.value.map((sd) => {
+    return { ...sd, sub: sd.sub.toLowerCase() };
+  });
   try {
     await $fetch(
       `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
