@@ -68,6 +68,59 @@
           class="h-10 w-full rounded-xl mx-auto"
           :ui="{ background: 'dark:bg-gray-500' }"
         />
+        <div v-if="interval?.value in prices" id="price" class="w-full">
+          <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
+            <h1>:هزینه ساعتی</h1>
+            <div class="flex flex-row-reverse gap-1 text-white/40">
+              <span>{{
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[interval.value].price /
+                          prices[interval.value].secondsForPrice) *
+                          3600,
+                      ),
+                    )
+                  : '?'
+              }}</span>
+              <p>تومان</p>
+            </div>
+          </div>
+          <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
+            <h1>:هزینه روزانه</h1>
+            <div class="flex flex-row-reverse gap-1 text-white/40">
+              <span>{{
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[interval.value].price /
+                          prices[interval.value].secondsForPrice) *
+                          86400,
+                      ),
+                    )
+                  : '?'
+              }}</span>
+              <p>تومان</p>
+            </div>
+          </div>
+          <div class="flex justify-between flex-row-reverse mt-3">
+            <h1>:هزینه ماهانه</h1>
+            <div class="flex flex-row-reverse gap-1">
+              <span>{{
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[interval.value].price /
+                          prices[interval.value].secondsForPrice) *
+                          2629800,
+                      ),
+                    )
+                  : '?'
+              }}</span>
+              <p>تومان</p>
+            </div>
+          </div>
+        </div>
         <button
           :class="disable || pending ? 'opacity-45' : ''"
           class="w-full flex p-4 bg-main_blue rounded-xl mt-8 mb-2 justify-center"
@@ -133,6 +186,14 @@ if (error.value) {
     });
   });
 }
+const { data: prices } = await useFetch(
+  `${url.value}/api/v4/prices/snap-interval`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  },
+);
 
 async function create() {
   disable.value = true;
