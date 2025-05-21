@@ -46,21 +46,39 @@
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
             <h1>:قیمت ساعتی</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
-              <span>-27.37850787132101</span>
+              <span>{{
+                Math.abs(
+                  Math.floor(
+                    (botPrice.price / botPrice.secondsForPrice) * 3600,
+                  ),
+                ) ?? 0
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
             <h1>:قیمت روزانه</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
-              <span>-657.0841889117043</span>
+              <span>{{
+                Math.abs(
+                  Math.floor(
+                    (botPrice.price / botPrice.secondsForPrice) * 86400,
+                  ),
+                ) ?? 0
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3">
             <h1>:قیمت ماهانه</h1>
             <div class="flex flex-row-reverse gap-1">
-              <span>-20000</span>
+              <span>{{
+                Math.abs(
+                  Math.floor(
+                    (botPrice.price / botPrice.secondsForPrice) * 2629800,
+                  ),
+                ) ?? 0
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
@@ -111,7 +129,11 @@ data.value.map((d) => {
     value: d.uuid,
   });
 });
-
+const { data: botPrice } = await useFetch(`${url.value}/api/v4/prices/bot`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
 async function makeMusicBot() {
   disableInputs.value = true;
   const { error } = await $fetch(

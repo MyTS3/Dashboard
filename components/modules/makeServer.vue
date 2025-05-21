@@ -118,7 +118,15 @@
           <div class="flex justify-between flex-row-reverse mt-3">
             <h1>:هزینه ماهانه</h1>
             <div class="flex flex-row-reverse gap-1">
-              <span>{{ Math.abs(prices[2 ** (Number(slot) + 3)].price) }}</span>
+              <span>{{
+                Math.abs(
+                  Math.floor(
+                    (prices[2 ** (Number(slot) + 3)].price /
+                      prices[2 ** (Number(slot) + 3)].secondsForPrice) *
+                      2629800,
+                  ),
+                )
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
