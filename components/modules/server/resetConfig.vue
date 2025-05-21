@@ -29,6 +29,16 @@
             :options="availables"
             option-attribute="domain"
           />
+          <div
+            v-if="selectedConfigue != 'CONFIG_DEFAULT'"
+            class="flex justify-between flex-row-reverse mt-2"
+          >
+            <h1>:هزینه فعالسازی</h1>
+            <div class="flex flex-row-reverse gap-1">
+              <span>{{ configPrice ? Math.abs(configPrice.price) : '?' }}</span>
+              <p>تومان</p>
+            </div>
+          </div>
           <!-- <select
           v-if="!pending"
           v-model="selectedConfigue"
@@ -79,7 +89,7 @@ const { url } = storeToRefs(store);
 const disable = ref(false);
 const toast = useToast();
 // const availables = ref({});
-const selectedConfigue = ref();
+const selectedConfigue = ref('CONFIG_DEFAULT');
 
 const {
   data: availables,
@@ -100,6 +110,14 @@ if (error.value) {
     color: 'red',
   });
 }
+const { data: configPrice } = await useFetch(
+  `${url.value}/api/v4/prices/config`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  },
+);
 
 async function changeConfigue() {
   disable.value = true;

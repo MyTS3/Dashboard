@@ -59,7 +59,7 @@
         >
           <h1>:هزینه فعالسازی</h1>
           <div class="flex flex-row-reverse gap-1">
-            <span>{{ Math.abs(configPrice.price) }}</span>
+            <span>{{ configPrice ? Math.abs(configPrice.price) : '?' }}</span>
             <p>تومان</p>
           </div>
         </div>
@@ -89,13 +89,15 @@
             <h1>:هزینه ساعتی</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
               <span>{{
-                Math.abs(
-                  Math.floor(
-                    (prices[2 ** (Number(slot) + 3)].price /
-                      prices[2 ** (Number(slot) + 3)].secondsForPrice) *
-                      3600,
-                  ),
-                )
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[2 ** (Number(slot) + 3)].price /
+                          prices[2 ** (Number(slot) + 3)].secondsForPrice) *
+                          3600,
+                      ),
+                    )
+                  : '?'
               }}</span>
               <p>تومان</p>
             </div>
@@ -104,13 +106,15 @@
             <h1>:هزینه روزانه</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
               <span>{{
-                Math.abs(
-                  Math.floor(
-                    (prices[2 ** (Number(slot) + 3)].price /
-                      prices[2 ** (Number(slot) + 3)].secondsForPrice) *
-                      86400,
-                  ),
-                )
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[2 ** (Number(slot) + 3)].price /
+                          prices[2 ** (Number(slot) + 3)].secondsForPrice) *
+                          86400,
+                      ),
+                    )
+                  : '?'
               }}</span>
               <p>تومان</p>
             </div>
@@ -119,13 +123,15 @@
             <h1>:هزینه ماهانه</h1>
             <div class="flex flex-row-reverse gap-1">
               <span>{{
-                Math.abs(
-                  Math.floor(
-                    (prices[2 ** (Number(slot) + 3)].price /
-                      prices[2 ** (Number(slot) + 3)].secondsForPrice) *
-                      2629800,
-                  ),
-                )
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[2 ** (Number(slot) + 3)].price /
+                          prices[2 ** (Number(slot) + 3)].secondsForPrice) *
+                          2629800,
+                      ),
+                    )
+                  : '?'
               }}</span>
               <p>تومان</p>
             </div>
@@ -170,16 +176,19 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
 const slot = ref(1);
-const prices = await $fetch(`${url.value}/api/v4/prices/tserver`, {
+const { data: prices } = await useFetch(`${url.value}/api/v4/prices/tserver`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
-const configPrice = await $fetch(`${url.value}/api/v4/prices/config`, {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const { data: configPrice } = await useFetch(
+  `${url.value}/api/v4/prices/config`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
-});
+);
 const serverName = ref();
 const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
