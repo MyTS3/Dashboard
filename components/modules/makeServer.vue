@@ -47,11 +47,22 @@
             :disabled="disableInputs"
           />
         </from>
+
         <USkeleton
           v-else
           :ui="{ background: 'dark:bg-gray-500' }"
           class="w-full p-6 rounded-xl"
         />
+        <div
+          v-if="selectedConfig != 'CONFIG_DEFAULT'"
+          class="flex justify-between flex-row-reverse mb-3"
+        >
+          <h1>:هزینه فعالسازی</h1>
+          <div class="flex flex-row-reverse gap-1">
+            <span>{{ Math.abs(configPrice.price) }}</span>
+            <p>تومان</p>
+          </div>
+        </div>
         <div>
           <p class="my-4 text-right font-medium">تعداد اسلات</p>
           <div class="flex justify-between">
@@ -75,35 +86,39 @@
         <!-- /////////////////price started//////// -->
         <div id="price" class="w-full">
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
-            <h1>:قیمت ساعتی</h1>
+            <h1>:هزینه ساعتی</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
               <span>{{
-                Math.floor(
-                  (prices[2 ** (Number(slot) + 3)].price /
-                    prices[2 ** (Number(slot) + 3)].secondsForPrice) *
-                    3600,
+                Math.abs(
+                  Math.floor(
+                    (prices[2 ** (Number(slot) + 3)].price /
+                      prices[2 ** (Number(slot) + 3)].secondsForPrice) *
+                      3600,
+                  ),
                 )
               }}</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
-            <h1>:قیمت روزانه</h1>
+            <h1>:هزینه روزانه</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
               <span>{{
-                Math.floor(
-                  (prices[2 ** (Number(slot) + 3)].price /
-                    prices[2 ** (Number(slot) + 3)].secondsForPrice) *
-                    86400,
+                Math.abs(
+                  Math.floor(
+                    (prices[2 ** (Number(slot) + 3)].price /
+                      prices[2 ** (Number(slot) + 3)].secondsForPrice) *
+                      86400,
+                  ),
                 )
               }}</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3">
-            <h1>:قیمت ماهانه</h1>
+            <h1>:هزینه ماهانه</h1>
             <div class="flex flex-row-reverse gap-1">
-              <span>{{ prices[2 ** (Number(slot) + 3)].price }}</span>
+              <span>{{ Math.abs(prices[2 ** (Number(slot) + 3)].price) }}</span>
               <p>تومان</p>
             </div>
           </div>
@@ -148,6 +163,11 @@ const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
 const slot = ref(1);
 const prices = await $fetch(`${url.value}/api/v4/prices/tserver`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+const configPrice = await $fetch(`${url.value}/api/v4/prices/config`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
