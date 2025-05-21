@@ -15,14 +15,6 @@
         </button>
         <h1 class="my-4 text-3xl font-extrabold">لیست ساب دامنه ها</h1>
         <div class="bg-mainbg_500 rounded-2xl">
-          <div
-            style="background-color: rgba(39, 43, 77, 1)"
-            class="table items items-center text-center rounded-2xl"
-          >
-            <p>ساب</p>
-            <p>دامنه</p>
-            <p>اکشن</p>
-          </div>
           <div>
             <template
               v-if="listStatus === 'pending' || domainStatus === 'pending'"
@@ -86,7 +78,7 @@
                   />
                 </from>
                 <img
-                  class="cursor-pointer ml-2"
+                  class="cursor-pointer ml-5"
                   src="/images/trash.png"
                   alt=""
                   @click="deleteSubDomain(i)"
@@ -167,6 +159,9 @@ function deleteSubDomain(i) {
 
 async function submitSubdomains() {
   disable.value = true;
+  subDomainList.value = subDomainList.value.map((sd) => {
+    return { ...sd, sub: sd.sub.toLowerCase() };
+  });
   try {
     await $fetch(
       `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
