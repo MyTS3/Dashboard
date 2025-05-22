@@ -21,7 +21,7 @@
         >
           <div class="flex gap-layout">
             <img class="w-5" src="/images/Folder.png" alt="" />
-            <h2 class="text-lg font-bold text-nowrap w-32">
+            <h2 class="text-lg text-left font-bold text-nowrap w-32">
               {{ playlist.name }}
             </h2>
           </div>
