@@ -10,7 +10,7 @@
       <div class="overflow-y-auto h-full bg-mainbg_400">
         <Table class="flex-1 min-h-0 overflow-y-auto">
           <div class="h-full">
-            <template v-if="status != 'success'">
+            <template v-if="status == 'pending'">
               <div v-for="_ in 5" :key="_" class="table items">
                 <USkeleton
                   class="h-5 w-40"
@@ -78,7 +78,24 @@
           </div>
         </Table>
       </div>
+      <UTooltip
+        v-if="
+          limits && domainList && domainList.length >= limits.value.maxDomains
+        "
+        :text="'شما به حداکثر تعداد دامنه های خود رسیده اید'"
+      >
+        <button
+          :disabled="true"
+          v-if="status != 'error'"
+          class="flex w-full gap-btn items-center justify-center btn-disable rounded-xl py-3"
+          @click="addDomainTab = true"
+        >
+          افزودن دامنه
+          <img src="/images/addon.png" alt="" />
+        </button>
+      </UTooltip>
       <button
+        v-else
         v-if="status != 'error'"
         class="flex w-full gap-btn items-center justify-center btn rounded-xl py-3"
         @click="addDomainTab = true"
@@ -113,6 +130,7 @@ import deleteDomain from '~/components/modules/domain/deleteDomain.vue';
 import Table from '~/components/reusable/table.vue';
 import TimeAgo from 'javascript-time-ago';
 import AddDomain from '~/components/modules/domain/addDomain.vue';
+import { limits } from '~/stores/limits';
 
 const timeAgo = new TimeAgo('fa');
 const store = apiStore();
@@ -125,10 +143,11 @@ const {
   data: domainList,
   status: status,
   execute: getDomain,
-} = await useLazyFetch(`${url.value}/api/v4/tdomains`, {
+} = await useFetch(`${url.value}/api/v4/tdomains`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
+  lazy: true,
 });
 </script>
 <style scoped>
