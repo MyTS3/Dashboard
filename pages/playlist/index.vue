@@ -35,7 +35,23 @@
           </div>
         </li>
       </div>
+      <UTooltip
+        v-if="
+          limits && playlists && playlists.length >= limits.value.maxPlaylists
+        "
+        :text="'شما به حداکثر تعداد پلی لیست های خود رسیده اید'"
+      >
+        <button
+          disabled
+          class="flex gap-btn w-full items-center justify-center btn-disable rounded-xl py-3"
+          @click="makePlaylistTab = true"
+        >
+          ساخت پلی لیست
+          <img src="/images/addon.png" alt="" />
+        </button>
+      </UTooltip>
       <button
+        v-else
         class="flex gap-btn w-full items-center justify-center btn rounded-xl py-3"
         @click="makePlaylistTab = true"
       >
@@ -72,16 +88,35 @@
           </div>
         </li>
       </div>
-      <button
-        :disabled="selectedPlaylistUuid == undefined"
-        :class="selectedPlaylistUuid == undefined && 'cursor-not-allowed'"
-        class="flex gap-btn w-full items-center justify-center btn rounded-xl py-3"
-        @click="addMusicTab = true"
-      >
-        افزودن موزیک
+      <template v-if="selectedPlaylistUuid">
+        <UTooltip
+          v-if="
+            limits &&
+            musics &&
+            musics.length >= limits.value.maxMusicsPerPlaylist
+          "
+          :text="'شما به حداکثر تعداد موزیک های خود رسیده اید'"
+        >
+          <button
+            :disabled="true"
+            class="flex gap-btn w-full items-center justify-center btn-disable rounded-xl py-3"
+            @click="addMusicTab = true"
+          >
+            افزودن موزیک
 
-        <img src="/images/addon.png" alt="" />
-      </button>
+            <img src="/images/addon.png" alt="" />
+          </button>
+        </UTooltip>
+        <button
+          v-else
+          class="flex gap-btn w-full items-center justify-center btn rounded-xl py-3"
+          @click="addMusicTab = true"
+        >
+          افزودن موزیک
+
+          <img src="/images/addon.png" alt="" />
+        </button>
+      </template>
     </main>
     <MakePlaylist
       v-if="makePlaylistTab"
@@ -111,6 +146,7 @@ import DeletePlaylist from '~/components/modules/playlist/deletePlaylist.vue';
 import MakePlaylist from '~/components/modules/playlist/makePlaylist.vue';
 import AddMusic from '~/components/modules/playlist/addMusic.vue';
 import deleteMusic from '~/components/modules/playlist/deleteMusic.vue';
+import { limits } from '~/stores/limits';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
