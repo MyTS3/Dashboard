@@ -17,7 +17,23 @@
       </main>
     </div>
     <footer class="w-full grid gap-layout">
+      <UTooltip
+        v-if="
+          limits && botsCount && botsCount >= limits.value.maxBotsPerTServer
+        "
+        :text="'شما به حداکثر تعداد موزیک بات های خود رسیده اید'"
+      >
+        <button
+          class="flex w-full gap-btn items-center btn-disable justify-center rounded-xl py-3"
+          @click="makeMusicBotTab = true"
+          :disabled="true"
+        >
+          <p>ساخت موزیک بات جدید</p>
+          <img src="/images/addon.png" alt="" />
+        </button>
+      </UTooltip>
       <button
+        v-else
         class="flex w-full items-center py-3 justify-center btn rounded-lg"
         @click="makeMusicBotTab = true"
       >
@@ -34,7 +50,8 @@
 </template>
 <script setup>
 import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';
-defineProps(['selectedChannel']);
+import { limits } from '~/stores/limits';
+defineProps(['selectedChannel', 'botsCount']);
 defineEmits(['refresh']);
 const makeMusicBotTab = ref(false);
 </script>

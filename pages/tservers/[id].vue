@@ -171,6 +171,7 @@
       <ChannelView
         v-if="selectedRow?.rowType == 'channel'"
         :selected-channel="selectedRow.channel"
+        :botsCount="botsCount"
         @refresh="getUsersAndChannels, (y = lastScrollesPosition.value)"
       />
       <MusicbotView
@@ -234,6 +235,7 @@ const { url } = storeToRefs(store);
 const selectedRow = ref<row>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
+const botsCount = ref<number | undefined>();
 const lastScrollesPosition = ref();
 const { y } = useScroll(el);
 const alrreadyVisited = ref(false);
@@ -452,6 +454,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         level,
       });
     });
+    botsCount.value = musicBots.length;
     musicBots.forEach((musicBot) => {
       if (!('connected' in musicBot)) {
         let channelIndex = rows.findIndex((row) => {
