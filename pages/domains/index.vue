@@ -86,7 +86,6 @@
       >
         <button
           :disabled="true"
-          v-if="status != 'error'"
           class="flex w-full gap-btn items-center justify-center btn-disable rounded-xl py-3"
           @click="addDomainTab = true"
         >
@@ -96,7 +95,6 @@
       </UTooltip>
       <button
         v-else
-        v-if="status != 'error'"
         class="flex w-full gap-btn items-center justify-center btn rounded-xl py-3"
         @click="addDomainTab = true"
       >
