@@ -35,7 +35,7 @@
               </div>
             </template>
             <div
-              v-if="listStatus === 'success' && domainStatus === 'success'"
+              v-show="listStatus === 'success' && domainStatus === 'success'"
               class="flex justify-between ml-12 px-5 items relative items-center text-right rounded-lg"
             >
               <div></div>
@@ -44,7 +44,18 @@
                 <p>.</p>
                 <p>{{ serverName.slice(serverName.indexOf('.') + 1) }}</p>
               </div>
+              <UTooltip
+                v-if="
+                  limits &&
+                  subDomainList.length &&
+                  subDomainList.length >= limits.value.maxSubdomainPerTServer
+                "
+                :text="'شما به حداکثر تعداد ساب دامین های خود رسیده اید'"
+              >
+                <img class="opacity-50" src="/images/add-square.png" alt="" />
+              </UTooltip>
               <img
+                v-else
                 class="cursor-pointer"
                 src="/images/add-square.png"
                 alt=""
@@ -102,6 +113,7 @@
 </template>
 <script setup>
 import TheLoading from '~/components/reusable/theLoading.vue';
+import { limits } from '~/stores/limits';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
