@@ -101,14 +101,27 @@
         </div>
       </Table>
     </div>
+    <UTooltip
+      v-if="limits && servers && servers.length >= limits.value.maxTServers"
+      :text="'شما به حداکثر تعداد سرور های خود رسیده اید'"
+    >
+      <button
+        class="flex w-full gap-btn items-center btn-disable justify-center rounded-xl py-3"
+        @click.prevent="makeServerTab = true"
+        :disabled="true"
+      >
+        ساخت سرور
+        <img src="/images/addon.png" alt="" />
+      </button>
+    </UTooltip>
     <button
-      class="flex w-full gap-btn items-center justify-center btn rounded-xl py-3"
+      v-else
+      class="flex w-full gap-btn items-center btn justify-center rounded-xl py-3"
       @click.prevent="makeServerTab = true"
     >
       ساخت سرور
       <img src="/images/addon.png" alt="" />
     </button>
-
     <makeServer
       v-if="makeServerTab"
       :selected-server="selectedServer"
@@ -129,6 +142,7 @@ import makeServer from '/components/modules/makeServer.vue';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import DeleteServer from '~/components/modules/server/deleteServer.vue';
+import { limits } from '~/stores/limits';
 const errors = errorHandle();
 const store = apiStore();
 const { url } = storeToRefs(store);

@@ -220,6 +220,7 @@ import TimeAgo from 'javascript-time-ago';
 import fa from 'javascript-time-ago/locale/fa';
 import logoutPopup from '@/components/modules/logoutPopup.vue';
 import chargeWallet from '~/components/modules/wallet/chargeWallet.vue';
+import { limits } from '~/stores/limits';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
@@ -241,6 +242,13 @@ const { data: balance, status } = await useFetch(
     lazy: true,
   },
 );
+const { data: limitsApi } = await useFetch(`${url.value}/api/v4/limits`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+  lazy: true,
+});
+limits.value = limitsApi;
 
 const logoutTab = ref(false);
 const panelAlert = ref(true);
