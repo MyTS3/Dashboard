@@ -40,9 +40,9 @@
             >
               <div></div>
               <div class="flex justify-center gap-2">
-                <p>test</p>
+                <p>{{ serverName.split('.')[0] }}</p>
                 <p>.</p>
-                <p>v4.myts3.ir</p>
+                <p>{{ serverName.slice(serverName.indexOf('.') + 1) }}</p>
               </div>
               <img
                 class="cursor-pointer"
@@ -123,7 +123,7 @@ domainList.value.forEach((domain) => {
   domainListForDropDown.value.push({ uuid: domain.uuid, label: domain.domain });
 });
 
-const props = defineProps(['selectedServer']);
+const props = defineProps(['selectedServer', 'serverName']);
 const { data: subDomainList, status: listStatus } = await useFetch(
   `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
   {

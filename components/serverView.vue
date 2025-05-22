@@ -177,6 +177,7 @@
     v-if="subdomainTab"
     :selected-server="selectedServer"
     @close="subdomainTab = false"
+    :serverName="props.serverInfo.name"
   />
 </template>
 <script setup>
