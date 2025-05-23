@@ -172,7 +172,6 @@
         v-if="selectedRow?.rowType == 'channel'"
         :selected-channel="selectedRow.channel"
         :botsCount="botsCount"
-        @refresh="getUsersAndChannels, (y = lastScrollesPosition.value)"
       />
       <MusicbotView
         v-if="selectedRow?.rowType == 'musicBot'"
