@@ -557,7 +557,7 @@ const { refresh: longpollAgain, status: longpollStatus } = useFetch<{
     timeout: 30000,
     // handle onRequestError for timeout
     onRequestError: (r) => {
-      if (r.error.message.includes('timeout')) {
+      if (JSON.stringify(r.error).includes('timeout')) {
         r.options.retry = 0;
         setTimeout(async () => {
           if (longpollStatus.value === 'error') await longpollAgain();
