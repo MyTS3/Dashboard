@@ -527,7 +527,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
   });
 
 const lastTimeReccived = ref(1);
-const { refresh: longpollAgain, status: longpollStatus } = await useFetch<{
+const { refresh: longpollAgain, status: longpollStatus } = useFetch<{
   message: string;
   at: number;
 }>(
