@@ -232,6 +232,7 @@ const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
   retry: false,
+  timeout: 3000,
 });
 const { data: balance, status } = await useFetch(
   `${url.value}/api/v4/balance`,
