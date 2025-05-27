@@ -540,7 +540,7 @@ const { refresh: longpollAgain, status: longpollStatus } = await useFetch<{
     lazy: true,
     onResponse: async (res) => {
       const handle = async () => {
-        if (pauseRequests)
+        if (pauseRequests.value)
           return new Promise((resolve) =>
             setTimeout(async () => resolve(await handle()), 1000),
           );
