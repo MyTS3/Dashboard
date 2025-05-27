@@ -526,36 +526,47 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
     }, 100);
   });
 
-let lastTimeReccived = 1;
-function longpoll(time = 1) {
-  if (pauseRequests.value) return setTimeout(() => longpoll(time), 1000);
-  fetch(
-    `${url.value}/api/v4/tservers/${serverUuid}/last-server-event-after/${time}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+const lastTimeReccived = ref(1);
+const { refresh: longpollAgain, status: longpollStatus } = await useFetch<{
+  message: string;
+  at: number;
+}>(
+  () =>
+    `${url.value}/api/v4/tservers/${serverUuid}/last-server-event-after/${lastTimeReccived.value}`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  )
-    .then(async (re) => {
-      if (re.status == 200) {
-        const data = await re.json();
-        lastTimeReccived = data.at;
-        const continue_ = () => {
-          if (pauseRequests.value) return setTimeout(continue_, 1000);
-          getUsersAndChannels().then(() => longpoll(lastTimeReccived));
-        };
-        continue_();
-      } else {
-        throw new Error('not 200, try again after one second');
+    lazy: true,
+    onResponse: async (res) => {
+      const handle = async () => {
+        if (pauseRequests)
+          return new Promise((resolve) =>
+            setTimeout(async () => resolve(await handle()), 1000),
+          );
+        if (lastTimeReccived.value > 1) await getUsersAndChannels();
+        if (res.response._data.at) {
+          lastTimeReccived.value = res.response._data.at;
+        }
+      };
+      await handle();
+    },
+    retry: 30,
+    retryDelay: 1000,
+    cache: 'no-cache',
+    timeout: 30000,
+    // handle onRequestError for timeout
+    onRequestError: (r) => {
+      if (r.error.message.includes('timeout')) {
+        r.options.retry = 0;
+        setTimeout(async () => {
+          if (longpollStatus.value === 'error') await longpollAgain();
+        }, 1000);
       }
-    })
-    .catch(() => {
-      setTimeout(() => longpoll(lastTimeReccived), 1000);
-    });
-}
+    },
+  },
+);
 
-longpoll();
 const theInterval = setInterval(() => {
   if (el.value != null && el.value.children.length > 0) {
     const defaultChannelIndex =
