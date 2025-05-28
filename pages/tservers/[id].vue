@@ -527,6 +527,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
   });
 
 const lastTimeReccived = ref(1);
+const longpollController = new AbortController();
 const { refresh: longpollAgain, status: longpollStatus } = useFetch<{
   message: string;
   at: number;
@@ -555,6 +556,7 @@ const { refresh: longpollAgain, status: longpollStatus } = useFetch<{
     retryDelay: 1000,
     cache: 'no-cache',
     timeout: 30000,
+    signal: longpollController.signal,
     // handle onRequestError for timeout
     onRequestError: (r) => {
       if (JSON.stringify(r.error).includes('timeout')) {
@@ -566,6 +568,8 @@ const { refresh: longpollAgain, status: longpollStatus } = useFetch<{
     },
   },
 );
+
+onUnmounted(() => longpollController.abort());
 
 const theInterval = setInterval(() => {
   if (el.value != null && el.value.children.length > 0) {
