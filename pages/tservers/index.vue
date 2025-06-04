@@ -50,7 +50,7 @@
                 <div
                   v-for="server in servers"
                   :key="server.uuid"
-                  class="table items parent hover:bg-main_orange/30 cursor-pointer"
+                  class="table items parent hover:bg-main_orange/5 cursor-pointer"
                 >
                   <div
                     class="h-full w-full flex justify-center items-center"
