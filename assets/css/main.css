@@ -72,7 +72,7 @@ body {
   border-top-right-radius: 1rem;
 }
 .noActivePanel:hover {
-  background-image: linear-gradient(to left, #0c153f85, rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to left, rgba(20, 25, 49, 0.32), rgba(0, 0, 0, 0));
   border-bottom-right-radius: 1rem;
   border-top-right-radius: 1rem;
 }
