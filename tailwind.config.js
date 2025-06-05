@@ -20,7 +20,7 @@ export default {
         mainbg_600: 'rgba(20, 25, 49, 1)',
         main_red: 'rgb(201,11,14)',
         main_orange: 'rgb(236,102,0)',
-        main_green: 'rgba(50, 215, 75, 1)',
+        main_green: 'rgb(74,222,128)',
         main_blue: 'rgba(1, 107, 255, 1)',
         bermudaGray: 'rgba(108, 135, 168, 1)',
       },
