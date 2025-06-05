@@ -105,7 +105,7 @@
     >
       <button
         class="flex border w-full gap-btn justify-center h-20 items-center rounded-tl-xl btn"
-        @click="restartServerTab = true"
+        @click="(restartServerTab = true), emit('resetAlreadyvisited')"
       >
         <p>ری استارت</p>
         <img src="/images/restart.png" alt="" />
@@ -119,7 +119,7 @@
       </button>
       <button
         class="flex border w-full gap-btn justify-center h-20 items-center rounded-bl-xl btn"
-        @click="resetConfigTab = true"
+        @click="(resetConfigTab = true), emit('resetAlreadyvisited')"
       >
         <p>ریست کانفیگ</p>
         <img class="h-12" src="/images/theme.svg" alt="" />
@@ -206,7 +206,7 @@ const yatqaExampleTab = ref(false);
 const subdomainTab = ref(false);
 const toast = useToast();
 const props = defineProps(['serverInfo', 'usersCount']);
-const emit = defineEmits(['getServerDeatails']);
+const emit = defineEmits(['getServerDeatails', 'resetAlreadyvisited']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 
@@ -219,6 +219,7 @@ function getServerDeatails() {
   emit('getServerDeatails');
 }
 watch(serverRunningToggle, () => {
+  emit('resetAlreadyvisited');
   turnServerOffOrOn();
 });
 async function turnServerOffOrOn() {

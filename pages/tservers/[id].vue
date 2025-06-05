@@ -124,7 +124,11 @@
         </template>
       </main>
       <main
-        v-if="teamspeakserverStatus == 'pending' && !alrreadyVisited"
+        v-if="
+          teamspeakserverStatus == 'pending' &&
+          !alrreadyVisited &&
+          serverInfo?.mustRunning
+        "
         class="h-full px-4 overflow-y-hidden"
       >
         <USkeleton
@@ -176,6 +180,7 @@
           :server-info-status="() => serverInfoStatus"
           :users-count="usersCount"
           @get-server-deatails="getServerDeatails"
+          @resetAlreadyvisited="alrreadyVisited = false"
         />
         <ServerViewSkeleton v-else />
       </template>
