@@ -36,14 +36,14 @@
         </select> -->
         <USelectMenu
           v-model="selectedPlaylist"
-          class="w-full"
+          class="w-full my-4"
           size="xl"
           color="indigo"
           :options="playlists"
         />
         <!-- ///////////////////price///////////// -->
         <div id="price" class="w-full">
-          <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
+          <div class="flex justify-between flex-row-reverse text-white/40">
             <h1>:قیمت ساعتی</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
               <span>{{
@@ -88,9 +88,9 @@
       <button
         :disabled="!selectedPlaylist"
         :class="{
-          'cursor-not-allowed opacity-55': disableInputs,
+          'cursor-not-allowed opacity-30': disableInputs || !selectedPlaylist,
         }"
-        class="flex w-full items-center justify-center make-server font-medium gap-2"
+        class="flex w-full items-center justify-center make-server font-medium gap-2 mt-4"
         @click="makeMusicBot()"
       >
         <div
@@ -116,6 +116,7 @@ const props = defineProps(['selectedChannel']);
 const emit = defineEmits(['close', 'refresh']);
 const selectedPlaylist = ref();
 const playlists = ref([]);
+const toast = useToast();
 
 const { data } = await useFetch(`${url.value}/api/v4/playlists`, {
   method: 'GET',
@@ -136,9 +137,8 @@ const { data: botPrice } = await useFetch(`${url.value}/api/v4/prices/bot`, {
 });
 async function makeMusicBot() {
   disableInputs.value = true;
-  const { error } = await $fetch(
-    `${url.value}/api/v4/tservers/${selectedServer}/bots`,
-    {
+  try {
+    await $fetch(`${url.value}/api/v4/tservers/${selectedServer}/bots`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -148,16 +148,15 @@ async function makeMusicBot() {
         name: selectedPlaylist.value.label,
         playlist: selectedPlaylist.value.value,
       }),
-    },
-  );
-  disableInputs.value = false;
-  emit('close');
-  if (error.value) {
+    });
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
   }
+  disableInputs.value = false;
+  emit('close');
 }
 </script>
