@@ -36,7 +36,7 @@
           <template v-else>
             <div class="w-full h-full justify-center gap-4 items-center">
               <li v-for="log in logs" :key="log.uuid" class="table">
-                <p :class="handleAmountColor(log)">
+                <p dir="ltr" :class="handleAmountColor(log)">
                   {{ Math.trunc(Number(log.amount)) }}
                 </p>
                 <p>
