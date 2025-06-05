@@ -150,7 +150,10 @@
           </div>
         </div>
       </main>
-      <main v-if="teamspeakserverStatus == 'error'" class="h-full">
+      <main
+        v-if="teamspeakserverStatus == 'error' && serverInfo?.mustRunning"
+        class="h-full"
+      >
         <div
           class="w-full h-full flex flex-col justify-center items-end gap-10"
         >
