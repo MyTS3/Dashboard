@@ -45,7 +45,7 @@
         <button
           :class="banDisable ? 'btn-disable' : 'btn'"
           :disabled="banDisable"
-          class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-tl-xl parent"
+          class="w-full flex h-20 justify-center items-center gap-btn py-2 btn rounded-tl-xl parent"
           @click="banUserTab = true"
         >
           <p>بن از سرور</p>
@@ -69,7 +69,7 @@
         <img src="/images/ranks.png" alt="" />
       </button>
       <UTooltip
-        class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-tl-lg"
+        class="flex h-20 justify-center items-center gap-btn py-2 rounded-br-xl"
         :text="
           selectedRow.user.inDefaultChannel
             ? 'نمیتوانید شخصی را از چنل دیفالت کیک کنید'
@@ -80,7 +80,7 @@
           v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
           :class="selectedRow.user.inDefaultChannel ? 'btn-disable' : 'btn'"
           :disabled="selectedRow.user.inDefaultChannel"
-          class="w-full h-20 flex justify-center items-center rounded-br-xl parent"
+          class="w-full h-20 flex justify-center items-center gap-btn rounded-br-xl parent"
           @click="kickFromChannelTab = true"
         >
           <p>کیک از چنل</p>

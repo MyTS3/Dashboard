@@ -24,7 +24,7 @@
         :text="'شما به حداکثر تعداد موزیک بات های خود رسیده اید'"
       >
         <button
-          class="flex w-full gap-btn items-center btn-disable justify-center rounded-xl py-3"
+          class="flex w-full gap-btn items-center btn-disable justify-center rounded-xl py-3 gap-btn"
           @click="makeMusicBotTab = true"
           :disabled="true"
         >
