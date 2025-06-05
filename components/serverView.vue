@@ -78,15 +78,16 @@
           <p v-if="!selectedServer.mustRunning" class="text-main_red">خاموش</p>
           <p v-if="selectedServer.mustRunning" class="text-main_green">روشن</p>
           <p>:وضعیت</p>
-          <div class="absolute left-0 top-1/3">
-            <input
+          <div class="absolute left-0">
+            <!-- <input
               id="server-status"
               :checked="selectedServer.mustRunning"
               class="hidden"
               type="checkbox"
               @click.prevent="turnServerOffOrOn()"
             />
-            <label class="button" for="server-status" />
+            <label class="button" for="server-status" /> -->
+            <UToggle v-model="serverRunningToggle" />
           </div>
         </li>
         <p
@@ -190,14 +191,12 @@ import deleteServer from './modules/server/deleteServer.vue';
 import banList from './modules/server/banList.vue';
 import resetConfig from './modules/server/resetConfig.vue';
 import yatqaExample from './modules/server/yatqaExample.vue';
-
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import { pauseRequests } from '#imports';
 
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
-
 const turnOffServerTab = ref(false);
 const serverLocationTab = ref(false);
 const bansListTab = ref(false);
@@ -212,13 +211,16 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 
 const selectedServer = ref(props.serverInfo);
+const serverRunningToggle = ref(selectedServer.value.mustRunning);
 pauseRequests.value = !selectedServer.value.mustRunning;
 const tsUrl = ref(`ts3server://${props.serverInfo.name}`);
 
 function getServerDeatails() {
   emit('getServerDeatails');
 }
-
+watch(serverRunningToggle, () => {
+  turnServerOffOrOn();
+});
 async function turnServerOffOrOn() {
   if (selectedServer.value.mustRunning === true) {
     turnOffServerTab.value = true;
