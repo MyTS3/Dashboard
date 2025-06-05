@@ -53,7 +53,6 @@
         </button>
       </UTooltip>
       <button
-        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-tr-xl"
         @click="kickFromServerTab = true"
       >
@@ -61,7 +60,6 @@
         <img src="/images/kick_server.png" alt="" />
       </button>
       <button
-        v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
         class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-bl-xl"
         @click="servergroupsTab = true"
       >
@@ -77,7 +75,6 @@
         "
       >
         <button
-          v-if="selectedRow.user.clientUniqueIdentifier != 'serveradmin'"
           :class="selectedRow.user.inDefaultChannel ? 'btn-disable' : 'btn'"
           :disabled="selectedRow.user.inDefaultChannel"
           class="w-full h-20 flex justify-center items-center gap-btn rounded-br-xl parent"
