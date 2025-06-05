@@ -37,21 +37,28 @@
       class="grid grid-cols-2 w-full gap-3"
     >
       <UTooltip
+        v-if="banDisable"
         class="flex justify-center items-center gap-2 rounded-tl-lg"
-        :text="
-          banDisable ? 'نمیتوانید شخصی یا رنک سرور کوئری را بن کنید' : 'ban'
-        "
+        :text="'نمیتوانید شخصی یا رنک سرور کوئری را بن کنید'"
       >
         <button
-          :class="banDisable ? 'btn-disable' : 'btn'"
-          :disabled="banDisable"
-          class="w-full flex h-20 justify-center items-center gap-btn py-2 btn rounded-tl-xl parent"
+          class="w-full flex h-20 justify-center items-center gap-btn py-2 rounded-tl-xl parent btn-disable"
           @click="banUserTab = true"
+          disabled
         >
           <p>بن از سرور</p>
           <img src="/images/ban_client.png" alt="" />
         </button>
       </UTooltip>
+      <button
+        v-else
+        class="w-full flex h-20 justify-center items-center gap-btn py-2 btn rounded-tl-xl parent"
+        @click="banUserTab = true"
+      >
+        <p>بن از سرور</p>
+        <img src="/images/ban_client.png" alt="" />
+      </button>
+
       <button
         class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-tr-xl"
         @click="kickFromServerTab = true"
@@ -59,6 +66,7 @@
         <p>کیک از سرور</p>
         <img src="/images/kick_server.png" alt="" />
       </button>
+
       <button
         class="flex h-20 justify-center items-center gap-btn py-2 btn rounded-bl-xl"
         @click="servergroupsTab = true"
@@ -66,24 +74,29 @@
         <p>رنک ها</p>
         <img src="/images/ranks.png" alt="" />
       </button>
+
       <UTooltip
+        v-if="selectedRow.user.inDefaultChannel"
         class="flex h-20 justify-center items-center gap-btn py-2 rounded-br-xl"
-        :text="
-          selectedRow.user.inDefaultChannel
-            ? 'نمیتوانید شخصی را از چنل دیفالت کیک کنید'
-            : 'کیک'
-        "
+        :text="'نمیتوانید شخصی را از چنل دیفالت کیک کنید'"
       >
         <button
-          :class="selectedRow.user.inDefaultChannel ? 'btn-disable' : 'btn'"
-          :disabled="selectedRow.user.inDefaultChannel"
-          class="w-full h-20 flex justify-center items-center gap-btn rounded-br-xl parent"
+          class="w-full h-20 flex justify-center items-center gap-btn rounded-br-xl parent btn-disable"
           @click="kickFromChannelTab = true"
+          disabled
         >
           <p>کیک از چنل</p>
           <img src="/images/kick_channel.png" alt="" />
         </button>
       </UTooltip>
+      <button
+        v-else
+        class="w-full h-20 flex justify-center items-center gap-btn rounded-br-xl parent btn"
+        @click="kickFromChannelTab = true"
+      >
+        <p>کیک از چنل</p>
+        <img src="/images/kick_channel.png" alt="" />
+      </button>
     </footer>
   </section>
   <banFromServer
