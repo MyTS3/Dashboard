@@ -197,7 +197,7 @@
           <a target="_blank" href="https://mtserver.ir/">
             <img
               class="object-contain p-3"
-              src="/images/mtserver-logo.png"
+              src="/images/logo-white.png"
               alt=""
             />
           </a>
