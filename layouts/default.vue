@@ -88,9 +88,16 @@
               src="/images/send_complaint.svg"
               alt="bell-alarm"
             />
-            <p class="font-medium text-sm">
-              پنل جدید در دست ساخت است، این یک نسخه رایگان برای تست میباشد و هیچ
-              گونه مسئولیتی در نگهداری داده های شما ندارد
+            <p dir="rtl" class="font-medium text-sm">
+              این پنل رایگان مسئولیتی در نگهداری داده های شما ندارد. درصورت
+              مشاهده مشکل هنگام تست، در گروه
+              <a
+                class="text-green-300"
+                target="_blank"
+                href="https://t.me/myts3"
+                >@myts3</a
+              >
+              اعلام کنید و جایزه بگیرید
             </p>
             <button class="absolute left-4" @click.prevent="panelAlert = false">
               <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
