@@ -1,90 +1,92 @@
 <template>
-  <section
-    class="h-screen absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
-  >
-    <main
-      class="text-white h-2/3 min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+  <teleport to="body">
+    <section
+      class="h-screen absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
-      <button
-        :class="disable ? 'disable' : ''"
-        :disabled="disable"
-        class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
-        @click="$emit('close')"
+      <main
+        class="text-white h-2/3 min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
       >
-        <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
-      </button>
-      <h1 class="my-4 mx-24">
-        <span>( {{ props.user }} )</span> تغییر رنک سرور گروه های
-      </h1>
-      <div class="flex flex-col gap-4 overflow-y-scroll">
-        <!-- //////////////////////////////lists -->
-        <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
-          <li
-            v-for="serverGroup in queryServerGroups"
-            :key="serverGroup.sgid"
-            class="flex gap-2"
-          >
-            <button
-              v-if="!isAssigned(serverGroup)"
-              class="checkbox"
-              @click="
-                toApply[serverGroup.sgid] = { serverGroup, action: 'add' }
-              "
-            />
-            <button
-              v-if="isAssigned(serverGroup)"
-              class="checkbox-active"
-              @click="
-                toApply[serverGroup.sgid] = {
-                  serverGroup,
-                  action: 'remove',
-                }
-              "
-            />
-            <p>{{ serverGroup.name }}</p>
-          </li>
+        <button
+          :class="disable ? 'disable' : ''"
+          :disabled="disable"
+          class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
+          @click="$emit('close')"
+        >
+          <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
+        </button>
+        <h1 class="my-4 mx-24">
+          <span>( {{ props.user }} )</span> تغییر رنک سرور گروه های
+        </h1>
+        <div class="flex flex-col gap-4 overflow-y-scroll">
+          <!-- //////////////////////////////lists -->
+          <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
+            <li
+              v-for="serverGroup in queryServerGroups"
+              :key="serverGroup.sgid"
+              class="flex gap-2"
+            >
+              <button
+                v-if="!isAssigned(serverGroup)"
+                class="checkbox"
+                @click="
+                  toApply[serverGroup.sgid] = { serverGroup, action: 'add' }
+                "
+              />
+              <button
+                v-if="isAssigned(serverGroup)"
+                class="checkbox-active"
+                @click="
+                  toApply[serverGroup.sgid] = {
+                    serverGroup,
+                    action: 'remove',
+                  }
+                "
+              />
+              <p>{{ serverGroup.name }}</p>
+            </li>
+          </div>
+          <!-- //////////////////////////////////list -->
+          <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
+            <li
+              v-for="serverGroup in serverGroups"
+              :key="serverGroup.sgid"
+              class="flex gap-2"
+            >
+              <button
+                v-if="!isAssigned(serverGroup)"
+                class="checkbox"
+                @click="
+                  toApply[serverGroup.sgid] = { serverGroup, action: 'add' }
+                "
+              />
+              <button
+                v-if="isAssigned(serverGroup)"
+                class="checkbox-active"
+                @click="
+                  toApply[serverGroup.sgid] = { serverGroup, action: 'remove' }
+                "
+              />
+              <p>{{ serverGroup.name }}</p>
+            </li>
+          </div>
         </div>
-        <!-- //////////////////////////////////list -->
-        <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
-          <li
-            v-for="serverGroup in serverGroups"
-            :key="serverGroup.sgid"
-            class="flex gap-2"
-          >
-            <button
-              v-if="!isAssigned(serverGroup)"
-              class="checkbox"
-              @click="
-                toApply[serverGroup.sgid] = { serverGroup, action: 'add' }
-              "
-            />
-            <button
-              v-if="isAssigned(serverGroup)"
-              class="checkbox-active"
-              @click="
-                toApply[serverGroup.sgid] = { serverGroup, action: 'remove' }
-              "
-            />
-            <p>{{ serverGroup.name }}</p>
-          </li>
-        </div>
-      </div>
-      <button
-        :class="submitDisable ? 'opacity-45' : ''"
-        :disabled="submitDisable"
-        class="w-full mt-auto p-4 bg-main_blue rounded-xl my-2"
-        @click="applyServerGroups()"
-      >
-        <p>اعمال تغییرات</p>
-      </button>
-      <p
-        :class="submitDisable ? 'opacity-100' : 'opacity-0'"
-        class="bg-mainbg_600 rounded-lg p-2 absolute left-1/2 -translate-x-1/2 bottom-[-3rem] transition-all"
-      >
-        {{ disableReasson }}
-      </p>
-    </main>
-  </section>
+        <button
+          :class="submitDisable ? 'opacity-45' : ''"
+          :disabled="submitDisable"
+          class="w-full mt-auto p-4 bg-main_blue rounded-xl my-2"
+          @click="applyServerGroups()"
+        >
+          <p>اعمال تغییرات</p>
+        </button>
+        <p
+          :class="submitDisable ? 'opacity-100' : 'opacity-0'"
+          class="bg-mainbg_600 rounded-lg p-2 absolute left-1/2 -translate-x-1/2 bottom-[-3rem] transition-all"
+        >
+          {{ disableReasson }}
+        </p>
+      </main>
+    </section>
+  </teleport>
 </template>
 <script setup lang="ts">
 const store = apiStore();
