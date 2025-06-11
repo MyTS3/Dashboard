@@ -208,6 +208,14 @@ async function getServerGroups() {
   });
 }
 await getServerGroups();
+watch(
+  () => props.selectedRow,
+  async (newVal, oldVal) => {
+    if (newVal?.user?.userNickname !== oldVal?.user?.userNickname) {
+      await getServerGroups();
+    }
+  },
+);
 </script>
 <style scoped>
 .parent:hover .child {
