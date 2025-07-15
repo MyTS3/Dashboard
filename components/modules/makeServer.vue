@@ -211,7 +211,7 @@ async function makeServer() {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
-        name: `${serverName.value}.v4.myts3.ir`.toLowerCase(),
+        name: serverName.value.toLowerCase(),
         config: selectedConfig.value,
         slots: slots,
       }),
