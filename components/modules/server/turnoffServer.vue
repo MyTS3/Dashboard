@@ -15,7 +15,7 @@
         </button>
         <h1 class="text-xl my-4 font-bolder">خاموش کردن سرور</h1>
         <p class="font-thin max-w-80 text-center mx-auto mb-4 mx-10">
-          <span>daniel.v4.myts3.ir</span>
+          <span>changeit.v4.myts3.ir</span>
           شما در حال خاموش کردن سرور هستید ایا اطمینان دارید؟
         </p>
         <div class="grid grid-cols-2 gap-3">
