@@ -17,7 +17,10 @@
               : 'hover:hover:bg-main_orange/20'
           "
           class="list-none flex my-1 p-3 rounded-xl relative h-14"
-          @click="selectedPlaylistUuid = playlist.uuid"
+          @click="
+            (selectedPlaylistUuid = playlist.uuid),
+              (publicPlaylist = playlist.public)
+          "
         >
           <div class="flex gap-layout">
             <img class="w-5" src="/images/Folder.png" alt="" />
@@ -109,7 +112,12 @@
           </button>
         </UTooltip>
         <button
-          v-else
+          v-if="
+            limits &&
+            musics &&
+            musics.length <= limits.value.maxMusicsPerPlaylist &&
+            !publicPlaylist
+          "
           class="flex gap-btn w-full items-center justify-center btn rounded-xl py-3"
           @click="addMusicTab = true"
         >
@@ -152,6 +160,7 @@ import { limits } from '~/stores/limits';
 const store = apiStore();
 const { url } = storeToRefs(store);
 const selectedPlaylistUuid = ref<undefined | string>(undefined);
+const publicPlaylist = ref();
 const DeletePlaylistTab = ref(false);
 const deleteMusicTab = ref(false);
 const makePlaylistTab = ref(false);
