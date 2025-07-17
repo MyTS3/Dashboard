@@ -2,7 +2,7 @@
   <section
     class="flex-1 grid grid-cols-2 w-full mx-auto items-stretch text-white text-center gap-layout min-h-0"
   >
-    <main class="bg-mainbg_500 p-5 rounded-xl flex flex-col">
+    <main class="bg-mainbg_500 p-5 min-h-0 h-full rounded-xl flex flex-col">
       <header>
         <p>پلی لیست ها</p>
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
