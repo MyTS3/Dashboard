@@ -80,7 +80,9 @@
       </div>
       <UTooltip
         v-if="
-          limits && domainList && domainList.length >= limits.value.maxDomains
+          limits &&
+          domainList &&
+          domainList.filter((d) => !d.public).length >= limits.value.maxDomains
         "
         :text="'شما به حداکثر تعداد دامنه های خود رسیده اید'"
       >
@@ -136,7 +138,6 @@ const { url } = storeToRefs(store);
 const addDomainTab = ref(false);
 const deleteDomainTab = ref(false);
 const selectedDomain = ref();
-
 const {
   data: domainList,
   status: status,
