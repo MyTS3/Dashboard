@@ -49,10 +49,12 @@
 </template>
 <script setup>
 import TheLoading from '@/components/reusable/theLoading.vue';
+import { useToast } from '#imports';
 const store = apiStore();
 const { url } = storeToRefs(store);
 const playlistName = ref();
 const disable = ref(false);
+const toast = useToast();
 const emit = defineEmits(['close']);
 async function makePlaylist() {
   disable.value = true;
