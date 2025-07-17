@@ -26,8 +26,8 @@
             </h2>
           </div>
           <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
-            <p class="font-sans text-xs my-auto font-bold">2GB</p>
             <img
+              v-if="!playlist.public"
               class="cursor-pointer"
               src="/images/trash.png"
               @click="(removingPlaylist = playlist), (DeletePlaylistTab = true)"
@@ -37,7 +37,9 @@
       </div>
       <UTooltip
         v-if="
-          limits && playlists && playlists.length >= limits.value.maxPlaylists
+          limits &&
+          playlists &&
+          playlists.filter((p) => !p.public).length >= limits.value.maxPlaylists
         "
         :text="'شما به حداکثر تعداد پلی لیست های خود رسیده اید'"
       >
@@ -80,7 +82,6 @@
             </h2>
           </div>
           <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
-            <p class="font-sans text-xs my-auto font-bold">20MB</p>
             <img
               src="/images/trash.png"
               @click="(removingMusic = music), (deleteMusicTab = true)"
@@ -158,7 +159,7 @@ const addMusicTab = ref(false);
 const removingPlaylist = ref();
 const removingMusic = ref();
 const { data: playlists, execute: getPlaylist } = await useFetch<
-  { uuid: string; name: string }[]
+  { uuid: string; name: string; public: boolean }[]
 >(`${url.value}/api/v4/playlists`, {
   method: 'GET',
   headers: {
