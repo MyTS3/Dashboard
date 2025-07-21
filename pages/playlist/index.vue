@@ -64,7 +64,7 @@
         <img src="/images/addon.png" alt="" />
       </button>
     </main>
-    <main class="bg-mainbg_500 p-5 rounded-xl flex flex-col">
+    <main class="bg-mainbg_500 min-h-0 h-full p-5 rounded-xl flex flex-col">
       <header>
         <p>آهنگ های پلی لیست</p>
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
