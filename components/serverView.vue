@@ -194,6 +194,7 @@ import yatqaExample from './modules/server/yatqaExample.vue';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import { pauseRequests } from '#imports';
+import { errorHandle } from '#imports';
 
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
@@ -209,7 +210,7 @@ const props = defineProps(['serverInfo', 'usersCount']);
 const emit = defineEmits(['getServerDeatails', 'resetAlreadyvisited']);
 const store = apiStore();
 const { url } = storeToRefs(store);
-
+const errors = errorHandle();
 const selectedServer = ref(props.serverInfo);
 const serverRunningToggle = ref(selectedServer.value.mustRunning);
 pauseRequests.value = !selectedServer.value.mustRunning;
@@ -236,11 +237,7 @@ async function turnServerOffOrOn() {
       },
     );
     if (error.value) {
-      toast.add({
-        title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-        timeout: 2000,
-        color: 'red',
-      });
+      errors.handle(error.value.data.code);
     } else pauseRequests.value = false;
     getServerDeatails();
   }

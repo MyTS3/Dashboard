@@ -11,6 +11,13 @@ const handlers: { [key: string]: () => unknown } = {
       external: true,
     });
   },
+  NEED_MORE_BALANCE: () => {
+    toast.add({
+      title: 'اعتبارت کافی نیست،اول برو شارژ کن',
+      timeout: 2000,
+      color: 'red',
+    });
+  },
 };
 export const errorHandle = defineStore({
   id: 'errorHandle',

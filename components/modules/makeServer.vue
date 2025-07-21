@@ -32,7 +32,7 @@
             type="text"
           />
 
-          <p class="absolute right-8 bottom-4 text-blue-300/60">.v4.myts3.ir</p>
+          <p class="absolute right-8 bottom-4 text-blue-300/60">.cloudts.ir</p>
         </div>
         <p class="text-xs mt-2 ml-auto text-main_red">{{ disableReasson }}</p>
         <P class="text-right font-medium mt-3"
@@ -172,6 +172,7 @@ import loading from '@/components/reusable/theLoading.vue';
 
 const serverTokenTab = ref(false);
 
+const errors = errorHandle();
 const store = apiStore();
 const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
@@ -218,11 +219,7 @@ async function makeServer() {
     },
   );
   if (error.value) {
-    toast.add({
-      title: 'ساخت سرور با شکست مواجه شد',
-      timeout: 2000,
-      color: 'red',
-    });
+    errors.handle(error.value.data.code);
     disableInputs.value = false;
     submitDisable.value = false;
     return;
