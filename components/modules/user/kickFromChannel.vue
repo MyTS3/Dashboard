@@ -69,7 +69,11 @@ async function kickUser() {
     },
   );
   if (error.value) {
-    errors.handle(error.value.data.code);
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
   }
   disable.value = false;
   emit('close');
