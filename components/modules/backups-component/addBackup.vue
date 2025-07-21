@@ -127,8 +127,11 @@
             </div>
           </div>
           <button
-            :class="disable || pending ? 'opacity-45' : ''"
+            :class="
+              disable || pending || !interval || !serverUuid ? 'opacity-45' : ''
+            "
             class="w-full flex p-4 bg-main_blue rounded-xl mt-8 mb-2 justify-center"
+            :disabled="!interval || !serverUuid || disable"
             @click="create()"
           >
             <p v-if="!disable">افزودن</p>

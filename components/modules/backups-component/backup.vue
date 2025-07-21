@@ -84,7 +84,7 @@
     <DeleteBackups
       v-if="deleteBackupTab"
       :selecteduuid="selecteduuid"
-      @close="(backups = []), (deleteBackupTab = false), getPages()"
+      @close="(backups = []), (page = 0), (deleteBackupTab = false), getPages()"
     />
     <restoreBackup
       v-if="deployBackupTab"

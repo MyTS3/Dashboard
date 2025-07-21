@@ -45,7 +45,8 @@
         />
         <div class="grid">
           <button
-            :disabled="disable"
+            :class="disable || !tserverUUid ? 'opacity-45' : ''"
+            :disabled="disable || !tserverUUid"
             class="p-4 text-center rounded-xl flex justify-center bg-main_red module-btn"
             @click="deployBackup()"
           >
