@@ -145,7 +145,7 @@ import TheLoading from '~/components/reusable/theLoading.vue';
 const intervals = [
   {
     label: 'یک بار',
-    value: 'undefined',
+    value: undefined,
   },
   {
     label: 'روزانه',
