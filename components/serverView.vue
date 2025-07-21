@@ -193,8 +193,7 @@ import resetConfig from './modules/server/resetConfig.vue';
 import yatqaExample from './modules/server/yatqaExample.vue';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
-import { pauseRequests } from '#imports';
-import { errorHandle } from '#imports';
+import { pauseRequests, errorHandle } from '#imports';
 
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
@@ -205,7 +204,7 @@ const restartServerTab = ref(false);
 const resetConfigTab = ref(false);
 const yatqaExampleTab = ref(false);
 const subdomainTab = ref(false);
-const toast = useToast();
+
 const props = defineProps(['serverInfo', 'usersCount']);
 const emit = defineEmits(['getServerDeatails', 'resetAlreadyvisited']);
 const store = apiStore();
