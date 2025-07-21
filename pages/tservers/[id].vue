@@ -296,7 +296,7 @@ function sameRow(r1: row, r2: row) {
   return false;
 }
 type serverInfoType = {
-  deployedOn: string;
+  deployedOn: string | null;
   mustRunning: boolean;
   name: string;
   queryPassword: string;
