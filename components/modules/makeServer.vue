@@ -167,8 +167,11 @@
   </Teleport>
 </template>
 <script setup>
+import { apiStore } from '~/stores/apistore';
+import { storeToRefs } from 'pinia';
 import serverToken from './serverToken.vue';
 import loading from '@/components/reusable/theLoading.vue';
+import { getBalance } from '../../stores/globalVaribles';
 
 const serverTokenTab = ref(false);
 
@@ -224,7 +227,7 @@ async function makeServer() {
     submitDisable.value = false;
     return;
   }
-
+  getBalance();
   token = ref(server.value.privilegeKey);
   tsuuid = ref(server.value.uuid);
   tsURL = ref(`ts3server://${server.value.name}`);

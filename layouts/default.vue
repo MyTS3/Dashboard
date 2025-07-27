@@ -59,7 +59,7 @@
                 >
                   <div class="w-full">
                     <p v-if="balance">
-                      تومان {{ Math.trunc(Number(balance.balance)) }}
+                      تومان {{ Math.trunc(Number(balance)) }}
                     </p>
                     <p v-else>خطا</p>
                   </div>
@@ -228,10 +228,10 @@ import fa from 'javascript-time-ago/locale/fa';
 import logoutPopup from '@/components/modules/logoutPopup.vue';
 import chargeWallet from '~/components/modules/wallet/chargeWallet.vue';
 import { limits } from '~/stores/limits';
-
+import { balance, getBalance } from '~/stores/globalVaribles';
 const store = apiStore();
 const { url } = storeToRefs(store);
-
+getBalance();
 const chargeWalletTab = ref(false);
 
 const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
@@ -241,15 +241,7 @@ const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
   retry: false,
   timeout: 3000,
 });
-const { data: balance, status } = await useFetch(
-  `${url.value}/api/v4/balance`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    lazy: true,
-  },
-);
+
 const { data: limitsApi } = await useFetch(`${url.value}/api/v4/limits`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
