@@ -80,8 +80,7 @@
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import TheLoading from '~/components/reusable/theLoading.vue';
-import { pauseRequests } from '~/stores/globalVaribles';
-import { getBalance } from '~/stores/globalVaribles';
+import { pauseRequests, getBalance } from '~/stores/globalVaribles';
 const emit = defineEmits(['close']);
 const props = defineProps(['selectedServer']);
 const store = apiStore();
