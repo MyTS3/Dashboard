@@ -180,19 +180,16 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
 const slot = ref(1);
-const { data: prices } = await useFetch(`${url.value}/api/v4/prices/tserver`, {
+const { data: prices } = useFetch(`${url.value}/api/v4/prices/tserver`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
-const { data: configPrice } = await useFetch(
-  `${url.value}/api/v4/prices/config`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+const { data: configPrice } = useFetch(`${url.value}/api/v4/prices/config`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
-);
+});
 const serverName = ref();
 const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
@@ -207,20 +204,17 @@ async function makeServer() {
   disableInputs.value = true;
   submitDisable.value = true;
   const slots = 2 ** (Number(slot.value) + 3);
-  const { data: server, error } = await useFetch(
-    `${url.value}/api/v4/tservers/`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify({
-        name: serverName.value.toLowerCase(),
-        config: selectedConfig.value,
-        slots: slots,
-      }),
+  const { data: server, error } = useFetch(`${url.value}/api/v4/tservers/`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  );
+    body: JSON.stringify({
+      name: serverName.value.toLowerCase(),
+      config: selectedConfig.value,
+      slots: slots,
+    }),
+  });
   if (error.value) {
     errors.handle(error.value.data.code);
     disableInputs.value = false;
