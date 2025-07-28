@@ -4,7 +4,7 @@
       class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
       <main
-        class="text-white min-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium gap-3"
+        class="text-white w-full max-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium gap-3"
       >
         <button
           :disabled="disable"
@@ -21,15 +21,15 @@
             >
               <div v-for="_ in 4" :key="_" class="table my-4">
                 <USkeleton
-                  class="h-8 w-2/3 mx-auto rounded-lg"
+                  class="h-8 w-2/3 rounded-lg"
                   :ui="{ background: 'dark:bg-gray-500' }"
                 />
                 <USkeleton
-                  class="h-8 w-2/3 mx-auto rounded-lg"
+                  class="h-8 w-2/3 rounded-lg"
                   :ui="{ background: 'dark:bg-gray-500' }"
                 />
                 <USkeleton
-                  class="h-8 w-8 m-auto rounded-lg"
+                  class="h-8 w-8 rounded-lg ml-auto"
                   :ui="{ background: 'dark:bg-gray-500' }"
                 />
               </div>
@@ -121,7 +121,7 @@ const emit = defineEmits(['close']);
 const domainListForDropDown = ref([]);
 const disable = ref(false);
 const toast = useToast();
-const { data: domainList, status: domainStatus } = await useFetch(
+const { data: domainList, status: domainStatus } = useFetch(
   `${url.value}/api/v4/tdomains`,
   {
     method: 'GET',
@@ -130,13 +130,19 @@ const { data: domainList, status: domainStatus } = await useFetch(
     },
   },
 );
-
-domainList.value.forEach((domain) => {
-  domainListForDropDown.value.push({ uuid: domain.uuid, label: domain.domain });
+watch(domainList, (oldVal) => {
+  if (oldVal != domainList) {
+    domainList.value.forEach((domain) => {
+      domainListForDropDown.value.push({
+        uuid: domain.uuid,
+        label: domain.domain,
+      });
+    });
+  }
 });
 
 const props = defineProps(['selectedServer', 'serverName']);
-const { data: subDomainList, status: listStatus } = await useFetch(
+const { data: subDomainList, status: listStatus } = useFetch(
   `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
   {
     method: 'GET',
@@ -201,7 +207,10 @@ async function submitSubdomains() {
 <style scoped>
 .table {
   display: grid;
-  grid-template-columns: 5fr 5fr 2fr;
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: 1rem;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .table2 {

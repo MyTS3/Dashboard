@@ -109,19 +109,16 @@ if (error.value) {
     color: 'red',
   });
 }
-const { data: configPrice } = await useFetch(
-  `${url.value}/api/v4/prices/config`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+const { data: configPrice } = useFetch(`${url.value}/api/v4/prices/config`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
-);
+});
 
 async function changeConfigue() {
   disable.value = true;
   pauseRequests.value = true;
-  const { error } = await useFetch(
+  const { error } = useFetch(
     `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config`,
     {
       method: 'POST',
