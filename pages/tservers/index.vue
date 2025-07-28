@@ -10,7 +10,7 @@
       <Table class="flex-1 min-h-0 overflow-y-auto">
         <div class="h-full relative">
           <div class="h-full">
-            <template v-if="status == 'pending'">
+            <template v-if="status === 'pending'">
               <div v-for="_ in 5" :key="_" class="table items">
                 <USkeleton
                   class="h-5 w-40"
@@ -30,7 +30,7 @@
                 />
               </div>
             </template>
-            <template v-if="status == 'success'">
+            <template v-if="status === 'success'">
               <div
                 v-if="servers.length < 1"
                 class="flex flex-col w-full h-full justify-center gap-4 items-center"
@@ -97,7 +97,7 @@
                 </div>
               </div>
             </template>
-            <template v-if="status == 'error'">
+            <template v-if="status === 'error'">
               <main
                 class="w-full h-full flex justify-center items-center flex-col gap-5"
               >
