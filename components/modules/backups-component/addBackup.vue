@@ -35,6 +35,7 @@
           </option>
         </select> -->
           <USelectMenu
+            v-if="status == 'success'"
             v-model="serverUuid"
             class="w-full"
             size="xl"
@@ -42,7 +43,7 @@
             :options="serverDropdown"
           />
           <USkeleton
-            v-if="pending"
+            v-if="status == 'pending'"
             class="h-10 w-full rounded-xl mx-auto"
             :ui="{ background: 'dark:bg-gray-500' }"
           />
@@ -58,6 +59,7 @@
           <option :value="'monthly'">ماهیانه</option>
         </select> -->
           <USelectMenu
+            v-if="status == 'success'"
             v-model="interval"
             class="w-full"
             size="xl"
@@ -65,7 +67,7 @@
             :options="intervals"
           />
           <USkeleton
-            v-if="pending"
+            v-if="status == 'pending'"
             class="h-10 w-full rounded-xl mx-auto"
             :ui="{ background: 'dark:bg-gray-500' }"
           />
@@ -171,15 +173,16 @@ const toast = useToast();
 const interval = ref();
 const serverUuid = ref();
 const serverDropdown = ref([]);
-const { data: servers, error } = await useFetch(
-  `${url.value}/api/v4/tservers/`,
-  {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+const {
+  data: servers,
+  error,
+  status,
+} = useFetch(`${url.value}/api/v4/tservers/`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
-);
+});
 
 if (error.value) {
   toast.add({
@@ -187,26 +190,27 @@ if (error.value) {
     timeout: 2000,
     color: 'red',
   });
-} else {
-  servers.value.map((server) => {
-    serverDropdown.value.push({
-      label: server.name,
-      value: server.uuid,
-    });
-  });
 }
-const { data: prices } = await useFetch(
-  `${url.value}/api/v4/prices/snap-interval`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+watch(servers, (oldservers) => {
+  if (servers != oldservers) {
+    servers.value.map((server) => {
+      serverDropdown.value.push({
+        label: server.name,
+        value: server.uuid,
+      });
+    });
+  }
+});
+
+const { data: prices } = useFetch(`${url.value}/api/v4/prices/snap-interval`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
-);
+});
 
 async function create() {
   disable.value = true;
-  const { error } = await useFetch(`${url.value}/api/v4/snapshots`, {
+  const { error } = useFetch(`${url.value}/api/v4/snapshots`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
