@@ -50,7 +50,7 @@
 import { apiStore, storeToRefs } from '#imports';
 import TheLoading from '~/components/reusable/theLoading.vue';
 const props = defineProps(['selectedServer']);
-const emit = defineEmits(['emit']);
+const emit = defineEmits(['close', 'rstart']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
@@ -78,6 +78,6 @@ async function restartServer() {
       color: 'red',
     });
   }
-  emit('close');
+  emit('close', 'restart');
 }
 </script>
