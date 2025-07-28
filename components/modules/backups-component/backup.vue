@@ -89,7 +89,7 @@
     <restoreBackup
       v-if="deployBackupTab"
       :selecteduuid="selecteduuid"
-      @close="deployBackupTab = false"
+      @close="(backups = []), (page = 0), (deleteBackupTab = false), getPages()"
     />
   </section>
 </template>
