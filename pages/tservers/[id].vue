@@ -154,22 +154,31 @@
           </div>
         </div>
       </main>
-      <main
+      <template
         v-if="teamspeakserverStatus == 'error' && serverInfo?.mustRunning"
-        class="h-full"
       >
-        <div
-          class="w-full h-full flex flex-col justify-center items-end gap-10"
+        <main
+          class="w-full h-full flex justify-center items-center flex-col gap-5"
         >
-          <div>
-            <img src="/images/server-is-off.png" alt="" />
+          <div
+            class="w-full h-full flex flex-col justify-center items-end gap-10"
+          >
+            <div>
+              <img src="/images/server-is-off.png" alt="" />
+            </div>
+            <div class="self-center">
+              <p class="font-bold text-xl text-white my-2">خطا در اتصالات</p>
+              <p>اگه با چند بار تلاش درست نشد با پشتیبانی تماس بگیر</p>
+            </div>
+            <button
+              class="bg-main_green/80 p-4 rounded-xl mx-auto"
+              @click="getUsersAndChannels()"
+            >
+              امتحان مجدد
+            </button>
           </div>
-          <div class="self-center">
-            <p class="font-bold text-xl text-white my-2">خطا در اتصالات</p>
-            <p>به مشکلی بر خوردیم، اگه اینو میبینی با پشتیبانی تماس بگیر</p>
-          </div>
-        </div>
-      </main>
+        </main>
+      </template>
     </div>
 
     <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto p-4">
