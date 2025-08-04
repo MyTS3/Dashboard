@@ -38,7 +38,7 @@
         <P class="text-right font-medium mt-3"
           >لطفا کانفیگ سرور خودرا انتخاب کنید</P
         >
-        <from v-if="!pending" class="w-full my-4">
+        <from v-if="status === 'success'" class="w-full my-4">
           <USelectMenu
             v-model="selectedConfig"
             size="xl"
@@ -47,12 +47,18 @@
             :disabled="disableInputs"
           />
         </from>
-
         <USkeleton
-          v-else
+          v-if="status === 'pending'"
           :ui="{ background: 'dark:bg-gray-500' }"
           class="w-full p-6 rounded-xl"
         />
+        <button
+          class="w-full p-3 rounded-xl bg-main_green"
+          @click="getAvailableConfigs"
+          v-if="status === 'error'"
+        >
+          تلاش مجدد
+        </button>
         <div
           v-if="selectedConfig != 'CONFIG_DEFAULT'"
           class="flex justify-between flex-row-reverse mb-3"
@@ -141,9 +147,12 @@
 
         <button
           :class="{
-            'cursor-not-allowed opacity-55': submitDisable || pending,
+            'cursor-not-allowed opacity-55':
+              submitDisable || status === 'pending' || status === 'error',
           }"
-          :disabled="submitDisable || pending"
+          :disabled="
+            submitDisable || status === 'pending' || status === 'error'
+          "
           class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2"
           @click.prevent="makeServer()"
         >
@@ -175,7 +184,6 @@ import { getBalance } from '../../stores/globalVaribles';
 
 const serverTokenTab = ref(false);
 
-const errors = errorHandle();
 const store = apiStore();
 const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
@@ -204,33 +212,40 @@ async function makeServer() {
   disableInputs.value = true;
   submitDisable.value = true;
   const slots = 2 ** (Number(slot.value) + 3);
-  const { data: server, error } = useFetch(`${url.value}/api/v4/tservers/`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    body: JSON.stringify({
-      name: serverName.value.toLowerCase(),
-      config: selectedConfig.value,
-      slots: slots,
-    }),
-  });
-  if (error.value) {
-    errors.handle(error.value.data.code);
+  let resposne;
+  try {
+    resposne = await $fetch(`${url.value}/api/v4/tservers/`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        name: serverName.value.toLowerCase(),
+        config: selectedConfig.value,
+        slots: slots,
+      }),
+    });
+  } catch {
     disableInputs.value = false;
     submitDisable.value = false;
-    return;
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
   }
+
   getBalance();
-  token = ref(server.value.privilegeKey);
-  tsuuid = ref(server.value.uuid);
-  tsURL = ref(`ts3server://${server.value.name}`);
+  token = ref(resposne.privilegeKey);
+  tsuuid = ref(resposne.uuid);
+  tsURL = ref(`ts3server://${resposne.name}`);
   serverTokenTab.value = true;
 }
 
 const {
   data: availables,
-  pending,
+  execute: getAvailableConfigs,
+  status,
   error,
 } = useFetch(
   `${url.value}/api/v4/tservers/16412dab-991c-4919-b1c8-13927ced37d7/reset-config/available`,
