@@ -58,7 +58,7 @@
                   @click="chargeWalletTab = true"
                 >
                   <div class="w-full">
-                    <p v-if="balance">
+                    <p v-if="balance >= 0">
                       تومان {{ Math.trunc(Number(balance)) }}
                     </p>
                     <p v-else>خطا</p>
