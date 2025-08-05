@@ -53,15 +53,12 @@
                   </div>
                 </button>
                 <button
-                  v-if="status != 'pending'"
+                  v-if="balance != null && balance != 'error'"
                   class="flex gap-1 btn p-3 px-4 rounded-xl"
                   @click="chargeWalletTab = true"
                 >
                   <div class="w-full">
-                    <p v-if="balance >= 0">
-                      تومان {{ Math.trunc(Number(balance)) }}
-                    </p>
-                    <p v-else>خطا</p>
+                    <p>تومان {{ Math.trunc(Number(balance)) }}</p>
                   </div>
                   <div class="ml-auto">
                     <img
@@ -71,8 +68,18 @@
                     />
                   </div>
                 </button>
+                <button
+                  v-if="balance === 'error'"
+                  class="flex gap-1 btn p-3 px-4 rounded-xl items-center justify-center"
+                  @click="getBalance"
+                >
+                  <p>خطا</p>
+                  <div class="">
+                    <img src="/images/restart.png" class="h-6 w-6" alt="bell" />
+                  </div>
+                </button>
                 <USkeleton
-                  v-else
+                  v-if="balance === null"
                   :ui="{ background: 'dark:bg-gray-500' }"
                   class="p-3 px-4 rounded-xl"
                 />
