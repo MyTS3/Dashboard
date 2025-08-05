@@ -96,15 +96,15 @@
               alt="bell-alarm"
             />
             <p dir="rtl" class="font-medium text-sm">
-              این پنل رایگان مسئولیتی در نگهداری داده های شما ندارد. درصورت
-              مشاهده مشکل هنگام تست، در گروه تلگرام
+              این نسخه بتا هست اگه مشکلی دیدی یا کمک خواستی توی گروه تلگرام
               <a
                 class="text-green-300"
                 target="_blank"
                 href="https://t.me/myts3"
-                >@myts3</a
               >
-              اعلام کنید و جایزه بگیرید
+                @myts3
+              </a>
+              بگو
             </p>
             <button class="absolute left-4" @click.prevent="panelAlert = false">
               <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
