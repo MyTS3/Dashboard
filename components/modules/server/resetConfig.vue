@@ -118,19 +118,21 @@ const { data: configPrice } = useFetch(`${url.value}/api/v4/prices/config`, {
 async function changeConfigue() {
   disable.value = true;
   pauseRequests.value = true;
-  const { error } = useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+  try {
+    await $fetch(
+      `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-config`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          config: `${selectedConfigue.value}`,
+        }),
       },
-      body: JSON.stringify({
-        config: `${selectedConfigue.value}`,
-      }),
-    },
-  );
-  if (error.value) {
+    );
+    getBalance();
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
@@ -139,7 +141,7 @@ async function changeConfigue() {
   }
   disable.value = false;
   pauseRequests.value = false;
-  getBalance();
+
   emit('close');
 }
 </script>
