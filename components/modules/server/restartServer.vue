@@ -58,26 +58,28 @@ const reasson = ref();
 const toast = useToast();
 async function restartServer() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/restart`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+  try {
+    await $fetch(
+      `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/restart`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          reason: `${reasson.value}`,
+        }),
       },
-      body: JSON.stringify({
-        reason: `${reasson.value}`,
-      }),
-    },
-  );
-  disable.value = false;
-  if (error.value) {
+    );
+    disable.value = false;
+    emit('close', 'restart');
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
   }
-  emit('close', 'restart');
+  disable.value = false;
 }
 </script>
