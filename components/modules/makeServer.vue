@@ -151,18 +151,21 @@
               submitDisable || status === 'pending' || status === 'error',
           }"
           :disabled="
-            submitDisable || status === 'pending' || status === 'error'
+            submitDisable ||
+            status === 'pending' ||
+            status === 'error' ||
+            serverCheckingLoading
           "
-          class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2"
+          class="flex w-full items-center justify-center bg-main_blue p-4 mt-2 rounded-xl font-medium gap-2 relative"
           @click.prevent="makeServer()"
         >
           <div
-            v-if="!disableInputs"
-            class="flex w-full items-center justify-center font-medium gap-2"
+            v-if="!disableInputs && !serverCheckingLoading"
+            class="flex w-20 items-center justify-center font-medium gap-2"
           >
             <span><img src="/images/plus.png" alt="" /></span>ساخت
           </div>
-          <loading v-if="disableInputs" />
+          <loading v-if="disableInputs || serverCheckingLoading" />
         </button>
       </main>
       <serverToken
@@ -202,11 +205,13 @@ const serverName = ref();
 const selectedConfig = ref('CONFIG_DEFAULT');
 const disableInputs = ref(false);
 const submitDisable = ref(true);
-// const availables = ref();
+const serverCheckingLoading = ref(false);
+
 const disableReasson = ref('');
 let token = ref();
 let tsURL = ref();
 let tsuuid = ref();
+let abortController;
 const toast = useToast();
 async function makeServer() {
   disableInputs.value = true;
@@ -242,6 +247,22 @@ async function makeServer() {
   serverTokenTab.value = true;
 }
 
+async function checkIfServerAvailable() {
+  if (abortController) {
+    abortController.abort();
+  }
+  abortController = new AbortController();
+  await $fetch(`${url.value}/api/v4/tservers/check`, {
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({
+      name: serverName.value,
+    }),
+    signal: abortController.signal,
+  });
+}
 const {
   data: availables,
   execute: getAvailableConfigs,
@@ -264,26 +285,70 @@ if (error.value) {
   });
 }
 
+let waitIfDoneTyping;
 watch(serverName, () => {
-  submitDisable.value = false;
+  serverName.value = serverName.value.toLowerCase();
+  serverCheckingLoading.value = false;
+  submitDisable.value = true;
   disableReasson.value = '';
-  if (serverName.value.length < 3) {
-    submitDisable.value = true;
-    disableReasson.value = 'لطفا نام را وارد کنید';
-  }
-  if (serverName.value.length < 3) {
-    submitDisable.value = true;
-    disableReasson.value = 'نام سرور باید حداقل 3 کاراکتر داشته باشد';
-  }
-  if (!regex.test(serverName.value)) {
-    submitDisable.value = true;
-    disableReasson.value = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
-  }
-
-  if (serverName.value.length >= 128) {
-    submitDisable.value = true;
-    disableReasson.value = 'نام سرور باید حدکثر 128 کاراکتر داشته باشد';
-  }
+  const nameCharachtersNotEnough = () => {
+    if (serverName.value.length < 3) {
+      disableReasson.value = 'نام سرور باید حداقل 3 کاراکتر داشته باشد';
+      return true;
+    }
+  };
+  nameCharachtersNotEnough();
+  //
+  const lessThanThree = () => {
+    if (serverName.value.length < 3) {
+      disableReasson.value = 'نام سرور باید حداقل 3 کاراکتر داشته باشد';
+      return true;
+    }
+  };
+  nameCharachtersNotEnough();
+  //
+  const regexCheck = () => {
+    if (!regex.test(serverName.value)) {
+      disableReasson.value = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
+      return true;
+    }
+  };
+  regexCheck();
+  //
+  const maxlengthCheck = () => {
+    if (serverName.value.length >= 128) {
+      disableReasson.value = 'نام سرور باید حدکثر 128 کاراکتر داشته باشد';
+    }
+  };
+  maxlengthCheck();
+  if (
+    !nameCharachtersNotEnough() &&
+    !lessThanThree() &&
+    !regexCheck() &&
+    !maxlengthCheck()
+  )
+    serverCheckingLoading.value = true;
+  clearTimeout(waitIfDoneTyping);
+  waitIfDoneTyping = setTimeout(async () => {
+    if (
+      !nameCharachtersNotEnough() &&
+      !lessThanThree() &&
+      !regexCheck() &&
+      !maxlengthCheck()
+    ) {
+      try {
+        await checkIfServerAvailable();
+        disableReasson.value = '';
+        submitDisable.value = false;
+        serverCheckingLoading.value = false;
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          disableReasson.value = 'این اسم قبلا گرفته شده';
+          serverCheckingLoading.value = false;
+        }
+      }
+    }
+  }, 1000);
 });
 </script>
 <style scoped></style>
