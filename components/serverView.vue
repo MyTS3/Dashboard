@@ -87,7 +87,10 @@
               @click.prevent="turnServerOffOrOn()"
             />
             <label class="button" for="server-status" /> -->
-            <UToggle v-model="serverRunningToggle" />
+            <UToggle
+              :loading="serverRunningSwitch"
+              v-model="serverRunningToggle"
+            />
           </div>
         </li>
         <p
@@ -194,8 +197,9 @@ import resetConfig from './modules/server/resetConfig.vue';
 import yatqaExample from './modules/server/yatqaExample.vue';
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
-import { pauseRequests, errorHandle } from '#imports';
+import { pauseRequests } from '#imports';
 
+const serverRunningSwitch = ref(false);
 const deleteServerTab = ref(false);
 const changeSlotTab = ref(false);
 const turnOffServerTab = ref(false);
@@ -205,12 +209,11 @@ const restartServerTab = ref(false);
 const resetConfigTab = ref(false);
 const yatqaExampleTab = ref(false);
 const subdomainTab = ref(false);
-
+const toast = useToast();
 const props = defineProps(['serverInfo', 'usersCount']);
 const emit = defineEmits(['getServerDeatails', 'resetAlreadyvisited']);
 const store = apiStore();
 const { url } = storeToRefs(store);
-const errors = errorHandle();
 const selectedServer = ref(props.serverInfo);
 const serverRunningToggle = ref(selectedServer.value.mustRunning);
 pauseRequests.value = !selectedServer.value.mustRunning;
@@ -227,18 +230,27 @@ async function turnServerOffOrOn() {
   if (selectedServer.value.mustRunning === true) {
     turnOffServerTab.value = true;
   } else {
-    const { error } = await useFetch(
-      `${url.value}/api/v4/tservers/${selectedServer.value.uuid}/start`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+    pauseRequests.value = true;
+    serverRunningSwitch.value = true;
+    try {
+      await $fetch(
+        `${url.value}/api/v4/tservers/${selectedServer.value.uuid}/start`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
         },
-      },
-    );
-    if (error.value) {
-      errors.handle(error.value.data.code);
-    } else pauseRequests.value = false;
+      );
+    } catch {
+      toast.add({
+        title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+        timeout: 2000,
+        color: 'red',
+      });
+    }
+    pauseRequests.value = false;
+    serverRunningSwitch.value = false;
     getServerDeatails();
   }
 }
