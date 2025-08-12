@@ -36,56 +36,96 @@
   </option>
 </select> -->
           <USelectMenu
+            v-if="playlistPending === 'success'"
             v-model="selectedPlaylist"
             class="w-full my-4"
             size="xl"
             color="indigo"
             :options="playlists"
           />
+          <USkeleton
+            v-if="playlistPending === 'pending'"
+            class="h-10 w-full my-4 rounded-lg"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
           <!-- ///////////////////price///////////// -->
-          <div id="price" class="w-full">
-            <div class="flex justify-between flex-row-reverse text-white/40">
-              <h1>:قیمت ساعتی</h1>
-              <div class="flex flex-row-reverse gap-1 text-white/40">
-                <span>{{
-                  Math.abs(
-                    Math.floor(
-                      (botPrice.price / botPrice.secondsForPrice) * 3600,
-                    ),
-                  ) ?? 0
-                }}</span>
-                <p>تومان</p>
+          <template v-if="priceStatus === 'success'">
+            <div id="price" class="w-full">
+              <div class="flex justify-between flex-row-reverse text-white/40">
+                <h1>:قیمت ساعتی</h1>
+                <div class="flex flex-row-reverse gap-1 text-white/40">
+                  <span>{{
+                    Math.abs(
+                      Math.floor(
+                        (botPrice.price / botPrice.secondsForPrice) * 3600,
+                      ),
+                    ) ?? 0
+                  }}</span>
+                  <p>تومان</p>
+                </div>
+              </div>
+              <div
+                class="flex justify-between flex-row-reverse mt-3 text-white/40"
+              >
+                <h1>:قیمت روزانه</h1>
+                <div class="flex flex-row-reverse gap-1 text-white/40">
+                  <span>{{
+                    Math.abs(
+                      Math.floor(
+                        (botPrice.price / botPrice.secondsForPrice) * 86400,
+                      ),
+                    ) ?? 0
+                  }}</span>
+                  <p>تومان</p>
+                </div>
+              </div>
+              <div class="flex justify-between flex-row-reverse mt-3">
+                <h1>:قیمت ماهانه</h1>
+                <div class="flex flex-row-reverse gap-1">
+                  <span>{{
+                    Math.abs(
+                      Math.floor(
+                        (botPrice.price / botPrice.secondsForPrice) * 2629800,
+                      ),
+                    ) ?? 0
+                  }}</span>
+                  <p>تومان</p>
+                </div>
               </div>
             </div>
-            <div
-              class="flex justify-between flex-row-reverse mt-3 text-white/40"
-            >
-              <h1>:قیمت روزانه</h1>
-              <div class="flex flex-row-reverse gap-1 text-white/40">
-                <span>{{
-                  Math.abs(
-                    Math.floor(
-                      (botPrice.price / botPrice.secondsForPrice) * 86400,
-                    ),
-                  ) ?? 0
-                }}</span>
-                <p>تومان</p>
+          </template>
+          <template v-if="priceStatus === 'pending'">
+            <main class="flex justify-between">
+              <div class="flex flex-col">
+                <USkeleton
+                  class="h-4 w-16 my-2 rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-4 w-16 my-2 rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-4 w-16 my-2 rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
               </div>
-            </div>
-            <div class="flex justify-between flex-row-reverse mt-3">
-              <h1>:قیمت ماهانه</h1>
-              <div class="flex flex-row-reverse gap-1">
-                <span>{{
-                  Math.abs(
-                    Math.floor(
-                      (botPrice.price / botPrice.secondsForPrice) * 2629800,
-                    ),
-                  ) ?? 0
-                }}</span>
-                <p>تومان</p>
+              <div class="flex flex-col">
+                <USkeleton
+                  class="h-4 w-16 my-2 rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-4 w-16 my-2 rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-4 w-16 my-2 rounded-lg"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
               </div>
-            </div>
-          </div>
+            </main>
+          </template>
           <!-- ////////////////////////////////// -->
         </div>
         <button
@@ -122,23 +162,34 @@ const selectedPlaylist = ref();
 const playlists = ref([]);
 const toast = useToast();
 
-const { data } = await useFetch(`${url.value}/api/v4/playlists`, {
-  method: 'GET',
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const { data, status: playlistPending } = useFetch(
+  `${url.value}/api/v4/playlists`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
+);
+watch(data, (newData) => {
+  if (data != newData) {
+    data.value.map((d) => {
+      playlists.value.push({
+        label: d.name,
+        value: d.uuid,
+      });
+    });
+  }
 });
-data.value.map((d) => {
-  playlists.value.push({
-    label: d.name,
-    value: d.uuid,
-  });
-});
-const { data: botPrice } = await useFetch(`${url.value}/api/v4/prices/bot`, {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+
+const { data: botPrice, status: priceStatus } = useFetch(
+  `${url.value}/api/v4/prices/bot`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
-});
+);
 async function makeMusicBot() {
   disableInputs.value = true;
   try {
