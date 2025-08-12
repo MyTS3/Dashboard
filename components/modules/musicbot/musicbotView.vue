@@ -35,7 +35,7 @@
             <h2 class="font-bold">{{ playingMusic?.Title }}</h2>
           </div>
           <div
-            v-if="playingMusic"
+            v-if="playingMusic && playingMusic.Length"
             class="flex items-center w-full justify-around"
           >
             <p v-if="playingMusic.Length" class="w-10">
