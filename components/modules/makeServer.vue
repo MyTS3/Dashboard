@@ -348,7 +348,7 @@ watch(serverName, () => {
         }
       }
     }
-  }, 1000);
+  }, 500);
 });
 </script>
 <style scoped></style>
