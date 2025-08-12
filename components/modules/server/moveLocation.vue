@@ -104,6 +104,7 @@ if (error.value) {
   });
 
 async function moveServer() {
+  pauseRequests.value = true;
   disable.value = true;
   try {
     await $fetch(
@@ -124,6 +125,8 @@ async function moveServer() {
       timeout: 2000,
       color: 'red',
     });
+  } finally {
+    pauseRequests.value = false;
   }
   emit('close');
 }

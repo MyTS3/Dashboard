@@ -57,6 +57,7 @@ const disable = ref(false);
 const reasson = ref();
 const toast = useToast();
 async function restartServer() {
+  pauseRequests.value = true;
   disable.value = true;
   try {
     await $fetch(
@@ -72,13 +73,15 @@ async function restartServer() {
       },
     );
     disable.value = false;
-    emit('close', 'restart');
   } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
+  } finally {
+    pauseRequests.value = false;
+    emit('close', 'restart');
   }
   disable.value = false;
 }
