@@ -204,12 +204,21 @@ async function makeMusicBot() {
         playlist: selectedPlaylist.value.value,
       }),
     });
-  } catch {
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
-    });
+  } catch (err) {
+    const errMsg = (err.data?.message).slice(-15);
+    if (errMsg === 'already exists.') {
+      toast.add({
+        title: 'بات تکراری است',
+        timeout: 2000,
+        color: 'red',
+      });
+    } else {
+      toast.add({
+        title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+        timeout: 2000,
+        color: 'red',
+      });
+    }
   }
   disableInputs.value = false;
   emit('close');
