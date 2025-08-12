@@ -205,7 +205,7 @@ async function makeMusicBot() {
       }),
     });
   } catch (err) {
-    const errMsg = (err.data?.message).slice(-15);
+    const errMsg = (err.data?.message ?? '').slice(-15);
     if (errMsg === 'already exists.') {
       toast.add({
         title: 'بات تکراری است',
