@@ -26,10 +26,10 @@
       </p>
       <a
         class="p-4 py-5 text-center rounded-xl module-btn bg-main_blue"
-        :href="tsURL"
+        :href="`${tsURL}?token=${token}`"
         @click="goToServer()"
       >
-        <button>اوکی</button>
+        <button>استفاده از توکن</button>
       </a>
     </main>
   </section>
