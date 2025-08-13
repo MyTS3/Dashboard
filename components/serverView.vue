@@ -176,7 +176,7 @@
   <yatqaExample
     v-if="yatqaExampleTab"
     :selected-server="selectedServer"
-    @close="yatqaExampleTab = false"
+    @close="(yatqaExampleTab = false), emit('getServerDeatails')"
   />
   <subdomains
     v-if="subdomainTab"
