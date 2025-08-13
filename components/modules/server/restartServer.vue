@@ -50,7 +50,7 @@
 import { apiStore, storeToRefs } from '#imports';
 import TheLoading from '~/components/reusable/theLoading.vue';
 const props = defineProps(['selectedServer']);
-const emit = defineEmits(['close', 'rstart']);
+const emit = defineEmits(['close', 'restart']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const disable = ref(false);
@@ -79,10 +79,11 @@ async function restartServer() {
       timeout: 2000,
       color: 'red',
     });
-  } finally {
-    pauseRequests.value = false;
-    emit('close', 'restart');
   }
+  pauseRequests.value = false;
+  emit('restart');
+  emit('close');
+
   disable.value = false;
 }
 </script>

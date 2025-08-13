@@ -151,7 +151,7 @@
     v-if="restartServerTab"
     :selected-server="selectedServer"
     @close="restartServerTab = false"
-    @restart="getServerDeatails()"
+    @restart="emit('getServerDeatails')"
   />
   <turnoffServer
     v-if="turnOffServerTab"
