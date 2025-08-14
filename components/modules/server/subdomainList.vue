@@ -15,7 +15,7 @@
         </button>
         <h1 class="my-4 text-3xl font-extrabold">لیست ساب دامنه ها</h1>
         <div class="bg-mainbg_500 rounded-2xl">
-          <div>
+          <div class="h-[30vh] overflow-y-auto">
             <template
               v-if="listStatus === 'pending' || domainStatus === 'pending'"
             >
