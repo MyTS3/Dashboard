@@ -45,21 +45,54 @@
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
             <h1>:قیمت ساعتی</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
-              <span>54</span>
+              <span>{{
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[2 ** (Number(selectedSlot) + 3)].price /
+                          prices[2 ** (Number(selectedSlot) + 3)]
+                            .secondsForPrice) *
+                          3600,
+                      ),
+                    )
+                  : '?'
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3 text-white/40">
-            <h1>:قیمت روزانه</h1>
+            <h1>:هزینه روزانه</h1>
             <div class="flex flex-row-reverse gap-1 text-white/40">
-              <span>1،300</span>
+              <span>{{
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[2 ** (Number(selectedSlot) + 3)].price /
+                          prices[2 ** (Number(selectedSlot) + 3)]
+                            .secondsForPrice) *
+                          86400,
+                      ),
+                    )
+                  : '?'
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
           <div class="flex justify-between flex-row-reverse mt-3">
             <h1>:قیمت ماهانه</h1>
             <div class="flex flex-row-reverse gap-1">
-              <span>39،000</span>
+              <span>{{
+                prices
+                  ? Math.abs(
+                      Math.floor(
+                        (prices[2 ** (Number(selectedSlot) + 3)].price /
+                          prices[2 ** (Number(selectedSlot) + 3)]
+                            .secondsForPrice) *
+                          2629800,
+                      ),
+                    )
+                  : '?'
+              }}</span>
               <p>تومان</p>
             </div>
           </div>
@@ -84,9 +117,14 @@ const disable = ref(false);
 const props = defineProps(['selectedServer']);
 const toast = useToast();
 const emit = defineEmits(['close']);
-const selectedSlot = ref(16);
+const selectedSlot = ref(1);
 const store = apiStore();
 const { url } = storeToRefs(store);
+const { data: prices } = useFetch(`${url.value}/api/v4/prices/tserver`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
 async function chaneSlots() {
   disable.value = true;
   const slots = 2 ** (Number(selectedSlot.value) + 3);

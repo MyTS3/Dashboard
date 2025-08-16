@@ -151,7 +151,7 @@
     v-if="restartServerTab"
     :selected-server="selectedServer"
     @close="restartServerTab = false"
-    @restart="getServerDeatails()"
+    @restart="emit('getServerDeatails')"
   />
   <turnoffServer
     v-if="turnOffServerTab"
@@ -176,7 +176,7 @@
   <yatqaExample
     v-if="yatqaExampleTab"
     :selected-server="selectedServer"
-    @close="yatqaExampleTab = false"
+    @close="(yatqaExampleTab = false), emit('getServerDeatails')"
   />
   <subdomains
     v-if="subdomainTab"

@@ -86,7 +86,7 @@
                     <a
                       class="cursor-pointer w-10 connect px-2 hover:opacity-50"
                       :href="`ts3server://${server.name}`"
-                      ><img src="/images/connect.svg" />
+                      ><img class="max-w-6" src="/images/connect.svg" />
                     </a>
                     <img
                       class="cursor-pointe w-10 px-2 cam"

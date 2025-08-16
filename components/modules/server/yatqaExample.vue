@@ -53,18 +53,13 @@
           class="absolute items-center border-black border-[1px] cursor-pointer left-[590px] top-[146px] bg-white text-black w-[9rem] h-5 flex justify-around text-xs"
         >
           <div class="flex gap-1 parent">
-            <p v-if="newPass">{{ newPass }}</p>
             <p
-              v-else
               :style="{ '-webkit-text-security': showYatqaPass }"
-              @click="copyToClipboard(selectedServer.queryPassword)"
+              @click="copyToClipboard(password)"
             >
-              {{ selectedServer.queryPassword }}
+              {{ password }}
             </p>
-            <button
-              class="w"
-              @click="copyToClipboard(selectedServer.queryPassword)"
-            >
+            <button class="w" @click="copyToClipboard(password)">
               <img class="w-4 child" src="/images/copy.svg" alt="" />
             </button>
           </div>
@@ -87,24 +82,25 @@
   </Teleport>
 </template>
 <script setup>
-const newPass = ref(undefined);
+const props = defineProps(['selectedServer']);
+const password = ref(props.selectedServer.queryPassword);
 const toast = useToast();
 const store = apiStore();
 const { url } = storeToRefs(store);
-const props = defineProps(['selectedServer']);
-async function changeYatqaPass() {
-  const { data } = await useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-password`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+defineEmits(['close']);
+const { data: queryPass, refresh: changeYatqaPass } = await useFetch(
+  `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/reset-password`,
+  {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  );
-  newPass.value = data.value.queryPassword;
-}
-
+    immediate: false,
+  },
+);
+watch(queryPass, (prev) => {
+  if (prev != queryPass) password.value = queryPass.value.queryPassword;
+});
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
   toast.add({
