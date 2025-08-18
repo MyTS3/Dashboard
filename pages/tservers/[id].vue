@@ -575,7 +575,7 @@ useFetch<{
           return new Promise((resolve) =>
             setTimeout(async () => resolve(await handle()), 1000),
           );
-        if (lastTimeReccived.value > 1) await getUsersAndChannels();
+        await getUsersAndChannels();
         if (res.response._data.at) {
           lastTimeReccived.value = res.response._data.at;
         }
