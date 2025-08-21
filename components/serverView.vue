@@ -243,8 +243,8 @@ async function turnServerOffOrOn() {
         },
       );
     } catch (err) {
-      const errMsg = err.data?.message ?? '';
-      if (errMsg === 'you need more balance to do this') {
+      const errorCode = err.data.code ?? '';
+      if (errorCode === 'NEED_MORE_BALANCE') {
         toast.add({
           title: 'قبل از هر کاری از بالای صفحه کیف پولتو شارژ کن',
           timeout: 2000,
