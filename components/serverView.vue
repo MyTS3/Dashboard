@@ -242,12 +242,21 @@ async function turnServerOffOrOn() {
           },
         },
       );
-    } catch {
-      toast.add({
-        title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-        timeout: 2000,
-        color: 'red',
-      });
+    } catch (err) {
+      const errMsg = err.data?.message ?? '';
+      if (errMsg === 'you need more balance to do this') {
+        toast.add({
+          title: 'قبل از هر کاری از بالای صفحه کیف پولتو شارژ کن',
+          timeout: 2000,
+          color: 'red',
+        });
+      } else {
+        toast.add({
+          title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+          timeout: 2000,
+          color: 'red',
+        });
+      }
     }
     pauseRequests.value = false;
     serverRunningSwitch.value = false;
