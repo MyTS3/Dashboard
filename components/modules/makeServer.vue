@@ -230,14 +230,23 @@ async function makeServer() {
         slots: slots,
       }),
     });
-  } catch {
+  } catch (err) {
+    const errorCode = err.data?.code ?? '';
     disableInputs.value = false;
     submitDisable.value = false;
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
-    });
+    if (errorCode === 'NEED_MORE_BALANCE') {
+      toast.add({
+        title: 'قبل از هر کاری از بالای صفحه کیف پولتو شارژ کن',
+        timeout: 2000,
+        color: 'red',
+      });
+    } else {
+      toast.add({
+        title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+        timeout: 2000,
+        color: 'red',
+      });
+    }
   }
 
   getBalance();

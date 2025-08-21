@@ -132,12 +132,21 @@ async function changeConfigue() {
       },
     );
     getBalance();
-  } catch {
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
-    });
+  } catch (err) {
+    const errorCode = err.data?.code ?? '';
+    if (errorCode === 'NEED_MORE_BALANCE') {
+      toast.add({
+        title: 'قبل از هر کاری از بالای صفحه کیف پولتو شارژ کن',
+        timeout: 2000,
+        color: 'red',
+      });
+    } else {
+      toast.add({
+        title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+        timeout: 2000,
+        color: 'red',
+      });
+    }
   }
   disable.value = false;
   pauseRequests.value = false;
