@@ -265,7 +265,7 @@ const panelAlert = ref(true);
 const token = localStorage.getItem('token');
 const name = ref();
 if (!token) {
-  navigateTo('https://my.mtserver.ir/index.php?rp=/login', {
+  navigateTo('https://my.mtserver.ir/myts.php', {
     external: true,
   });
 } else {
