@@ -201,7 +201,7 @@
           </li> -->
           </nav>
           <div class="flex-1" />
-          <a href="https://my.mtserver.ir/">
+          <a target="_blank" href="https://my.mtserver.ir/">
             <img
               class="object-contain p-3 opacity-70"
               src="/images/logo-white.png"
