@@ -216,10 +216,13 @@
         >
           <img src="/images/new/no-server.png" alt="" />
           <div>
-            <p class="text-3xl text-center font-bold">پنل در دسترس نیست</p>
-            <p>
-              یه مشکلی وجود داره یا داریم آپدیتی چیزی میدیم، برو چند دقیقه دیگه
-              برگرد
+            <p class="text-3xl text-center font-bold">
+              خطا در اتصال به وب سرویس
+            </p>
+            <p class="w-3/4 text-center mx-auto mt-2">
+              اگه از وی پی ان یا پروکسی استفاده میکنی خاموشش کن یا حداقل عوضش کن
+              اگه این کارو کردی و درست نشد احتمالا وب سرویس پایینه و داریم
+              اپدیتی چیزی میدیم
             </p>
           </div>
         </main>
@@ -262,7 +265,7 @@ const panelAlert = ref(true);
 const token = localStorage.getItem('token');
 const name = ref();
 if (!token) {
-  navigateTo('https://my.mtserver.ir/index.php?rp=/login', {
+  navigateTo('https://my.mtserver.ir/myts.php', {
     external: true,
   });
 } else {
