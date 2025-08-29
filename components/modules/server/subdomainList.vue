@@ -82,7 +82,6 @@
               <img
                 v-if="
                   limits &&
-                  subDomainList.length &&
                   subDomainList.length < limits.value.maxSubdomainPerTServer &&
                   disablngReasson == ''
                 "
