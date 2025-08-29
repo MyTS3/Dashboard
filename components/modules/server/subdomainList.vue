@@ -14,18 +14,27 @@
           <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
         <h1 class="my-4 text-3xl font-extrabold">لیست ساب دامنه ها</h1>
-        <div class="bg-mainbg_500 rounded-2xl">
+        <div class="bg-mainbg_500 rounded-2xl relative">
           <div class="h-[30vh] overflow-y-auto">
             <template
               v-if="listStatus === 'pending' || domainStatus === 'pending'"
             >
-              <div v-for="_ in 4" :key="_" class="table my-4">
+              <div
+                v-for="_ in 4"
+                :key="_"
+                class="px-5 table-row rounded-lg items"
+              >
                 <USkeleton
-                  class="h-8 w-2/3 rounded-lg"
+                  class="h-8 w-2/3 rounded-lg ml-auto mr-8"
                   :ui="{ background: 'dark:bg-gray-500' }"
                 />
+                <div class="flex justify-center">
+                  <div
+                    class="w-3 h-3 rounded-full bg-gray-200 animate-pulse"
+                  ></div>
+                </div>
                 <USkeleton
-                  class="h-8 w-2/3 rounded-lg"
+                  class="h-8 w-2/3 rounded-lg ml-8"
                   :ui="{ background: 'dark:bg-gray-500' }"
                 />
                 <USkeleton
@@ -36,27 +45,48 @@
             </template>
             <div
               v-show="listStatus === 'success' && domainStatus === 'success'"
-              class="flex justify-between ml-12 px-5 items relative items-center text-right rounded-lg"
+              class="relative table-row rounded-lg items"
             >
               <div></div>
-              <div class="flex justify-center gap-2">
+              <div class="flex justify-center gap-10">
                 <p>{{ serverName.split('.')[0] }}</p>
-                <p>.</p>
+                <p class="ml-3">.</p>
                 <p>{{ serverName.slice(serverName.indexOf('.') + 1) }}</p>
               </div>
+              <div></div>
               <UTooltip
                 v-if="
                   limits &&
                   subDomainList.length &&
-                  subDomainList.length >= limits.value.maxSubdomainPerTServer
+                  subDomainList.length >= limits.value.maxSubdomainPerTServer &&
+                  !regexDisablingSubmit
                 "
                 :text="'شما به حداکثر تعداد ساب دامین های خود رسیده اید'"
               >
-                <img class="opacity-50" src="/images/add-square.png" alt="" />
+                <img
+                  class="opacity-50 mr-5"
+                  src="/images/add-square.png"
+                  alt=""
+                />
+              </UTooltip>
+              <UTooltip
+                v-if="regexDisablingSubmit && disablngReasson != ''"
+                :text="'لطفا ابتدا نام فیلد قبلی را درست کنید'"
+              >
+                <img
+                  class="opacity-50 mr-5"
+                  src="/images/add-square.png"
+                  alt=""
+                />
               </UTooltip>
               <img
-                v-else
-                class="cursor-pointer"
+                v-if="
+                  limits &&
+                  subDomainList.length &&
+                  subDomainList.length < limits.value.maxSubdomainPerTServer &&
+                  disablngReasson == ''
+                "
+                class="cursor-pointer mr-5"
                 src="/images/add-square.png"
                 alt=""
                 @click="addToList()"
@@ -68,9 +98,11 @@
               <div
                 v-for="(subdomain, i) in subDomainList"
                 :key="subdomain"
-                class="flex px-5 items relative items-center text-right rounded-lg"
+                class="px-5 table-row rounded-lg items"
               >
                 <input
+                  maxlength="64"
+                  @input="checkIfValid(subDomainList[i].sub)"
                   :disabled="disable"
                   class="w-2/3 mx-auto h-[2.8rem] rounded-lg bg-transparent border border-indigo-400 text-right px-2"
                   type="text"
@@ -78,7 +110,7 @@
                 />
                 <p class="text-center">.</p>
                 <from
-                  class="w-2/3 mx-auto rounded-lg bg-transparent text-right"
+                  class="w-2/3 mx-auto rounded-lg bg-transparent text-right relative"
                 >
                   <USelectMenu
                     size="xl"
@@ -97,10 +129,17 @@
               </div>
             </template>
           </div>
+          <p
+            class="sticky bottom-6 right-0 text-sm text-white/80"
+            v-if="disablngReasson"
+          >
+            {{ disablngReasson }}
+          </p>
         </div>
+
         <button
-          :class="disable ? 'opacity-45' : ''"
-          :disabled="disable"
+          :class="disable || regexDisablingSubmit ? 'opacity-45' : ''"
+          :disabled="disable || regexDisablingSubmit"
           class="w-full flex justify-center p-4 bg-main_blue rounded-xl"
           @click="submitSubdomains()"
         >
@@ -117,6 +156,9 @@ import { limits } from '~/stores/limits';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
+const regex = RegExp('^[a-zA-Z0-9]+$');
+const regexDisablingSubmit = ref(true);
+const disablngReasson = ref('');
 const emit = defineEmits(['close']);
 const domainListForDropDown = ref([]);
 const disable = ref(false);
@@ -154,12 +196,11 @@ const { data: subDomainList, status: listStatus } = useFetch(
 );
 
 function addToList() {
+  regexDisablingSubmit.value = true;
+  disablngReasson.value = 'لطفا یک نام برای ساب دامین انتخاب کنید';
   subDomainList.value.push({
     sub: '',
-    domain: {
-      uuid: '',
-      label: '',
-    },
+    domain: domainListForDropDown.value[0] || { uuid: '', label: '' },
   });
 }
 
@@ -173,6 +214,20 @@ function deleteSubDomain(i) {
     index += 1;
   });
   subDomainList.value = newList;
+}
+function checkIfValid(subdomain) {
+  if (subdomain.length < 3) {
+    disablngReasson.value = 'حداقل 3 کاراکتر باید بنویسید';
+    regexDisablingSubmit.value = true;
+    return;
+  }
+  if (!regex.test(subdomain)) {
+    disablngReasson.value = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
+    regexDisablingSubmit.value = true;
+    return;
+  }
+  disablngReasson.value = '';
+  regexDisablingSubmit.value = false;
 }
 
 async function submitSubdomains() {
@@ -216,5 +271,11 @@ async function submitSubdomains() {
 .table2 {
   display: grid;
   grid-template-columns: 5fr 1fr 5fr 2fr;
+}
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr auto 2fr auto;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>
