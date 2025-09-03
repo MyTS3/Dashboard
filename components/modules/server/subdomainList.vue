@@ -104,6 +104,7 @@
                   class="w-2/3 mx-auto rounded-lg bg-transparent text-right relative"
                 >
                   <USelectMenu
+                    @change="checkIfValid()"
                     size="xl"
                     color="indigo"
                     :options="domainListForDropDown"
