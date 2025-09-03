@@ -23,6 +23,16 @@
           </button>
         </div>
         <div
+          class="absolute parent items-center border-black border-[1px] cursor-pointer left-[122px] top-[174px] bg-white text-black w-[10.4rem] h-6 flex justify-around text-xs"
+          @click="copyToClipboard(selectedServer.deployedOn)"
+        >
+          <p class="text-black">{{ selectedServer.deployedOn }}</p>
+          <button>
+            <img class="w-4 child" src="/images/copy.svg" alt="" />
+          </button>
+          <!-- <p class="absolute right-0 -bottom-4 font-semibold">آدرس متغیر</p> -->
+        </div>
+        <div
           class="absolute parent items-center border-black border-[1px] cursor-pointer left-[300px] top-[146px] bg-white text-black w-[4.6rem] h-5 flex justify-around text-xs"
           @click="copyToClipboard(selectedServer.queryPort)"
         >
@@ -83,6 +93,7 @@
 </template>
 <script setup>
 const props = defineProps(['selectedServer']);
+console.log(props.selectedServer);
 const password = ref(props.selectedServer.queryPassword);
 const toast = useToast();
 const store = apiStore();

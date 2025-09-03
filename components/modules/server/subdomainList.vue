@@ -15,7 +15,7 @@
         </button>
         <h1 class="my-4 text-3xl font-extrabold">لیست ساب دامنه ها</h1>
         <div class="bg-mainbg_500 rounded-2xl relative">
-          <div class="h-[30vh] overflow-y-auto">
+          <div class="h-[30vh] overflow-y-auto rounded-2xl overflow-x-hidden">
             <template
               v-if="listStatus === 'pending' || domainStatus === 'pending'"
             >
@@ -50,7 +50,7 @@
               <div></div>
               <div class="flex justify-center gap-10">
                 <p>{{ serverName.split('.')[0] }}</p>
-                <p class="ml-3">.</p>
+                <p class="ml-[0.85rem]">.</p>
                 <p>{{ serverName.slice(serverName.indexOf('.') + 1) }}</p>
               </div>
               <div></div>
@@ -58,20 +58,9 @@
                 v-if="
                   limits &&
                   subDomainList.length &&
-                  subDomainList.length >= limits.value.maxSubdomainPerTServer &&
-                  !regexDisablingSubmit
+                  subDomainList.length >= limits.value.maxSubdomainPerTServer
                 "
                 :text="'شما به حداکثر تعداد ساب دامین های خود رسیده اید'"
-              >
-                <img
-                  class="opacity-50 mr-5"
-                  src="/images/add-square.png"
-                  alt=""
-                />
-              </UTooltip>
-              <UTooltip
-                v-if="regexDisablingSubmit && disablngReasson != ''"
-                :text="'لطفا ابتدا نام فیلد قبلی را درست کنید'"
               >
                 <img
                   class="opacity-50 mr-5"
@@ -82,8 +71,7 @@
               <img
                 v-if="
                   limits &&
-                  subDomainList.length < limits.value.maxSubdomainPerTServer &&
-                  disablngReasson == ''
+                  subDomainList.length < limits.value.maxSubdomainPerTServer
                 "
                 class="cursor-pointer mr-5"
                 src="/images/add-square.png"
@@ -97,12 +85,16 @@
               <div
                 v-for="(subdomain, i) in subDomainList"
                 :key="subdomain"
-                class="px-5 table-row rounded-lg items"
+                :class="subdomain.errorMessage ? 'pb-[4.2rem] pt-2' : ''"
+                class="px-5 table-row rounded-lg items relative"
               >
                 <input
                   maxlength="64"
-                  @input="checkIfValid(subDomainList[i].sub)"
+                  @input="checkIfValid()"
                   :disabled="disable"
+                  :class="
+                    subDomainList[i].errorMessage ? 'border-main_red' : ''
+                  "
                   class="w-2/3 mx-auto h-[2.8rem] rounded-lg bg-transparent border border-indigo-400 text-right px-2"
                   type="text"
                   v-model="subDomainList[i].sub"
@@ -112,6 +104,7 @@
                   class="w-2/3 mx-auto rounded-lg bg-transparent text-right relative"
                 >
                   <USelectMenu
+                    @change="checkIfValid()"
                     size="xl"
                     color="indigo"
                     :options="domainListForDropDown"
@@ -125,15 +118,15 @@
                   alt=""
                   @click="deleteSubDomain(i)"
                 />
+                <p
+                  v-if="subdomain.errorMessage"
+                  class="absolute bottom-0 right-4 text-sm text-white/60"
+                >
+                  {{ subdomain.errorMessage }}
+                </p>
               </div>
             </template>
           </div>
-          <p
-            class="sticky bottom-6 right-0 text-sm text-white/80"
-            v-if="disablngReasson"
-          >
-            {{ disablngReasson }}
-          </p>
         </div>
 
         <button
@@ -181,9 +174,9 @@ watch(domainList, (oldVal) => {
     });
   }
 });
-
+const subDomainList = ref([]);
 const props = defineProps(['selectedServer', 'serverName']);
-const { data: subDomainList, status: listStatus } = useFetch(
+const { data: subDomainListFetch, status: listStatus } = useFetch(
   `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
   {
     method: 'GET',
@@ -193,13 +186,19 @@ const { data: subDomainList, status: listStatus } = useFetch(
     },
   },
 );
-
+watch(subDomainListFetch, () => {
+  subDomainListFetch.value.map((subdomain) => {
+    subDomainList.value.push({ ...subdomain, errorMessage: '', error: false });
+  });
+});
 function addToList() {
   regexDisablingSubmit.value = true;
   disablngReasson.value = 'لطفا یک نام برای ساب دامین انتخاب کنید';
   subDomainList.value.push({
-    sub: '',
+    sub: null,
     domain: domainListForDropDown.value[0] || { uuid: '', label: '' },
+    error: true,
+    errorMessage: '',
   });
 }
 
@@ -213,26 +212,38 @@ function deleteSubDomain(i) {
     index += 1;
   });
   subDomainList.value = newList;
+  checkIfValid();
 }
-function checkIfValid(subdomain) {
-  if (subdomain.length < 3) {
-    disablngReasson.value = 'حداقل 3 کاراکتر باید بنویسید';
-    regexDisablingSubmit.value = true;
-    return;
-  }
-  if (!regex.test(subdomain)) {
-    disablngReasson.value = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
-    regexDisablingSubmit.value = true;
-    return;
-  }
-  disablngReasson.value = '';
+function checkIfValid() {
   regexDisablingSubmit.value = false;
+  if (subDomainListFetch.value.length < 1 && subDomainList.value < 1) {
+    regexDisablingSubmit.value = true;
+    return;
+  }
+  subDomainList.value.map((subdomain) => {
+    if (subdomain.sub != null) {
+      if (subdomain.sub.length < 3) {
+        subdomain.errorMessage = 'حداقل 3 کاراکتر باید بنویسید';
+        regexDisablingSubmit.value = true;
+        return;
+      }
+      if (!regex.test(subdomain.sub)) {
+        subdomain.errorMessage = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
+        regexDisablingSubmit.value = true;
+        return;
+      }
+    } else {
+      regexDisablingSubmit.value = true;
+      return;
+    }
+    subdomain.errorMessage = '';
+  });
 }
 
 async function submitSubdomains() {
   disable.value = true;
   subDomainList.value = subDomainList.value.map((sd) => {
-    return { ...sd, sub: sd.sub.toLowerCase() };
+    return { domain: sd.domain, sub: sd.sub.toLowerCase() };
   });
   try {
     await $fetch(
