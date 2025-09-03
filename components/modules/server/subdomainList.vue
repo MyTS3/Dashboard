@@ -45,15 +45,15 @@
             </template>
             <div
               v-show="listStatus === 'success' && domainStatus === 'success'"
-              class="relative table-row rounded-lg items"
+              class="sticky top-0 table-row rounded-lg items text-center bg-mainbg_400 z-20"
             >
-              <div></div>
-              <div class="flex justify-center gap-10">
-                <p>{{ serverName.split('.')[0] }}</p>
-                <p class="ml-[0.85rem]">.</p>
-                <p>{{ serverName.slice(serverName.indexOf('.') + 1) }}</p>
-              </div>
-              <div></div>
+              <p class="text-right">{{ serverName.split('.')[0] }}</p>
+              <p class="text-center">.</p>
+              <p
+                class="w-full mx-auto rounded-lg bg-transparent text-left relative"
+              >
+                {{ serverName.slice(serverName.indexOf('.') + 1) }}
+              </p>
               <UTooltip
                 v-if="
                   limits &&
@@ -95,13 +95,13 @@
                   :class="
                     subDomainList[i].errorMessage ? 'border-main_red' : ''
                   "
-                  class="w-2/3 mx-auto h-[2.8rem] rounded-lg bg-transparent border border-indigo-400 text-right px-2"
+                  class="w-full mx-auto h-[2.8rem] rounded-lg bg-transparent border border-indigo-400 text-right px-2"
                   type="text"
                   v-model="subDomainList[i].sub"
                 />
                 <p class="text-center">.</p>
                 <from
-                  class="w-2/3 mx-auto rounded-lg bg-transparent text-right relative"
+                  class="w-full mx-auto rounded-lg bg-transparent text-right relative"
                 >
                   <USelectMenu
                     @change="checkIfValid()"
@@ -120,7 +120,7 @@
                 />
                 <p
                   v-if="subdomain.errorMessage"
-                  class="absolute bottom-0 right-4 text-sm text-white/60"
+                  class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-sm text-white/60"
                 >
                   {{ subdomain.errorMessage }}
                 </p>
