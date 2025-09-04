@@ -9,7 +9,7 @@
     <div
       ref="el"
       dir="rtl"
-      class="w-full overflow-y-scroll flex flex-col bg-mainbg_500 rounded-2xl rounded-t-none h-full"
+      class="w-full overflow-y-scroll flex flex-col bg-mainbg_500 rounded-2xl rounded-t-none h-full scroll-bar"
     >
       <div class="h-full relative">
         <div class="h-full">
