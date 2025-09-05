@@ -8,35 +8,62 @@
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
       </header>
       <div class="bg-white/10 h-full mt-4 px-1 rounded-lg overflow-scroll">
-        <li
-          v-for="playlist in playlists"
-          :key="playlist.uuid"
-          :class="
-            selectedPlaylistUuid == playlist.uuid
-              ? 'btn-active'
-              : 'hover:hover:bg-main_orange/20'
-          "
-          class="list-none flex my-1 p-3 rounded-xl relative h-14"
-          @click="
-            (selectedPlaylistUuid = playlist.uuid),
-              (publicPlaylist = playlist.public)
-          "
-        >
-          <div class="flex gap-layout">
-            <img class="w-5" src="/images/Folder.png" alt="" />
-            <h2 class="text-lg text-left font-bold text-nowrap w-32">
-              {{ playlist.name }}
-            </h2>
-          </div>
-          <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
-            <img
-              v-if="!playlist.public"
-              class="cursor-pointer"
-              src="/images/trash.png"
-              @click="(removingPlaylist = playlist), (DeletePlaylistTab = true)"
+        <template v-if="playlistsStatus === 'error'">
+          <main
+            class="w-full h-full flex justify-center items-center flex-col gap-5"
+          >
+            <p>خطایی رخ داد لطفا دوباره امتحان کنید</p>
+            <button
+              class="bg-main_green/80 p-4 rounded-xl"
+              @click="getPlaylist()"
+            >
+              امتحان مجدد
+            </button>
+          </main>
+        </template>
+        <template v-if="playlistsStatus === 'pending'">
+          <main class="flex flex-col gap-2 py-1">
+            <USkeleton
+              v-for="_ in 20"
+              :key="_"
+              :ui="{ background: 'dark:bg-gray-500' }"
+              class="w-full p-7 rounded-xl"
             />
-          </div>
-        </li>
+          </main>
+        </template>
+        <template v-if="playlistsStatus === 'success'">
+          <li
+            v-for="playlist in playlists"
+            :key="playlist.uuid"
+            :class="
+              selectedPlaylistUuid == playlist.uuid
+                ? 'btn-active'
+                : 'hover:hover:bg-main_orange/20'
+            "
+            class="list-none flex my-1 p-3 rounded-xl relative h-14"
+            @click="
+              (selectedPlaylistUuid = playlist.uuid),
+                (publicPlaylist = playlist.public)
+            "
+          >
+            <div class="flex gap-layout">
+              <img class="w-5" src="/images/Folder.png" alt="" />
+              <h2 class="text-lg text-left font-bold text-nowrap w-32">
+                {{ playlist.name }}
+              </h2>
+            </div>
+            <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
+              <img
+                v-if="!playlist.public"
+                class="cursor-pointer"
+                src="/images/trash.png"
+                @click="
+                  (removingPlaylist = playlist), (DeletePlaylistTab = true)
+                "
+              />
+            </div>
+          </li>
+        </template>
       </div>
       <UTooltip
         v-if="
@@ -73,24 +100,60 @@
         <p v-if="selectedPlaylistUuid == undefined" class="mt-5">
           لطفا یک پلی لیست را انتخاب کنید
         </p>
-        <li
-          v-for="music in musics"
-          :key="music.uuid"
-          class="list-none flex my-1 p-3 hover:hover:bg-main_orange/20 rounded-xl relative h-14"
+        <div
+          v-if="
+            selectedPlaylistUuid &&
+            musics &&
+            musics.length < 1 &&
+            musicsStatuss == 'success'
+          "
+          class="h-full w-full flex flex-col gap-8 justify-center items-center"
         >
-          <div class="flex gap-layout w-full">
-            <img class="w-5" src="/images/music.png" alt="" />
-            <h2 class="text-lg font-bold text-nowrap w-2/3 overflow-hidden">
-              {{ music.name }}
-            </h2>
-          </div>
-          <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
-            <img
-              src="/images/trash.png"
-              @click="(removingMusic = music), (deleteMusicTab = true)"
+          <img src="/images/noMusic-addedYet.svg" alt="no-music-has-added" />
+          <p class="text-lg text-white/80 font-bold">
+            هیچ موزیکی نداری، با کلیک روی دکمه زیر اضافه کن
+          </p>
+        </div>
+        <template v-if="musicsStatuss === 'error'">
+          <main
+            class="w-full h-full flex justify-center items-center flex-col gap-5"
+          >
+            <p>خطایی رخ داد لطفا دوباره امتحان کنید</p>
+            <button class="bg-main_green/80 p-4 rounded-xl" @click="getMusic()">
+              امتحان مجدد
+            </button>
+          </main>
+        </template>
+        <template v-if="musicsStatuss === 'pending'">
+          <main class="flex flex-col gap-2 py-1">
+            <USkeleton
+              v-for="_ in 20"
+              :key="_"
+              :ui="{ background: 'dark:bg-gray-500' }"
+              class="w-full p-7 rounded-xl"
             />
-          </div>
-        </li>
+          </main>
+        </template>
+        <template v-if="musicsStatuss === 'success'">
+          <li
+            v-for="music in musics"
+            :key="music.uuid"
+            class="list-none flex my-1 p-3 hover:hover:bg-main_orange/20 rounded-xl relative h-14"
+          >
+            <div class="flex gap-layout w-full">
+              <img class="w-5" src="/images/music.png" alt="" />
+              <h2 class="text-lg font-bold text-nowrap w-2/3 overflow-hidden">
+                {{ music.name }}
+              </h2>
+            </div>
+            <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
+              <img
+                src="/images/trash.png"
+                @click="(removingMusic = music), (deleteMusicTab = true)"
+              />
+            </div>
+          </li>
+        </template>
       </div>
       <template v-if="selectedPlaylistUuid">
         <UTooltip
@@ -167,21 +230,32 @@ const makePlaylistTab = ref(false);
 const addMusicTab = ref(false);
 const removingPlaylist = ref();
 const removingMusic = ref();
-const { data: playlists, execute: getPlaylist } = await useFetch<
-  { uuid: string; name: string; public: boolean }[]
->(`${url.value}/api/v4/playlists`, {
-  method: 'GET',
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const {
+  data: playlists,
+  execute: getPlaylist,
+  status: playlistsStatus,
+} = useFetch<{ uuid: string; name: string; public: boolean }[]>(
+  `${url.value}/api/v4/playlists`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
-});
+);
 
-const { data: musics, execute: getMusic } = await useFetch<
-  { uuid: string; name: string }[]
->(() => `${url.value}/api/v4/playlists/${selectedPlaylistUuid.value}/musics`, {
-  method: 'GET',
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const {
+  data: musics,
+  execute: getMusic,
+  status: musicsStatuss,
+} = useFetch<{ uuid: string; name: string }[]>(
+  () => `${url.value}/api/v4/playlists/${selectedPlaylistUuid.value}/musics`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    immediate: false,
   },
-});
+);
 </script>

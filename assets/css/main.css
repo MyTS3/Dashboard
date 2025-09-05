@@ -16,17 +16,31 @@ img {
   object-fit: contain;
 }
 
-*:-webkit-scrollbar {
-  display: none;
-}
-
 * {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
 
+*::-webkit-scrollbar {
+  display: none;
+}
+.scroll-bar::-webkit-scrollbar {
+  display: block;
+  width: 4px;
+}
+.scroll-bar::-webkit-scrollbar-track {
+  background: #5c618c;
+  border-radius: 4px;
+}
+.scroll-bar::-webkit-scrollbar-thumb {
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+.scroll-bar {
+  -ms-overflow-style: auto;
+  scrollbar-width: auto;
+  direction: ltr;
+}
 body {
   color: #c0d6f0;
 }
