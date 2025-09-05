@@ -194,14 +194,14 @@ watch(subDomainListFetch, () => {
   });
 });
 function addToList() {
-  regexDisablingSubmit.value = true;
   disablngReasson.value = 'لطفا یک نام برای ساب دامین انتخاب کنید';
   subDomainList.value.push({
-    sub: null,
+    sub: '',
     domain: domainListForDropDown.value[0] || { uuid: '', label: '' },
     error: true,
     errorMessage: '',
   });
+  checkIfValid();
 }
 
 function deleteSubDomain(i) {
@@ -223,22 +223,18 @@ function checkIfValid() {
     return;
   }
   subDomainList.value.map((subdomain) => {
-    if (subdomain.sub != null) {
-      if (subdomain.sub.length < 3) {
-        subdomain.errorMessage = 'حداقل 3 کاراکتر باید بنویسید';
-        regexDisablingSubmit.value = true;
-        return;
-      }
-      if (!regex.test(subdomain.sub)) {
-        subdomain.errorMessage = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
-        regexDisablingSubmit.value = true;
-        return;
-      }
-    } else {
+    if (subdomain.sub.length && subdomain.sub.length < 3) {
+      subdomain.errorMessage = 'حداقل 3 کاراکتر باید بنویسید';
       regexDisablingSubmit.value = true;
       return;
+    } else if (subdomain.sub.length && !regex.test(subdomain.sub)) {
+      subdomain.errorMessage = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
+      regexDisablingSubmit.value = true;
+      return;
+    } else {
+      subdomain.errorMessage = '';
+      return;
     }
-    subdomain.errorMessage = '';
   });
 }
 
