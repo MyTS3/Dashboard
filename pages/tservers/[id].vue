@@ -234,6 +234,7 @@ type channel = {
   channelType: channelType;
   isDeafault: boolean;
   numberOfUsers: number;
+  hasBot: boolean;
 };
 type user = {
   userNickname: string;
@@ -450,14 +451,19 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         channel.channelName,
       );
       let userNumber = 0;
+      let botNumbeer = 0;
       users.forEach((u) => {
         if (u.cid == channel.cid) userNumber += 1;
+      });
+      musicBots.forEach((m) => {
+        if (m.cid == channel.cid) botNumbeer += 1;
       });
       const channelType = channelTypeAndName.type;
       const channelName = channelTypeAndName.name;
       const align = channelTypeAndName.align;
       const channelFullName = channelTypeAndName.channelFullName;
       const isDeafault = isDeafaultChannel(channel);
+      const hasBot = botNumbeer > 0 ? true : false;
       let level = 0;
       let parentChannel:
         | { cid: string; pid: string; channelName: string }
@@ -479,6 +485,7 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
           align,
           isDeafault,
           numberOfUsers: userNumber,
+          hasBot,
         },
         level,
       });
