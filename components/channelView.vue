@@ -19,12 +19,15 @@
     <footer class="w-full grid gap-layout">
       <UTooltip
         v-if="
-          limits && botsCount && botsCount >= limits.value.maxBotsPerTServer
+          limits &&
+          botsCount &&
+          (botsCount >= limits.value.maxBotsPerTServer ||
+            selectedChannel.hasBot)
         "
-        :text="'شما به حداکثر تعداد موزیک بات های خود رسیده اید'"
+        :text="disableReassonText()"
       >
         <button
-          class="flex w-full gap-btn items-center btn-disable justify-center rounded-xl py-3 gap-btn"
+          class="flex w-full gap-btn items-center btn-disable justify-center rounded-xl py-3"
           @click="makeMusicBotTab = true"
           :disabled="true"
         >
@@ -51,7 +54,15 @@
 <script setup>
 import MakeMusicbot from './modules/musicbot/makeMusicbot.vue';
 import { limits } from '~/stores/limits';
-defineProps(['selectedChannel', 'botsCount']);
+const props = defineProps(['selectedChannel', 'botsCount']);
 defineEmits(['refresh']);
 const makeMusicBotTab = ref(false);
+function disableReassonText() {
+  if (props.selectedChannel.hasBot) {
+    return 'تنها یک موزیک بات میتوانید در هر چنل داشته باشید';
+  }
+  if (props.botsCount >= limits.value.maxBotsPerTServer) {
+    return 'شما به حداکثر تعداد موزیک بات های خود رسیده اید';
+  }
+}
 </script>
