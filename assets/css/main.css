@@ -39,7 +39,6 @@ img {
 .scroll-bar {
   -ms-overflow-style: auto;
   scrollbar-width: auto;
-  direction: ltr;
 }
 body {
   color: #c0d6f0;

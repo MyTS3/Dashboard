@@ -27,7 +27,7 @@
         v-if="teamspeakserverStatus === 'success' && serverInfo?.mustRunning"
         id="scrollbale"
         ref="el"
-        class="flex items-stretch flex-col teamspeak text-xs px-4 flex-1 overflow-y-auto"
+        class="flex items-stretch flex-col teamspeak text-xs px-4 flex-1 overflow-y-auto scroll-bar"
       >
         <template v-for="row in teamspeakserver" :key="objectHash(row)">
           <div

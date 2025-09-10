@@ -7,7 +7,9 @@
         <p>پلی لیست ها</p>
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
       </header>
-      <div class="bg-white/10 h-full mt-4 px-1 rounded-lg overflow-scroll">
+      <div
+        class="bg-white/10 h-full mt-4 px-1 rounded-lg overflow-y-auto scroll-bar"
+      >
         <template v-if="playlistsStatus === 'error'">
           <main
             class="w-full h-full flex justify-center items-center flex-col gap-5"
@@ -96,7 +98,9 @@
         <p>آهنگ های پلی لیست</p>
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
       </header>
-      <div class="bg-white/10 h-full mt-4 px-1 rounded-lg overflow-scroll">
+      <div
+        class="bg-white/10 h-full mt-4 px-1 rounded-lg overflow-y-auto scroll-bar"
+      >
         <p v-if="selectedPlaylistUuid == undefined" class="mt-5">
           لطفا یک پلی لیست را انتخاب کنید
         </p>
