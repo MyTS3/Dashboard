@@ -11,23 +11,36 @@
         <div class="h-full relative">
           <div class="h-full">
             <template v-if="status === 'pending'">
-              <div v-for="_ in 5" :key="_" class="table items">
-                <USkeleton
-                  class="h-5 w-40"
-                  :ui="{ background: 'dark:bg-gray-500' }"
-                />
-                <USkeleton
-                  class="h-5 w-20"
-                  :ui="{ background: 'dark:bg-gray-500' }"
-                />
-                <USkeleton
-                  class="h-5 w-20"
-                  :ui="{ background: 'dark:bg-gray-500' }"
-                />
-                <USkeleton
-                  class="h-5 w-10"
-                  :ui="{ background: 'dark:bg-gray-500' }"
-                />
+              <!-- Desktop skeletons -->
+              <div class="hidden min-[930px]:block">
+                <div v-for="_ in 5" :key="`desktop-${_}`" class="table items">
+                  <USkeleton
+                    class="h-5 w-40"
+                    :ui="{ background: 'dark:bg-gray-500' }"
+                  />
+                  <USkeleton
+                    class="h-5 w-20"
+                    :ui="{ background: 'dark:bg-gray-500' }"
+                  />
+                  <USkeleton
+                    class="h-5 w-20"
+                    :ui="{ background: 'dark:bg-gray-500' }"
+                  />
+                  <USkeleton
+                    class="h-5 w-10"
+                    :ui="{ background: 'dark:bg-gray-500' }"
+                  />
+                </div>
+              </div>
+
+              <!-- Mobile skeletons -->
+              <div class="block min-[930px]:hidden">
+                <div v-for="_ in 5" :key="`mobile-${_}`">
+                  <USkeleton
+                    class="h-16 w-full mb-1"
+                    :ui="{ background: 'dark:bg-gray-500' }"
+                  />
+                </div>
               </div>
             </template>
             <template v-if="status === 'success'">
