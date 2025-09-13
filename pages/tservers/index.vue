@@ -48,15 +48,15 @@
               </div>
               <div class="flex flex-col">
                 <div
-                  v-for="server in servers"
+                  v-for="(server, i) in servers"
                   :key="server.uuid"
-                  class="table items parent hover:bg-main_orange/5 cursor-pointer relative"
+                  class="table items parent min-[630px]:hover:bg-main_orange/5 cursor-pointer relative"
                 >
                   <div
-                    class="h-full w-full flex justify-center items-center"
+                    class="h-full min-[400px]:max-w-full flex justify-center items-center"
                     @click="serverClicked(server)"
                   >
-                    <p>
+                    <p class="max-[400px]:max-w-[9rem] overflow-hidden">
                       {{ server.name }}
                     </p>
                   </div>
@@ -78,12 +78,15 @@
                   </div>
 
                   <div
-                    :class="
-                      channelOptions
+                    :class="[
+                      activeOptions == server.uuid
                         ? 'max-[629px]:scale-x-1'
-                        : 'max-[629px]:scale-x-0'
-                    "
-                    class="flex flex-row-reverse max-[629px]:absolute max-[629px]:left-0 max-[629px]:bg-mainbg_400 transition-transform origin-left"
+                        : 'max-[629px]:scale-x-0',
+                      i % 2 === 0
+                        ? 'max-[629px]:bg-mainbg_500'
+                        : 'max-[629px]:bg-[#272b4d]',
+                    ]"
+                    class="flex flex-row-reverse max-[629px]:absolute max-[629px]:left-0 transition-transform origin-left"
                   >
                     <img
                       class="cursor-pointer w-10 trashcan px-2 hover:opacity-50"
@@ -101,19 +104,23 @@
                       @click="serverClicked(server)"
                     />
                     <img
-                      @click="channelOptions = false"
+                      @click="activeOptions = null"
                       class="pr-4 ml-4 min-[629px]:hidden"
                       src="/images/Arrow - Left.png"
                       alt=""
                     />
                   </div>
-                  <img
-                    @click="channelOptions = true"
+                  <div
                     :class="channelOptions ? 'hidden' : ''"
-                    class="mr-auto min-[629px]:hidden"
-                    src="/images/Arrow-Right.png"
-                    alt=""
-                  />
+                    class="w-6 mr-auto min-[629px]:hidden"
+                  >
+                    <img
+                      @click="activeOptions = server.uuid"
+                      class="w-full"
+                      src="/images/Arrow-Right.png"
+                      alt=""
+                    />
+                  </div>
                 </div>
               </div>
             </template>
@@ -169,7 +176,7 @@
 </template>
 <script setup>
 //responive codes
-const channelOptions = ref(false);
+const activeOptions = ref(null);
 //
 import TimeAgo from 'javascript-time-ago';
 import Table from '~/components/reusable/table.vue';
@@ -253,6 +260,12 @@ function serverClicked(server) {
 }
 .connect:hover ~ .cam {
   opacity: 1;
+}
+.operator:nth-child(even) {
+  background-color: rgba(39, 43, 77, 1);
+}
+.operator:nth-child(odd) {
+  background-color: rgb(0, 0, 0);
 }
 @media screen and (width < 930px) {
   .table {
