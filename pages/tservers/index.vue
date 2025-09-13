@@ -2,9 +2,9 @@
   <div class="h-full flex flex-col min-h-0 relative">
     <div dir="rtl" class="table bg-mainbg_300 text-nowrap rounded-t-2xl">
       <p>نام</p>
-      <p>تعداد اسلات</p>
-      <p>تاریخ ساخت</p>
-      <p>عمل</p>
+      <p class="max-[737px]:hidden">تعداد اسلات</p>
+      <p class="max-[930px]:hidden">تاریخ ساخت</p>
+      <p class="max-[400px]:hidden">عمل</p>
     </div>
     <div class="overflow-y-auto h-full bg-mainbg_400">
       <Table class="flex-1 min-h-0 overflow-y-auto">
@@ -50,7 +50,7 @@
                 <div
                   v-for="server in servers"
                   :key="server.uuid"
-                  class="table items parent hover:bg-main_orange/5 cursor-pointer"
+                  class="table items parent hover:bg-main_orange/5 cursor-pointer relative"
                 >
                   <div
                     class="h-full w-full flex justify-center items-center"
@@ -61,7 +61,7 @@
                     </p>
                   </div>
                   <div
-                    class="h-full w-full flex justify-center items-center"
+                    class="h-full w-full flex justify-center items-center max-[737px]:hidden"
                     @click="serverClicked(server)"
                   >
                     <p>
@@ -69,7 +69,7 @@
                     </p>
                   </div>
                   <div
-                    class="h-full w-full flex justify-center items-center"
+                    class="h-full w-full flex justify-center items-center max-[930px]:hidden"
                     @click="serverClicked(server)"
                   >
                     <p>
@@ -77,7 +77,14 @@
                     </p>
                   </div>
 
-                  <div class="flex flex-row-reverse">
+                  <div
+                    :class="
+                      channelOptions
+                        ? 'max-[629px]:scale-x-1'
+                        : 'max-[629px]:scale-x-0'
+                    "
+                    class="flex flex-row-reverse max-[629px]:absolute max-[629px]:left-0 max-[629px]:bg-mainbg_400 transition-transform origin-left"
+                  >
                     <img
                       class="cursor-pointer w-10 trashcan px-2 hover:opacity-50"
                       src="/images/trash.png"
@@ -93,7 +100,20 @@
                       src="/images/cam.svg"
                       @click="serverClicked(server)"
                     />
+                    <img
+                      @click="channelOptions = false"
+                      class="pr-4 ml-4 min-[629px]:hidden"
+                      src="/images/Arrow - Left.png"
+                      alt=""
+                    />
                   </div>
+                  <img
+                    @click="channelOptions = true"
+                    :class="channelOptions ? 'hidden' : ''"
+                    class="mr-auto min-[629px]:hidden"
+                    src="/images/Arrow-Right.png"
+                    alt=""
+                  />
                 </div>
               </div>
             </template>
@@ -148,8 +168,10 @@
   </div>
 </template>
 <script setup>
+//responive codes
+const channelOptions = ref(false);
+//
 import TimeAgo from 'javascript-time-ago';
-
 import Table from '~/components/reusable/table.vue';
 import makeServer from '/components/modules/makeServer.vue';
 import { apiStore } from '~/stores/apistore';
@@ -223,7 +245,6 @@ function serverClicked(server) {
   align-items: center;
   padding: 1rem;
 }
-
 .parent:hover .cam {
   opacity: 0.5;
 }
@@ -232,5 +253,20 @@ function serverClicked(server) {
 }
 .connect:hover ~ .cam {
   opacity: 1;
+}
+@media screen and (width < 930px) {
+  .table {
+    grid-template-columns: 3fr 1fr 1fr;
+  }
+}
+@media screen and (width < 735px) {
+  .table {
+    grid-template-columns: 3fr 1fr;
+  }
+}
+@media screen and (width < 629px) {
+  .table {
+    grid-template-columns: 2fr 1fr;
+  }
 }
 </style>
