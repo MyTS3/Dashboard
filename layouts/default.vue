@@ -14,7 +14,7 @@
         >
           <div class="">
             <header
-              class="w-full flex justify-between flex-row-reverse max-[820px]:flex-col max-[820px]:gap-4"
+              class="w-full flex justify-between flex-row-reverse max-[900px]:flex-col max-[900px]:gap-4"
             >
               <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
                 سرور ها
@@ -34,7 +34,7 @@
               <img
                 src="/images/hamburger.png"
                 @click="sidebar = true"
-                class="w-10 -scale-x-100 absolute right-10 top-8 curor-pointer min-[821px]:hidden"
+                class="w-10 -scale-x-100 absolute right-10 top-8 curor-pointer min-[900px]:hidden"
               />
               <button
                 v-if="
@@ -133,9 +133,9 @@
         </div>
         <div
           :class="
-            !sidebar ? 'max-[820px]:translate-x-full z-0' : 'translate-x-0'
+            !sidebar ? 'max-[900px]:translate-x-full z-0' : 'translate-x-0'
           "
-          class="side-bar basis-40 flex flex-col h-full bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[820px]:absolute max-[820px]:max-w-[13rem] max-[820px]:right-0 transition-transform z-50"
+          class="side-bar basis-40 flex flex-col h-full bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[900px]:absolute max-[900px]:max-w-[13rem] max-[900px]:right-0 transition-transform z-50"
         >
           <header>
             <img
@@ -145,7 +145,7 @@
             />
             <img
               @click="sidebar = false"
-              class="absolute top-5 right-5 min-[820px]:hidden"
+              class="absolute top-5 right-5 min-[900px]:hidden"
               src="/images/x-symbpl.png"
               alt=""
             />
