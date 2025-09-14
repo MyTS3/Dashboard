@@ -145,7 +145,7 @@
             />
             <img
               @click="sidebar = false"
-              class="absolute top-5 right-5 min-[900px]:hidden"
+              class="absolute top-3 right-2 min-[900px]:hidden"
               src="/images/x-symbpl.png"
               alt=""
             />
