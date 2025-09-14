@@ -1,8 +1,11 @@
 <template>
   <section
-    class="flex-1 grid grid-cols-2 w-full mx-auto items-stretch text-white text-center gap-layout min-h-0"
+    class="flex-1 grid grid-cols-2 w-full mx-auto items-stretch text-white text-center gap-layout min-h-0 max-[768px]:grid-cols-1"
   >
-    <main class="bg-mainbg_500 p-5 min-h-0 h-full rounded-xl flex flex-col">
+    <main
+      :class="selectedPlaylistUuid != undefined ? 'max-[768px]:hidden' : ''"
+      class="bg-mainbg_500 p-5 min-h-0 h-full rounded-xl flex flex-col"
+    >
       <header>
         <p>پلی لیست ها</p>
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
@@ -93,8 +96,17 @@
         <img src="/images/addon.png" alt="" />
       </button>
     </main>
-    <main class="bg-mainbg_500 min-h-0 h-full p-5 rounded-xl flex flex-col">
+    <main
+      :class="!selectedPlaylistUuid ? 'max-[768px]:hidden' : ''"
+      class="bg-mainbg_500 min-h-0 h-full p-5 rounded-xl flex flex-col relative"
+    >
       <header>
+        <img
+          @click="selectedPlaylistUuid = undefined"
+          src="/images/Arrow - Left.png"
+          class="w-7 absolute top-4 min-[769px]:hidden"
+          alt=""
+        />
         <p>آهنگ های پلی لیست</p>
         <img class="w-full mt-3" src="/images/seprator-line.png" alt="" />
       </header>
