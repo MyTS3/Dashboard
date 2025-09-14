@@ -1,9 +1,9 @@
 <template>
   <section
-    class="flex-1 w-full h-full mx-auto flex flex-row items-stretch text-white text-center gap-layout min-h-0"
+    class="h-full mx-auto flex flex-row max-w-full items-stretch text-white text-center gap-layout min-h-0"
   >
     <div
-      class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto"
+      class="flex flex-col items-stretch basis-1/2 bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto"
     >
       <header class="relative my-4 px-4">
         <span
@@ -35,11 +35,11 @@
             ref="therow"
             dropzone="true"
             class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-fit"
-            :class="
+            :class="[
               sameRow(selectedRow, row)
                 ? 'bg-main_orange/70'
-                : 'hover:bg-main_orange/10'
-            "
+                : 'hover:bg-main_orange/10',
+            ]"
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
             @drop="dragended(row.channel)"
             @dragover.prevent
@@ -181,7 +181,7 @@
       </template>
     </div>
 
-    <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto p-4">
+    <div class="bg-mainbg_400 basis-1/2 rounded-xl overflow-y-auto p-4">
       <template v-if="selectedRow?.rowType == 'server'">
         <ServerView
           v-if="serverInfoStatus === 'success'"
@@ -269,6 +269,7 @@ const botsCount = ref<number | undefined>();
 const lastScrollesPosition = ref();
 const { y } = useScroll(el);
 const alrreadyVisited = ref(false);
+const screenWidth = window.innerWidth;
 //function
 function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
@@ -362,7 +363,7 @@ function findChannelTypeAndNameByFullName(fullName: string): {
       if (splitedName[0].includes('*spacer')) {
         return {
           type: '*spacer',
-          name: splitedName[1].repeat(50),
+          name: splitedName[1].repeat(screenWidth / 30),
           align: 'center',
           channelFullName: fullName,
         };
