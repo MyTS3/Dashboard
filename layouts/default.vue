@@ -10,11 +10,11 @@
       ></div>
       <template v-if="!error">
         <div
-          class="flex-1 h-screen relative flex gap-layout flex-col items-stretch max-w-[85rem] mx-auto p-10"
+          class="flex-1 h-screen relative flex gap-layout flex-col items-stretch max-w-[85rem] mx-auto p-10 max-[570px]:p-2 max-[570px]:py-10"
         >
           <div class="">
             <header
-              class="w-full flex justify-between flex-row-reverse max-[670px]:flex-col max-[670px]:gap-4"
+              class="w-full flex justify-between flex-row-reverse max-[820px]:flex-col max-[820px]:gap-4"
             >
               <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
                 سرور ها
@@ -34,7 +34,7 @@
               <img
                 src="/images/hamburger.png"
                 @click="sidebar = true"
-                class="w-10 -scale-x-100 absolute right-10 top-8 curor-pointer min-[670px]:hidden"
+                class="w-10 -scale-x-100 absolute right-10 top-8 curor-pointer min-[821px]:hidden"
               />
               <button
                 v-if="
@@ -44,7 +44,7 @@
                   $route.name != 'playlist' &&
                   $route.name != 'wallet'
                 "
-                class="btn h-12 p-3 flex items-center rounded-xl"
+                class="btn h-12 w-14 p-3 flex items-center rounded-xl"
                 @click="$router.back()"
               >
                 <img class="" src="/images/Arrow-Right.png" alt="" />
@@ -133,9 +133,9 @@
         </div>
         <div
           :class="
-            !sidebar ? 'max-[670px]:translate-x-full z-0' : 'translate-x-0'
+            !sidebar ? 'max-[820px]:translate-x-full z-0' : 'translate-x-0'
           "
-          class="side-bar basis-40 flex flex-col h-full bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[670px]:absolute max-[670px]:max-w-[13rem] max-[670px]:right-0 transition-transform z-50"
+          class="side-bar basis-40 flex flex-col h-full bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[820px]:absolute max-[820px]:max-w-[13rem] max-[820px]:right-0 transition-transform z-50"
         >
           <header>
             <img
@@ -145,7 +145,7 @@
             />
             <img
               @click="sidebar = false"
-              class="absolute top-5 right-5 min-[670px]:hidden"
+              class="absolute top-5 right-5 min-[820px]:hidden"
               src="/images/x-symbpl.png"
               alt=""
             />
