@@ -6,7 +6,7 @@
       :class="
         selectedRow != null ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'
       "
-      class="flex flex-col items-stretch bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto min-[700px]:basis-1/2"
+      class="flex flex-col items-stretch bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto min-[701px]:basis-1/2"
     >
       <header class="relative my-4 px-4">
         <span
@@ -188,11 +188,11 @@
       :class="
         selectedRow == null ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'
       "
-      class="bg-mainbg_400 min-[700px]:basis-1/2 rounded-xl overflow-y-auto p-4 relative"
+      class="bg-mainbg_400 min-[701px]:basis-1/2 rounded-xl overflow-y-auto p-4 relative"
     >
       <img
         @click="selectedRow = null"
-        class="absolute top-3 w-7 cursor-pointer z-10"
+        class="absolute top-3 w-7 cursor-pointer z-10 min-[701px]:hidden"
         src="/images/Arrow - Left.png"
         alt=""
       />
