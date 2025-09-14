@@ -4,7 +4,7 @@
       <p>نام</p>
       <p class="max-[737px]:hidden">تعداد اسلات</p>
       <p class="max-[930px]:hidden">تاریخ ساخت</p>
-      <p class="max-[400px]:hidden">عمل</p>
+      <p class="max-[629px]:hidden">عمل</p>
     </div>
     <div class="overflow-y-auto h-full bg-mainbg_400">
       <Table class="flex-1 min-h-0 overflow-y-auto">
@@ -64,12 +64,15 @@
                   v-for="(server, i) in servers"
                   :key="server.uuid"
                   class="table items parent min-[630px]:hover:bg-main_orange/5 cursor-pointer relative"
+                  @touchstart="handleStart($event, server.uuid)"
+                  @touchmove="handleMove($event)"
+                  @touchend="handleEnd(server.uuid)"
                 >
                   <div
                     class="h-full min-[400px]:max-w-full flex justify-center items-center"
                     @click="serverClicked(server)"
                   >
-                    <p class="max-[400px]:max-w-[9rem] overflow-hidden">
+                    <p>
                       {{ server.name }}
                     </p>
                   </div>
@@ -99,7 +102,7 @@
                         ? 'max-[629px]:bg-mainbg_500'
                         : 'max-[629px]:bg-[#272b4d]',
                     ]"
-                    class="flex flex-row-reverse max-[629px]:absolute max-[629px]:left-0 transition-transform origin-left"
+                    class="flex flex-row-reverse max-[629px]:absolute max-[629px]:left-0 max-[629px]:w-full max-[629px]:justify-around transition-transform origin-left"
                   >
                     <img
                       class="cursor-pointer w-10 trashcan px-2 hover:opacity-50"
@@ -116,14 +119,14 @@
                       src="/images/cam.svg"
                       @click="serverClicked(server)"
                     />
-                    <img
+                    <!-- <img
                       @click="activeOptions = null"
                       class="pr-4 ml-4 min-[629px]:hidden"
                       src="/images/Arrow - Left.png"
                       alt=""
-                    />
+                    /> -->
                   </div>
-                  <div
+                  <!-- <div
                     :class="channelOptions ? 'hidden' : ''"
                     class="w-6 mr-auto min-[629px]:hidden"
                   >
@@ -133,7 +136,7 @@
                       src="/images/Arrow-Right.png"
                       alt=""
                     />
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </template>
@@ -190,6 +193,25 @@
 <script setup>
 //responive codes
 const activeOptions = ref(null);
+let startX = 0;
+let deltaX = 0;
+const handleStart = (e, uuid) => {
+  startX = e.touches[0].clientX;
+};
+
+const handleMove = (e) => {
+  deltaX = e.touches[0].clientX - startX;
+  e.preventDefault();
+};
+
+const handleEnd = (uuid) => {
+  if (deltaX > 50) {
+    activeOptions.value = uuid;
+  } else if (deltaX < -50) {
+    activeOptions.value = null;
+  }
+  deltaX = 0;
+};
 //
 import TimeAgo from 'javascript-time-ago';
 import Table from '~/components/reusable/table.vue';
@@ -292,7 +314,7 @@ function serverClicked(server) {
 }
 @media screen and (width < 629px) {
   .table {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr;
   }
 }
 </style>
