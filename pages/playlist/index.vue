@@ -162,7 +162,11 @@
                 {{ music.name }}
               </h2>
             </div>
-            <div class="flex absolute bottom-1/2 translate-y-1/2 right-4">
+
+            <div
+              v-if="!publicPlaylist"
+              class="flex absolute bottom-1/2 translate-y-1/2 right-4"
+            >
               <img
                 src="/images/trash.png"
                 @click="(removingMusic = music), (deleteMusicTab = true)"
