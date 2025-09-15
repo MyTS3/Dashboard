@@ -16,7 +16,7 @@
           @click="selectedRow = { rowType: 'server', level: 0 }"
           @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
-          {{ serverInfo.name }}
+          {{ serverInfo.name.slice(-57) }}
         </span>
         <div v-else>
           <USkeleton
