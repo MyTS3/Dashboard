@@ -34,7 +34,7 @@
               <img
                 src="/images/hamburger.png"
                 @click="sidebar = true"
-                class="w-10 -scale-x-100 absolute right-10 top-8 curor-pointer min-[900px]:hidden"
+                class="w-10 -scale-x-100 absolute right-2 top-8 curor-pointer min-[901px]:hidden"
               />
               <button
                 v-if="
@@ -156,7 +156,7 @@
                 $route.name == 'tservers' ? 'activePanel' : 'noActivePanel'
               "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/tservers')"
+              @click="navigateTo('/tservers'), (sidebar = false)"
             >
               <p>سرور ها</p>
               <img
@@ -170,7 +170,7 @@
                 $route.name == 'backups' ? 'activePanel' : 'noActivePanel'
               "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/backups')"
+              @click="navigateTo('/backups'), (sidebar = false)"
             >
               <p>بکاپ ها</p>
               <img src="/images/sync-icon.svg" class="w-6 h-6" alt="" />
@@ -180,7 +180,7 @@
                 $route.name == 'domains' ? 'activePanel' : 'noActivePanel'
               "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/domains')"
+              @click="navigateTo('/domains'), (sidebar = false)"
             >
               <p>دامنه ها</p>
               <img
@@ -194,7 +194,7 @@
                 $route.name == 'playlist' ? 'activePanel' : 'noActivePanel'
               "
               class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/playlist')"
+              @click="navigateTo('/playlist'), (sidebar = false)"
             >
               <p>پلی لیست ها</p>
               <img class="w-6 h-6" src="/images/changelog.svg" alt="" />
@@ -202,7 +202,7 @@
             <li
               :class="$route.name == 'wallet' ? 'activePanel' : 'noActivePanel'"
               class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/wallet')"
+              @click="navigateTo('/wallet'), (sidebar = false)"
             >
               <p>تراکنش ها</p>
               <img class="w-6 h-6" src="/images/bookmark_manager.svg" alt="" />
@@ -260,6 +260,7 @@ import logoutPopup from '@/components/modules/logoutPopup.vue';
 import chargeWallet from '~/components/modules/wallet/chargeWallet.vue';
 import { limits } from '~/stores/limits';
 import { balance, getBalance } from '~/stores/globalVaribles';
+import { _screen } from '#tailwind-config/theme/height';
 //responisve-desing-code
 const sidebar = ref(false);
 //
