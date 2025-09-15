@@ -69,7 +69,7 @@
                   @touchend="handleEnd(server.uuid)"
                 >
                   <div
-                    class="h-full min-[400px]:max-w-full flex justify-center items-center"
+                    class="h-full min-[400px]:max-w-full flex justify-center items-center truncate"
                     @click="serverClicked(server)"
                   >
                     <p>
