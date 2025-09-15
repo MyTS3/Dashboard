@@ -3,7 +3,7 @@
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>دامنه</p>
       <p>وضعیت</p>
-      <p>تاریخ ثبت</p>
+      <p class="max-[500px]:hidden">تاریخ ثبت</p>
       <p>عمل</p>
     </div>
     <div class="overflow-y-auto h-full bg-mainbg_400">
@@ -45,7 +45,7 @@
               </div>
             </div>
             <div v-for="domain in domainList" :key="domain" class="table items">
-              <p class="font-semibold">{{ domain.domain }}</p>
+              <p class="font-semibold truncate w-full">{{ domain.domain }}</p>
               <div
                 v-if="domain.active"
                 class="flex w-20 justify-center items-center rounded-3xl h-8 bg-main_green/15"
@@ -60,7 +60,9 @@
                 <img class="w-5" src="/images/waiting.png" alt="" />
                 <p class="font-bold text-sm text-main_orange">در انتظار</p>
               </div>
-              <p>{{ timeAgo.format(new Date(domain.createdAt)) }}</p>
+              <p class="max-[500px]:hidden">
+                {{ timeAgo.format(new Date(domain.createdAt)) }}
+              </p>
               <img
                 v-if="!domain.public"
                 class="cursor-pointer"
@@ -149,9 +151,14 @@ const {
 <style scoped>
 .table {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 3fr 1fr 2fr 1fr;
   text-align: center;
   justify-items: center;
   padding: 1rem;
+}
+@media screen and (width < 735px) {
+  .table {
+    grid-template-columns: 3fr 2fr 1fr;
+  }
 }
 </style>
