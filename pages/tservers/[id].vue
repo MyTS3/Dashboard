@@ -12,7 +12,7 @@
         <span
           v-if="serverInfoStatus === 'success' && serverInfo"
           :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
-          class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center cursor-pointer"
+          class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center cursor-pointer max-w-full truncate"
           @click="selectedRow = { rowType: 'server', level: 0 }"
           @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
