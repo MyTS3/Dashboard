@@ -23,7 +23,9 @@
       </header>
       <main class="list-none flex flex-col gap-layout">
         <li class="grid gridList">
-          <p class="max-w-52 truncate">{{ selectedServer.name }}</p>
+          <p dir="rtl" class="max-w-full truncate -pr-10">
+            {{ selectedServer.name }}
+          </p>
           <p>:نام</p>
           <a
             v-show="selectedServer.mustRunning"
