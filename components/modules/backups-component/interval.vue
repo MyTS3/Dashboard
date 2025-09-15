@@ -45,7 +45,9 @@
                 :key="interval"
                 class="table items"
               >
-                <p class="font-semibold">{{ interval.tserver.name }}</p>
+                <p dir="ltr" class="font-semibold truncate w-full">
+                  {{ interval.tserver.name }}
+                </p>
                 <p>{{ interval.interval }}</p>
                 <div class="flex">
                   <img
