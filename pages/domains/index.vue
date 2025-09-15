@@ -3,7 +3,7 @@
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>دامنه</p>
       <p>وضعیت</p>
-      <p class="max-[500px]:hidden">تاریخ ثبت</p>
+      <p class="max-[700px]:hidden">تاریخ ثبت</p>
       <p>عمل</p>
     </div>
     <div class="overflow-y-auto h-full bg-mainbg_400">
@@ -60,7 +60,7 @@
                 <img class="w-5" src="/images/waiting.png" alt="" />
                 <p class="font-bold text-sm text-main_orange">در انتظار</p>
               </div>
-              <p class="max-[500px]:hidden">
+              <p class="max-[700px]:hidden">
                 {{ timeAgo.format(new Date(domain.createdAt)) }}
               </p>
               <img
@@ -156,7 +156,7 @@ const {
   justify-items: center;
   padding: 1rem;
 }
-@media screen and (width < 735px) {
+@media screen and (width < 701px) {
   .table {
     grid-template-columns: 3fr 2fr 1fr;
   }
