@@ -4,7 +4,7 @@
       class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
       <main
-        class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+        class="text-white w-full max-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
       >
         <button
           :class="{ 'bg-main_red/50': disable }"
@@ -16,7 +16,7 @@
         </button>
         <div>
           <h1 class="text-3xl font-extrabold">تغییر اسلات</h1>
-          <p class="my-4 mx-12 text-center font-medium text-white/80">
+          <p class="my-4 text-center font-medium text-white/80">
             هستید<span class="mx-1 font-bold text-white">{{
               selectedServer.name
             }}</span
