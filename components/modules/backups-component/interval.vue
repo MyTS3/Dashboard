@@ -101,7 +101,7 @@ const {
 <style scoped>
 .table {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 2fr 1fr;
   text-align: center;
   justify-items: center;
   padding: 1rem;

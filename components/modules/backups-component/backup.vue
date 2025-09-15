@@ -138,7 +138,6 @@ const handleStart = (e, uuid) => {
 
 const handleMove = (e) => {
   deltaX = e.touches[0].clientX - startX;
-  e.preventDefault();
 };
 
 const handleEnd = (uuid) => {
