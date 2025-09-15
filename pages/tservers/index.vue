@@ -7,7 +7,7 @@
       <p class="max-[629px]:hidden">عمل</p>
     </div>
     <div class="overflow-y-auto h-full bg-mainbg_400">
-      <Table class="flex-1 min-h-0 overflow-y-auto">
+      <Table class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
         <div class="h-full relative">
           <div class="h-full">
             <template v-if="status === 'pending'">

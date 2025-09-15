@@ -15,11 +15,14 @@
             <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
           </button>
           <h1 class="text-xl my-4 font-bolder">حذف سرور</h1>
-          <p class="font-thin max-w-80 text-center mx-auto mb-4 mx-10">
-            این عمل قابل بازگردانی نیست و تمامی اطلاعات سرور حذف میکند، اطمینان
-            دارید؟
-            <span class="font-bold">{{ selectedServer.name }}</span>
+          <span class="font-bold w-full truncate">{{
+            selectedServer.name
+          }}</span>
+          <p class="font-thin max-w-80 text-center mx-auto mb-4 w-full">
+            این عمل قابل بازگردانی نیست و تمامی اطلاعات سرور را حذف میکند،
+            اطمینان دارید؟
           </p>
+
           <div class="grid grid-cols-2 gap-3">
             <button
               :disabled="disable"
