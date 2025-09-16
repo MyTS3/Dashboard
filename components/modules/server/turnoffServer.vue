@@ -4,7 +4,7 @@
       class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
       <main
-        class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+        class="text-white w-full max-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
       >
         <button
           :disabled="disable"
@@ -14,7 +14,7 @@
           <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
         <h1 class="text-xl my-4 font-bolder">خاموش کردن سرور</h1>
-        <p class="font-thin max-w-80 text-center mx-auto mb-4 mx-10">
+        <p class="font-thin max-w-80 text-center mx-auto mb-4">
           <span>changeit.v4.myts3.ir</span>
           شما در حال خاموش کردن سرور هستید ایا اطمینان دارید؟
         </p>

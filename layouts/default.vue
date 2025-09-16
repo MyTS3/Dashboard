@@ -1,14 +1,21 @@
 <template>
   <span>
     <div
-      class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden"
+      class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-screen overflow-hidden relative"
     >
+      <div
+        @click="sidebar = false"
+        :class="sidebar ? 'z-30' : '-z-10'"
+        class="backdrop"
+      ></div>
       <template v-if="!error">
         <div
-          class="flex-1 h-screen relative flex gap-layout flex-col items-stretch max-w-[85rem] mx-auto p-10"
+          class="flex-1 h-screen relative flex gap-layout flex-col items-stretch max-w-[85rem] mx-auto p-10 max-[570px]:p-2 max-[570px]:py-10"
         >
           <div class="">
-            <header class="w-full flex justify-between flex-row-reverse">
+            <header
+              class="w-full flex justify-between flex-row-reverse max-[900px]:flex-col max-[900px]:gap-4"
+            >
               <h1 v-if="$route.name == 'tservers'" class="font-medium text-xl">
                 سرور ها
               </h1>
@@ -24,6 +31,11 @@
               <h1 v-if="$route.name == 'wallet'" class="font-medium text-xl">
                 ترا کنش ها
               </h1>
+              <img
+                src="/images/hamburger.png"
+                @click="sidebar = true"
+                class="w-10 -scale-x-100 absolute right-2 top-8 curor-pointer min-[901px]:hidden"
+              />
               <button
                 v-if="
                   $route.name != 'tservers' &&
@@ -32,7 +44,7 @@
                   $route.name != 'playlist' &&
                   $route.name != 'wallet'
                 "
-                class="btn h-12 p-3 flex items-center rounded-xl"
+                class="btn h-12 w-14 p-3 flex items-center rounded-xl"
                 @click="$router.back()"
               >
                 <img class="" src="/images/Arrow-Right.png" alt="" />
@@ -43,7 +55,7 @@
                 >
                   <div class="ml-auto">
                     <img
-                      class="h-6 w-6"
+                      class="h-6 w-6 max-[400px]:hidden"
                       src="/images/group_500.svg"
                       alt="user"
                     />
@@ -60,7 +72,7 @@
                   <div class="w-full">
                     <p>تومان {{ Math.trunc(Number(balance)) }}</p>
                   </div>
-                  <div class="ml-auto">
+                  <div class="ml-auto max-[400px]:hidden">
                     <img
                       src="/images/bookmark_duplicate.svg"
                       class="h-6 w-6"
@@ -120,13 +132,22 @@
           </div>
         </div>
         <div
-          class="basis-40 flex flex-col h-full bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl"
+          :class="
+            !sidebar ? 'max-[900px]:translate-x-full z-0' : 'translate-x-0'
+          "
+          class="side-bar basis-40 flex flex-col h-full bg-mainbg_400 rounded-tl-2xl rounded-bl-2xl max-[900px]:absolute max-[900px]:max-w-[13rem] max-[900px]:right-0 transition-transform z-50"
         >
           <header>
             <img
               class="mx-auto mt-5 max-w-80"
               src="/images/User info.png"
               alt="logo"
+            />
+            <img
+              @click="sidebar = false"
+              class="absolute top-3 right-2 min-[900px]:hidden"
+              src="/images/x-symbpl.png"
+              alt=""
             />
           </header>
           <nav class="list-none flex flex-col pt-4 gap-3 m-5">
@@ -135,7 +156,7 @@
                 $route.name == 'tservers' ? 'activePanel' : 'noActivePanel'
               "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/tservers')"
+              @click="navigateTo('/tservers'), (sidebar = false)"
             >
               <p>سرور ها</p>
               <img
@@ -149,7 +170,7 @@
                 $route.name == 'backups' ? 'activePanel' : 'noActivePanel'
               "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/backups')"
+              @click="navigateTo('/backups'), (sidebar = false)"
             >
               <p>بکاپ ها</p>
               <img src="/images/sync-icon.svg" class="w-6 h-6" alt="" />
@@ -159,7 +180,7 @@
                 $route.name == 'domains' ? 'activePanel' : 'noActivePanel'
               "
               class="flex gap-2 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/domains')"
+              @click="navigateTo('/domains'), (sidebar = false)"
             >
               <p>دامنه ها</p>
               <img
@@ -173,7 +194,7 @@
                 $route.name == 'playlist' ? 'activePanel' : 'noActivePanel'
               "
               class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/playlist')"
+              @click="navigateTo('/playlist'), (sidebar = false)"
             >
               <p>پلی لیست ها</p>
               <img class="w-6 h-6" src="/images/changelog.svg" alt="" />
@@ -181,7 +202,7 @@
             <li
               :class="$route.name == 'wallet' ? 'activePanel' : 'noActivePanel'"
               class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/wallet')"
+              @click="navigateTo('/wallet'), (sidebar = false)"
             >
               <p>تراکنش ها</p>
               <img class="w-6 h-6" src="/images/bookmark_manager.svg" alt="" />
@@ -239,6 +260,10 @@ import logoutPopup from '@/components/modules/logoutPopup.vue';
 import chargeWallet from '~/components/modules/wallet/chargeWallet.vue';
 import { limits } from '~/stores/limits';
 import { balance, getBalance } from '~/stores/globalVaribles';
+import { _screen } from '#tailwind-config/theme/height';
+//responisve-desing-code
+const sidebar = ref(false);
+//
 const store = apiStore();
 const { url } = storeToRefs(store);
 getBalance();
@@ -279,6 +304,14 @@ TimeAgo.addLocale(fa);
 .layout {
   display: grid;
   grid-template-columns: 7fr 1fr;
+}
+.backdrop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px);
 }
 @media only screen and (max-width: 1346px) {
   .layout {

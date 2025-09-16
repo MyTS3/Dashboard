@@ -174,11 +174,6 @@ body {
   font-weight: 700;
 }
 
-.ban-list {
-  display: grid;
-  grid-template-columns: 2fr 2fr 4fr;
-}
-
 .items {
   height: 4rem;
 }

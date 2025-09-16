@@ -5,7 +5,7 @@
         class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
       >
         <main
-          class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
+          class="text-white w-full max-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
         >
           <button
             :disabled="disable"
@@ -15,11 +15,14 @@
             <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
           </button>
           <h1 class="text-xl my-4 font-bolder">حذف سرور</h1>
-          <p class="font-thin max-w-80 text-center mx-auto mb-4 mx-10">
-            این عمل قابل بازگردانی نیست و تمامی اطلاعات سرور حذف میکند، اطمینان
-            دارید؟
-            <span class="font-bold">{{ selectedServer.name }}</span>
+          <span class="font-bold w-full truncate">{{
+            selectedServer.name
+          }}</span>
+          <p class="font-thin max-w-80 text-center mx-auto mb-4 w-full">
+            این عمل قابل بازگردانی نیست و تمامی اطلاعات سرور را حذف میکند،
+            اطمینان دارید؟
           </p>
+
           <div class="grid grid-cols-2 gap-3">
             <button
               :disabled="disable"

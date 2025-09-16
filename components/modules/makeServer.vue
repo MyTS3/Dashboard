@@ -5,7 +5,7 @@
     >
       <main
         :class="{ hidden: serverTokenTab }"
-        class="text-white min-w-96 bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl"
+        class="text-white bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl w-full max-w-[30rem]"
       >
         <button
           :disabled="disableInputs"
@@ -17,7 +17,7 @@
         </button>
         <header class="my-5">
           <h1 class="text-xl font-bold">ساخت سرور تیم اسپیک</h1>
-          <p class="text-xs text-white/65 mt-4 mx-40">
+          <p class="text-xs text-white/65 mt-4">
             برای ساخت سرور اطلاعات زیر را کامل کنید
           </p>
         </header>
