@@ -31,11 +31,173 @@
               <h1 v-if="$route.name == 'wallet'" class="font-medium text-xl">
                 ترا کنش ها
               </h1>
-              <img
-                src="/images/hamburger.png"
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                role="img"
+                aria-label="Server stack hamburger menu icon"
                 @click="sidebar = true"
-                class="w-10 -scale-x-100 absolute right-2 top-8 curor-pointer min-[901px]:hidden"
-              />
+                class="absolute right-2 top-8 curor-pointer min-[901px]:hidden -scale-x-100 w-12"
+              >
+                <!-- Top server -->
+                <rect
+                  x="6"
+                  y="5.5"
+                  width="36"
+                  height="8.5"
+                  rx="2.2"
+                  fill="rgba(37, 40, 65, 1)"
+                  stroke="rgba(108, 135, 168, 1)"
+                  stroke-width="0.9"
+                />
+                <!-- vents top -->
+                <rect
+                  x="10"
+                  y="8"
+                  width="9"
+                  height="1.6"
+                  rx="0.6"
+                  fill="rgba(255,255,255,0.12)"
+                />
+                <rect
+                  x="21.5"
+                  y="8"
+                  width="9"
+                  height="1.6"
+                  rx="0.6"
+                  fill="rgba(255,255,255,0.12)"
+                />
+                <line
+                  x1="6.8"
+                  y1="11.6"
+                  x2="41.2"
+                  y2="11.6"
+                  stroke="rgba(0,0,0,0.18)"
+                  stroke-width="0.8"
+                  stroke-linecap="round"
+                  opacity="0.85"
+                />
+
+                <!-- Middle server -->
+                <rect
+                  x="6"
+                  y="19"
+                  width="36"
+                  height="8.5"
+                  rx="2.2"
+                  fill="rgba(37, 40, 65, 1)"
+                  stroke="rgba(108, 135, 168, 1)"
+                  stroke-width="0.9"
+                />
+                <!-- vents mid -->
+                <rect
+                  x="10"
+                  y="21.5"
+                  width="9"
+                  height="1.6"
+                  rx="0.6"
+                  fill="rgba(255,255,255,0.12)"
+                />
+                <rect
+                  x="21.5"
+                  y="21.5"
+                  width="9"
+                  height="1.6"
+                  rx="0.6"
+                  fill="rgba(255,255,255,0.12)"
+                />
+                <line
+                  x1="6.8"
+                  y1="25.1"
+                  x2="41.2"
+                  y2="25.1"
+                  stroke="rgba(0,0,0,0.18)"
+                  stroke-width="0.8"
+                  stroke-linecap="round"
+                  opacity="0.85"
+                />
+
+                <!-- Bottom server -->
+                <rect
+                  x="6"
+                  y="32.5"
+                  width="36"
+                  height="8.5"
+                  rx="2.2"
+                  fill="rgba(37, 40, 65, 1)"
+                  stroke="rgba(108, 135, 168, 1)"
+                  stroke-width="0.9"
+                />
+                <!-- vents bottom -->
+                <rect
+                  x="10"
+                  y="35"
+                  width="9"
+                  height="1.6"
+                  rx="0.6"
+                  fill="rgba(255,255,255,0.12)"
+                />
+                <rect
+                  x="21.5"
+                  y="35"
+                  width="9"
+                  height="1.6"
+                  rx="0.6"
+                  fill="rgba(255,255,255,0.12)"
+                />
+                <line
+                  x1="6.8"
+                  y1="38.6"
+                  x2="41.2"
+                  y2="38.6"
+                  stroke="rgba(0,0,0,0.18)"
+                  stroke-width="0.8"
+                  stroke-linecap="round"
+                  opacity="0.85"
+                />
+
+                <!-- indicator LEDs (right side) -->
+                <circle
+                  cx="38"
+                  cy="9.5"
+                  r="1.6"
+                  fill="rgb(236,102,0)"
+                  stroke="rgba(0,0,0,0.18)"
+                  stroke-width="0.6"
+                />
+                <circle
+                  cx="38"
+                  cy="23"
+                  r="1.6"
+                  fill="rgb(236,102,0)"
+                  stroke="rgba(0,0,0,0.18)"
+                  stroke-width="0.6"
+                />
+                <circle
+                  cx="38"
+                  cy="36.5"
+                  r="1.6"
+                  fill="rgb(236,102,0)"
+                  stroke="rgba(0,0,0,0.18)"
+                  stroke-width="0.6"
+                />
+
+                <!-- subtle outline -->
+                <rect
+                  x="4.2"
+                  y="4.2"
+                  width="39.6"
+                  height="39.6"
+                  rx="3"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.02)"
+                  stroke-width="0.6"
+                />
+              </svg>
+
               <button
                 v-if="
                   $route.name != 'tservers' &&
