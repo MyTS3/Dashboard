@@ -1,6 +1,6 @@
 <template>
   <section
-    class="h-full mx-auto flex flex-row max-w-full items-stretch text-white text-center gap-layout min-h-0"
+    class="h-full mx-auto flex flex-row w-full items-stretch text-white text-center gap-layout min-h-0"
   >
     <div
       :class="
