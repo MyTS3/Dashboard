@@ -133,6 +133,9 @@
   </div>
 </template>
 <script setup lang="ts">
+import ChargeWallet from '~/components/modules/wallet/chargeWallet.vue';
+import { useInfiniteScroll } from '@vueuse/core';
+import { useTemplateRef } from 'vue';
 //responive codes
 const activeOptions = ref<string | null>(null);
 let startX = 0;
@@ -154,9 +157,7 @@ const handleEnd = (uuid: string) => {
   deltaX = 0;
 };
 //
-import ChargeWallet from '~/components/modules/wallet/chargeWallet.vue';
-import { useInfiniteScroll } from '@vueuse/core';
-import { useTemplateRef } from 'vue';
+
 //
 type walletRows =
   | {

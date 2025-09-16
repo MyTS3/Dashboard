@@ -64,7 +64,7 @@
                   v-for="(server, i) in servers"
                   :key="server.uuid"
                   class="table items parent min-[630px]:hover:bg-main_orange/5 cursor-pointer relative"
-                  @touchstart="handleStart($event, server.uuid)"
+                  @touchstart="handleStart($event)"
                   @touchmove="handleMove($event)"
                   @touchend="handleEnd(server.uuid)"
                 >
@@ -191,11 +191,18 @@
   </div>
 </template>
 <script setup>
+import TimeAgo from 'javascript-time-ago';
+import Table from '~/components/reusable/table.vue';
+import makeServer from '/components/modules/makeServer.vue';
+import { apiStore } from '~/stores/apistore';
+import { storeToRefs } from 'pinia';
+import DeleteServer from '~/components/modules/server/deleteServer.vue';
+import { limits } from '~/stores/limits';
 //responive codes
 const activeOptions = ref(null);
 let startX = 0;
 let deltaX = 0;
-const handleStart = (e, uuid) => {
+const handleStart = (e) => {
   startX = e.touches[0].clientX;
 };
 
@@ -212,13 +219,7 @@ const handleEnd = (uuid) => {
   deltaX = 0;
 };
 //
-import TimeAgo from 'javascript-time-ago';
-import Table from '~/components/reusable/table.vue';
-import makeServer from '/components/modules/makeServer.vue';
-import { apiStore } from '~/stores/apistore';
-import { storeToRefs } from 'pinia';
-import DeleteServer from '~/components/modules/server/deleteServer.vue';
-import { limits } from '~/stores/limits';
+
 const errors = errorHandle();
 const store = apiStore();
 const { url } = storeToRefs(store);

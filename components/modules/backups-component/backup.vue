@@ -29,7 +29,7 @@
           </div>
           <div>
             <div
-              @touchstart="handleStart($event, backup.uuid)"
+              @touchstart="handleStart($event)"
               @touchmove="handleMove($event)"
               @touchend="handleEnd(backup.uuid)"
               v-for="(backup, i) in backups"
@@ -128,11 +128,16 @@
   </section>
 </template>
 <script setup>
+import DeleteBackups from './deleteBackups.vue';
+import restoreBackup from './restoreBackup.vue';
+import Table from '~/components/reusable/table.vue';
+import { ref, onMounted } from 'vue';
+import { useInfiniteScroll } from '@vueuse/core';
 //reponsive code
 const activeOptions = ref(null);
 let startX = 0;
 let deltaX = 0;
-const handleStart = (e, uuid) => {
+const handleStart = (e) => {
   startX = e.touches[0].clientX;
 };
 
@@ -149,11 +154,7 @@ const handleEnd = (uuid) => {
   deltaX = 0;
 };
 //
-import DeleteBackups from './deleteBackups.vue';
-import restoreBackup from './restoreBackup.vue';
-import Table from '~/components/reusable/table.vue';
-import { ref, onMounted } from 'vue';
-import { useInfiniteScroll } from '@vueuse/core';
+
 const table = ref(null);
 
 const store = apiStore();
