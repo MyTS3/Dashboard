@@ -97,7 +97,7 @@
         </li>
         <p
           v-show="selectedServer.mustRunning"
-          class="m-3 text-main_orange text-right cursor-pointer font-bold"
+          class="m-3 text-main_orange text-right cursor-pointer font-bold max-[800px]:hidden"
           @click="yatqaExampleTab = true"
         >
           برای مشاهده اطلاعات یاتکا کلیک کنید
