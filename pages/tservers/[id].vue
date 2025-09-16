@@ -3,9 +3,7 @@
     class="h-full mx-auto flex flex-row w-full items-stretch text-white text-center gap-layout min-h-0"
   >
     <div
-      :class="
-        selectedRow != null ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'
-      "
+      :class="infoTab ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'"
       class="flex flex-col items-stretch bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto min-[701px]:basis-1/2"
     >
       <header class="relative my-4 px-4">
@@ -13,7 +11,10 @@
           v-if="serverInfoStatus === 'success' && serverInfo"
           :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
           class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center cursor-pointer max-w-full truncate"
-          @click="selectedRow = { rowType: 'server', level: 0 }"
+          @click="
+            (selectedRow = { rowType: 'server', level: 0 }),
+              screenWidth < 701 ? (infoTab = true) : null
+          "
           @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
           {{ serverInfo.name.slice(-35) }}
@@ -47,7 +48,9 @@
             @drop="dragended(row.channel)"
             @dragover.prevent
             @dragenter.prevent
-            @click="selectedRow = row"
+            @click="
+              (selectedRow = row), screenWidth < 701 ? (infoTab = true) : null
+            "
             @contextmenu.prevent="selectedRow = row"
           >
             <img
@@ -75,7 +78,9 @@
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
             @dragstart="draged(row.musicBot)"
             @contextmenu.prevent="selectedRow = row"
-            @click="selectedRow = row"
+            @click="
+              (selectedRow = row), screenWidth < 701 ? (infoTab = true) : null
+            "
           >
             <img src="/images/bot-icon.png" alt="" />
             <p class="w-full text-left">
@@ -97,7 +102,9 @@
             "
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
             @dragstart="draged(row.user)"
-            @click="selectedRow = row"
+            @click="
+              (selectedRow = row), screenWidth < 701 ? (infoTab = true) : null
+            "
             @contextmenu.prevent="selectedRow = row"
           >
             <img
@@ -185,9 +192,7 @@
     </div>
 
     <div
-      :class="
-        selectedRow == null ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'
-      "
+      :class="!infoTab ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'"
       class="bg-mainbg_400 min-[701px]:basis-1/2 rounded-xl overflow-y-auto p-4 relative"
     >
       <!-- <img
@@ -203,7 +208,7 @@
         viewBox="0 0 48 48"
         role="img"
         aria-label="Switch panels"
-        @click="selectedRow = null"
+        @click="infoTab = false"
         class="absolute top-1 left-3 w-10 cursor-pointer z-10 min-[701px]:hidden"
       >
         <!-- rounded frame -->
@@ -307,6 +312,9 @@ import objectHash from 'object-hash';
 import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
 import { useScroll } from '@vueuse/core';
 import { pauseRequests } from '~/stores/globalVaribles';
+//responsive code
+const infoTab = ref(false);
+//
 
 type alignType = 'start' | 'center' | 'end';
 type statusType = 'openMic' | 'micMute' | 'soundMute' | 'away';
@@ -359,6 +367,7 @@ const lastScrollesPosition = ref();
 const { y } = useScroll(el);
 const alrreadyVisited = ref(false);
 const screenWidth = window.innerWidth;
+
 //function
 function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
@@ -704,4 +713,5 @@ const theInterval = setInterval(() => {
 watch(y, () => {
   lastScrollesPosition.value = y.value;
 });
+if (screenWidth < 701) selectedRow.value = null;
 </script>
