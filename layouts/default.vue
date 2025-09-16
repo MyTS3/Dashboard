@@ -262,7 +262,7 @@
           </div>
           <div
             v-if="panelAlert"
-            class="flex w-full relative flex-row-reverse bg-main_red/50 p-5 gap-layout rounded-xl items-center"
+            class="flex w-full relative flex-row-reverse bg-main_red/50 p-5 gap-layout rounded-xl items-center max-[618px]:hidden"
           >
             <img
               class="w-10"
