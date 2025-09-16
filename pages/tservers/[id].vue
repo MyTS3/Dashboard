@@ -190,12 +190,87 @@
       "
       class="bg-mainbg_400 min-[701px]:basis-1/2 rounded-xl overflow-y-auto p-4 relative"
     >
-      <img
+      <!-- <img
         @click="selectedRow = null"
         class="absolute top-3 w-7 cursor-pointer z-10 min-[701px]:hidden"
         src="/images/Arrow - Left.png"
         alt=""
-      />
+      /> -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="48"
+        height="48"
+        viewBox="0 0 48 48"
+        role="img"
+        aria-label="Switch panels"
+        @click="selectedRow = null"
+        class="absolute top-1 left-3 w-10 cursor-pointer z-10 min-[701px]:hidden"
+      >
+        <!-- rounded frame -->
+        <rect
+          x="4"
+          y="6"
+          width="40"
+          height="36"
+          rx="4"
+          fill="rgba(37,40,65,1)"
+          stroke="rgba(108,135,168,1)"
+          stroke-width="1.2"
+        />
+        <!-- left panel -->
+        <rect
+          x="8"
+          y="10"
+          width="16"
+          height="28"
+          rx="2"
+          fill="rgba(56,61,99,1)"
+        />
+        <!-- right panel -->
+        <rect
+          x="24"
+          y="10"
+          width="12"
+          height="28"
+          rx="2"
+          fill="rgba(20,25,49,1)"
+        />
+        <!-- arrow left-to-right -->
+        <path
+          d="M19 22h8"
+          fill="none"
+          stroke="rgb(236,102,0)"
+          stroke-width="2.4"
+          stroke-linecap="round"
+        />
+        <path
+          d="M25 19l3 3-3 3"
+          fill="none"
+          stroke="rgb(236,102,0)"
+          stroke-width="2.0"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <!-- arrow right-to-left (subtle) -->
+        <path
+          d="M17.5 28h-6"
+          fill="none"
+          stroke="rgba(108,135,168,1)"
+          stroke-width="1.4"
+          stroke-linecap="round"
+          opacity="0.9"
+        />
+        <path
+          d="M11.7 25.7l-2.2 2.3 2.2 2.3"
+          fill="none"
+          stroke="rgba(108,135,168,1)"
+          stroke-width="1.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          opacity="0.95"
+        />
+      </svg>
+
       <template v-if="selectedRow?.rowType == 'server'">
         <ServerView
           v-if="serverInfoStatus === 'success'"
