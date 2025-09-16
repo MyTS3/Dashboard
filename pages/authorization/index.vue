@@ -8,7 +8,7 @@
       alt=""
     />
     <div
-      class="absolute pointer-events-none blur-lg w-screen min-h-screen top-0 left-0 z-60"
+      class="absolute pointer-events-none blur-lg w-screen min-h-dvh top-0 left-0 z-60"
     />
     <main
       style="width: 30rem"
