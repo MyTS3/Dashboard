@@ -83,20 +83,20 @@
                 <div
                   :class="[
                     activeOptions == log.uuid
-                      ? 'max-[700px]:scale-x-1'
-                      : 'max-[700px]:scale-x-0',
+                      ? 'max-[701px]:scale-x-1'
+                      : 'max-[701px]:scale-x-0',
                     i % 2 === 0
-                      ? 'max-[700px]:bg-mainbg_500'
-                      : 'max-[700px]:bg-[#272b4d]',
+                      ? 'max-[701px]:bg-mainbg_500'
+                      : 'max-[701px]:bg-[#272b4d]',
                   ]"
-                  class="table absolute left-0 top-0 w-full h-full max-[700px]:hidden z-50 transition-transform duration-100 origin-left"
+                  class="table absolute left-0 top-0 w-full h-full max-[701px]:hidden z-50 transition-transform duration-100 origin-left"
                 >
-                  <p class="text-center min-[700px]:hidden">
+                  <p class="text-center min-[701px]:hidden">
                     {{ (log.created_at || log.start)?.split('T')[0] }}
                     {{ log.end ? ' ... ' + log.end.split('T')[0] : '' }}
                   </p>
                   <div
-                    class="flex gap-1 min-[700px]:hidden"
+                    class="flex gap-1 min-[701px]:hidden"
                     :class="handleStatusColor(log)"
                   >
                     <p>
