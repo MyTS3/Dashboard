@@ -1,7 +1,7 @@
 <template>
   <span>
     <div
-      class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-dvh overflow-hidden relative"
+      class="flex flex-row items-start justify-between bg-mainbg_600 text-white h-svh overflow-hidden relative"
     >
       <div
         @click="sidebar = false"
@@ -10,7 +10,7 @@
       ></div>
       <template v-if="!error">
         <div
-          class="flex-1 h-dvh relative flex gap-layout flex-col items-stretch max-w-[85rem] mx-auto p-10 max-[570px]:p-2 max-[570px]:py-10"
+          class="flex-1 h-svh relative flex gap-layout flex-col items-stretch max-w-[85rem] mx-auto p-10 max-[570px]:p-2 max-[570px]:py-10"
         >
           <div class="">
             <header

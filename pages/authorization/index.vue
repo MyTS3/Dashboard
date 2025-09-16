@@ -1,6 +1,6 @@
 <template>
   <section
-    class="z-10 bg-mainbg_600 overflow-hidden relative flex items-center min-h-dvh"
+    class="z-10 bg-mainbg_600 overflow-hidden relative flex items-center min-h-svh"
   >
     <img
       class="object-cover h-full blur-[2px] w-full my-auto absolute top-0 left-0 pointer-events-none"
@@ -8,7 +8,7 @@
       alt=""
     />
     <div
-      class="absolute pointer-events-none blur-lg w-screen min-h-dvh top-0 left-0 z-60"
+      class="absolute pointer-events-none blur-lg w-screen min-h-svh top-0 left-0 z-60"
     />
     <main
       style="width: 30rem"
