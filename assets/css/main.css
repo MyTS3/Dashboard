@@ -39,7 +39,6 @@ img {
 .scroll-bar {
   -ms-overflow-style: auto;
   scrollbar-width: auto;
-  direction: ltr;
 }
 body {
   color: #c0d6f0;
@@ -173,11 +172,6 @@ body {
 .dropdown {
   background-color: rgb(0, 42, 110);
   font-weight: 700;
-}
-
-.ban-list {
-  display: grid;
-  grid-template-columns: 2fr 2fr 4fr;
 }
 
 .items {

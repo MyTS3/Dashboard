@@ -45,7 +45,9 @@
                 :key="interval"
                 class="table items"
               >
-                <p class="font-semibold">{{ interval.tserver.name }}</p>
+                <p dir="ltr" class="font-semibold truncate w-full">
+                  {{ interval.tserver.name }}
+                </p>
                 <p>{{ interval.interval }}</p>
                 <div class="flex">
                   <img
@@ -99,7 +101,7 @@ const {
 <style scoped>
 .table {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 2fr 1fr;
   text-align: center;
   justify-items: center;
   padding: 1rem;

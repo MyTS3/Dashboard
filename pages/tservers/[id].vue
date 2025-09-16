@@ -1,19 +1,22 @@
 <template>
   <section
-    class="flex-1 w-full h-full mx-auto flex flex-row items-stretch text-white text-center gap-layout min-h-0"
+    class="h-full mx-auto flex flex-row w-full items-stretch text-white text-center gap-layout min-h-0"
   >
     <div
-      class="flex flex-col items-stretch w-1/2 bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto"
+      :class="
+        selectedRow != null ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'
+      "
+      class="flex flex-col items-stretch bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto min-[701px]:basis-1/2"
     >
       <header class="relative my-4 px-4">
         <span
           v-if="serverInfoStatus === 'success' && serverInfo"
           :class="selectedRow?.rowType == 'server' ? 'btn-active' : 'btn '"
-          class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center cursor-pointer"
+          class="h-9 px-1 border-2 bg-white/10 rounded-2xl flex items-center justify-center cursor-pointer max-w-full truncate"
           @click="selectedRow = { rowType: 'server', level: 0 }"
           @contextmenu.prevent="selectedRow = { rowType: 'server', level: 0 }"
         >
-          {{ serverInfo.name }}
+          {{ serverInfo.name.slice(-35) }}
         </span>
         <div v-else>
           <USkeleton
@@ -27,19 +30,19 @@
         v-if="teamspeakserverStatus === 'success' && serverInfo?.mustRunning"
         id="scrollbale"
         ref="el"
-        class="flex items-stretch flex-col teamspeak text-xs px-4 flex-1 overflow-y-auto"
+        class="flex items-stretch flex-col teamspeak text-xs px-4 flex-1 overflow-y-auto scroll-bar"
       >
         <template v-for="row in teamspeakserver" :key="objectHash(row)">
           <div
             v-if="row.rowType == 'channel'"
             ref="therow"
             dropzone="true"
-            class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-fit"
-            :class="
+            class="flex gap-1 py-1 overflow-hidden px-3 rounded-lg min-h-6"
+            :class="[
               sameRow(selectedRow, row)
                 ? 'bg-main_orange/70'
-                : 'hover:bg-main_orange/10'
-            "
+                : 'hover:bg-main_orange/10',
+            ]"
             :style="{ 'padding-left': row.level * 1 + 'rem' }"
             @drop="dragended(row.channel)"
             @dragover.prevent
@@ -61,7 +64,7 @@
           </div>
           <div
             v-if="row.rowType == 'musicBot'"
-            class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
+            class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-6 cursor-pointer"
             draggable="true"
             :class="[
               sameRow(selectedRow, row)
@@ -86,7 +89,7 @@
           <div
             v-if="row.rowType == 'user'"
             draggable="true"
-            class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-fit cursor-pointer"
+            class="flex gap-1 py-1 h-5 overflow-hidden px-3 rounded-lg min-h-6 cursor-pointer"
             :class="
               sameRow(selectedRow, row)
                 ? 'bg-main_orange/70'
@@ -181,7 +184,93 @@
       </template>
     </div>
 
-    <div class="bg-mainbg_400 basis-1/2 w-full rounded-xl overflow-y-auto p-4">
+    <div
+      :class="
+        selectedRow == null ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'
+      "
+      class="bg-mainbg_400 min-[701px]:basis-1/2 rounded-xl overflow-y-auto p-4 relative"
+    >
+      <!-- <img
+        @click="selectedRow = null"
+        class="absolute top-3 w-7 cursor-pointer z-10 min-[701px]:hidden"
+        src="/images/Arrow - Left.png"
+        alt=""
+      /> -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="48"
+        height="48"
+        viewBox="0 0 48 48"
+        role="img"
+        aria-label="Switch panels"
+        @click="selectedRow = null"
+        class="absolute top-1 left-3 w-10 cursor-pointer z-10 min-[701px]:hidden"
+      >
+        <!-- rounded frame -->
+        <rect
+          x="4"
+          y="6"
+          width="40"
+          height="36"
+          rx="4"
+          fill="rgba(37,40,65,1)"
+          stroke="rgba(108,135,168,1)"
+          stroke-width="1.2"
+        />
+        <!-- left panel -->
+        <rect
+          x="8"
+          y="10"
+          width="16"
+          height="28"
+          rx="2"
+          fill="rgba(56,61,99,1)"
+        />
+        <!-- right panel -->
+        <rect
+          x="24"
+          y="10"
+          width="12"
+          height="28"
+          rx="2"
+          fill="rgba(20,25,49,1)"
+        />
+        <!-- arrow left-to-right -->
+        <path
+          d="M19 22h8"
+          fill="none"
+          stroke="rgb(236,102,0)"
+          stroke-width="2.4"
+          stroke-linecap="round"
+        />
+        <path
+          d="M25 19l3 3-3 3"
+          fill="none"
+          stroke="rgb(236,102,0)"
+          stroke-width="2.0"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <!-- arrow right-to-left (subtle) -->
+        <path
+          d="M17.5 28h-6"
+          fill="none"
+          stroke="rgba(108,135,168,1)"
+          stroke-width="1.4"
+          stroke-linecap="round"
+          opacity="0.9"
+        />
+        <path
+          d="M11.7 25.7l-2.2 2.3 2.2 2.3"
+          fill="none"
+          stroke="rgba(108,135,168,1)"
+          stroke-width="1.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          opacity="0.95"
+        />
+      </svg>
+
       <template v-if="selectedRow?.rowType == 'server'">
         <ServerView
           v-if="serverInfoStatus === 'success'"
@@ -262,13 +351,14 @@ const therow = ref<HTMLElement | null>(null);
 const serverUuid = route.params.id;
 const store = apiStore();
 const { url } = storeToRefs(store);
-const selectedRow = ref<row>({ rowType: 'server', level: 0 });
+const selectedRow = ref<row | null>({ rowType: 'server', level: 0 });
 const movingUser = ref<string>();
 const usersCount = ref<number | undefined>();
 const botsCount = ref<number | undefined>();
 const lastScrollesPosition = ref();
 const { y } = useScroll(el);
 const alrreadyVisited = ref(false);
+const screenWidth = window.innerWidth;
 //function
 function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
@@ -291,7 +381,8 @@ async function dragended(channel: channel) {
     throw e;
   });
 }
-function sameRow(r1: row, r2: row) {
+function sameRow(r1: row | null, r2: row) {
+  if (!r1) return false;
   if (r1.rowType == r2.rowType) {
     if (r1.rowType == 'server' && r2.rowType == 'server') {
       return true;
@@ -362,7 +453,7 @@ function findChannelTypeAndNameByFullName(fullName: string): {
       if (splitedName[0].includes('*spacer')) {
         return {
           type: '*spacer',
-          name: splitedName[1].repeat(50),
+          name: splitedName[1].repeat(screenWidth / 30),
           align: 'center',
           channelFullName: fullName,
         };
@@ -549,7 +640,9 @@ const { execute: getUsersAndChannels, status: teamspeakserverStatus } =
         });
       }
     });
-    const foundedSelectedRow = rows.find((r) => sameRow(r, selectedRow.value));
+    const foundedSelectedRow = rows.find((r) =>
+      selectedRow.value ? sameRow(r, selectedRow.value) : null,
+    );
     if (!foundedSelectedRow)
       selectedRow.value = { rowType: 'server', level: 0 };
     else selectedRow.value = foundedSelectedRow;

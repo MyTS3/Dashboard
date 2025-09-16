@@ -2,8 +2,8 @@
   <section class="h-full flex flex-col min-h-0 relative">
     <div dir="rtl" class="table bg-mainbg_300 rounded-t-2xl">
       <p>سرور</p>
-      <p>تاریخ</p>
-      <p>عمل</p>
+      <p class="max-[700px]:hidden">تاریخ</p>
+      <p class="max-[700px]:hidden">عمل</p>
     </div>
     <div class="overflow-y-auto h-full bg-mainbg_400">
       <Table
@@ -28,46 +28,81 @@
             </div>
           </div>
           <div>
-            <div v-for="backup in backups" :key="backup" class="table items">
-              <p class="font-semibold">{{ backup.tserver.name }}</p>
-              <p>{{ backup.createdAt }}</p>
-              <div class="flex gap-layout">
-                <UTooltip text="اعمال بکاپ">
-                  <img
-                    class="cursor-pointer w-8 h-8"
-                    src="/images/arrow-up.png"
-                    alt=""
-                    @click="
-                      (deployBackupTab = true), (selecteduuid = backup.uuid)
-                    "
-                  />
-                </UTooltip>
-                <UTooltip text="حذف بکاپ">
-                  <img
-                    class="cursor-pointer w-8 h-8"
-                    src="/images/trash.png"
-                    @click="
-                      (deleteBackupTab = true), (selecteduuid = backup.uuid)
-                    "
-                  />
-                </UTooltip>
+            <div
+              @touchstart="handleStart($event)"
+              @touchmove="handleMove($event)"
+              @touchend="handleEnd(backup.uuid)"
+              v-for="(backup, i) in backups"
+              :key="backup"
+              class="items table relative"
+            >
+              <p class="font-semibold w-full truncate col-span-1">
+                {{ backup.tserver.name }}
+              </p>
+              <p class="max-[700px]:hidden">{{ backup.createdAt }}</p>
+              <div
+                :class="[
+                  activeOptions == backup.uuid
+                    ? 'max-[700px]:scale-x-1 '
+                    : 'max-[700px]:scale-x-0',
+                  i % 2 === 0
+                    ? ' max-[700px]:bg-mainbg_500'
+                    : ' max-[700px]:bg-[#272b4d]',
+                ]"
+                class="flex max-[700px]:absolute max-[700px]:left-0 max-[700px]:top-0 max-[700px]:w-full max-[700px]:h-full max-[700px]:justify-around max-[700px]:items-center transition-transform origin-left z-50"
+              >
+                <p>{{ backup.createdAt }}</p>
+                <div class="flex gap-2">
+                  <UTooltip text="اعمال بکاپ">
+                    <img
+                      class="cursor-pointer w-8 h-8"
+                      src="/images/arrow-up.png"
+                      alt=""
+                      @click="
+                        (deployBackupTab = true), (selecteduuid = backup.uuid)
+                      "
+                    />
+                  </UTooltip>
+                  <UTooltip text="حذف بکاپ">
+                    <img
+                      class="cursor-pointer w-8 h-8"
+                      src="/images/trash.png"
+                      @click="
+                        (deleteBackupTab = true), (selecteduuid = backup.uuid)
+                      "
+                    />
+                  </UTooltip>
+                </div>
               </div>
             </div>
           </div>
           <template v-if="isLoading">
-            <div v-for="_ in 20" :key="_" class="table items">
-              <USkeleton
-                class="h-5 w-40"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-40"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-10"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
+            <!-- Desktop skeletons -->
+            <div class="hidden min-[700px]:block">
+              <div v-for="_ in 5" :key="`desktop-${_}`" class="table items">
+                <USkeleton
+                  class="h-5 w-40"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-20"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-20"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+              </div>
+            </div>
+
+            <!-- Mobile skeletons -->
+            <div class="block min-[700px]:hidden">
+              <div v-for="_ in 5" :key="`mobile-${_}`">
+                <USkeleton
+                  class="h-16 w-full mb-1"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+              </div>
             </div>
           </template>
         </div>
@@ -80,7 +115,6 @@
       افزودن
       <img src="/images/addon.png" alt="" />
     </button>
-
     <DeleteBackups
       v-if="deleteBackupTab"
       :selecteduuid="selecteduuid"
@@ -99,6 +133,28 @@ import restoreBackup from './restoreBackup.vue';
 import Table from '~/components/reusable/table.vue';
 import { ref, onMounted } from 'vue';
 import { useInfiniteScroll } from '@vueuse/core';
+//reponsive code
+const activeOptions = ref(null);
+let startX = 0;
+let deltaX = 0;
+const handleStart = (e) => {
+  startX = e.touches[0].clientX;
+};
+
+const handleMove = (e) => {
+  deltaX = e.touches[0].clientX - startX;
+};
+
+const handleEnd = (uuid) => {
+  if (deltaX > 50) {
+    activeOptions.value = uuid;
+  } else if (deltaX < -50) {
+    activeOptions.value = null;
+  }
+  deltaX = 0;
+};
+//
+
 const table = ref(null);
 
 const store = apiStore();
@@ -150,5 +206,10 @@ getPages();
   text-align: center;
   justify-items: center;
   padding: 1rem;
+}
+@media screen and (width < 700px) {
+  .table {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

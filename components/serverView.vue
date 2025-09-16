@@ -23,7 +23,9 @@
       </header>
       <main class="list-none flex flex-col gap-layout">
         <li class="grid gridList">
-          <p>{{ selectedServer.name }}</p>
+          <p dir="rtl" class="max-w-full truncate -pr-10">
+            {{ selectedServer.name }}
+          </p>
           <p>:نام</p>
           <a
             v-show="selectedServer.mustRunning"
@@ -95,7 +97,7 @@
         </li>
         <p
           v-show="selectedServer.mustRunning"
-          class="m-3 text-main_orange text-right cursor-pointer font-bold"
+          class="m-3 text-main_orange text-right cursor-pointer font-bold max-[800px]:hidden"
           @click="yatqaExampleTab = true"
         >
           برای مشاهده اطلاعات یاتکا کلیک کنید

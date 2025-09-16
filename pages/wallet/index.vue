@@ -2,8 +2,8 @@
   <div class="min-h-0 flex-1 mb-16 relative">
     <div dir="rtl" class="table bg-mainbg_300 text-nowrap rounded-t-2xl">
       <p>مبلغ</p>
-      <p>تاریخ</p>
-      <p />
+      <p class="max-[700px]:hidden">تاریخ</p>
+      <p class="max-[700px]:hidden" />
       <p>توضیحات</p>
     </div>
     <div
@@ -34,16 +34,28 @@
             </div>
           </template>
           <template v-else>
-            <div class="w-full h-full justify-center gap-4 items-center">
-              <li v-for="log in logs" :key="log.uuid" class="table">
-                <p dir="ltr" :class="handleAmountColor(log)">
+            <div
+              class="w-full h-full justify-center gap-4 items-center text-center"
+            >
+              <li
+                v-for="(log, i) in logs"
+                :key="log.uuid"
+                class="table items relative"
+                @touchstart="handleStart($event)"
+                @touchmove="handleMove($event)"
+                @touchend="handleEnd(log.uuid)"
+              >
+                <p dir="ltr" class="" :class="handleAmountColor(log)">
                   {{ Math.trunc(Number(log.amount)) }}
                 </p>
-                <p>
+                <p class="text-center max-[700px]:hidden">
                   {{ (log.created_at || log.start)?.split('T')[0] }}
                   {{ log.end ? ' ... ' + log.end.split('T')[0] : '' }}
                 </p>
-                <div class="flex gap-1" :class="handleStatusColor(log)">
+                <div
+                  class="flex gap-1 max-[700px]:hidden"
+                  :class="handleStatusColor(log)"
+                >
                   <p>
                     {{ handleTheStatus(log) }}
                   </p>
@@ -66,7 +78,50 @@
                     alt=""
                   />
                 </div>
-                <p>{{ log.reason }}</p>
+                <p class="text-center">{{ log.reason }}</p>
+                <!-- //mobile-reponsive-code -->
+                <div
+                  :class="[
+                    activeOptions == log.uuid
+                      ? 'max-[701px]:scale-x-1'
+                      : 'max-[701px]:scale-x-0',
+                    i % 2 === 0
+                      ? 'max-[701px]:bg-mainbg_500'
+                      : 'max-[701px]:bg-[#272b4d]',
+                  ]"
+                  class="table absolute left-0 top-0 w-full h-full max-[701px]:hidden z-50 transition-transform duration-100 origin-left"
+                >
+                  <p class="text-center min-[701px]:hidden">
+                    {{ (log.created_at || log.start)?.split('T')[0] }}
+                    {{ log.end ? ' ... ' + log.end.split('T')[0] : '' }}
+                  </p>
+                  <div
+                    class="flex gap-1 min-[701px]:hidden"
+                    :class="handleStatusColor(log)"
+                  >
+                    <p>
+                      {{ handleTheStatus(log) }}
+                    </p>
+                    <img
+                      v-if="handleStatusColor(log) == 'charge-status'"
+                      class="w-5"
+                      src="/images/add-square.png"
+                      alt=""
+                    />
+                    <img
+                      v-if="handleStatusColor(log) == 'loading-status'"
+                      class="w-5"
+                      src="/images/waiting.png"
+                      alt=""
+                    />
+                    <img
+                      v-if="handleStatusColor(log) == 'reduce-status'"
+                      class="w-3"
+                      src="/images/minus.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
               </li>
             </div>
           </template>
@@ -81,6 +136,28 @@
 import ChargeWallet from '~/components/modules/wallet/chargeWallet.vue';
 import { useInfiniteScroll } from '@vueuse/core';
 import { useTemplateRef } from 'vue';
+//responive codes
+const activeOptions = ref<string | null>(null);
+let startX = 0;
+let deltaX = 0;
+const handleStart = (e: TouchEvent) => {
+  startX = e.touches[0].clientX;
+};
+
+const handleMove = (e: TouchEvent) => {
+  deltaX = e.touches[0].clientX - startX;
+};
+
+const handleEnd = (uuid: string) => {
+  if (deltaX > 50) {
+    activeOptions.value = uuid;
+  } else if (deltaX < -50) {
+    activeOptions.value = null;
+  }
+  deltaX = 0;
+};
+//
+
 //
 type walletRows =
   | {
@@ -177,6 +254,11 @@ getPages();
   height: 4rem;
   justify-content: center;
   align-items: center;
+}
+@media screen and (width < 701px) {
+  .table {
+    grid-template-columns: 1fr 2fr;
+  }
 }
 .loading-status {
   background-color: rgb(236, 102, 0, 0.25);

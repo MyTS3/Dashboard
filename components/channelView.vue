@@ -2,12 +2,12 @@
   <section
     class="flex flex-col justify-between h-full w-full font-medium relative"
   >
-    <div>
+    <div class="w-full">
       <h1 class="text-center">چنل</h1>
       <img class="my-6 w-full" src="/images/seprator-line.png" alt="" />
-      <main class="text-right flex flex-col gap-5">
-        <li class="grid gridList">
-          <p>{{ selectedChannel.channelFullName }}</p>
+      <main class="text-right flex flex-col gap-5 w-full">
+        <li class="grid gridList w-full min-w-0">
+          <p class="truncate min-w-0">{{ selectedChannel.channelFullName }}</p>
           <p>: نام</p>
         </li>
         <li class="grid gridList">
