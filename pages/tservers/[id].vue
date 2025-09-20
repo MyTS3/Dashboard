@@ -208,7 +208,7 @@
         viewBox="0 0 48 48"
         role="img"
         aria-label="Switch panels"
-        @click="infoTab = false"
+        @click="(infoTab = false), (selectedRow = null)"
         class="absolute top-1 left-3 w-10 cursor-pointer z-10 min-[701px]:hidden"
       >
         <!-- rounded frame -->
