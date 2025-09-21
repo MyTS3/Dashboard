@@ -89,6 +89,8 @@
   </teleport>
 </template>
 <script setup lang="ts">
+import { useToast } from '#imports';
+const toast = useToast();
 const store = apiStore();
 const emit = defineEmits(['close']);
 const { url } = storeToRefs(store);
@@ -143,7 +145,7 @@ function isAssigned(serverGroup: serverGroup) {
 }
 
 async function addServerGroup(sgid: string) {
-  await $fetch(
+  $fetch(
     `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
     {
       method: 'POST',
@@ -154,7 +156,7 @@ async function addServerGroup(sgid: string) {
   );
 }
 async function removeServerGroup(sgid: string) {
-  await $fetch(
+  $fetch(
     `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/servergroups/${sgid}`,
     {
       method: 'DELETE',
@@ -166,33 +168,48 @@ async function removeServerGroup(sgid: string) {
 }
 
 async function applyServerGroups() {
-  if (toApply.value) {
-    disable.value = true;
+  if (Object.keys(toApply.value).length === 0) {
+    emit('close');
+    return;
+  }
+
+  disable.value = true;
+
+  try {
+    let updatedServerGroups = [...ServerGroupsWeHave.value];
+
     for (const sgid in toApply.value) {
       const { action, serverGroup } = toApply.value[sgid];
-      switch (action) {
-        case 'add': {
-          if (!ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
-            await addServerGroup(serverGroup.sgid);
-          }
 
-          break;
+      if (action === 'remove') {
+        if (
+          updatedServerGroups.find((s) => s.sgid === sgid) &&
+          updatedServerGroups.length > 1
+        ) {
+          await removeServerGroup(serverGroup.sgid);
+
+          updatedServerGroups = updatedServerGroups.filter(
+            (s) => s.sgid !== sgid,
+          );
         }
-        case 'remove': {
-          if (
-            ServerGroupsWeHave.value.find((s) => s.sgid == sgid) &&
-            ServerGroupsWeHave.value.length > 1
-          ) {
-            await removeServerGroup(serverGroup.sgid);
-          }
-          break;
+      } else if (action === 'add') {
+        if (!updatedServerGroups.find((s) => s.sgid === sgid)) {
+          await addServerGroup(serverGroup.sgid);
+
+          updatedServerGroups.push(serverGroup);
         }
       }
     }
+  } catch (error) {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  } finally {
     disable.value = false;
+    emit('close');
   }
-
-  emit('close');
 }
 function checkForDisAbling() {
   submitDisable.value = false;
