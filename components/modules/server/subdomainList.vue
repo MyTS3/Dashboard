@@ -157,6 +157,7 @@ const emit = defineEmits(['close']);
 const domainListForDropDown = ref([]);
 const disable = ref(false);
 const toast = useToast();
+let abortController;
 const { data: domainList, status: domainStatus } = useFetch(
   `${url.value}/api/v4/tdomains`,
   {
@@ -216,13 +217,50 @@ function deleteSubDomain(i) {
   subDomainList.value = newList;
   checkIfValid();
 }
+async function checkIfSubdomainAvailable(subdomain) {
+  let alreadyExist = false;
+  subDomainListFetch.value.find((s) =>
+    s.sub == subdomain.sub ? (alreadyExist = true) : null,
+  );
+  if (alreadyExist) return true;
+  if (abortController) {
+    abortController.abort();
+  }
+  abortController = new AbortController();
+  try {
+    regexDisablingSubmit.value = true;
+    await $fetch(
+      `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains/check`,
+      {
+        method: 'post',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          subdomains: [
+            { domain: subdomain.domain, sub: subdomain.sub.toLowerCase() },
+          ],
+        }),
+        signal: abortController.signal,
+      },
+    );
+    return true;
+  } catch {
+    return false;
+  } finally {
+    regexDisablingSubmit.value = false;
+  }
+}
 function checkIfValid() {
   regexDisablingSubmit.value = false;
   if (subDomainListFetch.value.length < 1 && subDomainList.value < 1) {
     regexDisablingSubmit.value = true;
     return;
   }
-  subDomainList.value.map((subdomain) => {
+  subDomainList.value.map(async (subdomain) => {
+    const domain = domainList.value.find(
+      (domain) => domain.uuid == subdomain.domain.uuid,
+    );
     if (subdomain.sub.length && subdomain.sub.length < 3) {
       subdomain.errorMessage = 'حداقل 3 کاراکتر باید بنویسید';
       regexDisablingSubmit.value = true;
@@ -231,6 +269,11 @@ function checkIfValid() {
       subdomain.errorMessage = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
       regexDisablingSubmit.value = true;
       return;
+    } else if (!(await checkIfSubdomainAvailable(subdomain))) {
+      subdomain.errorMessage = 'ساب دامین تکراری است';
+      regexDisablingSubmit.value = true;
+    } else if (!domain.active) {
+      subdomain.errorMessage = 'نیم سرور های دامین ست نشده';
     } else {
       subdomain.errorMessage = '';
       return;
