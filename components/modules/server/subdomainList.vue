@@ -217,68 +217,98 @@ function deleteSubDomain(i) {
   subDomainList.value = newList;
   checkIfValid();
 }
+let waitForTyping;
 async function checkIfSubdomainAvailable(subdomain) {
+  regexDisablingSubmit.value = true;
+  clearTimeout(waitForTyping);
+
   let alreadyExist = false;
   subDomainListFetch.value.find((s) =>
     s.sub == subdomain.sub ? (alreadyExist = true) : null,
   );
   if (alreadyExist) return true;
+
   if (abortController) {
     abortController.abort();
   }
   abortController = new AbortController();
-  try {
-    regexDisablingSubmit.value = true;
-    await $fetch(
-      `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains/check`,
-      {
-        method: 'post',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({
-          subdomains: [
-            { domain: subdomain.domain, sub: subdomain.sub.toLowerCase() },
-          ],
-        }),
-        signal: abortController.signal,
-      },
-    );
-    return true;
-  } catch {
-    return false;
-  } finally {
-    regexDisablingSubmit.value = false;
-  }
+
+  return new Promise((resolve) => {
+    waitForTyping = setTimeout(async () => {
+      try {
+        await $fetch(
+          `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains/check`,
+          {
+            method: 'post',
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify({
+              subdomains: [
+                { domain: subdomain.domain, sub: subdomain.sub.toLowerCase() },
+              ],
+            }),
+            signal: abortController.signal,
+          },
+        );
+        resolve(true);
+      } catch {
+        resolve(false);
+      } finally {
+        regexDisablingSubmit.value = false;
+      }
+    }, 500);
+  });
 }
-function checkIfValid() {
+
+async function checkIfValid() {
+  clearTimeout(waitForTyping);
   regexDisablingSubmit.value = false;
-  if (subDomainListFetch.value.length < 1 && subDomainList.value < 1) {
+
+  if (subDomainListFetch.value.length < 1 && subDomainList.value.length < 1) {
     regexDisablingSubmit.value = true;
     return;
   }
-  subDomainList.value.map(async (subdomain) => {
+
+  let hasErrors = false;
+
+  // Use for...of loop instead of map for async operations
+  for (const subdomain of subDomainList.value) {
     const domain = domainList.value.find(
       (domain) => domain.uuid == subdomain.domain.uuid,
     );
+    //
+    subdomain.errorMessage = '';
+    //
     if (subdomain.sub.length && subdomain.sub.length < 3) {
       subdomain.errorMessage = 'حداقل 3 کاراکتر باید بنویسید';
-      regexDisablingSubmit.value = true;
-      return;
-    } else if (subdomain.sub.length && !regex.test(subdomain.sub)) {
-      subdomain.errorMessage = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
-      regexDisablingSubmit.value = true;
-      return;
-    } else if (!(await checkIfSubdomainAvailable(subdomain))) {
-      subdomain.errorMessage = 'ساب دامین تکراری است';
-      regexDisablingSubmit.value = true;
-    } else if (!domain.active) {
-      subdomain.errorMessage = 'نیم سرور های دامین ست نشده';
-    } else {
-      subdomain.errorMessage = '';
-      return;
+      hasErrors = true;
+      continue;
     }
-  });
+    //
+    if (subdomain.sub.length && !regex.test(subdomain.sub)) {
+      subdomain.errorMessage = 'نام سرور باید از حروف اگلیسی و اعداد باشد';
+      hasErrors = true;
+      continue;
+    }
+    if (subdomain.sub.length > 2 || subdomain.sub.length < 1) {
+      console.log(subdomain);
+      const isAvailable = await checkIfSubdomainAvailable(subdomain);
+
+      if (!isAvailable) {
+        subdomain.errorMessage = 'ساب دامین تکراری است';
+        hasErrors = true;
+        continue;
+      }
+      if (domain && !domain.active) {
+        subdomain.errorMessage = 'نیم سرور های دامین ست نشده';
+        hasErrors = false;
+        continue;
+      }
+    }
+  }
+
+  regexDisablingSubmit.value = hasErrors;
 }
 
 async function submitSubdomains() {
