@@ -300,6 +300,7 @@
       <MusicbotView
         v-if="selectedRow?.rowType == 'musicBot'"
         :selected-row="selectedRow"
+        @refresh="getUsersAndChannels"
       />
     </div>
   </section>

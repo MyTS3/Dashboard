@@ -166,22 +166,33 @@ async function removeServerGroup(sgid: string) {
 }
 
 async function applyServerGroups() {
-  if (toApply.value) {
+  if (!toApply.value) return;
+  const toApplylist = Object.values(toApply.value);
+  const toApplySorted = toApplylist.sort((a, b) => {
+    if (a.action === 'add' && b.action === 'remove') return -1;
+    if (a.action === 'remove' && b.action === 'add') return 1;
+    return 0;
+  });
+  if (toApplySorted.length) {
     disable.value = true;
-    for (const sgid in toApply.value) {
-      const { action, serverGroup } = toApply.value[sgid];
+    for (const sortedServergroup of toApplySorted) {
+      const { action, serverGroup } = sortedServergroup;
       switch (action) {
         case 'add': {
-          if (!ServerGroupsWeHave.value.find((s) => s.sgid == sgid)) {
+          if (
+            !ServerGroupsWeHave.value.find(
+              (s) => s.sgid == sortedServergroup.serverGroup.sgid,
+            )
+          ) {
             await addServerGroup(serverGroup.sgid);
           }
-
           break;
         }
         case 'remove': {
           if (
-            ServerGroupsWeHave.value.find((s) => s.sgid == sgid) &&
-            ServerGroupsWeHave.value.length > 1
+            ServerGroupsWeHave.value.find(
+              (s) => s.sgid === sortedServergroup.serverGroup.sgid,
+            )
           ) {
             await removeServerGroup(serverGroup.sgid);
           }
