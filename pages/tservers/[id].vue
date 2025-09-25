@@ -192,7 +192,7 @@
     </div>
 
     <div
-      :class="!infoTab ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'"
+      :class="[!infoTab ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full', ,]"
       class="bg-mainbg_400 min-[701px]:basis-1/2 rounded-xl overflow-y-auto p-4 relative"
     >
       <!-- <img
@@ -203,13 +203,16 @@
       /> -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="48"
-        height="48"
+        width="50"
+        height="50"
         viewBox="0 0 48 48"
         role="img"
         aria-label="Switch panels"
         @click="(infoTab = false), (selectedRow = null)"
-        class="absolute top-1 left-3 w-10 cursor-pointer z-10 min-[701px]:hidden"
+        class="absolute top-1 left-3 w-[2.3rem] cursor-pointer z-10 min-[701px]:hidden"
+        :class="
+          selectedRow?.rowType == 'musicBot' ? 'left-14 top-[0.67rem]' : null
+        "
       >
         <!-- rounded frame -->
         <rect
