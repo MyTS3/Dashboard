@@ -1,6 +1,11 @@
 <template>
   <section class="h-full relative overflow-y-hidden flex flex-col gap-2">
-    <header class="flex w-full">
+    <header class="flex w-full justify-between">
+      <img
+        @click="editMusicBotTab = true"
+        src="/images/edit.png"
+        alt="edit-icon"
+      />
       <h1 class="mx-auto font-bold p-2 my-auto">موزیک بات</h1>
       <img
         class="cursor-pointer"
@@ -109,11 +114,14 @@
       :selected-bot="selectedRow"
       @close="deleteMusicBotTab = false"
     />
+    <EditMusicBot @close="editMusicBotTab = false" v-if="editMusicBotTab" />
   </section>
 </template>
 <script setup lang="ts">
 import DeleteMusicBot from './deleteMusicBot.vue';
+import EditMusicBot from './editMusicBot.vue';
 
+const editMusicBotTab = ref(false);
 const deleteMusicBotTab = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
