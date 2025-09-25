@@ -13,7 +13,7 @@
           <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
         <h1 class="my-4">لیست بن ها</h1>
-        <table>
+        <div>
           <div
             style="gap: 2px; max-height: 20rem"
             class="text-sm ban-list text-right relative overflow-y-scroll"
@@ -65,7 +65,7 @@
               </div>
             </div>
           </div>
-        </table>
+        </div>
       </main>
     </section>
     <unBan
