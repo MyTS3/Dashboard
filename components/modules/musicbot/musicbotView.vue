@@ -114,7 +114,12 @@
       :selected-bot="selectedRow"
       @close="deleteMusicBotTab = false"
     />
-    <EditMusicBot @close="editMusicBotTab = false" v-if="editMusicBotTab" />
+    <EditMusicBot
+      :bot="selectedRow"
+      @close="editMusicBotTab = false"
+      @refresh="$emit('refresh')"
+      v-if="editMusicBotTab"
+    />
   </section>
 </template>
 <script setup lang="ts">
