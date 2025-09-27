@@ -209,9 +209,11 @@
         role="img"
         aria-label="Switch panels"
         @click="(infoTab = false), (selectedRow = null)"
-        class="absolute top-1 left-3 w-[2.3rem] cursor-pointer z-10 min-[701px]:hidden"
+        class="absolute w-[2.3rem] cursor-pointer z-10 min-[701px]:hidden"
         :class="
-          selectedRow?.rowType == 'musicBot' ? 'left-14 top-[0.67rem]' : null
+          selectedRow?.rowType == 'musicBot'
+            ? 'left-14 top-[0.67rem]'
+            : ' top-1 left-3'
         "
       >
         <!-- rounded frame -->
