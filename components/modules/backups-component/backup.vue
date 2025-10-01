@@ -51,7 +51,7 @@
                 ]"
                 class="flex max-[700px]:absolute max-[700px]:left-0 max-[700px]:top-0 max-[700px]:w-full max-[700px]:h-full max-[700px]:justify-around max-[700px]:items-center transition-transform origin-left z-50"
               >
-                <p>{{ backup.createdAt }}</p>
+                <p class="min-[699px]:hidden">{{ backup.createdAt }}</p>
                 <div class="flex gap-2">
                   <UTooltip text="اعمال بکاپ">
                     <img
@@ -207,7 +207,7 @@ getPages();
   justify-items: center;
   padding: 1rem;
 }
-@media screen and (width < 700px) {
+@media screen and (width < 701px) {
   .table {
     grid-template-columns: 1fr;
   }
