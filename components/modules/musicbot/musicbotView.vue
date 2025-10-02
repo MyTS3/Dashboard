@@ -17,27 +17,48 @@
     <img class="mx-auto w-full" src="/images/seprator-line.png" alt="" />
     <template v-if="'connected' in selectedRow.musicBot">
       <div class="flex grow flex-col overflow-hidden">
-        <main
-          class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 overflow-y-scroll"
-        >
-          <li
-            v-for="music in musics?.musics"
-            :key="music.Link"
-            class="list-none my-1 p-3 rounded-xl relative"
-            :class="
-              music.Link === playingMusic?.Link
-                ? 'btn-active'
-                : 'hover:hover:bg-main_orange/20'
-            "
+        <template v-if="musicsStatus === 'success'">
+          <main
+            class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 overflow-y-scroll"
           >
-            <h2 class="text-lg">{{ music.Title }}</h2>
-          </li>
-        </main>
+            <li
+              v-for="music in musics?.musics"
+              :key="music.Link"
+              class="list-none my-1 p-3 rounded-xl relative"
+              :class="
+                music.Link === playingMusic?.Link
+                  ? 'btn-active'
+                  : 'hover:hover:bg-main_orange/20'
+              "
+            >
+              <h2 class="text-lg">{{ music.Title }}</h2>
+            </li>
+          </main>
+        </template>
+        <template v-if="musicsStatus === 'pending'">
+          <main
+            class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 overflow-y-scroll flex flex-col gap-1"
+          >
+            <USkeleton
+              v-for="_ in 20"
+              :key="_"
+              :ui="{ background: 'dark:bg-gray-500' }"
+              class="w-full p-7 rounded-xl"
+            />
+          </main>
+        </template>
         <footer
           class="mx-auto py-4 flex-shrink-0 flex-grow-0 basis-32 w-full gap-2 flex flex-col"
         >
           <div class="flex flex-col text-center">
-            <h2 class="font-bold">{{ playingMusic?.Title }}</h2>
+            <h2 class="font-bold max-w-full overflow-hidden">
+              {{ playingMusic?.Title }}
+            </h2>
+            <USkeleton
+              v-if="musicStatus == 'pending' && !playingMusic.Title"
+              :ui="{ background: 'dark:bg-gray-500' }"
+              class="w-4/5 mx-auto p-3 rounded-xl"
+            />
           </div>
           <div
             v-if="playingMusic && playingMusic.Length"
@@ -136,7 +157,7 @@ const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 const disable = ref(false);
 let element: HTMLElement | null;
-const { data: musics } = useFetch<{
+const { data: musics, status: musicsStatus } = useFetch<{
   musics: { Link: string; Title: string }[];
 }>(
   () =>
@@ -152,7 +173,11 @@ const { data: musics } = useFetch<{
     }),
   },
 );
-const { data: playingMusic, execute: getPlayingMusic } = useFetch<{
+const {
+  data: playingMusic,
+  execute: getPlayingMusic,
+  status: musicStatus,
+} = useFetch<{
   Link: string;
   Title: string;
   Paused: boolean;
