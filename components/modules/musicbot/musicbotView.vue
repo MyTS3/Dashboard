@@ -136,7 +136,7 @@ const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 const disable = ref(false);
 let element: HTMLElement | null;
-const { data: musics, execute: getMusics } = useFetch<{
+const { data: musics } = useFetch<{
   musics: { Link: string; Title: string }[];
 }>(
   () =>
@@ -176,35 +176,14 @@ const { data: playingMusic, execute: getPlayingMusic } = useFetch<{
     }),
   },
 );
-
-async function getMusicsAndPlayingMusic() {
-  return Promise.all([getMusics(), getPlayingMusic()]);
-}
-
+let pauseInterval = false;
 const mainInterval = setInterval(async () => {
-  if (
-    playingMusic.value &&
-    playingMusic.value.Position &&
-    !playingMusic.value.Paused
-  ) {
-    playingMusic.value.Position += 1;
-    if (element) {
-      const percent =
-        (playingMusic.value.Position / playingMusic.value.Length) * 100;
-      element.style.setProperty('--before-left', `${percent}%`);
-      element.style.setProperty('--after-width', `${percent}%`);
-    }
-    if (playingMusic.value.Position > playingMusic.value.Length) {
-      await getMusicsAndPlayingMusic();
-    }
-  }
-}, 1000);
-
-const chekingInterval = setInterval(() => {
-  getMusicsAndPlayingMusic();
-}, 5000);
+  if (pauseInterval) return;
+  await getPlayingMusic();
+}, 2000);
 
 async function next() {
+  pauseInterval = true;
   disable.value = true;
   await useFetch(
     `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/next`,
@@ -215,8 +194,9 @@ async function next() {
       },
     },
   );
-  await getMusicsAndPlayingMusic();
+  await getPlayingMusic();
   disable.value = false;
+  pauseInterval = false;
 }
 
 async function playpause() {
@@ -242,11 +222,12 @@ async function playpause() {
       },
     );
 
-  await getMusicsAndPlayingMusic();
+  await getPlayingMusic();
   disable.value = false;
 }
 
 async function previous() {
+  pauseInterval = true;
   disable.value = true;
   await useFetch(
     `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/previous`,
@@ -257,8 +238,9 @@ async function previous() {
       },
     },
   );
-  await getMusicsAndPlayingMusic();
+  await getPlayingMusic();
   disable.value = false;
+  pauseInterval = false;
 }
 
 async function restartBot() {
@@ -290,7 +272,6 @@ onMounted(() => {
   onUnmounted(() => {
     element = null;
     clearInterval(mainInterval);
-    clearInterval(chekingInterval);
   });
 });
 </script>
