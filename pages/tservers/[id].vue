@@ -324,6 +324,12 @@
         :selected-row="selectedRow"
         @refresh="getUsersAndChannels"
       />
+      <AddDraggedBackup
+        v-if="AddDraggedBackupTab"
+        @close="(AddDraggedBackupTab = false), (backupFile = null)"
+        :backup="backupFile"
+        :serverinfo="serverInfo"
+      />
     </div>
   </section>
 </template>
@@ -335,6 +341,7 @@ import objectHash from 'object-hash';
 import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
 import { useScroll } from '@vueuse/core';
 import { pauseRequests } from '~/stores/globalVaribles';
+import AddDraggedBackup from '~/components/modules/server/addDraggedBackup.vue';
 //responsive code
 const infoTab = ref(false);
 //
@@ -392,7 +399,8 @@ const alrreadyVisited = ref(false);
 const screenWidth = window.innerWidth;
 const draggingFile = ref(false);
 const backupFile = ref<null | string>(null);
-
+const AddDraggedBackupTab = ref(false);
+const toast = useToast();
 //function
 function onDragOver() {
   draggingFile.value = true;
@@ -406,14 +414,18 @@ function onDrop(e: DragEvent) {
   const file = e.dataTransfer?.files[0];
   if (!file) return;
 
-  if (file.type === 'text/plain') {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      backupFile.value = event.target?.result as string;
-      console.log(backupFile.value);
-    };
-    reader.readAsText(file);
-  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    backupFile.value = (reader.result as string).trim();
+    AddDraggedBackupTab.value = true;
+  };
+  reader.readAsText(file);
+
+  // toast.add({
+  //   title: 'این فرمت پشتیبانی نمیشود',
+  //   timeout: 2000,
+  //   color: 'red',
+  // });
 }
 
 function draged(entity: user | musicBot) {
