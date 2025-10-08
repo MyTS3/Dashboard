@@ -186,11 +186,18 @@ import loading from '@/components/reusable/theLoading.vue';
 import { getBalance } from '../../stores/globalVaribles';
 
 const serverTokenTab = ref(false);
-
+const props = defineProps(['routeSlot']);
+const slot = ref(1);
+if (
+  props.routeSlot &&
+  Number(props.routeSlot) < 7 &&
+  Number(props.routeSlot) > 0
+)
+  slot.value = Number(props.routeSlot);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
-const slot = ref(1);
+
 const { data: prices } = useFetch(`${url.value}/api/v4/prices/tserver`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -181,7 +181,8 @@
     <makeServer
       v-if="makeServerTab"
       :selected-server="selectedServer"
-      @close="getServers(), (makeServerTab = false)"
+      :routeSlot="routeSlot"
+      @close="getServers(), (makeServerTab = false), (routeSlot = null)"
     />
     <DeleteServer
       v-if="ServerDeleteTab"
@@ -223,10 +224,11 @@ const handleEnd = (uuid) => {
 const errors = errorHandle();
 const store = apiStore();
 const { url } = storeToRefs(store);
+const route = useRoute();
 const makeServerTab = ref(false);
-
 const ServerDeleteTab = ref(false);
 const selectedServer = ref();
+const routeSlot = ref(null);
 const router = useRouter();
 
 const timeAgo = new TimeAgo('fa');
@@ -275,7 +277,12 @@ function removeServer(name, uuid) {
 function serverClicked(server) {
   router.push(`/tservers/${server.uuid}`);
 }
-///////////////////////////calling functions
+
+if (route.query.slot) {
+  routeSlot.value = route.query.slot;
+  makeServerTab.value = true;
+  router.replace({ query: {} });
+}
 </script>
 <style scoped>
 .table {
