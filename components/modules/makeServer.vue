@@ -184,7 +184,7 @@ import { storeToRefs } from 'pinia';
 import serverToken from './serverToken.vue';
 import loading from '@/components/reusable/theLoading.vue';
 import { getBalance } from '../../stores/globalVaribles';
-
+const router = useRouter();
 const serverTokenTab = ref(false);
 const props = defineProps(['routeSlot']);
 const slot = ref(1);
