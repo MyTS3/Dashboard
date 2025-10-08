@@ -1,11 +1,28 @@
 <template>
   <section
     class="h-full mx-auto flex flex-row w-full items-stretch text-white text-center gap-layout min-h-0"
+    @dragover.prevent="onDragOver()"
+    @dragend.prevent="onDragLeave()"
+    @dragenter.prevent
   >
     <div
       :class="infoTab ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'"
-      class="flex flex-col items-stretch bg-mainbg_400 h-full rounded-xl font-sans overflow-y-auto min-[701px]:basis-1/2"
+      class="flex flex-col items-stretch bg-mainbg_400 h-full relative rounded-xl font-sans overflow-y-auto min-[701px]:basis-1/2"
     >
+      <div
+        class="absolute w-full h-full backdrop-blur-sm bg-mainbg_300/20 z-50"
+        dropzone="true"
+        @dragover.prevent
+        @dragenter.prevent
+        @drop.prevent="onDrop($event)"
+        v-if="draggingFile"
+      >
+        <img
+          src="/images/dropzoneImage.svg"
+          class="w-full translate-y-full"
+          alt="dropzone"
+        />
+      </div>
       <header class="relative my-4 px-4">
         <span
           v-if="serverInfoStatus === 'success' && serverInfo"
@@ -307,6 +324,12 @@
         :selected-row="selectedRow"
         @refresh="getUsersAndChannels"
       />
+      <AddDraggedBackup
+        v-if="AddDraggedBackupTab"
+        @close="(AddDraggedBackupTab = false), (backupFile = null)"
+        :backup="backupFile"
+        :serverinfo="serverInfo"
+      />
     </div>
   </section>
 </template>
@@ -318,6 +341,7 @@ import objectHash from 'object-hash';
 import MusicbotView from '~/components/modules/musicbot/musicbotView.vue';
 import { useScroll } from '@vueuse/core';
 import { pauseRequests } from '~/stores/globalVaribles';
+import AddDraggedBackup from '~/components/modules/server/addDraggedBackup.vue';
 //responsive code
 const infoTab = ref(false);
 //
@@ -373,8 +397,36 @@ const lastScrollesPosition = ref();
 const { y } = useScroll(el);
 const alrreadyVisited = ref(false);
 const screenWidth = window.innerWidth;
-
+const draggingFile = ref(false);
+const backupFile = ref<null | string>(null);
+const AddDraggedBackupTab = ref(false);
 //function
+function onDragOver() {
+  draggingFile.value = true;
+}
+function onDragLeave() {
+  draggingFile.value = false;
+}
+function onDrop(e: DragEvent) {
+  draggingFile.value = false;
+
+  const file = e.dataTransfer?.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    backupFile.value = (reader.result as string).trim();
+    AddDraggedBackupTab.value = true;
+  };
+  reader.readAsText(file);
+
+  // toast.add({
+  //   title: 'این فرمت پشتیبانی نمیشود',
+  //   timeout: 2000,
+  //   color: 'red',
+  // });
+}
+
 function draged(entity: user | musicBot) {
   if ('userNickname' in entity) movingUser.value = entity.userNickname;
   if ('connected' in entity && entity.connected && 'name' in entity.connected)

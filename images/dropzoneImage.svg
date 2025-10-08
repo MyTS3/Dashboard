@@ -1,0 +1,42 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300" role="img" aria-label="Drop zone: کانفیگ خودرا اینجا رها کنید">
+  <defs>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"></feGaussianBlur>
+      <feOffset in="blur" dx="0" dy="6" result="offsetBlur"></feOffset>
+      <feMerge>
+        <feMergeNode in="offsetBlur"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+    <linearGradient id="bgGrad" x1="0" x2="1">
+      <stop offset="0" stop-color="rgba(37, 40, 65, 1)"></stop>
+      <stop offset="1" stop-color="rgba(20, 25, 49, 1)"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded card -->
+  <rect x="12" y="12" width="776" height="276" rx="20" ry="20" fill="url(#bgGrad)" stroke="rgba(56, 61, 99, 1)" stroke-width="2"></rect>
+
+  <!-- Dashed border -->
+  <rect x="30" y="30" width="740" height="240" rx="16" ry="16" fill="none" stroke="rgba(108, 135, 168, 1)" stroke-width="3" stroke-dasharray="12 10"></rect>
+
+  <!-- Cloud + arrow (upload) icon -->
+  <g transform="translate(260,150)" filter="url(#softShadow)" aria-hidden="true">
+    <!-- cloud -->
+    <path d="M-60 10c0-18 14-32 32-32 6 0 12 2 17 6 6-10 17-16 28-16 20 0 36 16 36 36 0 2 0 4-1 6 13 2 22 13 22 26 0 15-12 28-28 28h-82c-18 0-32-14-32-32 0-17 13-31 30-32z" fill="rgba(37, 41, 67, 1)" stroke="rgba(1, 107, 255, 1)" stroke-width="2"></path>
+    <!-- arrow -->
+    <g transform="translate(-6,-6)">
+      <rect x="-6" y="22" width="12" height="28" rx="2" ry="2" fill="rgb(236,102,0)"></rect>
+      <path d="M0 22 L18 22 L9 10 Z" transform="translate(-9,0)" fill="rgb(236,102,0)"></path>
+    </g>
+    <!-- small accent circle -->
+    <circle cx="36" cy="2" r="4" fill="rgb(201,11,14)"></circle>
+  </g>
+
+  <!-- Persian text -->
+  <text x="520" y="155" font-family="Tahoma, 'Noto Sans Arabic', 'Noto Nastaliq Urdu', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" font-size="28" font-weight="600" text-anchor="middle" dominant-baseline="middle" direction="rtl" fill="rgba(1, 107, 255, 1)">
+    کانفیگ خودرا اینجا رها کنید
+  </text>
+</svg>
