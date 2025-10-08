@@ -65,7 +65,7 @@ async function assignBackup() {
           "data": "${dataValue}"
         }`,
       });
-    } catch (err) {
+    } catch {
       toast.add({
         title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
         timeout: 2000,

@@ -400,7 +400,6 @@ const screenWidth = window.innerWidth;
 const draggingFile = ref(false);
 const backupFile = ref<null | string>(null);
 const AddDraggedBackupTab = ref(false);
-const toast = useToast();
 //function
 function onDragOver() {
   draggingFile.value = true;
