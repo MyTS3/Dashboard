@@ -281,7 +281,6 @@ function serverClicked(server) {
 if (route.query.slot) {
   routeSlot.value = route.query.slot;
   makeServerTab.value = true;
-  router.replace({ query: {} });
 }
 </script>
 <style scoped>

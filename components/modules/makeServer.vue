@@ -192,8 +192,10 @@ if (
   props.routeSlot &&
   Number(props.routeSlot) < 7 &&
   Number(props.routeSlot) > 0
-)
+) {
   slot.value = Number(props.routeSlot);
+  router.replace({ query: {} });
+}
 const store = apiStore();
 const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
