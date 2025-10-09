@@ -190,7 +190,7 @@ const props = defineProps(['routeSlot']);
 const slot = ref(1);
 if (
   props.routeSlot &&
-  Number(props.routeSlot) < 7 &&
+  Number(props.routeSlot) <= 7 &&
   Number(props.routeSlot) > 0
 ) {
   slot.value = Number(props.routeSlot);
