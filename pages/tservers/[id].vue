@@ -1,9 +1,6 @@
 <template>
   <section
     class="h-full mx-auto flex flex-row w-full items-stretch text-white text-center gap-layout min-h-0"
-    @dragover.prevent="onDragOver()"
-    @dragend.prevent="onDragLeave()"
-    @dragenter.prevent
   >
     <div
       :class="infoTab ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'"
@@ -401,12 +398,12 @@ const draggingFile = ref(false);
 const backupFile = ref<null | string>(null);
 const AddDraggedBackupTab = ref(false);
 //function
-function onDragOver() {
-  draggingFile.value = true;
-}
-function onDragLeave() {
-  draggingFile.value = false;
-}
+// function onDragOver() {
+//   draggingFile.value = true;
+// }
+// function onDragLeave() {
+//   draggingFile.value = false;
+// }
 function onDrop(e: DragEvent) {
   draggingFile.value = false;
 
