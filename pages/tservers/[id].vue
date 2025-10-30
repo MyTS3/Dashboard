@@ -1,24 +1,35 @@
 <template>
   <section
     class="h-full mx-auto flex flex-row w-full items-stretch text-white text-center gap-layout min-h-0"
+    @dragend.prevent="onDragLeave()"
+    @dragenter.prevent="enteringDraggingZone($event)"
+    @dragexit.prevent="onDragLeave()"
+    @drop.prevent="draggingFile = false"
   >
     <div
       :class="infoTab ? 'max-[700px]:hidden ' : 'max-[700px]:basis-full'"
       class="flex flex-col items-stretch bg-mainbg_400 h-full relative rounded-xl font-sans overflow-y-auto min-[701px]:basis-1/2"
     >
       <div
-        class="absolute w-full h-full backdrop-blur-sm bg-mainbg_300/20 z-50"
+        class="absolute w-full h-full backdrop-blur-sm bg-mainbg_600/80 z-50 flex flex-col justify-center items-center"
         dropzone="true"
         @dragover.prevent
         @dragenter.prevent
         @drop.prevent="onDrop($event)"
         v-if="draggingFile"
       >
-        <img
-          src="/images/dropzoneImage.svg"
-          class="w-full translate-y-full"
-          alt="dropzone"
-        />
+        <div
+          @click="draggingFile = false"
+          dropzone="true"
+          @dragover.prevent
+          @dragenter.prevent
+          @drop.prevent="onDrop($event, true)"
+          class="absolute bottom-0 right-0 w-full h-20 cursor-pointer z-[100] bg-gradient-to-t from-main_red/50 to-transparent grid items-center hover:from-main_red/80"
+        >
+          <p>لغو</p>
+        </div>
+        <img src="/images/backup.svg" class="w-30 mx-auto" alt="dropzone" />
+        <p>بکاپ خودرا اینجا رها کنید</p>
       </div>
       <header class="relative my-4 px-4">
         <span
@@ -323,7 +334,11 @@
       />
       <AddDraggedBackup
         v-if="AddDraggedBackupTab"
-        @close="(AddDraggedBackupTab = false), (backupFile = null)"
+        @close="
+          (AddDraggedBackupTab = false),
+            (backupFile = null),
+            getUsersAndChannels()
+        "
         :backup="backupFile"
         :serverinfo="serverInfo"
       />
@@ -398,15 +413,18 @@ const draggingFile = ref(false);
 const backupFile = ref<null | string>(null);
 const AddDraggedBackupTab = ref(false);
 //function
-// function onDragOver() {
-//   draggingFile.value = true;
-// }
-// function onDragLeave() {
-//   draggingFile.value = false;
-// }
-function onDrop(e: DragEvent) {
+function enteringDraggingZone(e: DragEvent) {
+  if (e.dataTransfer && e.dataTransfer.items.length > 0) {
+    if (e.dataTransfer?.items[0].kind) draggingFile.value = true;
+  }
+}
+function onDragLeave() {
   draggingFile.value = false;
-
+}
+function onDrop(e: DragEvent, cancelled = false) {
+  e.stopPropagation();
+  draggingFile.value = false;
+  if (cancelled) return;
   const file = e.dataTransfer?.files[0];
   if (!file) return;
 
@@ -752,7 +770,17 @@ useFetch<{
     signal: longpollController.signal,
   },
 );
-onUnmounted(() => longpollController.abort());
+onMounted(() => {
+  window.addEventListener('blur', () => {
+    draggingFile.value = false;
+  });
+});
+onUnmounted(() => {
+  longpollController.abort();
+  window.removeEventListener('blur', () => {
+    draggingFile.value = false;
+  });
+});
 
 const theInterval = setInterval(() => {
   if (el.value != null && el.value.children.length > 0) {
