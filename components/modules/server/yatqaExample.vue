@@ -24,9 +24,9 @@
         </div>
         <div
           class="absolute parent items-center border-black border-[1px] cursor-pointer left-[122px] top-[174px] bg-white text-black w-[10.4rem] h-6 flex justify-around text-xs"
-          @click="copyToClipboard(selectedServer.deployedOn)"
+          @click="copyToClipboard(domainIp.ipv4)"
         >
-          <p class="text-black">{{ selectedServer.deployedOn }}</p>
+          <p class="text-black">{{ domainIp.ipv4 }}</p>
           <button>
             <img class="w-4 child" src="/images/copy.svg" alt="" />
           </button>
@@ -107,6 +107,15 @@ const { data: queryPass, refresh: changeYatqaPass } = await useFetch(
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     immediate: false,
+  },
+);
+const { data: domainIp } = await useFetch(
+  `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/location`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
 );
 watch(queryPass, (prev) => {
