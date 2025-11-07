@@ -180,7 +180,6 @@
     </button>
     <makeServer
       v-if="makeServerTab"
-      :selected-server="selectedServer"
       :routeSlot="routeSlot"
       @close="getServers(), (makeServerTab = false), (routeSlot = null)"
     />

@@ -35,10 +35,10 @@
           <p class="absolute right-8 bottom-4 text-blue-300/60">.cloudts.ir</p>
         </div>
         <p class="text-xs mt-2 ml-auto text-main_red">{{ disableReasson }}</p>
-        <P class="text-right font-medium mt-3"
-          >لطفا کانفیگ سرور خودرا انتخاب کنید</P
-        >
-        <from v-if="status === 'success'" class="w-full my-4">
+        <p class="text-right font-medium mt-3">
+          لطفا کانفیگ سرور خودرا انتخاب کنید
+        </p>
+        <form v-if="status === 'success'" class="w-full my-4">
           <USelectMenu
             v-model="selectedConfig"
             size="xl"
@@ -46,7 +46,7 @@
             :options="availables"
             :disabled="disableInputs"
           />
-        </from>
+        </form>
         <USkeleton
           v-if="status === 'pending'"
           :ui="{ background: 'dark:bg-gray-500' }"
@@ -170,7 +170,7 @@
       </main>
       <serverToken
         v-if="serverTokenTab"
-        :ts-u-r-l="tsURL"
+        :tsURL="tsURL"
         :token="token"
         :tsuuid="tsuuid"
         @close="(serverTokenTab = false), $emit('close')"
@@ -187,6 +187,7 @@ import { getBalance } from '../../stores/globalVaribles';
 const router = useRouter();
 const serverTokenTab = ref(false);
 const props = defineProps(['routeSlot']);
+const emit = defineEmits(['close']);
 const slot = ref(1);
 if (
   props.routeSlot &&
