@@ -17,7 +17,7 @@
         <p class="text-sm text-white/80 mb-1">نام پلی لیست را وارد کنید</p>
         <p class="font-bold max-w-80 text-center ml-auto">: نام</p>
 
-        <from class="w-full my-4">
+        <form class="w-full my-4">
           <input
             v-model="playlistName"
             maxlength="20"
@@ -25,19 +25,13 @@
             type="text"
             class="p-3 w-full bg-transparent border-white flex justify-center rounded-xl border"
           />
-          <USkeleton
-            v-if="pending"
-            class="h-11 w-full rounded-lg"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
-        </from>
+        </form>
         <div class="grid">
           <button
-            :class="disable || pending ? 'disable' : ''"
-            :disabled="disable || pending"
+            :class="disable ? 'disable' : ''"
+            :disabled="disable"
             class="p-4 text-center flex justify-center rounded-xl bg-main_blue module-btn"
             @click="makePlaylist"
-            @click.prevent="changeConfigue()"
           >
             <p v-if="!disable">تایید</p>
             <TheLoading v-else />
@@ -58,22 +52,24 @@ const toast = useToast();
 const emit = defineEmits(['close']);
 async function makePlaylist() {
   disable.value = true;
-  const { error } = await useFetch(`${url.value}/api/v4/playlists`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    body: JSON.stringify({
-      name: `${playlistName.value}`,
-    }),
-  });
-  if (error.value) {
+  try {
+    await $fetch(`${url.value}/api/v4/playlists`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        name: `${playlistName.value}`,
+      }),
+    });
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
   }
+
   disable.value = false;
   emit('close');
 }

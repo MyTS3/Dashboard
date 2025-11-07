@@ -54,23 +54,25 @@ const emit = defineEmits(['close']);
 const toast = useToast();
 async function removePlaylist() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/playlists/${props.removingPlaylist.uuid}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+  try {
+    await $fetch(
+      `${url.value}/api/v4/playlists/${props.removingPlaylist.uuid}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       },
-    },
-  );
-  disable.value = false;
-  if (error.value) {
+    );
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
   }
+  disable.value = false;
+
   emit('close');
 }
 </script>
