@@ -310,7 +310,6 @@
         <ServerView
           v-if="serverInfoStatus === 'success'"
           :server-info="serverInfo"
-          :server-info-status="() => serverInfoStatus"
           :users-count="usersCount"
           @get-server-deatails="getServerDeatails"
           @resetAlreadyvisited="alrreadyVisited = false"
