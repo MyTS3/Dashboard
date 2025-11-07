@@ -43,19 +43,17 @@ const disable = ref(false);
 const { url } = storeToRefs(store);
 const props = defineProps(['selecteduuid']);
 const toast = useToast();
-const emit = defineEmits('close');
+const emit = defineEmits(['close']);
 async function removeBackup() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/snapshots/${props.selecteduuid}`,
-    {
+  try {
+    await $fetch(`${url.value}/api/v4/snapshots/${props.selecteduuid}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-    },
-  );
-  if (error.value) {
+    });
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,

@@ -96,9 +96,8 @@ async function getServers() {
 }
 async function deployBackup() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/snapshots/${props.selecteduuid}/deploy`,
-    {
+  try {
+    await $fetch(`${url.value}/api/v4/snapshots/${props.selecteduuid}/deploy`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -106,15 +105,15 @@ async function deployBackup() {
       body: JSON.stringify({
         tServerUUID: tserverUUid.value.value,
       }),
-    },
-  );
-  if (error.value) {
+    });
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
   }
+
   disable.value = false;
   emit('close');
 }
