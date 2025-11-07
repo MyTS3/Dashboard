@@ -80,7 +80,7 @@
 import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import unBan from './unban.vue';
-const emit = defineEmits(['close']);
+defineEmits(['close']);
 const props = defineProps(['selectedServer']);
 const store = apiStore();
 const { url } = storeToRefs(store);

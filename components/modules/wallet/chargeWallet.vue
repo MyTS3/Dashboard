@@ -46,7 +46,7 @@ import theLoading from '~/components/reusable/theLoading.vue';
 const disable = ref(false);
 const store = apiStore();
 const toast = useToast();
-const emit = defineEmits(['close']);
+defineEmits(['close']);
 const chargeAmount = ref();
 const { url } = storeToRefs(store);
 async function chargeWallet() {

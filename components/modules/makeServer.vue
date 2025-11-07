@@ -187,7 +187,7 @@ import { getBalance } from '../../stores/globalVaribles';
 const router = useRouter();
 const serverTokenTab = ref(false);
 const props = defineProps(['routeSlot']);
-const emit = defineEmits(['close']);
+defineEmits(['close']);
 const slot = ref(1);
 if (
   props.routeSlot &&
