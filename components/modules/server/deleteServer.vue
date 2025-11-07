@@ -58,22 +58,21 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 async function deleteTheServer() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}`,
-    {
+  try {
+    await $fetch(`${url.value}/api/v4/tservers/${props.selectedServer.uuid}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-    },
-  );
-  if (error.value) {
+    });
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
   }
+
   disable.value = true;
   emit('close');
   if (route.path != '/tservers') router.back();

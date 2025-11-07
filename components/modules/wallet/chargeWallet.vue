@@ -34,7 +34,7 @@
             @click="chargeWallet()"
           >
             <p v-if="!disable">شارژ</p>
-            <TheLoading v-else />
+            <theLoading v-else />
           </button>
         </div>
       </main>
@@ -42,9 +42,11 @@
   </teleport>
 </template>
 <script setup lang="ts">
+import theLoading from '~/components/reusable/theLoading.vue';
 const disable = ref(false);
 const store = apiStore();
 const toast = useToast();
+const emit = defineEmits(['close']);
 const chargeAmount = ref();
 const { url } = storeToRefs(store);
 async function chargeWallet() {
