@@ -20,7 +20,7 @@
         </p>
         <p class="font-bold max-w-80 text-center ml-auto">: کانفیگ</p>
 
-        <from v-if="status == 'success'" class="w-full my-4">
+        <form v-if="status == 'success'" class="w-full my-4">
           <USelectMenu
             v-model="selectedConfigue"
             class="w-full"
@@ -55,7 +55,7 @@
             {{ available }}
           </option>
         </select> -->
-        </from>
+        </form>
         <USkeleton
           v-else
           class="h-11 w-full rounded-lg my-4"
@@ -63,8 +63,8 @@
         />
         <div class="grid">
           <button
-            :class="disable || pending ? 'disable' : ''"
-            :disabled="disable || pending"
+            :class="disable ? 'disable' : ''"
+            :disabled="disable"
             class="p-4 text-center flex justify-center rounded-xl bg-main_red module-btn"
             @click.prevent="changeConfigue()"
           >
