@@ -102,7 +102,7 @@
                   v-model="subDomainList[i].sub"
                 />
                 <p class="text-center">.</p>
-                <from
+                <form
                   class="w-full mx-auto rounded-lg bg-transparent text-right relative"
                 >
                   <USelectMenu
@@ -113,7 +113,7 @@
                     :disabled="disable || domainStatus !== 'success'"
                     v-model="subDomainList[i].domain"
                   />
-                </from>
+                </form>
                 <img
                   class="cursor-pointer ml-5"
                   src="/images/trash.png"
