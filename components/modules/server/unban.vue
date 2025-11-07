@@ -57,16 +57,17 @@ const emit = defineEmits(['close']);
 const toast = useToast();
 async function deleteBan() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/bans/${props.unBaning.banid}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+  try {
+    await $fetch(
+      `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/bans/${props.unBaning.banid}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       },
-    },
-  );
-  if (error.value) {
+    );
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,

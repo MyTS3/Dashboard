@@ -50,30 +50,32 @@ const disable = ref(false);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const props = defineProps(['serverInfo', 'user']);
-const emit = defineEmits('close');
+const emit = defineEmits(['close']);
 const reason = ref('');
 const toast = useToast();
 async function kickUser() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-server`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+  try {
+    await $fetch(
+      `${url.value}/api/v4/tservers/${props.serverInfo.uuid}/users/${props.user}/kick-from-server`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          reason: reason.value,
+        }),
       },
-      body: JSON.stringify({
-        reason: reason.value,
-      }),
-    },
-  );
-  if (error.value) {
+    );
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
   }
+
   disable.value = false;
   emit('close');
 }

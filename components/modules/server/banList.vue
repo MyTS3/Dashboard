@@ -84,36 +84,35 @@ const emit = defineEmits(['close']);
 const props = defineProps(['selectedServer']);
 const store = apiStore();
 const { url } = storeToRefs(store);
-const banList = ref();
 const unBaning = ref();
 const unBanTab = ref(false);
 const toast = useToast();
 
-async function getBanList() {
-  const { data: respone, error } = await useFetch(
-    `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/bans`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+const {
+  data: banList,
+  error,
+  refresh: getBanList,
+} = await useFetch(
+  `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/bans`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  );
-  banList.value = await respone.value;
-
-  if (error.value) {
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
-    });
-  }
+  },
+);
+if (error.value) {
+  toast.add({
+    title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+    timeout: 2000,
+    color: 'red',
+  });
 }
+
 function openUnBanPopUp(ban) {
   unBaning.value = ban;
   unBanTab.value = true;
 }
 //
-await getBanList();
 </script>
 <style scoped>
 .ban-list {
