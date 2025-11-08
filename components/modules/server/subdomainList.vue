@@ -3,6 +3,11 @@
     <section
       class="h-full absolute z-50 w-full backdrop-blur-md bg-mainbg_500/20 flex justify-center top-0 left-0 items-center"
     >
+      <div
+        v-if="clsoeList"
+        @click="closeAllList()"
+        class="absolute w-full h-full top-0 left-0 z-40"
+      ></div>
       <main
         class="text-white w-full max-w-[30rem] bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium gap-3"
       >
@@ -105,14 +110,52 @@
                 <form
                   class="w-full mx-auto rounded-lg bg-transparent text-right relative"
                 >
-                  <USelectMenu
+                  <!-- <USelectMenu
                     @change="checkIfValid()"
                     size="xl"
                     color="indigo"
                     :options="domainListForDropDown"
                     :disabled="disable || domainStatus !== 'success'"
                     v-model="subDomainList[i].domain"
-                  />
+                  /> -->
+                  <div class="relative">
+                    <input
+                      maxlength="64"
+                      @input="checkIfValid()"
+                      :disabled="disable"
+                      class="w-full mx-auto h-[2.8rem] rounded-lg bg-transparent border border-indigo-400 text-left px-2 pl-8"
+                      type="text"
+                      v-model="subDomainList[i].domain.label"
+                    />
+                    <img
+                      @click="
+                        (subDomainList[i].list = true), (clsoeList = true)
+                      "
+                      class="w-5 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                      src="/images/down.png"
+                      alt="menue"
+                    />
+
+                    <div
+                      v-if="subDomainList[i].list"
+                      style="background-color: rgb(15, 23, 43)"
+                      class="absolute h-32 overflow-auto w-40 flex flex-col right-0 text-left rounded-md z-50 p-1"
+                    >
+                      <p
+                        @click="
+                          (subDomainList[i].domain = { ...domain }),
+                            (subDomainList[i].list = false),
+                            (clsoeList = false),
+                            checkIfValid()
+                        "
+                        v-for="domain in domainListForDropDown"
+                        :key="domain.uuid"
+                        class="w-full p-2 cursor-pointer hover:bg-white/20 rounded-lg"
+                      >
+                        {{ domain.label }}
+                      </p>
+                    </div>
+                  </div>
                 </form>
                 <img
                   class="cursor-pointer ml-5"
@@ -145,16 +188,19 @@
   </Teleport>
 </template>
 <script setup>
+import { _backgroundColor } from '#tailwind-config/theme';
 import TheLoading from '~/components/reusable/theLoading.vue';
 import { limits } from '~/stores/limits';
 
 const store = apiStore();
 const { url } = storeToRefs(store);
 const regex = RegExp('^[a-zA-Z0-9]+$');
+const domainRegex = /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 const regexDisablingSubmit = ref(true);
 const disablngReasson = ref('');
 const emit = defineEmits(['close']);
 const domainListForDropDown = ref([]);
+const clsoeList = ref(false);
 const disable = ref(false);
 const toast = useToast();
 let abortController;
@@ -190,21 +236,39 @@ const { data: subDomainListFetch, status: listStatus } = useFetch(
   },
 );
 watch(subDomainListFetch, () => {
+  subDomainList.value.push({
+    sub: '',
+    domain: { uuid: '', label: '' },
+    error: true,
+    list: false,
+    errorMessage: '',
+  });
   subDomainListFetch.value.map((subdomain) => {
-    subDomainList.value.push({ ...subdomain, errorMessage: '', error: false });
+    subDomainList.value.push({
+      ...subdomain,
+      errorMessage: '',
+      error: false,
+      list: false,
+    });
   });
 });
 function addToList() {
   disablngReasson.value = 'لطفا یک نام برای ساب دامین انتخاب کنید';
   subDomainList.value.push({
     sub: '',
-    domain: domainListForDropDown.value[0] || { uuid: '', label: '' },
+    domain: { uuid: '', label: '' },
     error: true,
+    list: false,
     errorMessage: '',
   });
   checkIfValid();
 }
-
+function closeAllList() {
+  subDomainList.value.map((sd) => {
+    if (sd.list == true) return (sd.list = false);
+  });
+  clsoeList.value = false;
+}
 function deleteSubDomain(i) {
   const newList = [];
   let index = 0;
@@ -260,6 +324,17 @@ async function checkIfSubdomainAvailable(subdomain) {
     }, 500);
   });
 }
+async function AddDomain(domain) {
+  await $fetch(`${url.value}/api/v4/tdomains`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({
+      domain: domain,
+    }),
+  });
+}
 
 async function checkIfValid() {
   clearTimeout(waitForTyping);
@@ -275,8 +350,12 @@ async function checkIfValid() {
   // Use for...of loop instead of map for async operations
   for (const subdomain of subDomainList.value) {
     const domain = domainList.value.find(
-      (domain) => domain.uuid == subdomain.domain.uuid,
+      (domain) =>
+        domain.uuid == subdomain.domain.uuid &&
+        domain.domain == subdomain.domain.label,
     );
+    if (!domain) subdomain.domain.uuid = null;
+    else subdomain.domain.uuid = domain.uuid;
     //
     subdomain.errorMessage = '';
     //
@@ -291,19 +370,22 @@ async function checkIfValid() {
       hasErrors = true;
       continue;
     }
+    if (!domainRegex.test(subdomain.domain.label)) {
+      subdomain.errorMessage = 'نام دامین استاندارد نیست';
+      hasErrors = true;
+      continue;
+    }
     if (subdomain.sub.length > 2 || subdomain.sub.length < 1) {
-      console.log(subdomain);
       const isAvailable = await checkIfSubdomainAvailable(subdomain);
-
-      if (!isAvailable) {
-        subdomain.errorMessage = 'ساب دامین تکراری است';
-        hasErrors = true;
-        continue;
+      if (domain) {
+        if (!isAvailable) {
+          subdomain.errorMessage = 'ساب دامین تکراری است';
+          hasErrors = true;
+          continue;
+        }
       }
       if (domain && !domain.active) {
         subdomain.errorMessage = 'نیم سرور های دامین ست نشده';
-        hasErrors = false;
-        continue;
       }
     }
   }
@@ -312,10 +394,47 @@ async function checkIfValid() {
 }
 
 async function submitSubdomains() {
+  const newList = [];
   disable.value = true;
-  subDomainList.value = subDomainList.value.map((sd) => {
-    return { domain: sd.domain, sub: sd.sub.toLowerCase() };
-  });
+  await Promise.all(
+    subDomainList.value.map(async (sd) => {
+      if (!sd.domain.uuid) {
+        try {
+          await AddDomain(sd.domain.label);
+          const newDomains = await $fetch(`${url.value}/api/v4/tdomains`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+          console.log(newDomains);
+          console.log(sd);
+          await newDomains.map((domain) => {
+            if (domain.domain == sd.domain.label) {
+              newList.push({
+                domain: {
+                  uuid: domain.uuid,
+                  domain: domain.domain,
+                  public: domain.active,
+                  createdAt: domain.createdAt,
+                },
+                sub: sd.sub.toLowerCase(),
+              });
+            }
+          });
+        } catch (err) {
+          console.log(err);
+
+          toast.add({
+            title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+            timeout: 2000,
+            color: 'red',
+          });
+        }
+      } else newList.push({ domain: sd.domain, sub: sd.sub.toLowerCase() });
+    }),
+  );
+  console.log(newList);
   try {
     await $fetch(
       `${url.value}/api/v4/tservers/${props.selectedServer.uuid}/subdomains`,
@@ -325,7 +444,7 @@ async function submitSubdomains() {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({
-          subdomains: subDomainList.value,
+          subdomains: newList,
         }),
       },
     );
@@ -337,7 +456,7 @@ async function submitSubdomains() {
     });
   }
   disable.value = false;
-  emit('close');
+  // emit('close');
 }
 </script>
 <style scoped>
