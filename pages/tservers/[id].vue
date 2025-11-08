@@ -535,7 +535,9 @@ function findChannelTypeAndNameByFullName(fullName: string): {
       if (splitedName[0].includes('*spacer')) {
         return {
           type: '*spacer',
-          name: splitedName[1].repeat(screenWidth / 30),
+          name: splitedName[1].repeat(
+            screenWidth / (splitedName[1].length ** 2 * 15),
+          ),
           align: 'center',
           channelFullName: fullName,
         };
