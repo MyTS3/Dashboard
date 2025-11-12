@@ -4,7 +4,7 @@
       class="h-full absolute z-50 min-w-full backdrop-blur-md flex flex-col justify-center top-0 left-0 items-center"
     >
       <main
-        class="relative text-white min-w-[50rem] flex flex-col text-center p-4 relative rounded-xl font-medium"
+        class="relative text-white min-w-[50rem] flex flex-col text-center p-4 rounded-xl font-medium"
       >
         <button
           class="text-center w-7 h-7 flex justify-center items-center bg-main_red absolute top-7 right-7 rounded-full text-mainbg_600 font-medium text-lg"
@@ -60,13 +60,10 @@
           </button>
         </div>
         <div
-          class="absolute items-center border-black border-[1px] cursor-pointer left-[590px] top-[146px] bg-white text-black w-[9rem] h-5 flex justify-around text-xs"
+          class="absolute items-center border-black border-[1px] cursor-pointer left-[590px] top-[146px] bg-white text-black w-[9rem] h-5 flex justify-around text-xs overflow-ellipsis text-nowrap"
         >
           <div class="flex gap-1 parent">
-            <p
-              :style="{ '-webkit-text-security': showYatqaPass }"
-              @click="copyToClipboard(password)"
-            >
+            <p @click="copyToClipboard(password)">
               {{ password }}
             </p>
             <button class="w" @click="copyToClipboard(password)">
@@ -93,7 +90,6 @@
 </template>
 <script setup>
 const props = defineProps(['selectedServer']);
-console.log(props.selectedServer);
 const password = ref(props.selectedServer.queryPassword);
 const toast = useToast();
 const store = apiStore();

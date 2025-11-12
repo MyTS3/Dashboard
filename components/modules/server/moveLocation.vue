@@ -20,8 +20,9 @@
           class="h-12 w-full my-4 rounded-lg"
           :ui="{ background: 'dark:bg-gray-500' }"
         />
-        <from v-else class="w-full my-4">
+        <form v-else class="w-full my-4">
           <USelectMenu
+            :disabled="disable"
             v-model="selectedLocation"
             class="w-full"
             size="xl"
@@ -44,7 +45,7 @@
               {{ available.node }}
             </option>
           </select> -->
-        </from>
+        </form>
         <div class="grid grid-cols-2 gap-3">
           <button
             :disabled="disable"

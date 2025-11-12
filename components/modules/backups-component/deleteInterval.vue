@@ -43,18 +43,19 @@ const { url } = storeToRefs(store);
 const disable = ref(false);
 const toast = useToast();
 const props = defineProps(['selectedInterval']);
-const emit = defineEmits('close');
+const emit = defineEmits(['close']);
 async function removeInterval() {
-  const { error } = await useFetch(
-    `${url.value}/api/v4/snapshots/intervals/${props.selectedInterval}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+  try {
+    await $fetch(
+      `${url.value}/api/v4/snapshots/intervals/${props.selectedInterval}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       },
-    },
-  );
-  if (error.value) {
+    );
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,

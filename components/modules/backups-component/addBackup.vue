@@ -6,7 +6,7 @@
       <main
         class="text-white max-w-[30rem] w-full bg-mainbg_600 flex flex-col text-center border border-white border-b-0 p-4 relative rounded-xl font-medium"
       >
-        <template v-if="!pending">
+        <template v-if="status != 'pending'">
           <button
             :disabled="disable"
             class="self-end text-center w-7 h-7 bg-main_red absolute top-3 right-3 rounded-full text-mainbg_600 font-medium text-lg"
@@ -130,7 +130,9 @@
           </div>
           <button
             :class="
-              disable || pending || !interval || !serverUuid ? 'opacity-45' : ''
+              disable || status == 'pending' || !interval || !serverUuid
+                ? 'opacity-45'
+                : ''
             "
             class="w-full flex p-4 bg-main_blue rounded-xl mt-8 mb-2 justify-center"
             :disabled="!interval || !serverUuid || disable"
@@ -210,23 +212,25 @@ const { data: prices } = useFetch(`${url.value}/api/v4/prices/snap-interval`, {
 
 async function create() {
   disable.value = true;
-  const { error } = useFetch(`${url.value}/api/v4/snapshots`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    body: JSON.stringify({
-      tServerUUID: serverUuid.value.value,
-      interval: interval.value.value,
-    }),
-  });
-  if (error.value) {
+  try {
+    $fetch(`${url.value}/api/v4/snapshots`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        tServerUUID: serverUuid.value.value,
+        interval: interval.value.value,
+      }),
+    });
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
       color: 'red',
     });
   }
+
   disable.value = false;
   emit('close');
 }
