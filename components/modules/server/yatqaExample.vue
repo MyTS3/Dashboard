@@ -60,7 +60,7 @@
           </button>
         </div>
         <div
-          class="absolute items-center border-black border-[1px] cursor-pointer left-[590px] top-[146px] bg-white text-black w-[9rem] h-5 flex justify-around text-xs"
+          class="absolute items-center border-black border-[1px] cursor-pointer left-[590px] top-[146px] bg-white text-black w-[9rem] h-5 flex justify-around text-xs overflow-ellipsis text-nowrap"
         >
           <div class="flex gap-1 parent">
             <p @click="copyToClipboard(password)">
