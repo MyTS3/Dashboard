@@ -236,13 +236,6 @@ const { data: subDomainListFetch, status: listStatus } = useFetch(
   },
 );
 watch(subDomainListFetch, () => {
-  subDomainList.value.push({
-    sub: '',
-    domain: { uuid: '', label: '' },
-    error: true,
-    list: false,
-    errorMessage: '',
-  });
   subDomainListFetch.value.map((subdomain) => {
     subDomainList.value.push({
       ...subdomain,
@@ -285,12 +278,6 @@ let waitForTyping;
 async function checkIfSubdomainAvailable(subdomain) {
   regexDisablingSubmit.value = true;
   clearTimeout(waitForTyping);
-
-  let alreadyExist = false;
-  subDomainListFetch.value.find((s) =>
-    s.sub == subdomain.sub ? (alreadyExist = true) : null,
-  );
-  if (alreadyExist) return true;
 
   if (abortController) {
     abortController.abort();
@@ -350,10 +337,9 @@ async function checkIfValid() {
   // Use for...of loop instead of map for async operations
   for (const subdomain of subDomainList.value) {
     const domain = domainList.value.find(
-      (domain) =>
-        domain.uuid == subdomain.domain.uuid &&
-        domain.domain == subdomain.domain.label,
+      (domain) => domain.domain == subdomain.domain.label,
     );
+    console.log(subdomain);
     if (!domain) subdomain.domain.uuid = null;
     else subdomain.domain.uuid = domain.uuid;
     //
@@ -375,18 +361,17 @@ async function checkIfValid() {
       hasErrors = true;
       continue;
     }
-    if (subdomain.sub.length > 2 || subdomain.sub.length < 1) {
-      const isAvailable = await checkIfSubdomainAvailable(subdomain);
-      if (domain) {
-        if (!isAvailable) {
-          subdomain.errorMessage = 'ساب دامین تکراری است';
-          hasErrors = true;
-          continue;
-        }
+    let isAvailable;
+    if (domain) {
+      isAvailable = await checkIfSubdomainAvailable(subdomain);
+      if (!isAvailable) {
+        subdomain.errorMessage = 'ساب دامین تکراری است';
+        hasErrors = true;
+        continue;
       }
-      if (domain && !domain.active) {
-        subdomain.errorMessage = 'نیم سرور های دامین ست نشده';
-      }
+    }
+    if (domain && !domain.active) {
+      subdomain.errorMessage = 'نیم سرور های دامین ست نشده';
     }
   }
 
@@ -456,7 +441,7 @@ async function submitSubdomains() {
     });
   }
   disable.value = false;
-  // emit('close');
+  emit('close');
 }
 </script>
 <style scoped>
