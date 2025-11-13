@@ -88,7 +88,6 @@
                     i % 2 === 0
                       ? 'max-[701px]:bg-mainbg_500'
                       : 'max-[701px]bg-mainbg_300',
-                      : 'max-[701px]bg-mainbg_300',
                   ]"
                   class="table absolute left-0 top-0 w-full h-full max-[701px]:hidden z-50 transition-transform duration-100 origin-left"
                 >
@@ -283,14 +282,11 @@ getPages();
 }
 .orange-text {
   color: rgb(var(--main_orange));
-  color: rgb(var(--main_orange));
 }
 .green-text {
   color: rgb(var(--main_green));
-  color: rgb(var(--main_green));
 }
 .red-text {
-  color: rgb(var(--main_red));
   color: rgb(var(--main_red));
 }
 </style>
