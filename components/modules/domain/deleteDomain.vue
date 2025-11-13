@@ -52,21 +52,27 @@ const store = apiStore();
 const { url } = storeToRefs(store);
 async function deleteDomain() {
   disable.value = true;
-  const { error } = await useFetch(
-    `${url.value}/api/v4/tdomains/${props.selectedDomain.uuid}`,
-    {
+  try {
+    await $fetch(`${url.value}/api/v4/tdomains/${props.selectedDomain.uuid}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-    },
-  );
-  if (error.value) {
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
     });
+  } catch (error) {
+    const errorCode = error.data.code ?? '';
+    if (errorCode == 'DOMAIN_IN_USE') {
+      toast.add({
+        title: 'دامنه در حال استفاده است',
+        timeout: 2000,
+        color: 'red',
+      });
+    } else
+      toast.add({
+        title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+        timeout: 2000,
+        color: 'red',
+      });
   }
   disable.value = false;
   emit('close');
