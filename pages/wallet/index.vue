@@ -87,7 +87,7 @@
                       : 'max-[701px]:scale-x-0',
                     i % 2 === 0
                       ? 'max-[701px]:bg-mainbg_500'
-                      : 'max-[701px]:bg-[#272b4d]',
+                      : 'max-[701px]bg-mainbg_300',
                   ]"
                   class="table absolute left-0 top-0 w-full h-full max-[701px]:hidden z-50 transition-transform duration-100 origin-left"
                 >
@@ -261,32 +261,32 @@ getPages();
   }
 }
 .loading-status {
-  background-color: rgb(236, 102, 0, 0.25);
+  background-color: rgba(var(--main_orange) / 0.3);
   padding-block: 5px;
   padding-inline: 8px;
   border-radius: 25px;
 }
 .reduce-status {
-  background-color: rgba(58, 43, 65, 1);
-  color: rgba(255, 69, 58, 1);
+  background-color: rgba(var(--main_red) / 0.3);
+  color: rgb(var(--main_red));
   padding-block: 5px;
   padding-inline: 15px;
   border-radius: 25px;
 }
 .charge-status {
-  background-color: rgba(198, 255, 144, 0.12);
-  color: rgba(145, 197, 97, 1);
+  background-color: rgba(var(--main_green) / 0.3);
+  color: rgba(var(--main_green));
   padding-block: 5px;
   padding-inline: 15px;
   border-radius: 25px;
 }
 .orange-text {
-  color: rgba(214, 162, 67, 1);
+  color: rgb(var(--main_orange));
 }
 .green-text {
-  color: rgba(145, 197, 97, 1);
+  color: rgb(var(--main_green));
 }
 .red-text {
-  color: rgba(255, 69, 58, 1);
+  color: rgb(var(--main_red));
 }
 </style>

@@ -3,6 +3,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --mainbg_300: 56 61 99;
+  --mainbg_400: 37 41 67;
+  --mainbg_500: 37 40 65;
+  --mainbg_600: 20 25 49;
+  --main_red: 201 11 14;
+  --main_orange: 236 102 0;
+  --main_green: 74 222 128;
+  --main_blue: 1 107 255;
+  --bermudaGray: 108 135 168;
+}
 
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
@@ -53,7 +64,7 @@ body {
 /* //////////////////////////////////////////// */
 .btn {
   border: 1px solid #c0d6f0;
-  background: rgba(37, 41, 67, 1);
+  background: rgba(var(--mainbg_500));
 }
 
 .btn-disable {
@@ -63,14 +74,14 @@ body {
 }
 
 .btn:hover {
-  border-color: rgba(255, 158, 11, 1);
-  color: rgba(255, 158, 11, 1);
-  background-color: rgba(255, 158, 11, 0.1);
+  border-color: rgb(var(--main_orange));
+  color: rgb(var(--main_orange));
+  background-color: rgba(var(--main_orange) / 0.1);
   backdrop-filter: blur(100px);
 }
 
 .btn:hover p {
-  color: rgba(255, 158, 11, 1);
+  color: rgb(var(--main_orange) / 0.8);
 }
 
 .btn:hover > img {
@@ -80,7 +91,11 @@ body {
   opacity: 0.6;
 }
 .activePanel {
-  background-image: linear-gradient(to left, #141931, rgba(0, 0, 0, 0));
+  background-image: linear-gradient(
+    to left,
+    rgb(var(--mainbg_600)),
+    rgba(0, 0, 0, 0)
+  );
   border-bottom-right-radius: 1rem;
   border-top-right-radius: 1rem;
 }
@@ -94,8 +109,8 @@ body {
   border-top-right-radius: 1rem;
 }
 .btn-active {
-  background-color: #ec6600;
-  border-color: #ec6600;
+  background-color: rgb(var(--main_orange));
+  border-color: rgb(var(--main_orange));
   color: black;
 }
 
@@ -120,7 +135,7 @@ body {
   width: 50px;
   height: 15px;
   border-radius: 25px;
-  background-color: rgb(255, 196, 196);
+  background-color: rgb(var(--main_orange) / 0.8);
   cursor: pointer;
   transition: 0.2s;
 }
@@ -166,7 +181,7 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 3px;
-  background-color: rgba(40, 123, 255, 1);
+  background-color: rgb(var(--main_blue));
 }
 
 .dropdown {
@@ -179,7 +194,7 @@ body {
 }
 
 .items:nth-child(even) {
-  background-color: rgba(39, 43, 77, 1);
+  background-color: rgba(var(--mainbg_300) / 0.25);
 }
 
 .disable {
@@ -192,8 +207,8 @@ option {
 }
 
 .make-server {
-  background-color: rgba(1, 107, 255, 1);
-  border: 1px solid rgba(40, 123, 255, 1);
+  background-color: rgb(var(--main_blue));
+  border: 1px solid rgb(var(--main_blue));
   padding: 1rem;
   border-radius: 15px;
 }
