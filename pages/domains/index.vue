@@ -141,7 +141,7 @@ const {
   data: domainList,
   status: status,
   refresh: getDomain,
-} = await useFetch(`${url.value}/api/v4/tdomains`, {
+} = useFetch(`${url.value}/api/v4/tdomains`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
