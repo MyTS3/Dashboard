@@ -491,14 +491,11 @@ const {
   data: serverInfo,
   status: serverInfoStatus,
   execute: getServerDeatails,
-} = await useLazyFetch<serverInfoType>(
-  `${url.value}/api/v4/tservers/${serverUuid}`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+} = useLazyFetch<serverInfoType>(`${url.value}/api/v4/tservers/${serverUuid}`, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
-);
+});
 
 type channelType =
   | '*spacer'
