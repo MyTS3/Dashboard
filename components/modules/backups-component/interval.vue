@@ -8,7 +8,7 @@
     <div class="overflow-y-auto h-full bg-mainbg_400">
       <Table class="flex-1 min-h-0 overflow-y-auto">
         <div class="h-full">
-          <template v-if="status !== 'success'">
+          <template v-if="status == 'pending'">
             <div v-for="_ in 5" :key="_" class="table items">
               <USkeleton
                 class="h-5 w-40"
@@ -24,7 +24,7 @@
               />
             </div>
           </template>
-          <template v-else>
+          <template v-if="status == 'success'">
             <div
               v-if="intervals.length < 1"
               class="flex flex-col w-full h-full justify-center gap-4 items-center"
@@ -92,7 +92,7 @@ const {
   status,
   data: intervals,
   execute: getIntervals,
-} = await useLazyFetch(`${url.value}/api/v4/snapshots/intervals`, {
+} = useFetch(`${url.value}/api/v4/snapshots/intervals`, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
