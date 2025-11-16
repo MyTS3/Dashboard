@@ -1,11 +1,20 @@
 <template>
   <section class="h-full relative overflow-y-hidden flex flex-col gap-2">
     <header class="flex w-full justify-between">
-      <img
-        @click="editMusicBotTab = true"
-        src="/images/edit.png"
-        alt="edit-icon"
-      />
+      <div class="flex gap-2">
+        <img
+          class="w-9 cursor-pointer"
+          @click="editMusicBotTab = true"
+          src="/images/edit.png"
+          alt="edit-icon"
+        />
+        <img
+          @click="addMusicTab = true"
+          class="w-8 cursor-pointer"
+          src="/images/add.png"
+          alt="add-music"
+        />
+      </div>
       <h1 class="mx-auto font-bold p-2 my-auto">موزیک بات</h1>
       <img
         class="cursor-pointer"
@@ -141,12 +150,19 @@
       @refresh="$emit('refresh')"
       v-if="editMusicBotTab"
     />
+    <AddMusic
+      :row="props.selectedRow"
+      v-if="addMusicTab"
+      @close="addMusicTab = false"
+    />
   </section>
 </template>
 <script setup lang="ts">
+import AddMusic from '../playlist/addMusic.vue';
 import DeleteMusicBot from './deleteMusicBot.vue';
 import EditMusicBot from './editMusicBot.vue';
 
+const addMusicTab = ref(false);
 const editMusicBotTab = ref(false);
 const deleteMusicBotTab = ref(false);
 const store = apiStore();
