@@ -10,7 +10,7 @@
         />
         <img
           @click="addMusicTab = true"
-          class="w-8 cursor-pointer"
+          class="w-9 cursor-pointer"
           src="/images/add.png"
           alt="add-music"
         />
@@ -153,7 +153,9 @@
     <AddMusic
       :row="props.selectedRow"
       v-if="addMusicTab"
-      @close="addMusicTab = false"
+      @close="(addMusicTab = false), getMusics()"
+      @pause="handlePuase"
+      @resume="handleResume"
     />
   </section>
 </template>
@@ -173,7 +175,12 @@ const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 const disable = ref(false);
 let element: HTMLElement | null;
-const { data: musics, status: musicsStatus } = useFetch<{
+
+const {
+  data: musics,
+  status: musicsStatus,
+  refresh: getMusics,
+} = useFetch<{
   musics: { Link: string; Title: string }[];
 }>(
   () =>
@@ -217,12 +224,13 @@ const {
     }),
   },
 );
-let pauseInterval = false;
+let pauseInterval: boolean = false;
 const mainInterval = setInterval(async () => {
   if (pauseInterval) return;
   await getPlayingMusic();
-}, 2000);
-
+}, 5000);
+const handlePuase = () => (pauseInterval = true);
+const handleResume = () => (pauseInterval = false);
 async function next() {
   pauseInterval = true;
   disable.value = true;

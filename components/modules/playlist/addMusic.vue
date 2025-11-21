@@ -87,7 +87,7 @@ const uploadedMusic = ref();
 const { url } = storeToRefs(store);
 const props = defineProps(['selectedPlaylist', 'row']);
 const disable = ref(false);
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'pause', 'resume']);
 const musicURL = ref();
 const stream = ref();
 const toast = useToast();
@@ -119,6 +119,7 @@ function handleUpload(e) {
   stream.value = myData;
 }
 async function uploadMusic() {
+  emit('pause');
   disable.value = true;
   try {
     await fetch(
@@ -139,10 +140,12 @@ async function uploadMusic() {
       color: 'red',
     });
   }
+  emit('resume');
   emit('close');
 }
 //
 async function uploadUrl() {
+  emit('pause');
   disable.value = true;
   try {
     await $fetch(
@@ -165,7 +168,7 @@ async function uploadUrl() {
     });
   }
   disable.value = false;
-
+  emit('resume');
   emit('close');
 }
 async function handleSubmit() {
