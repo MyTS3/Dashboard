@@ -234,10 +234,10 @@
         role="img"
         aria-label="Switch panels"
         @click="(infoTab = false), (selectedRow = null)"
-        class="absolute w-[2.3rem] cursor-pointer z-10 min-[701px]:hidden"
+        class="absolute w-[43px] cursor-pointer z-10 min-[701px]:hidden"
         :class="
           selectedRow?.rowType == 'musicBot'
-            ? 'left-14 top-[0.67rem]'
+            ? 'left-[105px] top-[0.67rem]'
             : ' top-1 left-3'
         "
       >
@@ -532,7 +532,7 @@ function findChannelTypeAndNameByFullName(fullName: string): {
         return {
           type: '*spacer',
           name: splitedName[1].repeat(
-            screenWidth / (splitedName[1].length ** 2 * 15),
+            screenWidth / (splitedName[1].length ** 2 * 50),
           ),
           align: 'center',
           channelFullName: fullName,

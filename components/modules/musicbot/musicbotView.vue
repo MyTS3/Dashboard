@@ -33,14 +33,16 @@
             <li
               v-for="music in musics?.musics"
               :key="music.Link"
-              class="list-none my-1 p-3 rounded-xl relative"
+              class="list-none my-1 p-3 rounded-xl relative w-full max-h-14 overflow-hidden"
               :class="
                 music.Link === playingMusic?.Link
                   ? 'btn-active'
                   : 'hover:hover:bg-main_orange/20'
               "
             >
-              <h2 class="text-lg">{{ music.Title }}</h2>
+              <p class="text-lg w-full truncate">
+                {{ handleMusicTitle(music) }}
+              </p>
             </li>
           </main>
         </template>
@@ -60,8 +62,8 @@
           class="mx-auto py-4 flex-shrink-0 flex-grow-0 basis-32 w-full gap-2 flex flex-col"
         >
           <div class="flex flex-col text-center">
-            <h2 class="font-bold max-w-full overflow-hidden">
-              {{ playingMusic?.Title }}
+            <h2 class="font-bold w-full truncate">
+              {{ handleMusicTitle(playingMusic) }}
             </h2>
             <USkeleton
               v-if="musicStatus == 'pending' && !playingMusic.Title"
@@ -224,6 +226,10 @@ const {
     }),
   },
 );
+function handleMusicTitle(music: { Link: string; Title: string }) {
+  if (music.Title.length < 20) return music.Title;
+  else return music.Title.slice(0, 20);
+}
 let pauseInterval: boolean = false;
 const mainInterval = setInterval(async () => {
   if (pauseInterval) return;
