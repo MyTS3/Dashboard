@@ -22,6 +22,7 @@
           <div class="flex flex-col gap-3 bg-blue-600/5 p-3 rounded-xl">
             <li
               v-for="serverGroup in queryServerGroups"
+              v-show="serverGroup.name !== 'TBOT' && serverGroup.type == 2"
               :key="serverGroup.sgid"
               class="flex gap-2"
             >
