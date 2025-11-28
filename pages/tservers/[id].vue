@@ -514,6 +514,7 @@ function findChannelTypeAndNameByFullName(fullName: string): {
   align: alignType;
 } {
   const splitedName = fullName.split(']');
+  if (splitedName[1] == '') splitedName[1] = ' ';
   if (splitedName.length > 1) {
     if (splitedName[0].startsWith('[')) {
       if (splitedName[0].includes('cspacer'))
