@@ -85,7 +85,7 @@
             />
             <p
               :style="{ 'text-align': row.channel.align }"
-              class="w-full h-4 text-left cursor-pointer"
+              class="w-full h-4 text-left cursor-pointer overflow-clip"
             >
               {{ row.channel.channelName }}
             </p>
@@ -511,6 +511,7 @@ function findChannelTypeAndNameByFullName(fullName: string): {
   align: alignType;
 } {
   const splitedName = fullName.split(']');
+  if (splitedName[1] == '') splitedName[1] = ' ';
   if (splitedName.length > 1) {
     if (splitedName[0].startsWith('[')) {
       if (splitedName[0].includes('cspacer'))
