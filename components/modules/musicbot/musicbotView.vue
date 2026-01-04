@@ -31,7 +31,7 @@
             class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 overflow-y-scroll"
           >
             <li
-              v-for="music in musics?.musics"
+              v-for="(music, musicIdx) in musics?.musics"
               :key="music.Link"
               class="list-none my-1 p-3 rounded-xl relative w-full max-h-14 overflow-hidden"
               :class="
@@ -43,6 +43,12 @@
               <p class="text-lg w-full truncate">
                 {{ handleMusicTitle(music) }}
               </p>
+              <img
+                @click="(deletingMusicIdx = musicIdx), (deletMusicTab = true)"
+                class="absolute top-1/2 -translate-y-1/2 right-5"
+                src="../../../images/trash.png"
+                alt="trash-icon"
+              />
             </li>
           </main>
         </template>
@@ -159,12 +165,21 @@
       @pause="handlePuase"
       @resume="handleResume"
     />
+    <deleteMusic
+      @refresh="getMusics"
+      @close="deletMusicTab = false"
+      v-if="deletMusicTab"
+      :index="deletingMusicIdx"
+      :uuid="route.params.id"
+      :botUuid="props.selectedRow.musicBot.uuid"
+    />
   </section>
 </template>
 <script setup lang="ts">
 import AddMusic from '../playlist/addMusic.vue';
 import DeleteMusicBot from './deleteMusicBot.vue';
 import EditMusicBot from './editMusicBot.vue';
+import deleteMusic from '../playlist/deleteMusic.vue';
 
 const addMusicTab = ref(false);
 const editMusicBotTab = ref(false);
@@ -176,7 +191,9 @@ const route = useRoute();
 const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 const disable = ref(false);
+const deletMusicTab = ref(false);
 let element: HTMLElement | null;
+let deletingMusicIdx: number | null = null;
 
 const {
   data: musics,
