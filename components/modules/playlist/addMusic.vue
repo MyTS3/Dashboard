@@ -14,58 +14,26 @@
           <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
         <h1 class="text-2xl my-4 font-extrabold">افزودن موزیک</h1>
-        <p class="text-sm text-white/80 mb-1">
-          روش افزودن موزیک خود را انتخاب کنید
-        </p>
-        <div class="flex w-full justify-center my-3">
-          <button
+        <div class="flex w-full justify-center"></div>
+        <main class="p-4">
+          <p class="mb-2 text-white/60 text-right">موزیک خودرا آپلود کنید</p>
+          <UInput
             :disabled="disable"
-            :class="[tab == 2 ? 'bg-main_orange' : 'bg-mainbg_400']"
-            @click="tab = 2"
-            class="w-1/3 p-3 rounded-l-xl cursor-pointer"
-          >
-            آپلود فایل
-          </button>
-          <button
-            :disabled="disable"
-            :class="[tab == 1 ? 'bg-main_orange' : 'bg-mainbg_400']"
-            @click="tab = 1"
-            class="w-1/3 p-3 rounded-r-xl cursor-pointer"
-          >
-            دانلود با لینک
-          </button>
-        </div>
-        <template v-if="tab == 1">
-          <p class="font-bold max-w-80 text-center ml-auto">: دریافت لینک</p>
-          <form class="w-full my-4">
-            <input
-              v-model="musicURL"
-              placeholder="لینک موزیک خودرا وارد کنید"
-              :disabled="disable"
-              type="text"
-              class="p-3 w-full bg-transparent border-white flex justify-center rounded-xl border text-right text-sm"
-            />
-          </form>
-        </template>
-        <template v-if="tab == 2">
-          <main class="p-4">
-            <UInput
-              :disabled="disable"
-              @change="handleUpload"
-              accept="audio/*"
-              v-model="uploadedMusic"
-              type="file"
-              size="xl"
-              icon="i-heroicons-folder"
-            />
-          </main>
-        </template>
+            @change="handleUpload"
+            accept="audio/*"
+            v-model="uploadedMusic"
+            type="file"
+            size="xl"
+            icon="i-heroicons-folder"
+          />
+        </main>
+
         <div class="grid">
           <button
             :class="disable ? 'disable' : ''"
             :disabled="disable"
             class="p-4 text-center flex justify-center rounded-xl bg-main_blue module-btn"
-            @click="handleSubmit()"
+            @click="uploadMusic()"
           >
             <p v-if="!disable">تایید</p>
             <TheLoading v-else />
@@ -144,35 +112,4 @@ async function uploadMusic() {
   emit('close');
 }
 //
-async function uploadUrl() {
-  emit('pause');
-  disable.value = true;
-  try {
-    await $fetch(
-      `${url.value}/api/v4/tservers/${selectedServer}/bots/${props.row.musicBot.uuid}/musics`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({
-          url: musicURL.value,
-        }),
-      },
-    );
-  } catch {
-    toast.add({
-      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
-      timeout: 2000,
-      color: 'red',
-    });
-  }
-  disable.value = false;
-  emit('resume');
-  emit('close');
-}
-async function handleSubmit() {
-  if (tab.value == 1) uploadUrl();
-  else uploadMusic();
-}
 </script>
