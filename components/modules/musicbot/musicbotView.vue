@@ -33,7 +33,7 @@
             <li
               v-for="(music, musicIdx) in musics?.musics"
               :key="music.Link"
-              class="list-none my-1 p-3 rounded-xl relative w-full max-h-14 overflow-hidden"
+              class="list-none my-1 p-3 rounded-xl relative w-full max-h-14 overflow-hidden flex items-center justify-between text-left"
               :class="
                 music.Link === playingMusic?.Link
                   ? 'btn-active'
@@ -43,12 +43,20 @@
               <p class="text-lg w-full truncate">
                 {{ handleMusicTitle(music) }}
               </p>
-              <img
-                @click="(deletingMusicIdx = musicIdx), (deletMusicTab = true)"
-                class="absolute top-1/2 -translate-y-1/2 right-5"
-                src="../../../images/trash.png"
-                alt="trash-icon"
-              />
+              <div class="flex justify-center gap-2">
+                <img
+                  class="cursor-pointer"
+                  @click="(deletingMusicIdx = musicIdx), (deletMusicTab = true)"
+                  src="../../../images/trash.png"
+                  alt="trash-icon"
+                />
+                <img
+                  class="cursor-pointer"
+                  @click="play(musicIdx)"
+                  src="../../../images/play.png"
+                  alt="trash-icon"
+                />
+              </div>
             </li>
           </main>
         </template>
@@ -167,7 +175,7 @@
     />
     <deleteMusic
       @refresh="getMusics"
-      @close="deletMusicTab = false"
+      @close="(deletMusicTab = false), (deletingMusicIdx = null)"
       v-if="deletMusicTab"
       :index="deletingMusicIdx"
       :uuid="route.params.id"
@@ -193,7 +201,8 @@ const disableRestart = ref(false);
 const disable = ref(false);
 const deletMusicTab = ref(false);
 let element: HTMLElement | null;
-let deletingMusicIdx: number | null = null;
+
+let deletingMusicIdx = ref<number | null>(null);
 
 const {
   data: musics,
@@ -310,6 +319,31 @@ async function previous() {
       },
     },
   );
+  await getPlayingMusic();
+  disable.value = false;
+  pauseInterval = false;
+}
+
+async function play(index: number) {
+  pauseInterval = true;
+  disable.value = true;
+  try {
+    await $fetch(
+      `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/musics/${index}/play`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      },
+    );
+  } catch {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   await getPlayingMusic();
   disable.value = false;
   pauseInterval = false;
