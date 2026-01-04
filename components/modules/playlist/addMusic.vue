@@ -48,7 +48,7 @@ import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import TheLoading from '~/components/reusable/theLoading.vue';
 //variables
-const tab = ref(1);
+
 const store = apiStore();
 const selectedServer = useRoute().params.id;
 const uploadedMusic = ref();
@@ -56,7 +56,6 @@ const { url } = storeToRefs(store);
 const props = defineProps(['selectedPlaylist', 'row']);
 const disable = ref(false);
 const emit = defineEmits(['close', 'pause', 'resume']);
-const musicURL = ref();
 const stream = ref();
 const toast = useToast();
 function handleUpload(e) {

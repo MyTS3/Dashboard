@@ -202,7 +202,7 @@ const disable = ref(false);
 const deletMusicTab = ref(false);
 let element: HTMLElement | null;
 
-let deletingMusicIdx = ref<number | null>(null);
+const deletingMusicIdx = ref<number | null>(null);
 
 const {
   data: musics,
