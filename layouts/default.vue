@@ -25,9 +25,6 @@
               <h1 v-if="$route.name == 'backups'" class="font-medium text-xl">
                 بکاپ ها
               </h1>
-              <h1 v-if="$route.name == 'playlist'" class="font-medium text-xl">
-                پلی لیست ها
-              </h1>
               <h1 v-if="$route.name == 'wallet'" class="font-medium text-xl">
                 ترا کنش ها
               </h1>
@@ -203,7 +200,6 @@
                   $route.name != 'tservers' &&
                   $route.name != 'domains' &&
                   $route.name != 'backups' &&
-                  $route.name != 'playlist' &&
                   $route.name != 'wallet'
                 "
                 class="btn h-12 w-14 p-3 flex items-center rounded-xl"
@@ -350,16 +346,6 @@
                 class="w-6 h-6"
                 alt=""
               />
-            </li>
-            <li
-              :class="
-                $route.name == 'playlist' ? 'activePanel' : 'noActivePanel'
-              "
-              class="flex gap-3 w-full justify-end py-3 px-4 ml-auto cursor-pointer"
-              @click="navigateTo('/playlist'), (sidebar = false)"
-            >
-              <p>پلی لیست ها</p>
-              <img class="w-6 h-6" src="/images/changelog.svg" alt="" />
             </li>
             <li
               :class="$route.name == 'wallet' ? 'activePanel' : 'noActivePanel'"

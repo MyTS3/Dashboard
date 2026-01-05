@@ -184,8 +184,8 @@ async function getPages() {
   isLoading.value = false;
 }
 onMounted(() => {
-  if (!table.value) return;
-
+  getPages();
+  if (!backups.value) return;
   useInfiniteScroll(
     table,
     async () => {
@@ -197,7 +197,6 @@ onMounted(() => {
     },
   );
 });
-getPages();
 </script>
 <style scoped>
 .table {

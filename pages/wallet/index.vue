@@ -13,47 +13,69 @@
     >
       <div class="h-full relative">
         <div class="h-full">
-          <template v-if="false">
-            <div v-for="_ in 5" :key="_" class="table items">
-              <USkeleton
-                class="h-5 w-40"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-20"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-20"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-              <USkeleton
-                class="h-5 w-60"
-                :ui="{ background: 'dark:bg-gray-500' }"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <div
-              class="w-full h-full justify-center gap-4 items-center text-center"
+          <div
+            class="w-full h-full justify-center gap-4 items-center text-center"
+          >
+            <li
+              v-for="(log, i) in logs"
+              :key="log.uuid"
+              class="table items relative"
+              @touchstart="handleStart($event)"
+              @touchmove="handleMove($event)"
+              @touchend="handleEnd(log.uuid)"
             >
-              <li
-                v-for="(log, i) in logs"
-                :key="log.uuid"
-                class="table items relative"
-                @touchstart="handleStart($event)"
-                @touchmove="handleMove($event)"
-                @touchend="handleEnd(log.uuid)"
+              <p dir="ltr" class="" :class="handleAmountColor(log)">
+                {{ Math.trunc(Number(log.amount)) }}
+              </p>
+              <p class="text-center max-[700px]:hidden">
+                {{ (log.created_at || log.start)?.split('T')[0] }}
+                {{ log.end ? ' ... ' + log.end.split('T')[0] : '' }}
+              </p>
+              <div
+                class="flex gap-1 max-[700px]:hidden"
+                :class="handleStatusColor(log)"
               >
-                <p dir="ltr" class="" :class="handleAmountColor(log)">
-                  {{ Math.trunc(Number(log.amount)) }}
+                <p>
+                  {{ handleTheStatus(log) }}
                 </p>
-                <p class="text-center max-[700px]:hidden">
+                <img
+                  v-if="handleStatusColor(log) == 'charge-status'"
+                  class="w-5"
+                  src="/images/add-square.png"
+                  alt=""
+                />
+                <img
+                  v-if="handleStatusColor(log) == 'loading-status'"
+                  class="w-5"
+                  src="/images/waiting.png"
+                  alt=""
+                />
+                <img
+                  v-if="handleStatusColor(log) == 'reduce-status'"
+                  class="w-3"
+                  src="/images/minus.png"
+                  alt=""
+                />
+              </div>
+              <p class="text-center">{{ log.reason }}</p>
+              <!-- //mobile-reponsive-code -->
+              <div
+                :class="[
+                  activeOptions == log.uuid
+                    ? 'max-[701px]:scale-x-1'
+                    : 'max-[701px]:scale-x-0',
+                  i % 2 === 0
+                    ? 'max-[701px]:bg-mainbg_500'
+                    : 'max-[701px]bg-mainbg_300',
+                ]"
+                class="table absolute left-0 top-0 w-full h-full max-[701px]:hidden z-50 transition-transform duration-100 origin-left"
+              >
+                <p class="text-center min-[701px]:hidden">
                   {{ (log.created_at || log.start)?.split('T')[0] }}
                   {{ log.end ? ' ... ' + log.end.split('T')[0] : '' }}
                 </p>
                 <div
-                  class="flex gap-1 max-[700px]:hidden"
+                  class="flex gap-1 min-[701px]:hidden"
                   :class="handleStatusColor(log)"
                 >
                   <p>
@@ -78,53 +100,29 @@
                     alt=""
                   />
                 </div>
-                <p class="text-center">{{ log.reason }}</p>
-                <!-- //mobile-reponsive-code -->
-                <div
-                  :class="[
-                    activeOptions == log.uuid
-                      ? 'max-[701px]:scale-x-1'
-                      : 'max-[701px]:scale-x-0',
-                    i % 2 === 0
-                      ? 'max-[701px]:bg-mainbg_500'
-                      : 'max-[701px]bg-mainbg_300',
-                  ]"
-                  class="table absolute left-0 top-0 w-full h-full max-[701px]:hidden z-50 transition-transform duration-100 origin-left"
-                >
-                  <p class="text-center min-[701px]:hidden">
-                    {{ (log.created_at || log.start)?.split('T')[0] }}
-                    {{ log.end ? ' ... ' + log.end.split('T')[0] : '' }}
-                  </p>
-                  <div
-                    class="flex gap-1 min-[701px]:hidden"
-                    :class="handleStatusColor(log)"
-                  >
-                    <p>
-                      {{ handleTheStatus(log) }}
-                    </p>
-                    <img
-                      v-if="handleStatusColor(log) == 'charge-status'"
-                      class="w-5"
-                      src="/images/add-square.png"
-                      alt=""
-                    />
-                    <img
-                      v-if="handleStatusColor(log) == 'loading-status'"
-                      class="w-5"
-                      src="/images/waiting.png"
-                      alt=""
-                    />
-                    <img
-                      v-if="handleStatusColor(log) == 'reduce-status'"
-                      class="w-3"
-                      src="/images/minus.png"
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </li>
+              </div>
+            </li>
+            <div v-if="loading">
+              <div v-for="_ in 20" :key="_" class="table items">
+                <USkeleton
+                  class="h-5 w-40"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-20"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-20"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+                <USkeleton
+                  class="h-5 w-60"
+                  :ui="{ background: 'dark:bg-gray-500' }"
+                />
+              </div>
             </div>
-          </template>
+          </div>
         </div>
       </div>
     </div>
@@ -190,6 +188,7 @@ const { url } = storeToRefs(store);
 let page = 0;
 const lastRowsCount = ref();
 const logs = ref<walletRows[]>([]);
+const loading = ref(false);
 //
 function handleAmountColor(log: walletRows) {
   if (!log.created_at && !log.end) return 'orange-text';
@@ -217,6 +216,7 @@ function handleStatusColor(log: walletRows) {
   }
 }
 async function getPages() {
+  loading.value = true;
   const data = await $fetch<walletRows[]>(
     `${url.value}/api/v4/wallet?page=${page}&pageSize=${20}`,
     {
@@ -225,6 +225,7 @@ async function getPages() {
       },
     },
   );
+  loading.value = false;
   data?.forEach((row) => logs.value.push(row));
   lastRowsCount.value = data?.length;
   page += 1;
@@ -243,7 +244,7 @@ useInfiniteScroll(
     canLoadMore: () => lastRowsCount.value == 20,
   },
 );
-getPages();
+onMounted(() => getPages());
 </script>
 <style scoped>
 .table {

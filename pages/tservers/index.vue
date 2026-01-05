@@ -259,7 +259,7 @@ const {
   data: servers,
   error,
   refresh: getServers,
-} = await useLazyFetch(`${url.value}/api/v4/tservers/`, {
+} = useLazyFetch(`${url.value}/api/v4/tservers/`, {
   method: 'GET',
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,

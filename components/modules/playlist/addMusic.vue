@@ -14,37 +14,26 @@
           <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
         <h1 class="text-2xl my-4 font-extrabold">افزودن موزیک</h1>
-        <p class="text-sm text-white/80 mb-1">
-          روش افزودن موزیک خود را انتخاب کنید
-        </p>
-        <div class="flex w-full justify-center my-3">
-          <button
-            class="w-1/3 p-3 bg-mainbg_400 rounded-l-xl cursor-not-allowed"
-          >
-            آپلود فایل
-          </button>
-          <button class="w-1/3 p-3 bg-main_orange rounded-r-xl">
-            دانلود با لینک
-          </button>
-        </div>
-
-        <p class="font-bold max-w-80 text-center ml-auto">: دریافت لینک</p>
-        <form class="w-full my-4">
-          <input
-            v-model="musicURL"
-            placeholder="لینک موزیک خودرا وارد کنید"
+        <div class="flex w-full justify-center"></div>
+        <main class="p-4">
+          <p class="mb-2 text-white/60 text-right">موزیک خودرا آپلود کنید</p>
+          <UInput
             :disabled="disable"
-            type="text"
-            class="p-3 w-full bg-transparent border-white flex justify-center rounded-xl border text-right text-sm"
+            @change="handleUpload"
+            accept="audio/*"
+            v-model="uploadedMusic"
+            type="file"
+            size="xl"
+            icon="i-heroicons-folder"
           />
-        </form>
+        </main>
+
         <div class="grid">
           <button
             :class="disable ? 'disable' : ''"
             :disabled="disable"
             class="p-4 text-center flex justify-center rounded-xl bg-main_blue module-btn"
-            @click="makePlaylist"
-            @click.prevent="addMusic"
+            @click="uploadMusic()"
           >
             <p v-if="!disable">تایید</p>
             <TheLoading v-else />
@@ -59,28 +48,58 @@ import { apiStore } from '~/stores/apistore';
 import { storeToRefs } from 'pinia';
 import TheLoading from '~/components/reusable/theLoading.vue';
 //variables
+
 const store = apiStore();
+const selectedServer = useRoute().params.id;
+const uploadedMusic = ref();
 const { url } = storeToRefs(store);
-const props = defineProps(['selectedPlaylist']);
+const props = defineProps(['selectedPlaylist', 'row']);
 const disable = ref(false);
-const emit = defineEmits(['close']);
-const musicURL = ref();
+const emit = defineEmits(['close', 'pause', 'resume']);
+const stream = ref();
 const toast = useToast();
-async function addMusic() {
+function handleUpload(e) {
+  const supportedFormats = [
+    'audio/mpeg',
+    'audio/wav',
+    'audio/ogg',
+    'audio/flac',
+  ];
+  const file = e[0];
+
+  if (!file) return;
+  if (!supportedFormats.includes(file.type)) {
+    toast.add({
+      title: 'این فایل پشتیبانی نمیشود',
+      timeout: 2000,
+      color: 'red',
+    });
+    return;
+  }
+  // Optional: validate extension too
+  const ext = file.name.split('.').pop()?.toLowerCase();
+  if (!['mp3', 'wav', 'ogg', 'flac'].includes(ext || '')) {
+    return;
+  }
+  const myData = new FormData();
+  myData.append('file', file);
+  stream.value = myData;
+}
+async function uploadMusic() {
+  emit('pause');
   disable.value = true;
   try {
-    await $fetch(
-      `${url.value}/api/v4/playlists/${props.selectedPlaylist}/musics`,
+    await fetch(
+      `${url.value}/api/v4/tservers/${selectedServer}/bots/${props.row.musicBot.uuid}/musics/file`,
       {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({
-          url: musicURL.value,
-        }),
+        body: stream.value,
       },
     );
+    disable.value = false;
   } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
@@ -88,8 +107,8 @@ async function addMusic() {
       color: 'red',
     });
   }
-  disable.value = false;
-
+  emit('resume');
   emit('close');
 }
+//
 </script>

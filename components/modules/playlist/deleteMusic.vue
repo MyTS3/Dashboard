@@ -13,9 +13,7 @@
         >
           <img class="w-3 mx-auto" src="/images/X-9.png" alt="" />
         </button>
-        <h1 class="text-xl my-2 font-bolder">
-          {{ removingMusic.name }} حذف موزیک
-        </h1>
+        <h1 class="text-xl my-2 font-bolder">حذف موزیک</h1>
         <p>
           این عمل قابل بازگردانی نیست و موزیک را حذف میکند، ایا اطمینان دارید؟
         </p>
@@ -30,7 +28,7 @@
           <button
             :disabled="disable"
             class="p-4 text-center flex justify-center rounded-xl bg-main_red module-btn"
-            @click.prevent="removePlaylist()"
+            @click.prevent="deleteMusic"
           >
             <p v-if="!disable">حذف</p>
             <TheLoading v-else />
@@ -47,16 +45,16 @@ import TheLoading from '~/components/reusable/theLoading.vue';
 //variables
 const store = apiStore();
 const { url } = storeToRefs(store);
-const props = defineProps(['removingMusic', 'selectedPlaylistUuid']);
+const props = defineProps(['index', 'uuid', 'botUuid']);
 const disable = ref(false);
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'refresh']);
 const toast = useToast();
-async function removePlaylist() {
+
+async function deleteMusic() {
   disable.value = true;
   try {
     await $fetch(
-      `${url.value}/api/v4/playlists/${props.selectedPlaylistUuid}/musics/${props.removingMusic.uuid}`,
-
+      `${url.value}/api/v4/tservers/${props.uuid}/bots/${props.botUuid}/musics/${props.index}`,
       {
         method: 'DELETE',
         headers: {
@@ -64,6 +62,8 @@ async function removePlaylist() {
         },
       },
     );
+    emit('refresh');
+    emit('close');
   } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
@@ -72,7 +72,6 @@ async function removePlaylist() {
     });
   }
   disable.value = false;
-
   emit('close');
 }
 </script>

@@ -1,11 +1,20 @@
 <template>
   <section class="h-full relative overflow-y-hidden flex flex-col gap-2">
     <header class="flex w-full justify-between">
-      <img
-        @click="editMusicBotTab = true"
-        src="/images/edit.png"
-        alt="edit-icon"
-      />
+      <div class="flex gap-2">
+        <img
+          class="w-9 cursor-pointer"
+          @click="editMusicBotTab = true"
+          src="/images/edit.png"
+          alt="edit-icon"
+        />
+        <img
+          @click="addMusicTab = true"
+          class="w-9 cursor-pointer"
+          src="/images/add.png"
+          alt="add-music"
+        />
+      </div>
       <h1 class="mx-auto font-bold p-2 my-auto">موزیک بات</h1>
       <img
         class="cursor-pointer"
@@ -22,16 +31,32 @@
             class="w-4/5 bg-white/10 mx-auto h-full rounded-lg p-2 overflow-y-scroll"
           >
             <li
-              v-for="music in musics?.musics"
+              v-for="(music, musicIdx) in musics?.musics"
               :key="music.Link"
-              class="list-none my-1 p-3 rounded-xl relative"
+              class="list-none my-1 p-3 rounded-xl relative w-full max-h-14 overflow-hidden flex items-center justify-between text-left"
               :class="
                 music.Link === playingMusic?.Link
                   ? 'btn-active'
                   : 'hover:hover:bg-main_orange/20'
               "
             >
-              <h2 class="text-lg">{{ music.Title }}</h2>
+              <p class="text-lg w-full truncate">
+                {{ handleMusicTitle(music) }}
+              </p>
+              <div class="flex justify-center gap-2">
+                <img
+                  class="cursor-pointer"
+                  @click="(deletingMusicIdx = musicIdx), (deletMusicTab = true)"
+                  src="../../../images/trash.png"
+                  alt="trash-icon"
+                />
+                <img
+                  class="cursor-pointer"
+                  @click="play(musicIdx)"
+                  src="../../../images/play.png"
+                  alt="trash-icon"
+                />
+              </div>
             </li>
           </main>
         </template>
@@ -51,8 +76,8 @@
           class="mx-auto py-4 flex-shrink-0 flex-grow-0 basis-32 w-full gap-2 flex flex-col"
         >
           <div class="flex flex-col text-center">
-            <h2 class="font-bold max-w-full overflow-hidden">
-              {{ playingMusic?.Title }}
+            <h2 class="font-bold w-full truncate">
+              {{ handleMusicTitle(playingMusic) }}
             </h2>
             <USkeleton
               v-if="musicStatus == 'pending' && !playingMusic.Title"
@@ -141,12 +166,30 @@
       @refresh="$emit('refresh')"
       v-if="editMusicBotTab"
     />
+    <AddMusic
+      :row="props.selectedRow"
+      v-if="addMusicTab"
+      @close="(addMusicTab = false), getMusics()"
+      @pause="handlePuase"
+      @resume="handleResume"
+    />
+    <deleteMusic
+      @refresh="getMusics"
+      @close="(deletMusicTab = false), (deletingMusicIdx = null)"
+      v-if="deletMusicTab"
+      :index="deletingMusicIdx"
+      :uuid="route.params.id"
+      :botUuid="props.selectedRow.musicBot.uuid"
+    />
   </section>
 </template>
 <script setup lang="ts">
+import AddMusic from '../playlist/addMusic.vue';
 import DeleteMusicBot from './deleteMusicBot.vue';
 import EditMusicBot from './editMusicBot.vue';
+import deleteMusic from '../playlist/deleteMusic.vue';
 
+const addMusicTab = ref(false);
 const editMusicBotTab = ref(false);
 const deleteMusicBotTab = ref(false);
 const store = apiStore();
@@ -156,8 +199,16 @@ const route = useRoute();
 const props = defineProps(['selectedRow']);
 const disableRestart = ref(false);
 const disable = ref(false);
+const deletMusicTab = ref(false);
 let element: HTMLElement | null;
-const { data: musics, status: musicsStatus } = useFetch<{
+
+const deletingMusicIdx = ref<number | null>(null);
+
+const {
+  data: musics,
+  status: musicsStatus,
+  refresh: getMusics,
+} = useFetch<{
   musics: { Link: string; Title: string }[];
 }>(
   () =>
@@ -201,12 +252,17 @@ const {
     }),
   },
 );
-let pauseInterval = false;
+function handleMusicTitle(music: { Link: string; Title: string }) {
+  if (music.Title.length < 20) return music.Title;
+  else return music.Title.slice(0, 20);
+}
+let pauseInterval: boolean = false;
 const mainInterval = setInterval(async () => {
   if (pauseInterval) return;
   await getPlayingMusic();
-}, 2000);
-
+}, 5000);
+const handlePuase = () => (pauseInterval = true);
+const handleResume = () => (pauseInterval = false);
 async function next() {
   pauseInterval = true;
   disable.value = true;
@@ -263,6 +319,31 @@ async function previous() {
       },
     },
   );
+  await getPlayingMusic();
+  disable.value = false;
+  pauseInterval = false;
+}
+
+async function play(index: number) {
+  pauseInterval = true;
+  disable.value = true;
+  try {
+    await $fetch(
+      `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.selectedRow.musicBot.uuid}/musics/${index}/play`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      },
+    );
+  } catch {
+    toast.add({
+      title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
+      timeout: 2000,
+      color: 'red',
+    });
+  }
   await getPlayingMusic();
   disable.value = false;
   pauseInterval = false;
