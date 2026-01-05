@@ -123,7 +123,7 @@ async function editMusicBot() {
     await $fetch(
       `${url.value}/api/v4/tservers/${route.params.id}/bots/${props.bot.musicBot.uuid}`,
       {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
