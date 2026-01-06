@@ -51,7 +51,11 @@
             size="xl"
             color="indigo"
             :options="playlists"
-            @change="(customName = selectedPlaylist.label), checkValidInput()"
+            @change="
+              (customName = selectedPlaylist.label),
+                checkValidInput(),
+                checkEmpty()
+            "
           />
           <USkeleton
             v-if="playlistPending === 'pending'"
@@ -185,6 +189,9 @@ const { data, status: playlistPending } = useFetch(
 );
 watch(data, (newData) => {
   if (data != newData) {
+    playlists.value.push({
+      label: 'خالی',
+    });
     data.value.map((d) => {
       playlists.value.push({
         label: d.name,
@@ -202,6 +209,13 @@ const { data: botPrice, status: priceStatus } = useFetch(
     },
   },
 );
+function checkEmpty() {
+  if (customName.value == 'خالی') {
+    customName.value = '';
+    selectedPlaylist.value = null;
+    dontAllowSubmit.value = true;
+  }
+}
 function checkValidInput() {
   if (customName.value.length < 3) {
     dontAllowSubmit.value = true;
