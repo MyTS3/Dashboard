@@ -142,7 +142,7 @@ async function editMusicBot() {
         body: JSON.stringify(body()),
       },
     );
-  } catch (err) {
+  } catch {
     toast.add({
       title: 'خطایی رخ داد لطفا مجددا تلاش کنید',
       timeout: 2000,
