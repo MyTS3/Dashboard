@@ -212,3 +212,7 @@ option {
   padding: 1rem;
   border-radius: 15px;
 }
+.custom_input {
+  background-color: transparent;
+  border: 1px solid rgb(129, 140, 248);
+}

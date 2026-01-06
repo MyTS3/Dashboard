@@ -35,6 +35,15 @@
     {{ playlist.name }}
   </option>
 </select> -->
+          <input
+            min="3"
+            max="30"
+            v-model="customName"
+            :disabled="disableInputs"
+            @input="checkValidInput()"
+            class="custom_input rounded-lg outline-none w-full mt-4 h-12 p-4"
+            type="text"
+          />
           <USelectMenu
             v-if="playlistPending === 'success'"
             v-model="selectedPlaylist"
@@ -42,6 +51,11 @@
             size="xl"
             color="indigo"
             :options="playlists"
+            @change="
+              (customName = selectedPlaylist.label),
+                checkValidInput(),
+                checkEmpty()
+            "
           />
           <USkeleton
             v-if="playlistPending === 'pending'"
@@ -129,9 +143,9 @@
           <!-- ////////////////////////////////// -->
         </div>
         <button
-          :disabled="!selectedPlaylist"
+          :disabled="dontAllowSubmit"
           :class="{
-            'cursor-not-allowed opacity-30': disableInputs || !selectedPlaylist,
+            'cursor-not-allowed opacity-30': disableInputs || dontAllowSubmit,
           }"
           class="flex w-full items-center justify-center make-server font-medium gap-2 mt-4"
           @click="makeMusicBot()"
@@ -161,6 +175,8 @@ const emit = defineEmits(['close', 'refresh']);
 const selectedPlaylist = ref();
 const playlists = ref([]);
 const toast = useToast();
+const customName = ref();
+const dontAllowSubmit = ref(true);
 
 const { data, status: playlistPending } = useFetch(
   `${url.value}/api/v4/playlists`,
@@ -173,6 +189,9 @@ const { data, status: playlistPending } = useFetch(
 );
 watch(data, (newData) => {
   if (data != newData) {
+    playlists.value.push({
+      label: 'خالی',
+    });
     data.value.map((d) => {
       playlists.value.push({
         label: d.name,
@@ -190,19 +209,47 @@ const { data: botPrice, status: priceStatus } = useFetch(
     },
   },
 );
+function checkEmpty() {
+  if (customName.value == 'خالی') {
+    customName.value = '';
+    selectedPlaylist.value = null;
+    dontAllowSubmit.value = true;
+  }
+}
+function checkValidInput() {
+  if (customName.value.length < 3) {
+    dontAllowSubmit.value = true;
+    return;
+  }
+  if (customName.value.length > 30) {
+    dontAllowSubmit.value = true;
+    return;
+  }
+  dontAllowSubmit.value = false;
+}
 async function makeMusicBot() {
   disableInputs.value = true;
+  const body = () => {
+    if (selectedPlaylist.value) {
+      return {
+        cid: props.selectedChannel.cid,
+        name: customName.value,
+        playlist: selectedPlaylist.value.value,
+      };
+    } else {
+      return {
+        cid: props.selectedChannel.cid,
+        name: customName.value,
+      };
+    }
+  };
   try {
     await $fetch(`${url.value}/api/v4/tservers/${selectedServer}/bots`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      body: JSON.stringify({
-        cid: props.selectedChannel.cid,
-        name: selectedPlaylist.value.label,
-        playlist: selectedPlaylist.value.value,
-      }),
+      body: JSON.stringify(body()),
     });
   } catch (err) {
     const errMsg = (err.data?.message ?? '').slice(-15);
