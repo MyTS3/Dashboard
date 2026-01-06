@@ -24,6 +24,7 @@
             v-model="uploadedMusic"
             type="file"
             size="xl"
+            color="violet"
             icon="i-heroicons-folder"
           />
         </main>
