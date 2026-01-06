@@ -414,5 +414,10 @@ onMounted(() => {
 }
 .parent-play:hover:not(:has(.trash:hover)) .play {
   opacity: 0.5;
+  transition: opacity 0.125s ease;
+}
+.trash:hover {
+  opacity: 0.5;
+  transition: opacity 0.125s ease;
 }
 </style>
