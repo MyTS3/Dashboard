@@ -33,27 +33,30 @@
             <li
               v-for="(music, musicIdx) in musics?.musics"
               :key="music.Link"
-              class="list-none my-1 p-3 rounded-xl relative w-full max-h-14 overflow-hidden flex items-center justify-between text-left"
+              class="list-none my-1 p-3 rounded-xl relative w-full max-h-14 overflow-hidden flex items-center justify-between text-left parent-play"
+              @click="play(musicIdx)"
               :class="
                 music.Link === playingMusic?.Link
                   ? 'btn-active'
                   : 'hover:hover:bg-main_orange/20'
               "
             >
-              <p class="text-lg w-full truncate">
+              <p class="text-lg w-full truncate cursor-default">
                 {{ handleMusicTitle(music) }}
               </p>
               <div class="flex justify-center gap-2">
                 <img
-                  class="cursor-pointer"
-                  @click="(deletingMusicIdx = musicIdx), (deletMusicTab = true)"
-                  src="../../../images/trash.png"
+                  class="cursor-pointer play"
+                  src="../../../images/play.png"
                   alt="trash-icon"
                 />
+
                 <img
-                  class="cursor-pointer"
-                  @click="play(musicIdx)"
-                  src="../../../images/play.png"
+                  class="cursor-pointer trash"
+                  @click.stop="
+                    (deletingMusicIdx = musicIdx), (deletMusicTab = true)
+                  "
+                  src="../../../images/trash.png"
                   alt="trash-icon"
                 />
               </div>
@@ -408,5 +411,8 @@ onMounted(() => {
   width: var(--after-width, 50px);
   left: 0;
   height: 2px;
+}
+.parent-play:hover:not(:has(.trash:hover)) .play {
+  opacity: 0.5;
 }
 </style>

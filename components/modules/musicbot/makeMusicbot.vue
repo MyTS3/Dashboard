@@ -20,8 +20,6 @@
           </p>
         </header>
         <div>
-          <p class="font-bold w-full text-right">پلی لیست</p>
-
           <!-- <select
     v-model="selectedPlaylist"
     class="text-white bg-transparent my-4 border w-full text-right min-h-16 rounded-2xl"
@@ -35,33 +33,41 @@
     {{ playlist.name }}
   </option>
 </select> -->
-          <input
-            min="3"
-            max="30"
-            v-model="customName"
-            :disabled="disableInputs"
-            @input="checkValidInput()"
-            class="custom_input rounded-lg outline-none w-full mt-4 h-12 p-4"
-            type="text"
-          />
-          <USelectMenu
-            v-if="playlistPending === 'success'"
-            v-model="selectedPlaylist"
-            class="w-full my-4"
-            size="xl"
-            color="indigo"
-            :options="playlists"
-            @change="
-              (customName = selectedPlaylist.label),
-                checkValidInput(),
-                checkEmpty()
-            "
-          />
-          <USkeleton
-            v-if="playlistPending === 'pending'"
-            class="h-10 w-full my-4 rounded-lg"
-            :ui="{ background: 'dark:bg-gray-500' }"
-          />
+          <div class="flex flex-col gap-4 my-2">
+            <div class="flex flex-col gap-2">
+              <p class="text-right">پلی لیست</p>
+              <USelectMenu
+                v-if="playlistPending === 'success'"
+                v-model="selectedPlaylist"
+                class="w-full"
+                size="xl"
+                color="indigo"
+                :options="playlists"
+                @change="
+                  (customName = selectedPlaylist.label),
+                    checkValidInput(),
+                    checkEmpty()
+                "
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <p class="text-right">نام</p>
+              <input
+                min="3"
+                max="30"
+                v-model="customName"
+                :disabled="disableInputs"
+                @input="checkValidInput()"
+                class="custom_input rounded-lg outline-none w-full h-11 p-4"
+                type="text"
+              />
+              <USkeleton
+                v-if="playlistPending === 'pending'"
+                class="h-10 w-full my-4 rounded-lg"
+                :ui="{ background: 'dark:bg-gray-500' }"
+              />
+            </div>
+          </div>
           <!-- ///////////////////price///////////// -->
           <template v-if="priceStatus === 'success'">
             <div id="price" class="w-full">

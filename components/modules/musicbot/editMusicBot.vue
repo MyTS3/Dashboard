@@ -118,6 +118,18 @@ function checkname() {
   regexDisable.value = false;
 }
 async function editMusicBot() {
+  const body = () => {
+    if (!selectedPlaylist.value) {
+      return {
+        name: botName.value,
+      };
+    } else {
+      return {
+        playlist: selectedPlaylist.value.value,
+        name: botName.value,
+      };
+    }
+  };
   disableBtn.value = true;
   try {
     await $fetch(
@@ -127,10 +139,7 @@ async function editMusicBot() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({
-          playlist: selectedPlaylist.value.value,
-          name: botName.value,
-        }),
+        body: JSON.stringify(body()),
       },
     );
   } catch {
