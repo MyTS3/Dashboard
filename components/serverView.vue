@@ -90,6 +90,7 @@
           <p>:موقعیت مکانی</p>
           <button disabled class="absolute left-0">
             <img
+              v-if="serverIp"
               src="/images/change_nickname.svg"
               class="h-6 w-6 opacity-50"
               alt=""
