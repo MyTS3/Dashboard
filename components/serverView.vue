@@ -23,9 +23,18 @@
       </header>
       <main class="list-none flex flex-col gap-layout">
         <li class="grid gridList">
-          <p dir="rtl" class="max-w-full truncate -pr-10">
+          <p
+            v-if="selectedServer != 'loading'"
+            dir="rtl"
+            class="max-w-full truncate -pr-10"
+          >
             {{ selectedServer.name }}
           </p>
+          <USkeleton
+            v-else
+            class="h-5 w-20"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
           <p>:نام</p>
           <a
             v-show="selectedServer.mustRunning"
@@ -41,11 +50,16 @@
         </li>
         <li class="grid gridList relative">
           <div class="flex gap-1">
-            <p v-if="usersCount && selectedServer.mustRunning">
+            <p v-if="usersCount && selectedServer != 'loading'">
               {{ usersCount }}
             </p>
-            <p v-if="usersCount && selectedServer.mustRunning">/</p>
+            <p v-if="usersCount && selectedServer != 'loading'">/</p>
             <p>{{ selectedServer.slots }}</p>
+            <USkeleton
+              v-if="!usersCount || selectedServer == 'loading'"
+              class="h-5 w-7"
+              :ui="{ background: 'dark:bg-gray-500' }"
+            />
           </div>
           <p>:تعداد اسلات</p>
           <button
@@ -60,25 +74,46 @@
             />
           </button>
         </li>
-        <li v-if="selectedServer.mustRunning" class="grid gridList">
-          <p class="">
-            {{ selectedServer.deployedOn }}
-          </p>
-          <p>:موقعیت مکانی</p>
-          <button
-            class="absolute left-0"
-            @click.prevent="serverLocationTab = true"
+        <li class="grid gridList">
+          <p
+            @click="changeIpOrDomain"
+            v-if="serverIp"
+            class="cursor-pointer select-none"
           >
+            {{ serverIp[ipOrDomain] }}
+          </p>
+          <USkeleton
+            v-if="!serverIp"
+            class="h-5 w-40"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
+          <p>:موقعیت مکانی</p>
+          <button disabled class="absolute left-0">
             <img
               src="/images/change_nickname.svg"
-              class="cursor-pointer h-6 w-6"
+              class="h-6 w-6 opacity-50"
               alt=""
             />
           </button>
         </li>
         <li class="grid gridList relative">
-          <p v-if="!selectedServer.mustRunning" class="text-main_red">خاموش</p>
-          <p v-if="selectedServer.mustRunning" class="text-main_green">روشن</p>
+          <p
+            v-if="(selectedServer != 'loading') & !selectedServer.mustRunning"
+            class="text-main_red"
+          >
+            خاموش
+          </p>
+          <p
+            v-if="(selectedServer != 'loading') & selectedServer.mustRunning"
+            class="text-main_green"
+          >
+            روشن
+          </p>
+          <USkeleton
+            v-if="selectedServer == 'loading'"
+            class="h-5 w-10"
+            :ui="{ background: 'dark:bg-gray-500' }"
+          />
           <p>:وضعیت</p>
           <div class="absolute left-0">
             <!-- <input
@@ -90,6 +125,8 @@
             />
             <label class="button" for="server-status" /> -->
             <UToggle
+              v-if="selectedServer != 'loading'"
+              @change="turnServerOffOrOn"
               :loading="serverRunningSwitch"
               v-model="serverRunningToggle"
             />
@@ -217,17 +254,21 @@ const emit = defineEmits(['getServerDeatails', 'resetAlreadyvisited']);
 const store = apiStore();
 const { url } = storeToRefs(store);
 const selectedServer = ref(props.serverInfo);
+const ipOrDomain = ref('hostname');
+const params = useRoute().params.id;
+watch(props, () => {
+  selectedServer.value = props.serverInfo;
+  serverRunningToggle.value = selectedServer.value.mustRunning;
+});
 const serverRunningToggle = ref(selectedServer.value.mustRunning);
+
 pauseRequests.value = !selectedServer.value.mustRunning;
 const tsUrl = ref(`ts3server://${props.serverInfo.name}`);
 
 function getServerDeatails() {
   emit('getServerDeatails');
 }
-watch(serverRunningToggle, () => {
-  emit('resetAlreadyvisited');
-  turnServerOffOrOn();
-});
+
 async function turnServerOffOrOn() {
   if (selectedServer.value.mustRunning === true) {
     turnOffServerTab.value = true;
@@ -265,4 +306,29 @@ async function turnServerOffOrOn() {
     getServerDeatails();
   }
 }
+
+//
+let changeIpOrDomainstep = 0;
+let step = 1;
+function changeIpOrDomain() {
+  changeIpOrDomainstep += step;
+  if (changeIpOrDomainstep == 3) {
+    ipOrDomain.value = 'ipv4';
+    step = -1;
+  }
+  if (changeIpOrDomainstep == 0) {
+    ipOrDomain.value = 'hostname';
+    step = 1;
+  }
+}
+
+const { data: serverIp } = useFetch(
+  `${url.value}/api/v4/tservers/${params}/location`,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  },
+);
 </script>
