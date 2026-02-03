@@ -305,17 +305,14 @@
           opacity="0.95"
         />
       </svg>
+      <ServerView
+        v-if="selectedRow?.rowType == 'server'"
+        :server-info="serverInfo ?? 'loading'"
+        :users-count="usersCount"
+        @get-server-deatails="getServerDeatails"
+        @resetAlreadyvisited="alrreadyVisited = false"
+      />
 
-      <template v-if="selectedRow?.rowType == 'server'">
-        <ServerView
-          v-if="serverInfoStatus === 'success'"
-          :server-info="serverInfo"
-          :users-count="usersCount"
-          @get-server-deatails="getServerDeatails"
-          @resetAlreadyvisited="alrreadyVisited = false"
-        />
-        <ServerViewSkeleton v-else />
-      </template>
       <UserView
         v-if="selectedRow?.rowType == 'user'"
         :server-info="serverInfo"

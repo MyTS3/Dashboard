@@ -75,17 +75,15 @@
             />
           </main>
         </template>
-        <footer
-          class="mx-auto py-4 flex-shrink-0 flex-grow-0 basis-32 w-full gap-2 flex flex-col"
-        >
+        <footer class="mx-auto py-4 w-full gap-2 flex flex-col">
           <div class="flex flex-col text-center">
-            <h2 class="font-bold w-full truncate">
+            <h2 class="font-bold w-full h-4 truncate">
               {{ handleMusicTitle(playingMusic) }}
             </h2>
             <USkeleton
               v-if="musicStatus == 'pending' && !playingMusic.Title"
               :ui="{ background: 'dark:bg-gray-500' }"
-              class="w-4/5 mx-auto p-3 rounded-xl"
+              class="w-2/5 mx-auto h-4 rounded-xl"
             />
           </div>
           <div
