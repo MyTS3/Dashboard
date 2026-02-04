@@ -260,11 +260,12 @@ const params = useRoute().params.id;
 watch(props, () => {
   selectedServer.value = props.serverInfo;
   serverRunningToggle.value = selectedServer.value.mustRunning;
+  tsUrl.value = `ts3server://${props.serverInfo.name}`;
 });
 const serverRunningToggle = ref(selectedServer.value.mustRunning);
 
+const tsUrl = ref();
 pauseRequests.value = !selectedServer.value.mustRunning;
-const tsUrl = ref(`ts3server://${props.serverInfo.name}`);
 
 function getServerDeatails() {
   emit('getServerDeatails');
