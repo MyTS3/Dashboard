@@ -433,7 +433,10 @@ const { data: limitsApi, error: limitError } = await useFetch(
     },
   },
 );
-if (limitError.value.data.code == 'FST_JWT_AUTHORIZATION_TOKEN_INVALID') {
+if (limitError.value) {
+  const errMsg =
+    limitError.value.data.code == 'FST_JWT_AUTHORIZATION_TOKEN_INVALID';
+  console.log(errMsg);
   localStorage.removeItem('token');
   navigateTo('https://my.mtserver.ir/myts.php', {
     external: true,
