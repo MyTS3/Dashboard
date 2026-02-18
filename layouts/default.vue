@@ -425,12 +425,23 @@ const { data: version, error } = await useFetch(`${url.value}/api/v4/version`, {
   timeout: 3000,
 });
 
-const { data: limitsApi } = await useFetch(`${url.value}/api/v4/limits`, {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+const { data: limitsApi, error: limitError } = await useFetch(
+  `${url.value}/api/v4/limits`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   },
-  lazy: true,
-});
+);
+if (limitError.value) {
+  const errMsg =
+    limitError.value.data.code == 'FST_JWT_AUTHORIZATION_TOKEN_INVALID';
+  console.log(errMsg);
+  localStorage.removeItem('token');
+  navigateTo('https://my.mtserver.ir/myts.php', {
+    external: true,
+  });
+}
 limits.value = limitsApi;
 
 const logoutTab = ref(false);

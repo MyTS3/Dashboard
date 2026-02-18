@@ -158,7 +158,7 @@
       </Table>
     </div>
     <UTooltip
-      v-if="limits && servers && servers.length >= limits.value.maxTServers"
+      v-if="limits && servers && servers.length >= limits.maxTServers"
       :text="'شما به حداکثر تعداد سرور های خود رسیده اید'"
     >
       <button
@@ -229,7 +229,6 @@ const ServerDeleteTab = ref(false);
 const selectedServer = ref();
 const routeSlot = ref(null);
 const router = useRouter();
-
 const timeAgo = new TimeAgo('fa');
 
 const persianNumbers = {
